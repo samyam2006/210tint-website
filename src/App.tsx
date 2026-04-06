@@ -319,54 +319,38 @@ function ParallaxBg({ children, offset = 0.3 }: { children: React.ReactNode; off
 /* ═══════════════════════════════════════════════════
    LOADING SCREEN
    ═══════════════════════════════════════════════════ */
-function LoadingScreen({ onDone }: { onDone: () => void }) {
-  const [phase, setPhase] = useState(0);
-  const doneRef = useRef(onDone);
-  doneRef.current = onDone;
+/* ═══ LOADING SCREEN (CSS-driven, no stuck states) ═══ */
+function LoadingScreen() {
+  const [visible, setVisible] = useState(true);
   useEffect(() => {
-    const t1 = setTimeout(() => setPhase(1), 600);
-    const t2 = setTimeout(() => setPhase(2), 2000);
-    const t3 = setTimeout(() => doneRef.current(), 2600);
-    // Safety fallback — if anything goes wrong, dismiss after 4s
-    const t4 = setTimeout(() => doneRef.current(), 4000);
-    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(t4); };
+    const t = setTimeout(() => setVisible(false), 2800);
+    return () => clearTimeout(t);
   }, []);
+  if (!visible) return null;
   return (
-    <div style={{
+    <div className="loader-screen" style={{
       position: 'fixed', inset: 0, zIndex: 99999, background: '#050507',
       display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-      opacity: phase === 2 ? 0 : 1, transition: 'opacity 0.6s ease',
-      pointerEvents: phase === 2 ? 'none' : 'all',
+      animation: 'loaderFadeOut 0.6s ease 2.2s forwards',
     }}>
+      {/* Ambient glow */}
+      <div style={{ position: 'absolute', width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle, rgba(108,99,255,0.1) 0%, transparent 70%)', pointerEvents: 'none', animation: 'loaderGlow 2s ease infinite' }} />
       {/* Logo */}
-      <div style={{
-        display: 'flex', alignItems: 'center', gap: 8,
-        opacity: phase >= 1 ? 1 : 0, transform: phase >= 1 ? 'translateY(0) scale(1)' : 'translateY(20px) scale(0.9)',
-        transition: 'all 0.8s cubic-bezier(.16,1,.3,1)',
-      }}>
-        <span style={{ fontFamily: 'Syne', fontWeight: 800, fontSize: 48, color: '#6c63ff', letterSpacing: '-1px' }}>210</span>
-        <span style={{ fontFamily: 'Syne', fontWeight: 800, fontSize: 48, color: '#fff', letterSpacing: '-1px' }}>TINT</span>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, animation: 'loaderLogoIn 0.8s cubic-bezier(.16,1,.3,1) 0.2s both' }}>
+        <span style={{ fontFamily: 'Syne', fontWeight: 800, fontSize: 52, color: '#6c63ff', letterSpacing: '-1px' }}>210</span>
+        <span style={{ fontFamily: 'Syne', fontWeight: 800, fontSize: 52, color: '#fff', letterSpacing: '-1px' }}>TINT</span>
       </div>
       {/* Loading bar */}
-      <div style={{ width: 120, height: 2, background: 'rgba(255,255,255,0.06)', borderRadius: 1, marginTop: 28, overflow: 'hidden' }}>
-        <div style={{
-          height: '100%', background: 'linear-gradient(90deg, #6c63ff, #a78bfa)',
-          width: phase >= 1 ? '100%' : '0%',
-          transition: 'width 1.2s cubic-bezier(.16,1,.3,1)',
-        }} />
+      <div style={{ width: 140, height: 2, background: 'rgba(255,255,255,0.06)', borderRadius: 1, marginTop: 32, overflow: 'hidden' }}>
+        <div style={{ height: '100%', background: 'linear-gradient(90deg, #6c63ff, #a78bfa, #6c63ff)', backgroundSize: '200% auto', animation: 'loaderBar 1.4s cubic-bezier(.16,1,.3,1) 0.4s both, shimmer 2s linear infinite' }} />
       </div>
       {/* Tagline */}
-      <p style={{
-        fontFamily: 'Plus Jakarta Sans', fontSize: 11, letterSpacing: '4px', textTransform: 'uppercase',
-        color: '#4a4a5a', marginTop: 20,
-        opacity: phase >= 1 ? 1 : 0, transition: 'opacity 0.8s ease 0.3s',
-      }}>Mobile Nano-Ceramic Specialists</p>
-      {/* Ambient glow */}
-      <div style={{
-        position: 'absolute', width: 400, height: 400, borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(108,99,255,0.08) 0%, transparent 70%)',
-        pointerEvents: 'none',
-      }} />
+      <p style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11, letterSpacing: '4px', textTransform: 'uppercase', color: '#4a4a5a', marginTop: 20, animation: 'loaderLogoIn 0.6s ease 0.8s both' }}>
+        Mobile Nano-Ceramic Specialists
+      </p>
+      {/* Decorative line accents */}
+      <div style={{ position: 'absolute', top: '50%', left: '10%', width: 60, height: 1, background: 'linear-gradient(90deg, transparent, rgba(108,99,255,0.15))', animation: 'loaderLogoIn 1s ease 0.6s both' }} />
+      <div style={{ position: 'absolute', top: '50%', right: '10%', width: 60, height: 1, background: 'linear-gradient(270deg, transparent, rgba(108,99,255,0.15))', animation: 'loaderLogoIn 1s ease 0.6s both' }} />
     </div>
   );
 }
@@ -1553,6 +1537,7 @@ export default function App() {
   const go = (p: string) => { setPage(p); window.scrollTo({ top: 0, behavior: 'smooth' }); };
   return (
     <div style={{ minHeight: '100vh' }}>
+      <LoadingScreen />
       <CursorGlow />
       <ChatWidget />
       <style>{`
