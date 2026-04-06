@@ -27,6 +27,47 @@ h1,h2,h3,h4,h5,h6{font-family:'Syne',sans-serif}
 @keyframes lineExpand{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 @keyframes glowPulse{0%,100%{opacity:.5}50%{opacity:1}}
 
+/* Premium Animations */
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes borderGlow{0%,100%{border-color:rgba(108,99,255,0.15);box-shadow:0 0 20px rgba(108,99,255,0)}50%{border-color:rgba(108,99,255,0.4);box-shadow:0 0 30px rgba(108,99,255,0.08)}}
+@keyframes pulseRing{0%{transform:scale(1);opacity:0.4}100%{transform:scale(1.8);opacity:0}}
+@keyframes textReveal{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+@keyframes slideInStagger{from{opacity:0;transform:translateY(30px) scale(0.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes orbFloat{0%{transform:translate(0,0) rotate(0deg)}25%{transform:translate(20px,-30px) rotate(90deg)}50%{transform:translate(-10px,-50px) rotate(180deg)}75%{transform:translate(-30px,-20px) rotate(270deg)}100%{transform:translate(0,0) rotate(360deg)}}
+@keyframes accentLine{from{width:0}to{width:40px}}
+@keyframes countUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes magneticPulse{0%,100%{box-shadow:0 4px 40px rgba(108,99,255,0.35)}50%{box-shadow:0 8px 60px rgba(108,99,255,0.5)}}
+
+.float-anim{animation:float 6s ease-in-out infinite}
+.gradient-border{animation:borderGlow 3s ease-in-out infinite}
+.magnetic-btn{transition:all 0.4s cubic-bezier(.16,1,.3,1);animation:magneticPulse 3s ease-in-out infinite}
+.magnetic-btn:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 12px 50px rgba(108,99,255,0.5)!important}
+
+/* Tilt card effect */
+.tilt-card{transition:all 0.5s cubic-bezier(.16,1,.3,1);transform-style:preserve-3d;perspective:1000px}
+.tilt-card:hover{transform:translateY(-8px)}
+
+/* Accordion styles */
+.faq-item{border:1px solid rgba(255,255,255,0.04);border-radius:4px;background:#0a0a0f;margin-bottom:8px;overflow:hidden;transition:all 0.4s cubic-bezier(.16,1,.3,1)}
+.faq-item:hover{border-color:rgba(108,99,255,0.2)}
+.faq-item.active{border-color:rgba(108,99,255,0.3);box-shadow:0 4px 30px rgba(108,99,255,0.06)}
+.faq-toggle{width:100%;padding:24px 28px;background:none;border:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16;text-align:left;color:var(--text)}
+.faq-toggle:hover{background:rgba(108,99,255,0.02)}
+.faq-answer{max-height:0;overflow:hidden;transition:max-height 0.5s cubic-bezier(.16,1,.3,1),padding 0.4s ease}
+.faq-item.active .faq-answer{max-height:300px;padding:0 28px 24px}
+.faq-icon{width:28px;height:28px;border-radius:50%;border:1px solid rgba(108,99,255,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.4s cubic-bezier(.16,1,.3,1)}
+.faq-item.active .faq-icon{background:#6c63ff;border-color:#6c63ff;transform:rotate(45deg)}
+
+/* Staggered entrance for page transitions */
+.stagger-enter>*{opacity:0;animation:slideInStagger 0.8s cubic-bezier(.16,1,.3,1) forwards}
+.stagger-enter>*:nth-child(1){animation-delay:0.05s}
+.stagger-enter>*:nth-child(2){animation-delay:0.1s}
+.stagger-enter>*:nth-child(3){animation-delay:0.15s}
+.stagger-enter>*:nth-child(4){animation-delay:0.2s}
+.stagger-enter>*:nth-child(5){animation-delay:0.25s}
+.stagger-enter>*:nth-child(6){animation-delay:0.3s}
+
 .rv{opacity:0;transform:translateY(50px);transition:all 1s cubic-bezier(.16,1,.3,1)}
 .rv.v{opacity:1;transform:translateY(0)}
 .rv-s{opacity:0;transform:scale(.92);transition:all .9s cubic-bezier(.16,1,.3,1)}

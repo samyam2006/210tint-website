@@ -279,7 +279,7 @@ function Nav({ page, go }: { page: string; go: (p: string) => void }) {
               position: 'relative',
             }}>
               {n.label}
-              {page === n.id && <span style={{ position: 'absolute', bottom: -6, left: 0, right: 0, height: 2, background: '#6c63ff', borderRadius: 1 }} />}
+              {page === n.id && <span style={{ position: 'absolute', bottom: -6, left: 0, right: 0, height: 2, background: 'linear-gradient(90deg, #6c63ff, #a78bfa)', borderRadius: 1, animation: 'lineExpand 0.4s ease forwards', transformOrigin: 'left' }} />}
             </button>
           ))}
           <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" style={{
@@ -310,9 +310,9 @@ function SH({ tag, title, sub, align = 'center' }: { tag: string; title: string;
   return (
     <div className="rv" style={{ textAlign: align as any, marginBottom: 60 }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16, justifyContent: align === 'center' ? 'center' : 'flex-start' }}>
-        <div style={{ width: 32, height: 1, background: '#6c63ff' }} />
+        <div style={{ width: 32, height: 1, background: '#6c63ff', animation: 'accentLine 1s ease forwards' }} />
         <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '4px', textTransform: 'uppercase', color: '#6c63ff' }}>{tag}</span>
-        <div style={{ width: 32, height: 1, background: '#6c63ff' }} />
+        <div style={{ width: 32, height: 1, background: '#6c63ff', animation: 'accentLine 1s ease forwards' }} />
       </div>
       <h2 style={{ fontFamily: 'Syne', fontSize: 'clamp(28px,4vw,50px)', fontWeight: 800, letterSpacing: '-1.5px', lineHeight: 1.1 }}>{title}</h2>
       {sub && <p style={{ color: '#8e8ea0', fontSize: 15, maxWidth: align === 'center' ? 520 : 600, margin: align === 'center' ? '18px auto 0' : '18px 0 0', lineHeight: 1.8 }}>{sub}</p>}
@@ -320,10 +320,67 @@ function SH({ tag, title, sub, align = 'center' }: { tag: string; title: string;
   );
 }
 
+/* ── FLOATING ORBS BACKGROUND ── */
+function FloatingOrbs() {
+  return (
+    <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 0 }}>
+      {[...Array(5)].map((_, i) => (
+        <div key={i} style={{
+          position: 'absolute',
+          width: 200 + i * 80,
+          height: 200 + i * 80,
+          borderRadius: '50%',
+          background: `radial-gradient(circle, rgba(108,99,255,${0.03 - i * 0.004}) 0%, transparent 70%)`,
+          left: `${10 + i * 20}%`,
+          top: `${20 + (i % 3) * 25}%`,
+          animation: `orbFloat ${12 + i * 4}s ease-in-out infinite`,
+          animationDelay: `${i * -3}s`,
+        }} />
+      ))}
+    </div>
+  );
+}
+
+/* ── FAQ ACCORDION ── */
+function FAQ() {
+  const [open, setOpen] = useState<number | null>(null);
+  const faqs = [
+    { q: 'What types of tint film do you offer?', a: 'We offer three tiers of UVIRON performance films: Premium Carbon for budget-friendly protection with a clean matte finish, Nano Carbon PUREMAX for enhanced heat rejection and durability, and Nano Ceramic KOOLMAX — our top tier — with maximum infrared heat rejection, crystal-clear clarity, and a lifetime warranty.' },
+    { q: 'How long does window tinting take?', a: 'Most installations are completed in 1.5 to 3 hours depending on the vehicle type and number of windows. Full-vehicle tinting with windshield typically takes around 2.5 to 3 hours. We handle everything on-site at your location.' },
+    { q: 'Do you really come to my location?', a: 'Yes! We are a 100% mobile tinting service. We come to your home, office, or any convenient location across the DMV — including Howard County, Montgomery County, PG County, Baltimore, DC, and Northern Virginia. No shop visit required.' },
+    { q: 'What is your warranty policy?', a: 'Our Nano Ceramic KOOLMAX film comes with a lifetime warranty covering bubbling, peeling, lifting, cracking, delamination, color fading, adhesive failure, and manufacturer defects with full labor included. Nano Carbon carries a 5–7 year warranty, and Premium Carbon carries a 3–5 year warranty.' },
+    { q: 'Will window tint interfere with my electronics?', a: 'Not at all. All of our UVIRON films — Premium Carbon, Nano Carbon, and Nano Ceramic — are 100% signal-friendly. They will not interfere with GPS, Bluetooth, cell signals, toll transponders, or any other vehicle electronics.' },
+    { q: 'How should I care for my new tint?', a: 'Avoid rolling your windows down for 5–7 days after installation to allow the adhesive to fully cure. Clean with a soft microfiber cloth and ammonia-free cleaner. Avoid abrasive materials. Small water bubbles during the first few weeks are normal and will disappear as the film cures.' },
+    { q: 'Is window tinting legal in Maryland?', a: 'Maryland allows window tinting on rear side windows and the rear windshield at any darkness level. Front side windows must allow more than 35% of light through. The front windshield may only have tinting along the top AS-1 line (typically the top 5 inches). We can advise on the best legal options for your vehicle.' },
+    { q: 'How do I book an appointment?', a: 'Booking takes under two minutes! Click "Book Now" anywhere on our site to schedule through Calendly. Select your preferred date, time, and location. You can also call us at (240) 338-7762 or email 210tints@gmail.com.' },
+  ];
+  return (
+    <div style={{ maxWidth: 760, margin: '0 auto' }} className="stagger-enter">
+      {faqs.map((f, i) => (
+        <div key={i} className={`faq-item${open === i ? ' active' : ''} rv d${(i % 4) + 1}`}>
+          <button className="faq-toggle" onClick={() => setOpen(open === i ? null : i)}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+              <span style={{ fontFamily: 'Syne', fontSize: 14, fontWeight: 800, color: '#6c63ff', opacity: 0.4, minWidth: 28 }}>{String(i + 1).padStart(2, '0')}</span>
+              <span style={{ fontFamily: 'Syne', fontSize: 17, fontWeight: 700 }}>{f.q}</span>
+            </div>
+            <div className="faq-icon">
+              <span style={{ color: open === i ? '#fff' : '#6c63ff', fontSize: 18, lineHeight: 1 }}>+</span>
+            </div>
+          </button>
+          <div className="faq-answer">
+            <p style={{ color: '#8e8ea0', fontSize: 14, lineHeight: 1.9, paddingLeft: 44 }}>{f.a}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 /* ── FOOTER ── */
 function Footer({ go }: { go: (p: string) => void }) {
   return (
-    <footer style={{ background: '#0a0a0f', borderTop: '1px solid rgba(255,255,255,0.04)', padding: '72px 28px 36px' }}>
+    <footer style={{ background: '#0a0a0f', borderTop: '1px solid rgba(255,255,255,0.04)', padding: '72px 28px 36px', position: 'relative' }}>
+      <div style={{ position: 'absolute', top: 0, left: '10%', right: '10%', height: 1, background: 'linear-gradient(90deg, transparent, rgba(108,99,255,0.3), transparent)' }} />
       <div style={{ maxWidth: 1320, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(220px,1fr))', gap: 48 }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 20 }}>
@@ -418,16 +475,22 @@ function HomePage({ go }: { go: (p: string) => void }) {
             </p>
 
             <div style={{ display: 'flex', gap: 14, marginTop: 44, flexWrap: 'wrap', animation: 'fadeUp 1s ease forwards', animationDelay: '0.9s', opacity: 0 }}>
-              <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" style={{
+              <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" className="magnetic-btn" style={{
                 background: '#6c63ff', color: '#fff', padding: '16px 40px', borderRadius: 3,
-                fontSize: 15, fontWeight: 700, textDecoration: 'none', transition: 'all 0.4s',
+                fontSize: 15, fontWeight: 700, textDecoration: 'none',
                 boxShadow: '0 4px 40px rgba(108,99,255,0.35)', letterSpacing: '0.3px',
-              }}>Book Your Appointment</a>
+                position: 'relative', overflow: 'hidden',
+              }}>
+                <span style={{ position: 'relative', zIndex: 1 }}>Book Your Appointment</span>
+              </a>
               <button onClick={() => go('portfolio')} style={{
                 background: 'transparent', color: '#fff', padding: '16px 40px', borderRadius: 3,
                 border: '1px solid rgba(255,255,255,0.12)', fontSize: 15, fontWeight: 500, cursor: 'pointer',
-                transition: 'all 0.4s',
-              }}>View Our Work</button>
+                transition: 'all 0.4s cubic-bezier(.16,1,.3,1)',
+              }}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(108,99,255,0.5)'; e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 4px 20px rgba(108,99,255,0.15)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)'; e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
+              >View Our Work</button>
             </div>
           </div>
 
@@ -461,7 +524,7 @@ function HomePage({ go }: { go: (p: string) => void }) {
           animation: 'fadeIn 1s ease forwards', animationDelay: '1.5s', opacity: 0,
         }}>
           <span style={{ fontSize: 10, letterSpacing: '3px', textTransform: 'uppercase', color: '#4a4a5a' }}>Scroll</span>
-          <div style={{ width: 1, height: 40, background: 'linear-gradient(to bottom, #6c63ff, transparent)' }} />
+          <div className="float-anim" style={{ width: 1, height: 40, background: 'linear-gradient(to bottom, #6c63ff, transparent)' }} />
         </div>
       </section>
 
@@ -483,19 +546,19 @@ function HomePage({ go }: { go: (p: string) => void }) {
       </section>
 
       {/* ═══ HOW IT WORKS ═══ */}
-      <section style={{ padding: '140px 28px', maxWidth: 1320, margin: '0 auto' }}>
+      <section style={{ padding: '140px 28px', maxWidth: 1320, margin: '0 auto', position: 'relative' }}>
         <SH tag="The Process" title="Four Steps to Perfection" sub="From booking to driving away protected — built for your convenience." />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(260px,1fr))', gap: 0 }}>
           {process.map((p, i) => (
             <div key={i} className={`rv d${i + 1}`} style={{
               padding: '48px 32px', background: i % 2 === 0 ? '#0a0a0f' : '#0d0d14',
               borderTop: '2px solid transparent', position: 'relative', overflow: 'hidden',
-              transition: 'all 0.5s ease',
+              transition: 'all 0.5s cubic-bezier(.16,1,.3,1)',
             }}
-              onMouseEnter={(e) => { e.currentTarget.style.borderTopColor = '#6c63ff'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.borderTopColor = 'transparent'; }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderTopColor = '#6c63ff'; e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 12px 40px rgba(0,0,0,0.3)'; const num = e.currentTarget.querySelector('.step-num') as HTMLElement; if(num) num.style.opacity = '0.15'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderTopColor = 'transparent'; e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; const num = e.currentTarget.querySelector('.step-num') as HTMLElement; if(num) num.style.opacity = '0.06'; }}
             >
-              <span style={{ fontFamily: 'Syne', fontSize: 72, fontWeight: 800, color: '#6c63ff', opacity: 0.06, position: 'absolute', top: 12, right: 16, lineHeight: 1 }}>{p.num}</span>
+              <span className="step-num" style={{ fontFamily: 'Syne', fontSize: 72, fontWeight: 800, color: '#6c63ff', opacity: 0.06, position: 'absolute', top: 12, right: 16, lineHeight: 1, transition: 'opacity 0.5s ease' }}>{p.num}</span>
               <span style={{ fontFamily: 'Syne', fontSize: 12, fontWeight: 700, color: '#6c63ff', letterSpacing: '3px' }}>Step {p.num}</span>
               <h3 style={{ fontFamily: 'Syne', fontSize: 24, fontWeight: 700, marginTop: 16, marginBottom: 14 }}>{p.title}</h3>
               <p style={{ color: '#8e8ea0', fontSize: 14, lineHeight: 1.8 }}>{p.desc}</p>
@@ -505,19 +568,23 @@ function HomePage({ go }: { go: (p: string) => void }) {
       </section>
 
       {/* ═══ WHY US ═══ */}
-      <section style={{ padding: '120px 28px', background: '#0a0a0f' }}>
-        <div style={{ maxWidth: 1320, margin: '0 auto' }}>
+      <section style={{ padding: '120px 28px', background: '#0a0a0f', position: 'relative', overflow: 'hidden' }}>
+        <FloatingOrbs />
+        <div style={{ maxWidth: 1320, margin: '0 auto', position: 'relative', zIndex: 1 }}>
           <SH tag="The Difference" title="Why Clients Choose 210 Tint" sub="Professional mobile tinting backed by the best films, transparent pricing, and a satisfaction guarantee." />
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(360px,1fr))', gap: 12 }}>
             {whyUs.map((w, i) => (
-              <div key={i} className={`rv d${(i % 4) + 1}`} style={{
+              <div key={i} className={`rv d${(i % 4) + 1} tilt-card`} style={{
                 padding: '32px 28px', border: '1px solid rgba(255,255,255,0.04)', borderRadius: 3,
-                transition: 'all 0.5s cubic-bezier(.16,1,.3,1)', cursor: 'default', background: '#0d0d14',
+                cursor: 'default', background: '#0d0d14', position: 'relative', overflow: 'hidden',
               }}
-                onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(108,99,255,0.2)'; e.currentTarget.style.transform = 'translateY(-4px)'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.04)'; e.currentTarget.style.transform = 'translateY(0)'; }}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(108,99,255,0.25)'; e.currentTarget.style.boxShadow = '0 20px 50px rgba(0,0,0,0.3), 0 0 30px rgba(108,99,255,0.06)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.04)'; e.currentTarget.style.boxShadow = 'none'; }}
               >
-                <div style={{ width: 40, height: 2, background: '#6c63ff', marginBottom: 20 }} />
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'linear-gradient(90deg, transparent, #6c63ff, transparent)', opacity: 0, transition: 'opacity 0.5s' }}
+                  ref={(el) => { if (el) { el.parentElement!.addEventListener('mouseenter', () => el.style.opacity = '1'); el.parentElement!.addEventListener('mouseleave', () => el.style.opacity = '0'); }}} />
+                <div style={{ width: 40, height: 2, background: '#6c63ff', marginBottom: 20, transition: 'width 0.5s ease' }}
+                  ref={(el) => { if (el) { el.parentElement!.addEventListener('mouseenter', () => el.style.width = '60px'); el.parentElement!.addEventListener('mouseleave', () => el.style.width = '40px'); }}} />
                 <h3 style={{ fontFamily: 'Syne', fontSize: 18, fontWeight: 700, marginBottom: 10 }}>{w.title}</h3>
                 <p style={{ color: '#8e8ea0', fontSize: 14, lineHeight: 1.8 }}>{w.desc}</p>
               </div>
@@ -563,8 +630,9 @@ function HomePage({ go }: { go: (p: string) => void }) {
       </section>
 
       {/* ═══ TESTIMONIALS ═══ */}
-      <section style={{ padding: '120px 28px', background: '#0a0a0f' }}>
-        <div style={{ maxWidth: 1320, margin: '0 auto' }}>
+      <section style={{ padding: '120px 28px', background: '#0a0a0f', position: 'relative', overflow: 'hidden' }}>
+        <FloatingOrbs />
+        <div style={{ maxWidth: 1320, margin: '0 auto', position: 'relative', zIndex: 1 }}>
           <SH tag="Testimonials" title="Trusted Across the DMV" />
           <div style={{ display: 'flex', justifyContent: 'center', gap: 4, marginTop: -36, marginBottom: 52 }}>
             {[1,2,3,4,5].map(s => <span key={s} style={{ color: '#FFD700', fontSize: 18 }}>&#9733;</span>)}
@@ -573,11 +641,14 @@ function HomePage({ go }: { go: (p: string) => void }) {
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(320px,1fr))', gap: 12 }}>
             {testimonials.map((t, i) => (
-              <div key={i} className={`rv d${(i % 4) + 1}`} style={{ padding: '28px', borderRadius: 4, border: '1px solid rgba(255,255,255,0.04)', background: '#0d0d14' }}>
+              <div key={i} className={`rv d${(i % 4) + 1} tilt-card`} style={{ padding: '28px', borderRadius: 4, border: '1px solid rgba(255,255,255,0.04)', background: '#0d0d14', position: 'relative' }}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(108,99,255,0.2)'; e.currentTarget.style.boxShadow = '0 16px 40px rgba(0,0,0,0.3)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.04)'; e.currentTarget.style.boxShadow = 'none'; }}
+              >
                 <div style={{ display: 'flex', gap: 3, marginBottom: 14 }}>{[1,2,3,4,5].map(s => <span key={s} style={{ color: '#FFD700', fontSize: 11 }}>&#9733;</span>)}</div>
-                <p style={{ color: '#8e8ea0', fontSize: 14, lineHeight: 1.8, marginBottom: 20 }}>{t.text}</p>
+                <p style={{ color: '#8e8ea0', fontSize: 14, lineHeight: 1.8, marginBottom: 20, fontStyle: 'italic' }}>"{t.text}"</p>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <div style={{ width: 28, height: 28, borderRadius: '50%', background: '#6c63ff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Syne', fontWeight: 700, fontSize: 11, color: '#fff' }}>{t.name[0]}</div>
+                  <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'linear-gradient(135deg, #6c63ff, #8b83ff)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Syne', fontWeight: 700, fontSize: 12, color: '#fff', boxShadow: '0 2px 12px rgba(108,99,255,0.3)' }}>{t.name[0]}</div>
                   <div>
                     <span style={{ fontSize: 13, fontWeight: 600, display: 'block' }}>{t.name}</span>
                     <span style={{ fontSize: 10, color: '#4a4a5a' }}>{t.time}</span>
@@ -589,22 +660,35 @@ function HomePage({ go }: { go: (p: string) => void }) {
         </div>
       </section>
 
+      {/* ═══ FAQ ═══ */}
+      <section style={{ padding: '140px 28px', position: 'relative', overflow: 'hidden' }}>
+        <FloatingOrbs />
+        <div style={{ maxWidth: 1320, margin: '0 auto', position: 'relative', zIndex: 1 }}>
+          <SH tag="FAQ" title="Frequently Asked Questions" sub="Everything you need to know about our mobile window tinting service." />
+          <FAQ />
+        </div>
+      </section>
+
       {/* ═══ CTA ═══ */}
       <section style={{ padding: '120px 28px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at center, rgba(108,99,255,0.06) 0%, transparent 70%)' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at center, rgba(108,99,255,0.08) 0%, transparent 60%)' }} />
+        <FloatingOrbs />
         <div className="rv" style={{ maxWidth: 560, margin: '0 auto', position: 'relative', zIndex: 1 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20, justifyContent: 'center' }}>
-            <div style={{ width: 24, height: 1, background: '#6c63ff' }} />
+            <div style={{ width: 24, height: 1, background: '#6c63ff', animation: 'accentLine 1s ease forwards' }} />
             <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '4px', textTransform: 'uppercase', color: '#6c63ff' }}>Ready?</span>
-            <div style={{ width: 24, height: 1, background: '#6c63ff' }} />
+            <div style={{ width: 24, height: 1, background: '#6c63ff', animation: 'accentLine 1s ease forwards' }} />
           </div>
           <h2 style={{ fontFamily: 'Syne', fontSize: 'clamp(30px,4.5vw,52px)', fontWeight: 800, letterSpacing: '-1.5px', marginBottom: 20, lineHeight: 1.1 }}>
             Elevate Your <span className="grad-text">Vehicle</span>
           </h2>
           <p style={{ color: '#8e8ea0', fontSize: 16, lineHeight: 1.8, marginBottom: 44 }}>Schedule online in under two minutes. We come to you.</p>
           <div style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" style={{ background: '#6c63ff', color: '#fff', padding: '16px 44px', borderRadius: 3, fontSize: 15, fontWeight: 700, textDecoration: 'none', boxShadow: '0 4px 40px rgba(108,99,255,0.35)' }}>Book Your Appointment</a>
-            <button onClick={() => go('contact')} style={{ background: 'transparent', color: '#fff', padding: '16px 44px', borderRadius: 3, border: '1px solid rgba(255,255,255,0.1)', fontSize: 15, fontWeight: 500, cursor: 'pointer' }}>Get In Touch</button>
+            <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" className="magnetic-btn" style={{ background: '#6c63ff', color: '#fff', padding: '16px 44px', borderRadius: 3, fontSize: 15, fontWeight: 700, textDecoration: 'none', boxShadow: '0 4px 40px rgba(108,99,255,0.35)' }}>Book Your Appointment</a>
+            <button onClick={() => go('contact')} style={{ background: 'transparent', color: '#fff', padding: '16px 44px', borderRadius: 3, border: '1px solid rgba(255,255,255,0.1)', fontSize: 15, fontWeight: 500, cursor: 'pointer', transition: 'all 0.4s cubic-bezier(.16,1,.3,1)' }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(108,99,255,0.5)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; e.currentTarget.style.transform = 'translateY(0)'; }}
+            >Get In Touch</button>
           </div>
         </div>
       </section>
@@ -626,9 +710,9 @@ function PortfolioPage() {
   return (<div style={{ paddingTop: 130 }}><section style={{ padding: '0 28px 120px', maxWidth: 1320, margin: '0 auto' }}>
     <SH tag="Our Work" title="Vehicle Tinting Portfolio" sub="Professional-grade installations on luxury, performance, and everyday vehicles." />
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(360px,1fr))', gap: 14 }}>
-      {items.map((p, i) => (<div key={i} className={`rv-s d${(i%3)+1}`} style={{ borderRadius: 4, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.04)', background: '#0a0a0f', transition: 'all 0.6s cubic-bezier(.16,1,.3,1)' }}
-        onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-6px)'; e.currentTarget.style.borderColor = 'rgba(108,99,255,0.2)'; }}
-        onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.04)'; }}>
+      {items.map((p, i) => (<div key={i} className={`rv-s d${(i%3)+1} tilt-card`} style={{ borderRadius: 4, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.04)', background: '#0a0a0f' }}
+        onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(108,99,255,0.25)'; e.currentTarget.style.boxShadow = '0 24px 60px rgba(0,0,0,0.4), 0 0 30px rgba(108,99,255,0.06)'; }}
+        onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.04)'; e.currentTarget.style.boxShadow = 'none'; }}>
         <div style={{ overflow: 'hidden', height: 260 }}><img src={p.img} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.7s cubic-bezier(.16,1,.3,1)' }} onMouseEnter={(e) => { (e.target as HTMLElement).style.transform = 'scale(1.06)'; }} onMouseLeave={(e) => { (e.target as HTMLElement).style.transform = 'scale(1)'; }} /></div>
         <div style={{ padding: '20px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}><div><h3 style={{ fontFamily: 'Syne', fontWeight: 700, fontSize: 18 }}>{p.name}</h3><span style={{ fontSize: 11, fontWeight: 600, letterSpacing: '2px', textTransform: 'uppercase', color: '#6c63ff' }}>{p.film}</span></div><span style={{ color: '#4a4a5a', fontSize: 18 }}>&rarr;</span></div>
       </div>))}
@@ -759,7 +843,7 @@ export default function App() {
       <style>{`@media(max-width:860px){.desk-nav{display:none!important}.mob-btn{display:block!important}}`}</style>
       <ScrollBar />
       <Nav page={page} go={go} />
-      <main key={page} style={{ animation: 'fadeUp 0.6s ease forwards' }}>
+      <main key={page} style={{ animation: 'fadeUp 0.6s cubic-bezier(.16,1,.3,1) forwards' }}>
         {page==='home'&&<HomePage go={go}/>}
         {page==='portfolio'&&<PortfolioPage/>}
         {page==='pricing'&&<PricingPage/>}
