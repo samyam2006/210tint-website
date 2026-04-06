@@ -461,29 +461,28 @@ function ServiceAreaMap() {
    ═══════════════════════════════════════════════════ */
 function TintSimulator() {
   const [tint, setTint] = useState(35);
-  const [film, setFilm] = useState('ceramic');
-  const films: Record<string, { name: string; label: string; uv: string; heat: string; warranty: string; price: string }> = {
-    carbon: { name: 'Premium Carbon', label: 'ENTRY', uv: '~98%', heat: '25–35%', warranty: '3–5 yr', price: 'From $50' },
-    nano: { name: 'Nano Carbon', label: 'MID', uv: '~99%', heat: '35–50%', warranty: '5–7 yr', price: 'From $75' },
-    ceramic: { name: 'Nano Ceramic', label: 'TOP TIER', uv: '≥99.9%', heat: '50–75%', warranty: 'Lifetime', price: 'From $115' },
-  };
-  const cur = films[film];
   const vlt = 100 - tint;
   const windowOpacity = tint / 100;
+  const presets = [
+    { label: '70%', value: 70, desc: 'Barely noticeable' },
+    { label: '50%', value: 50, desc: 'Light shade' },
+    { label: '35%', value: 35, desc: 'MD legal front' },
+    { label: '20%', value: 20, desc: 'Popular choice' },
+    { label: '5%', value: 5, desc: 'Limo dark' },
+  ];
   return (
     <div style={{ maxWidth: 900, margin: '0 auto' }}>
-      {/* Film selector tabs */}
-      <div className="rv" style={{ display: 'flex', gap: 10, justifyContent: 'center', marginBottom: 48, flexWrap: 'wrap' }}>
-        {Object.entries(films).map(([k, v]) => (
-          <button key={k} onClick={() => setFilm(k)} style={{
-            padding: '14px 28px', borderRadius: 4, cursor: 'pointer', transition: 'all 0.4s cubic-bezier(.16,1,.3,1)',
-            background: film === k ? 'rgba(108,99,255,0.12)' : '#0a0a0f',
-            border: film === k ? '1px solid rgba(108,99,255,0.4)' : '1px solid rgba(255,255,255,0.04)',
-            boxShadow: film === k ? '0 0 30px rgba(108,99,255,0.08)' : 'none',
-            color: film === k ? '#fff' : '#8e8ea0',
+      {/* Quick presets */}
+      <div className="rv" style={{ display: 'flex', gap: 8, justifyContent: 'center', marginBottom: 40, flexWrap: 'wrap' }}>
+        {presets.map(p => (
+          <button key={p.value} onClick={() => setTint(100 - p.value)} style={{
+            padding: '10px 20px', borderRadius: 4, cursor: 'pointer', transition: 'all 0.3s',
+            background: vlt === p.value ? 'rgba(108,99,255,0.15)' : '#0a0a0f',
+            border: vlt === p.value ? '1px solid rgba(108,99,255,0.4)' : '1px solid rgba(255,255,255,0.04)',
+            color: vlt === p.value ? '#fff' : '#8e8ea0',
           }}>
-            <span style={{ display: 'block', fontSize: 9, fontWeight: 700, letterSpacing: '2px', color: '#6c63ff', marginBottom: 4 }}>{v.label}</span>
-            <span style={{ fontSize: 14, fontWeight: 700, fontFamily: 'Syne' }}>{v.name}</span>
+            <span style={{ display: 'block', fontFamily: 'Syne', fontSize: 18, fontWeight: 800 }}>{p.label}</span>
+            <span style={{ fontSize: 10, color: '#4a4a5a' }}>{p.desc}</span>
           </button>
         ))}
       </div>
@@ -571,17 +570,16 @@ function TintSimulator() {
         </div>
       </div>
 
-      {/* Stats cards below */}
-      <div className="rv" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 10, marginTop: 20 }}>
+      {/* Info bar */}
+      <div className="rv" style={{ display: 'flex', justifyContent: 'center', gap: 32, marginTop: 24, flexWrap: 'wrap' }}>
         {[
-          { label: 'UV Rejection', value: cur.uv },
-          { label: 'Heat Rejection', value: cur.heat },
-          { label: 'Warranty', value: cur.warranty },
-          { label: 'Price', value: cur.price },
+          { label: 'Visible Light', value: `${vlt}% VLT` },
+          { label: 'Tint Darkness', value: `${tint}%` },
+          { label: 'MD Legal Front', value: vlt >= 35 ? 'Yes' : 'No' },
         ].map((s, i) => (
-          <div key={i} style={{ padding: '18px 20px', borderRadius: 4, background: '#0a0a0f', border: '1px solid rgba(255,255,255,0.04)', textAlign: 'center', transition: 'all 0.4s' }}>
-            <span style={{ display: 'block', fontSize: 9, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#4a4a5a', marginBottom: 6 }}>{s.label}</span>
-            <span style={{ fontFamily: 'Syne', fontSize: 18, fontWeight: 800, color: i === 3 ? '#fff' : '#6c63ff' }}>{s.value}</span>
+          <div key={i} style={{ textAlign: 'center' }}>
+            <span style={{ display: 'block', fontSize: 9, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#4a4a5a', marginBottom: 4 }}>{s.label}</span>
+            <span style={{ fontFamily: 'Syne', fontSize: 20, fontWeight: 800, color: s.label === 'MD Legal Front' ? (vlt >= 35 ? '#4ade80' : '#ff4d4d') : '#6c63ff' }}>{s.value}</span>
           </div>
         ))}
       </div>
@@ -591,7 +589,7 @@ function TintSimulator() {
           display: 'inline-block', padding: '15px 40px', borderRadius: 3,
           background: '#6c63ff', color: '#fff', fontSize: 14, fontWeight: 700, textDecoration: 'none',
           boxShadow: '0 4px 30px rgba(108,99,255,0.3)',
-        }}>Book {cur.name}</a>
+        }}>Book Your Tint</a>
       </div>
     </div>
   );
@@ -601,7 +599,8 @@ function TintSimulator() {
 const NAV = [
   { id: 'home', label: 'Home' }, { id: 'portfolio', label: 'Portfolio' },
   { id: 'pricing', label: 'Pricing' }, { id: 'compare', label: 'Compare Films' },
-  { id: 'warranty', label: 'Warranty' }, { id: 'contact', label: 'Contact' },
+  { id: 'warranty', label: 'Warranty' }, { id: 'tint-laws', label: 'MD Tint Laws' },
+  { id: 'contact', label: 'Contact' },
 ];
 
 function Nav({ page, go }: { page: string; go: (p: string) => void }) {
@@ -1229,6 +1228,200 @@ function ContactPage() {
   </section></div>);
 }
 
+/* ═══ MARYLAND TINT LAWS ═══ */
+function TintLawsPage({ go }: { go: (p: string) => void }) {
+  useReveal();
+  const laws = [
+    { part: 'Front Windshield', rule: 'Non-reflective tint is allowed along the top of the windshield above the AS-1 line (manufacturer\'s line, typically top 5 inches).', legal: true },
+    { part: 'Front Side Windows', rule: 'Must allow more than 35% of light in (35% VLT minimum). This is measured by law enforcement with a tint meter.', legal: true },
+    { part: 'Rear Side Windows', rule: 'Any darkness can be used. No restrictions on VLT percentage for rear passenger windows.', legal: true },
+    { part: 'Rear Windshield', rule: 'Any darkness can be used. No VLT restrictions. If rear window is tinted, dual side mirrors are required.', legal: true },
+    { part: 'Reflectivity', rule: 'Maryland law does not allow tint that is more than 35% reflective on any window. Mirrored or highly reflective tint is prohibited.', legal: false },
+    { part: 'Color Restrictions', rule: 'Red, yellow, and amber tint colors are not permitted on any windows in Maryland.', legal: false },
+  ];
+  const tips = [
+    'Maryland state police use calibrated tint meters during traffic stops.',
+    'Medical exemptions exist — a doctor can certify the need for darker front tint.',
+    'Penalties for illegal tint include fines up to $500 and a repair order.',
+    'Tint shops are not liable for your tint choice — you are responsible for compliance.',
+    'Out-of-state vehicles are still subject to MD tint laws while driving in Maryland.',
+  ];
+  return (<div style={{ paddingTop: 130 }}><section style={{ padding: '0 28px 80px', maxWidth: 880, margin: '0 auto' }}>
+    <SH tag="Maryland Law" title="Window Tint Laws in MD" sub="Know what's legal before you tint. Updated for 2026." />
+    <div style={{ display: 'grid', gap: 10, marginBottom: 60 }}>
+      {laws.map((l, i) => (
+        <div key={i} className={`rv d${(i % 3) + 1}`} style={{ padding: '28px 32px', borderRadius: 4, border: '1px solid rgba(255,255,255,0.04)', background: '#0a0a0f' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
+            <span style={{ fontSize: 18 }}>{l.legal ? '✅' : '🚫'}</span>
+            <h3 style={{ fontFamily: 'Syne', fontSize: 18, fontWeight: 700 }}>{l.part}</h3>
+          </div>
+          <p style={{ color: '#8e8ea0', fontSize: 14, lineHeight: 1.8 }}>{l.rule}</p>
+        </div>
+      ))}
+    </div>
+    <div className="rv" style={{ padding: '36px', borderRadius: 4, border: '1px solid rgba(108,99,255,0.15)', background: '#0a0a0f', marginBottom: 60 }}>
+      <h3 style={{ fontFamily: 'Syne', fontSize: 20, fontWeight: 700, marginBottom: 20 }}>Quick Tips</h3>
+      {tips.map((t, i) => (
+        <div key={i} style={{ padding: '8px 0', fontSize: 14, color: '#8e8ea0', display: 'flex', gap: 12, alignItems: 'flex-start', lineHeight: 1.7 }}>
+          <span style={{ color: '#6c63ff', fontSize: 8, marginTop: 8, flexShrink: 0 }}>&#9646;</span>{t}
+        </div>
+      ))}
+    </div>
+    <div className="rv" style={{ textAlign: 'center', padding: '48px 28px', borderRadius: 4, background: 'rgba(108,99,255,0.04)', border: '1px solid rgba(108,99,255,0.1)' }}>
+      <h3 style={{ fontFamily: 'Syne', fontSize: 22, fontWeight: 800, marginBottom: 12 }}>Not Sure What's Legal?</h3>
+      <p style={{ color: '#8e8ea0', fontSize: 14, marginBottom: 24 }}>We'll recommend the perfect shade for your vehicle — 100% legal and looking great.</p>
+      <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+        <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" className="magnetic-btn" style={{ background: '#6c63ff', color: '#fff', padding: '14px 36px', borderRadius: 3, fontSize: 14, fontWeight: 700, textDecoration: 'none', boxShadow: '0 4px 30px rgba(108,99,255,0.3)' }}>Book Now</a>
+        <button onClick={() => go('home')} style={{ background: 'transparent', color: '#fff', padding: '14px 36px', borderRadius: 3, border: '1px solid rgba(255,255,255,0.1)', fontSize: 14, fontWeight: 500, cursor: 'pointer' }}>Try Tint Simulator</button>
+      </div>
+    </div>
+  </section>
+  {/* Tint Care Guide */}
+  <section style={{ padding: '80px 28px 120px', maxWidth: 880, margin: '0 auto' }}>
+    <SH tag="After Care" title="How to Care for Your Tint" sub="Follow these steps to keep your tint looking flawless for years." />
+    {[
+      { title: 'Wait 5–7 Days Before Rolling Down Windows', desc: 'The adhesive needs time to fully cure. Rolling windows down too early can cause peeling, bubbling, or shifting. Be patient — it\'s worth the wait.' },
+      { title: 'Small Bubbles Are Normal', desc: 'You may notice tiny water bubbles or a hazy appearance during the first few weeks. This is moisture trapped during installation. It will evaporate and disappear completely as the film cures.' },
+      { title: 'Clean with Ammonia-Free Products Only', desc: 'Ammonia-based cleaners (like Windex) will damage and discolor tint film. Use a soft microfiber cloth with ammonia-free glass cleaner or just water and a drop of dish soap.' },
+      { title: 'Avoid Abrasive Materials', desc: 'Never use paper towels, rough sponges, or scrapers on tinted windows. These can scratch the film surface. Always use a clean, soft microfiber cloth.' },
+      { title: 'Be Gentle with Seat Belts & Sharp Objects', desc: 'Seat belt buckles, rings, and sharp objects can scratch tint when they contact the window. Be mindful when buckling up near tinted surfaces.' },
+      { title: 'Park in Shade When Possible', desc: 'While quality films like UVIRON are UV-stable and won\'t fade, minimizing prolonged direct sun exposure helps maintain the adhesive and prolongs the life of any film.' },
+    ].map((c, i) => (
+      <div key={i} className={`rv d${(i % 3) + 1}`} style={{ padding: '28px 32px', borderRadius: 4, border: '1px solid rgba(255,255,255,0.04)', background: '#0a0a0f', marginBottom: 10 }}>
+        <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start' }}>
+          <span style={{ fontFamily: 'Syne', fontSize: 28, fontWeight: 800, color: '#6c63ff', opacity: 0.3, lineHeight: 1, minWidth: 32 }}>{String(i + 1).padStart(2, '0')}</span>
+          <div>
+            <h3 style={{ fontFamily: 'Syne', fontSize: 17, fontWeight: 700, marginBottom: 8 }}>{c.title}</h3>
+            <p style={{ color: '#8e8ea0', fontSize: 14, lineHeight: 1.8 }}>{c.desc}</p>
+          </div>
+        </div>
+      </div>
+    ))}
+  </section></div>);
+}
+
+/* ═══ AI CHATBOT WIDGET ═══ */
+function ChatWidget() {
+  const WORKER_URL = 'https://tints-proxy-production.up.railway.app';
+  const [isOpen, setIsOpen] = useState(false);
+  const [messages, setMessages] = useState<{ role: string; content: string }[]>([]);
+  const [input, setInput] = useState('');
+  const [typing, setTyping] = useState(false);
+  const [hasOpened, setHasOpened] = useState(false);
+  const [showBadge, setShowBadge] = useState(true);
+  const msgsRef = useRef<HTMLDivElement>(null);
+  const historyRef = useRef<{ role: string; content: string }[]>([]);
+
+  const todayStr = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+  const SYSTEM = `You are the AI booking agent for 210 Tints — a 4.9-star rated mobile window tinting service in Columbia, Maryland serving the DMV. We use UVIRON performance films. Contact: (240) 338-7762, 210tints@gmail.com. We are mobile — we come to the customer. Shop: 10451 Fair Oaks, Columbia MD 21044. Today: ${todayStr}. Be friendly, conversational, short replies. Ask 1-2 things at a time. For pricing/film details, refer them to our pricing page or compare films page. Direct to (240) 338-7762 or calendly.com/210tints to book.`;
+
+  useEffect(() => { setTimeout(() => setShowBadge(false), 6000); }, []);
+  useEffect(() => { if (msgsRef.current) msgsRef.current.scrollTop = msgsRef.current.scrollHeight; }, [messages, typing]);
+
+  const toggle = () => {
+    const next = !isOpen;
+    setIsOpen(next);
+    setShowBadge(false);
+    if (next && !hasOpened) {
+      setHasOpened(true);
+      const greet = { role: 'assistant', content: "Hey! 👋 Welcome to **210 Tints** — Columbia's mobile tinting specialists using **UVIRON** performance films.\n\nI can help with pricing, film info, or booking. What can I help with?" };
+      setMessages([greet]);
+      historyRef.current = [greet];
+    }
+  };
+
+  const send = async (text?: string) => {
+    const msg = text || input.trim();
+    if (!msg) return;
+    setInput('');
+    const userMsg = { role: 'user', content: msg };
+    setMessages(prev => [...prev, userMsg]);
+    historyRef.current.push(userMsg);
+    setTyping(true);
+    try {
+      const res = await fetch(`${WORKER_URL}/anthropic`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 600, system: SYSTEM, messages: historyRef.current }),
+      });
+      const data = await res.json();
+      setTyping(false);
+      if (data.content?.[0]) {
+        const reply = { role: 'assistant', content: data.content[0].text };
+        setMessages(prev => [...prev, reply]);
+        historyRef.current.push(reply);
+      }
+    } catch { setTyping(false); setMessages(prev => [...prev, { role: 'assistant', content: 'Connection issue — call us at (240) 338-7762.' }]); }
+  };
+
+  const formatMsg = (text: string) => text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+
+  return (
+    <>
+      {/* Badge */}
+      {showBadge && <div style={{ position: 'fixed', bottom: 100, right: 28, background: '#ff4d4d', color: '#fff', fontSize: 10, fontWeight: 700, fontFamily: 'Syne', padding: '5px 10px', borderRadius: 20, zIndex: 10000, animation: 'fadeUp 0.4s ease', boxShadow: '0 4px 12px rgba(255,77,77,0.4)' }}>Ask me anything</div>}
+      {/* Toggle */}
+      <button onClick={toggle} style={{ position: 'fixed', bottom: 28, right: 28, width: 60, height: 60, background: '#4B5FE0', border: 'none', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999, boxShadow: '0 0 0 0 rgba(75,95,224,0.4)', animation: 'tintRing 3s ease infinite', transition: 'transform 0.2s' }}
+        onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.08)'; }}
+        onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}>
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          {isOpen ? <><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></> : <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />}
+        </svg>
+      </button>
+      {/* Window */}
+      <div style={{
+        position: 'fixed', bottom: 100, right: 28, width: 390, maxHeight: 620, background: '#0d0d0d', border: '1px solid #222', borderRadius: 20, display: 'flex', flexDirection: 'column', overflow: 'hidden', zIndex: 9998,
+        boxShadow: '0 24px 80px rgba(0,0,0,0.8)', transform: isOpen ? 'scale(1) translateY(0)' : 'scale(0.92) translateY(20px)', opacity: isOpen ? 1 : 0, pointerEvents: isOpen ? 'all' : 'none', transition: 'transform 0.3s cubic-bezier(0.34,1.56,0.64,1), opacity 0.25s ease',
+      }}>
+        {/* Header */}
+        <div style={{ padding: '16px 18px', background: '#111', borderBottom: '1px solid #1a1a1a', display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
+          <div style={{ width: 40, height: 40, background: '#4B5FE0', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Syne', fontWeight: 800, fontSize: 14, color: '#fff', position: 'relative' }}>
+            AI
+            <span style={{ position: 'absolute', bottom: 1, right: 1, width: 10, height: 10, background: '#4ade80', borderRadius: '50%', border: '2px solid #111' }} />
+          </div>
+          <div>
+            <strong style={{ fontFamily: 'Syne', fontWeight: 700, fontSize: 14, display: 'block', color: '#fff' }}>210 Tints Assistant</strong>
+            <span style={{ fontSize: 11, color: '#6b7280' }}>UVIRON Certified · Columbia, MD</span>
+          </div>
+          <div style={{ marginLeft: 'auto', display: 'flex', gap: 6 }}>
+            <button onClick={() => { setMessages([]); historyRef.current = []; setHasOpened(false); toggle(); setTimeout(toggle, 100); }} style={{ background: '#1a1a1a', border: 'none', color: '#6b7280', width: 28, height: 28, borderRadius: 7, cursor: 'pointer', fontSize: 14, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>↺</button>
+            <button onClick={toggle} style={{ background: '#1a1a1a', border: 'none', color: '#6b7280', width: 28, height: 28, borderRadius: 7, cursor: 'pointer', fontSize: 14, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>✕</button>
+          </div>
+        </div>
+        {/* Messages */}
+        <div ref={msgsRef} style={{ flex: 1, overflowY: 'auto', padding: 16, display: 'flex', flexDirection: 'column', gap: 10, minHeight: 300, maxHeight: 400, scrollBehavior: 'smooth' }}>
+          {messages.map((m, i) => (
+            <div key={i} style={{ display: 'flex', flexDirection: 'column', maxWidth: '86%', alignSelf: m.role === 'user' ? 'flex-end' : 'flex-start', animation: 'fadeUp 0.22s ease' }}>
+              <div style={{ padding: '10px 14px', borderRadius: 16, fontSize: 13.5, lineHeight: 1.6, fontFamily: 'Plus Jakarta Sans, sans-serif', background: m.role === 'user' ? '#0c0e1f' : '#0f0f0f', border: m.role === 'user' ? '1px solid rgba(75,95,224,0.3)' : '1px solid #222', borderBottomRightRadius: m.role === 'user' ? 4 : 16, borderBottomLeftRadius: m.role === 'user' ? 16 : 4, color: '#fff' }} dangerouslySetInnerHTML={{ __html: formatMsg(m.content) }} />
+            </div>
+          ))}
+          {typing && <div style={{ alignSelf: 'flex-start', background: '#0f0f0f', border: '1px solid #222', borderRadius: 16, borderBottomLeftRadius: 4, padding: '12px 16px', display: 'flex', gap: 5 }}>
+            {[0,1,2].map(i => <span key={i} style={{ width: 6, height: 6, background: '#6b7280', borderRadius: '50%', animation: `tintDot 1.3s infinite ${i * 0.18}s` }} />)}
+          </div>}
+        </div>
+        {/* Quick replies */}
+        {messages.length <= 1 && (
+          <div style={{ padding: '8px 16px 12px', display: 'flex', flexWrap: 'wrap', gap: 6, flexShrink: 0 }}>
+            {['Packages & Pricing', 'Book Now', 'KOOLMAX Ceramic?', 'Mobile Service?'].map(q => (
+              <button key={q} onClick={() => send(q)} style={{ background: 'transparent', border: '1px solid #222', color: '#fff', padding: '6px 12px', borderRadius: 20, fontSize: 12, cursor: 'pointer', transition: 'all 0.15s', fontFamily: 'Plus Jakarta Sans' }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = '#4B5FE0'; e.currentTarget.style.borderColor = '#4B5FE0'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = '#222'; }}
+              >{q}</button>
+            ))}
+          </div>
+        )}
+        {/* Input */}
+        <div style={{ borderTop: '1px solid #1a1a1a', padding: '12px 14px', display: 'flex', gap: 8, background: '#111', flexShrink: 0 }}>
+          <input value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') send(); }}
+            placeholder="Ask about tinting, pricing, or book…"
+            style={{ flex: 1, background: '#1a1a1a', border: '1px solid #333', borderRadius: 10, color: '#fff', fontSize: 13, padding: '9px 13px', outline: 'none', fontFamily: 'Plus Jakarta Sans' }} />
+          <button onClick={() => send()} style={{ width: 38, height: 38, background: '#4B5FE0', border: 'none', borderRadius: 10, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color: '#fff', fontSize: 18 }}>➤</button>
+        </div>
+      </div>
+    </>
+  );
+}
+
 /* ═══ APP ═══ */
 export default function App() {
   const [page, setPage] = useState('home');
@@ -1239,6 +1432,7 @@ export default function App() {
     <div style={{ minHeight: '100vh' }}>
       {loading && <LoadingScreen onDone={onLoadDone} />}
       <CursorGlow />
+      <ChatWidget />
       <style>{`
         @media(max-width:860px){
           .desk-nav{display:none!important}
@@ -1258,6 +1452,7 @@ export default function App() {
         {page==='pricing'&&<PricingPage/>}
         {page==='compare'&&<ComparePage/>}
         {page==='warranty'&&<WarrantyPage/>}
+        {page==='tint-laws'&&<TintLawsPage go={go}/>}
         {page==='contact'&&<ContactPage/>}
       </main>
       <Footer go={go} />
