@@ -89,6 +89,20 @@ h1,h2,h3,h4,h5,h6{font-family:'Syne',sans-serif}
 .grad-text{background:linear-gradient(135deg,#6c63ff,#a78bfa,#6c63ff);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s linear infinite}
 .marquee-track{display:flex;animation:marquee 40s linear infinite;width:max-content}
 
+/* Hide scrollbar on carousel */
+.ig-carousel::-webkit-scrollbar{display:none}
+
+/* Instagram embed overrides */
+.instagram-media{background:#0a0a0f!important;box-shadow:none!important;border:0!important;border-radius:0!important;min-width:0!important}
+.instagram-media iframe{border-radius:8px!important}
+
+/* Range slider styling */
+input[type=range]{-webkit-appearance:none;height:4px;background:#101018;border-radius:2px;outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:#6c63ff;cursor:pointer;box-shadow:0 0 10px rgba(108,99,255,0.4)}
+
+/* SVG map hover */
+svg path{cursor:pointer}
+
 #scroll-bar{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));z-index:10001;transition:width .08s linear}
 
 @layer base{:root{--background:240 14% 2%;--foreground:240 10% 94%;--card:240 12% 5%;--card-foreground:240 10% 94%;--primary:245 95% 62%;--primary-foreground:0 0% 100%;--secondary:240 10% 8%;--secondary-foreground:240 10% 94%;--muted:240 8% 13%;--muted-foreground:240 5% 50%;--accent:245 95% 62%;--accent-foreground:0 0% 100%;--border:240 8% 8%;--input:240 8% 8%;--ring:245 95% 62%;--radius:.25rem}}

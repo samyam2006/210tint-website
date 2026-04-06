@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, type CSSProperties } from 'react';
 
 /* ── SCROLL REVEAL ── */
 function useReveal() {
@@ -320,6 +320,335 @@ function ParallaxBg({ children, offset = 0.3 }: { children: React.ReactNode; off
     return () => window.removeEventListener('scroll', fn);
   }, [offset]);
   return <div ref={ref} style={{ transform: `translateY(${y}px)`, transition: 'transform 0.1s linear' }}>{children}</div>;
+}
+
+/* ═══════════════════════════════════════════════════
+   LOADING SCREEN
+   ═══════════════════════════════════════════════════ */
+function LoadingScreen({ onDone }: { onDone: () => void }) {
+  const [phase, setPhase] = useState(0); // 0=animate in, 1=hold, 2=fade out
+  useEffect(() => {
+    const t1 = setTimeout(() => setPhase(1), 600);
+    const t2 = setTimeout(() => setPhase(2), 2000);
+    const t3 = setTimeout(() => onDone(), 2600);
+    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
+  }, [onDone]);
+  return (
+    <div style={{
+      position: 'fixed', inset: 0, zIndex: 99999, background: '#050507',
+      display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+      opacity: phase === 2 ? 0 : 1, transition: 'opacity 0.6s ease',
+      pointerEvents: phase === 2 ? 'none' : 'all',
+    }}>
+      {/* Logo */}
+      <div style={{
+        display: 'flex', alignItems: 'center', gap: 8,
+        opacity: phase >= 1 ? 1 : 0, transform: phase >= 1 ? 'translateY(0) scale(1)' : 'translateY(20px) scale(0.9)',
+        transition: 'all 0.8s cubic-bezier(.16,1,.3,1)',
+      }}>
+        <span style={{ fontFamily: 'Syne', fontWeight: 800, fontSize: 48, color: '#6c63ff', letterSpacing: '-1px' }}>210</span>
+        <span style={{ fontFamily: 'Syne', fontWeight: 800, fontSize: 48, color: '#fff', letterSpacing: '-1px' }}>TINT</span>
+      </div>
+      {/* Loading bar */}
+      <div style={{ width: 120, height: 2, background: 'rgba(255,255,255,0.06)', borderRadius: 1, marginTop: 28, overflow: 'hidden' }}>
+        <div style={{
+          height: '100%', background: 'linear-gradient(90deg, #6c63ff, #a78bfa)',
+          width: phase >= 1 ? '100%' : '0%',
+          transition: 'width 1.2s cubic-bezier(.16,1,.3,1)',
+        }} />
+      </div>
+      {/* Tagline */}
+      <p style={{
+        fontFamily: 'Plus Jakarta Sans', fontSize: 11, letterSpacing: '4px', textTransform: 'uppercase',
+        color: '#4a4a5a', marginTop: 20,
+        opacity: phase >= 1 ? 1 : 0, transition: 'opacity 0.8s ease 0.3s',
+      }}>Mobile Nano-Ceramic Specialists</p>
+      {/* Ambient glow */}
+      <div style={{
+        position: 'absolute', width: 400, height: 400, borderRadius: '50%',
+        background: 'radial-gradient(circle, rgba(108,99,255,0.08) 0%, transparent 70%)',
+        pointerEvents: 'none',
+      }} />
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════
+   CURSOR GLOW (follows mouse globally)
+   ═══════════════════════════════════════════════════ */
+function CursorGlow() {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const fn = (e: MouseEvent) => {
+      if (ref.current) {
+        ref.current.style.left = e.clientX + 'px';
+        ref.current.style.top = e.clientY + 'px';
+      }
+    };
+    window.addEventListener('mousemove', fn, { passive: true });
+    return () => window.removeEventListener('mousemove', fn);
+  }, []);
+  return (
+    <div ref={ref} style={{
+      position: 'fixed', width: 500, height: 500,
+      borderRadius: '50%', pointerEvents: 'none', zIndex: 9998,
+      background: 'radial-gradient(circle, rgba(108,99,255,0.04) 0%, rgba(108,99,255,0.015) 30%, transparent 70%)',
+      transform: 'translate(-50%, -50%)',
+      transition: 'left 0.15s ease, top 0.15s ease',
+      left: '-100px', top: '-100px',
+    }} />
+  );
+}
+
+/* ═══════════════════════════════════════════════════
+   SERVICE AREA MAP — SVG DMV region
+   ═══════════════════════════════════════════════════ */
+function ServiceAreaMap() {
+  const [active, setActive] = useState<string | null>(null);
+  const areas = [
+    { id: 'howard', name: 'Howard County', d: 'M200,140 L260,120 L290,150 L280,200 L230,210 L195,180 Z', cx: 240, cy: 165 },
+    { id: 'montgomery', name: 'Montgomery County', d: 'M130,190 L195,180 L230,210 L240,260 L180,280 L120,250 Z', cx: 180, cy: 230 },
+    { id: 'pg', name: "Prince George's County", d: 'M230,210 L280,200 L310,240 L320,300 L260,310 L240,260 Z', cx: 275, cy: 260 },
+    { id: 'baltimore', name: 'Baltimore', d: 'M260,80 L330,70 L360,100 L350,150 L290,150 L260,120 Z', cx: 310, cy: 110 },
+    { id: 'dc', name: 'Washington, DC', d: 'M180,280 L240,260 L260,310 L230,340 L185,325 Z', cx: 220, cy: 300 },
+    { id: 'nova', name: 'Northern Virginia', d: 'M120,250 L180,280 L185,325 L230,340 L200,390 L110,360 L80,290 Z', cx: 155, cy: 320 },
+  ];
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 32 }}>
+      <svg viewBox="50 50 340 370" style={{ width: '100%', maxWidth: 500, height: 'auto' }}>
+        {/* Background grid effect */}
+        <defs>
+          <radialGradient id="mapGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="rgba(108,99,255,0.15)" />
+            <stop offset="100%" stopColor="rgba(108,99,255,0)" />
+          </radialGradient>
+        </defs>
+        <circle cx="220" cy="230" r="180" fill="url(#mapGlow)" />
+        {areas.map(a => (
+          <g key={a.id} onMouseEnter={() => setActive(a.id)} onMouseLeave={() => setActive(null)} style={{ cursor: 'pointer' }}>
+            <path d={a.d} fill={active === a.id ? 'rgba(108,99,255,0.3)' : a.id === 'howard' ? 'rgba(108,99,255,0.2)' : 'rgba(108,99,255,0.08)'}
+              stroke={active === a.id ? '#6c63ff' : 'rgba(108,99,255,0.25)'} strokeWidth={active === a.id ? 2 : 1}
+              style={{ transition: 'all 0.4s cubic-bezier(.16,1,.3,1)' }} />
+            <text x={a.cx} y={a.cy} textAnchor="middle" dominantBaseline="middle"
+              style={{ fontSize: a.id === 'dc' ? 9 : 8, fill: active === a.id ? '#fff' : '#8e8ea0', fontFamily: 'Plus Jakarta Sans', fontWeight: 600, letterSpacing: '0.5px', transition: 'fill 0.3s', pointerEvents: 'none' }}>
+              {a.name}
+            </text>
+            {a.id === 'howard' && (
+              <circle cx={a.cx} cy={a.cy + 16} r={3} fill="#6c63ff" style={{ animation: 'glowPulse 2s ease-in-out infinite' }}>
+                <animate attributeName="r" values="3;6;3" dur="2s" repeatCount="indefinite" />
+              </circle>
+            )}
+          </g>
+        ))}
+        {/* Home base marker */}
+        <text x={240} y={188} textAnchor="middle" style={{ fontSize: 7, fill: '#6c63ff', fontFamily: 'Plus Jakarta Sans', fontWeight: 700, letterSpacing: '1px' }}>&#9679; HOME BASE</text>
+      </svg>
+      {active && (
+        <div style={{
+          padding: '12px 24px', borderRadius: 4, background: 'rgba(108,99,255,0.08)',
+          border: '1px solid rgba(108,99,255,0.2)', animation: 'fadeIn 0.3s ease',
+        }}>
+          <span style={{ fontSize: 13, fontWeight: 600, color: '#fff' }}>{areas.find(a => a.id === active)?.name}</span>
+          <span style={{ fontSize: 12, color: '#8e8ea0', marginLeft: 12 }}>Full coverage — we come to you</span>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════
+   FILM TINT SIMULATOR
+   ═══════════════════════════════════════════════════ */
+function TintSimulator() {
+  const [tint, setTint] = useState(35);
+  const [film, setFilm] = useState('ceramic');
+  const films: Record<string, { name: string; color: string }> = {
+    carbon: { name: 'Premium Carbon', color: '30,30,30' },
+    nano: { name: 'Nano Carbon', color: '20,20,25' },
+    ceramic: { name: 'Nano Ceramic', color: '15,15,20' },
+  };
+  const vlt = 100 - tint; // visible light transmission
+  return (
+    <div style={{ maxWidth: 800, margin: '0 auto' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32, alignItems: 'center' }}>
+        {/* Car side view silhouette */}
+        <div className="rv-l" style={{ position: 'relative', aspectRatio: '16/10', background: '#0d0d14', borderRadius: 8, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.04)' }}>
+          {/* Simple car side profile using CSS */}
+          <svg viewBox="0 0 400 250" style={{ width: '100%', height: '100%' }}>
+            {/* Car body */}
+            <path d="M50,180 L60,180 L80,130 L140,100 L180,90 L260,90 L310,100 L340,130 L360,180 L370,180" fill="none" stroke="#4a4a5a" strokeWidth="2" />
+            {/* Roof line */}
+            <path d="M140,100 L140,90 L150,75 L260,75 L270,85 L260,90" fill="none" stroke="#4a4a5a" strokeWidth="1.5" />
+            {/* Windows (these get tinted) */}
+            <path d="M152,78 L175,78 L175,98 L148,100 Z" fill={`rgba(${films[film].color},${tint / 100})`} stroke="rgba(108,99,255,0.3)" strokeWidth="0.5">
+              <animate attributeName="opacity" values="0.8;1;0.8" dur="3s" repeatCount="indefinite" />
+            </path>
+            <path d="M180,78 L258,78 L265,88 L258,92 L180,93 Z" fill={`rgba(${films[film].color},${tint / 100})`} stroke="rgba(108,99,255,0.3)" strokeWidth="0.5">
+              <animate attributeName="opacity" values="0.8;1;0.8" dur="3s" repeatCount="indefinite" />
+            </path>
+            {/* Windshield */}
+            <path d="M270,85 L310,100 L308,100 L268,88 Z" fill={`rgba(${films[film].color},${tint * 0.15 / 100})`} stroke="rgba(108,99,255,0.2)" strokeWidth="0.5" />
+            {/* Wheels */}
+            <circle cx="110" cy="185" r="22" fill="none" stroke="#4a4a5a" strokeWidth="2" />
+            <circle cx="110" cy="185" r="14" fill="none" stroke="#4a4a5a" strokeWidth="1" />
+            <circle cx="310" cy="185" r="22" fill="none" stroke="#4a4a5a" strokeWidth="2" />
+            <circle cx="310" cy="185" r="14" fill="none" stroke="#4a4a5a" strokeWidth="1" />
+            {/* Ground line */}
+            <line x1="30" y1="207" x2="370" y2="207" stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
+            {/* Bottom body */}
+            <path d="M60,180 L80,190 L85,200 L90,207 L330,207 L340,195 L360,180" fill="none" stroke="#4a4a5a" strokeWidth="1.5" />
+            {/* Door lines */}
+            <line x1="175" y1="95" x2="175" y2="180" stroke="#4a4a5a" strokeWidth="0.8" />
+            {/* Tint darkness label */}
+            <text x="200" y="230" textAnchor="middle" style={{ fontSize: 10, fill: '#6c63ff', fontFamily: 'Syne', fontWeight: 700 }}>{vlt}% VLT</text>
+          </svg>
+        </div>
+
+        {/* Controls */}
+        <div className="rv-r">
+          {/* Film type selector */}
+          <div style={{ marginBottom: 32 }}>
+            <label style={{ display: 'block', fontSize: 10, fontWeight: 700, letterSpacing: '3px', textTransform: 'uppercase', color: '#4a4a5a', marginBottom: 12 }}>Film Type</label>
+            <div style={{ display: 'flex', gap: 6 }}>
+              {Object.entries(films).map(([k, v]) => (
+                <button key={k} onClick={() => setFilm(k)} style={{
+                  flex: 1, padding: '10px 12px', borderRadius: 3, border: 'none', cursor: 'pointer',
+                  background: film === k ? '#6c63ff' : '#101018', color: film === k ? '#fff' : '#8e8ea0',
+                  fontSize: 11, fontWeight: 600, transition: 'all 0.3s',
+                }}>{v.name}</button>
+              ))}
+            </div>
+          </div>
+
+          {/* Tint level slider */}
+          <div style={{ marginBottom: 32 }}>
+            <label style={{ display: 'block', fontSize: 10, fontWeight: 700, letterSpacing: '3px', textTransform: 'uppercase', color: '#4a4a5a', marginBottom: 12 }}>
+              Tint Darkness — <span style={{ color: '#6c63ff' }}>{tint}%</span>
+            </label>
+            <input type="range" min={5} max={95} value={tint} onChange={(e) => setTint(Number(e.target.value))}
+              style={{ width: '100%', accentColor: '#6c63ff', cursor: 'pointer' }} />
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 6 }}>
+              <span style={{ fontSize: 10, color: '#4a4a5a' }}>Light (5%)</span>
+              <span style={{ fontSize: 10, color: '#4a4a5a' }}>Limo (95%)</span>
+            </div>
+          </div>
+
+          {/* Info */}
+          <div style={{ padding: '16px 20px', borderRadius: 4, background: '#0d0d14', border: '1px solid rgba(255,255,255,0.04)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+              <span style={{ fontSize: 12, color: '#8e8ea0' }}>Visible Light</span>
+              <span style={{ fontSize: 12, fontWeight: 700, color: '#fff' }}>{vlt}%</span>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+              <span style={{ fontSize: 12, color: '#8e8ea0' }}>UV Rejection</span>
+              <span style={{ fontSize: 12, fontWeight: 700, color: '#6c63ff' }}>{film === 'ceramic' ? '99.9%' : film === 'nano' ? '99%' : '98%'}</span>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <span style={{ fontSize: 12, color: '#8e8ea0' }}>Heat Rejection</span>
+              <span style={{ fontSize: 12, fontWeight: 700, color: '#6c63ff' }}>{film === 'ceramic' ? '50–75%' : film === 'nano' ? '35–50%' : '25–35%'}</span>
+            </div>
+          </div>
+
+          <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" className="magnetic-btn" style={{
+            display: 'block', marginTop: 20, padding: '14px', borderRadius: 3, textAlign: 'center',
+            background: '#6c63ff', color: '#fff', fontSize: 13, fontWeight: 700, textDecoration: 'none',
+            boxShadow: '0 4px 30px rgba(108,99,255,0.3)',
+          }}>Book This Film</a>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════
+   INSTAGRAM REEL CAROUSEL
+   ═══════════════════════════════════════════════════ */
+function InstagramCarousel() {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [canLeft, setCanLeft] = useState(false);
+  const [canRight, setCanRight] = useState(true);
+  const reels = [
+    'DJKYiAmOlpz', 'DIsGxqtuVaZ', 'DIt7FMGOqTa', 'DIdpGtzO-Sp',
+    'DH3WLFKuJ50', 'DHwL3PLuRDZ', 'DHfNPzjO6RB', 'DHTfGNjuPiR',
+  ];
+  const checkScroll = () => {
+    if (!scrollRef.current) return;
+    const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+    setCanLeft(scrollLeft > 10);
+    setCanRight(scrollLeft < scrollWidth - clientWidth - 10);
+  };
+  const scroll = (dir: number) => {
+    scrollRef.current?.scrollBy({ left: dir * 340, behavior: 'smooth' });
+  };
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (el) { el.addEventListener('scroll', checkScroll, { passive: true }); checkScroll(); }
+    return () => { el?.removeEventListener('scroll', checkScroll); };
+  }, []);
+
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://www.instagram.com/embed.js';
+    script.async = true;
+    document.body.appendChild(script);
+    script.onload = () => { (window as any).instgrm?.Embeds?.process(); };
+    return () => { document.body.removeChild(script); };
+  }, []);
+
+  return (
+    <div style={{ position: 'relative' }}>
+      {/* Scroll buttons */}
+      {canLeft && (
+        <button onClick={() => scroll(-1)} style={{
+          position: 'absolute', left: -20, top: '50%', transform: 'translateY(-50%)', zIndex: 10,
+          width: 44, height: 44, borderRadius: '50%', border: '1px solid rgba(108,99,255,0.3)',
+          background: 'rgba(5,5,7,0.9)', color: '#6c63ff', fontSize: 20, cursor: 'pointer',
+          backdropFilter: 'blur(10px)', transition: 'all 0.3s',
+        }}>&lsaquo;</button>
+      )}
+      {canRight && (
+        <button onClick={() => scroll(1)} style={{
+          position: 'absolute', right: -20, top: '50%', transform: 'translateY(-50%)', zIndex: 10,
+          width: 44, height: 44, borderRadius: '50%', border: '1px solid rgba(108,99,255,0.3)',
+          background: 'rgba(5,5,7,0.9)', color: '#6c63ff', fontSize: 20, cursor: 'pointer',
+          backdropFilter: 'blur(10px)', transition: 'all 0.3s',
+        }}>&rsaquo;</button>
+      )}
+      {/* Fade edges */}
+      <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 60, background: 'linear-gradient(to right, var(--bg), transparent)', zIndex: 5, pointerEvents: 'none' }} />
+      <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: 60, background: 'linear-gradient(to left, var(--bg), transparent)', zIndex: 5, pointerEvents: 'none' }} />
+      {/* Reel strip */}
+      <div ref={scrollRef} style={{
+        display: 'flex', gap: 16, overflowX: 'auto', scrollSnapType: 'x mandatory',
+        padding: '10px 40px', scrollbarWidth: 'none',
+      }}>
+        {reels.map((id, i) => (
+          <div key={i} className={`rv-s d${(i % 4) + 1}`} style={{
+            minWidth: 310, maxWidth: 310, scrollSnapAlign: 'start',
+            borderRadius: 8, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.04)',
+            background: '#0a0a0f', flexShrink: 0,
+          }}>
+            <blockquote className="instagram-media" data-instgrm-permalink={`https://www.instagram.com/reel/${id}/`}
+              data-instgrm-version="14"
+              style={{ background: '#0a0a0f', border: 0, margin: 0, padding: 0, width: '100%', minWidth: 0 } as CSSProperties} />
+          </div>
+        ))}
+      </div>
+      {/* Follow CTA */}
+      <div style={{ textAlign: 'center', marginTop: 32 }}>
+        <a href="https://www.instagram.com/210tint/" target="_blank" rel="noreferrer" style={{
+          display: 'inline-flex', alignItems: 'center', gap: 10, padding: '12px 28px',
+          borderRadius: 3, border: '1px solid rgba(255,255,255,0.08)', color: '#8e8ea0',
+          fontSize: 13, fontWeight: 600, textDecoration: 'none', transition: 'all 0.3s',
+        }}
+          onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(108,99,255,0.3)'; e.currentTarget.style.color = '#fff'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'; e.currentTarget.style.color = '#8e8ea0'; }}
+        >
+          <span style={{ fontSize: 18 }}>&#9741;</span> Follow @210tint on Instagram
+        </a>
+      </div>
+    </div>
+  );
 }
 
 /* ── NAV ── */
@@ -706,16 +1035,23 @@ function HomePage({ go }: { go: (p: string) => void }) {
         </div>
       </section>
 
-      {/* ═══ TESTIMONIALS ═══ */}
+      {/* ═══ GOOGLE REVIEWS ═══ */}
       <section style={{ padding: '120px 28px', background: '#0a0a0f', position: 'relative', overflow: 'hidden' }}>
         <FloatingOrbs />
         <div style={{ maxWidth: 1320, margin: '0 auto', position: 'relative', zIndex: 1 }}>
-          <div className="rv-blur"><SH tag="Testimonials" title="Trusted Across the DMV" /></div>
+          <div className="rv-blur"><SH tag="Google Reviews" title="Trusted Across the DMV" /></div>
           <ScrollRevealSection direction="scale" delay={0.2}>
-            <div style={{ display: 'flex', justifyContent: 'center', gap: 4, marginTop: -36, marginBottom: 52 }}>
-              {[1,2,3,4,5].map(s => <span key={s} style={{ color: '#FFD700', fontSize: 18 }}>&#9733;</span>)}
-              <span style={{ fontFamily: 'Syne', fontWeight: 800, fontSize: 22, marginLeft: 10 }}>4.9</span>
-              <span style={{ color: '#4a4a5a', fontSize: 13, marginLeft: 6, alignSelf: 'center' }}>on Google</span>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 16, marginTop: -36, marginBottom: 52, flexWrap: 'wrap' }}>
+              {/* Google "G" logo */}
+              <div style={{ width: 36, height: 36, borderRadius: '50%', background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, fontSize: 20, boxShadow: '0 2px 8px rgba(0,0,0,0.2)' }}>
+                <span style={{ background: 'linear-gradient(135deg, #4285F4, #34A853, #FBBC05, #EA4335)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontFamily: 'Arial' }}>G</span>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                <div style={{ display: 'flex', gap: 3 }}>
+                  {[1,2,3,4,5].map(s => <span key={s} style={{ color: '#FFD700', fontSize: 18 }}>&#9733;</span>)}
+                </div>
+                <span style={{ fontSize: 12, color: '#8e8ea0', marginTop: 2 }}><strong style={{ color: '#fff', fontFamily: 'Syne' }}>4.9</strong> out of 5 · 500+ reviews on Google</span>
+              </div>
             </div>
           </ScrollRevealSection>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(320px,1fr))', gap: 12 }}>
@@ -724,18 +1060,60 @@ function HomePage({ go }: { go: (p: string) => void }) {
                 onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(108,99,255,0.2)'; e.currentTarget.style.boxShadow = '0 16px 40px rgba(0,0,0,0.3)'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.04)'; e.currentTarget.style.boxShadow = 'none'; }}
               >
-                <div style={{ display: 'flex', gap: 3, marginBottom: 14 }}>{[1,2,3,4,5].map(s => <span key={s} style={{ color: '#FFD700', fontSize: 11 }}>&#9733;</span>)}</div>
+                {/* Google icon */}
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+                  <div style={{ display: 'flex', gap: 3 }}>{[1,2,3,4,5].map(s => <span key={s} style={{ color: '#FFD700', fontSize: 11 }}>&#9733;</span>)}</div>
+                  <div style={{ width: 18, height: 18, borderRadius: '50%', background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, fontWeight: 900 }}>
+                    <span style={{ background: 'linear-gradient(135deg, #4285F4, #34A853, #FBBC05, #EA4335)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontFamily: 'Arial' }}>G</span>
+                  </div>
+                </div>
                 <p style={{ color: '#8e8ea0', fontSize: 14, lineHeight: 1.8, marginBottom: 20, fontStyle: 'italic' }}>"{t.text}"</p>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                   <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'linear-gradient(135deg, #6c63ff, #8b83ff)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Syne', fontWeight: 700, fontSize: 12, color: '#fff', boxShadow: '0 2px 12px rgba(108,99,255,0.3)' }}>{t.name[0]}</div>
                   <div>
                     <span style={{ fontSize: 13, fontWeight: 600, display: 'block' }}>{t.name}</span>
-                    <span style={{ fontSize: 10, color: '#4a4a5a' }}>{t.time}</span>
+                    <span style={{ fontSize: 10, color: '#4a4a5a' }}>{t.time} · via Google</span>
                   </div>
                 </div>
               </div>
             ))}
           </div>
+          {/* See all reviews link */}
+          <div style={{ textAlign: 'center', marginTop: 40 }}>
+            <a href="https://www.google.com/maps/place/210+Tint" target="_blank" rel="noreferrer" style={{
+              display: 'inline-flex', alignItems: 'center', gap: 8, padding: '12px 28px',
+              borderRadius: 3, border: '1px solid rgba(255,255,255,0.08)', color: '#8e8ea0',
+              fontSize: 13, fontWeight: 600, textDecoration: 'none', transition: 'all 0.3s',
+            }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(108,99,255,0.3)'; e.currentTarget.style.color = '#fff'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'; e.currentTarget.style.color = '#8e8ea0'; }}
+            >See All Reviews on Google &rarr;</a>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ INSTAGRAM ═══ */}
+      <SectionDivider variant="glow" />
+      <section style={{ padding: '100px 28px 140px', maxWidth: 1320, margin: '0 auto' }}>
+        <div className="rv-blur"><SH tag="Follow Us" title="See Us in Action" sub="Watch our latest installs and behind-the-scenes on Instagram." /></div>
+        <InstagramCarousel />
+      </section>
+
+      {/* ═══ SERVICE AREA MAP ═══ */}
+      <section style={{ padding: '120px 28px', background: '#0a0a0f', position: 'relative', overflow: 'hidden' }}>
+        <FloatingOrbs />
+        <div style={{ maxWidth: 1000, margin: '0 auto', position: 'relative', zIndex: 1 }}>
+          <div className="rv-blur"><SH tag="Coverage" title="Serving the Entire DMV" sub="Howard County, Montgomery County, PG County, Baltimore, DC, and Northern Virginia — we come to you." /></div>
+          <div className="rv"><ServiceAreaMap /></div>
+        </div>
+      </section>
+
+      {/* ═══ TINT SIMULATOR ═══ */}
+      <SectionDivider variant="dots" />
+      <section style={{ padding: '100px 28px 140px', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ maxWidth: 1320, margin: '0 auto', position: 'relative', zIndex: 1 }}>
+          <div className="rv-blur"><SH tag="Try It" title="Tint Simulator" sub="Preview how different films and darkness levels look on your vehicle." /></div>
+          <TintSimulator />
         </div>
       </section>
 
@@ -917,9 +1295,13 @@ function ContactPage() {
 /* ═══ APP ═══ */
 export default function App() {
   const [page, setPage] = useState('home');
+  const [loading, setLoading] = useState(true);
   const go = (p: string) => { setPage(p); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+  const onLoadDone = useCallback(() => setLoading(false), []);
   return (
     <div style={{ minHeight: '100vh' }}>
+      {loading && <LoadingScreen onDone={onLoadDone} />}
+      <CursorGlow />
       <style>{`@media(max-width:860px){.desk-nav{display:none!important}.mob-btn{display:block!important}}`}</style>
       <ScrollBar />
       <Nav page={page} go={go} />
