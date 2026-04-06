@@ -9,4 +9,10 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+    watch: {
+      // Prevent Vite from watching config files that cause crash loops
+      ignored: ['**/package.json', '**/vite.config.ts'],
+    },
+  },
 });

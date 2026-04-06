@@ -326,13 +326,17 @@ function ParallaxBg({ children, offset = 0.3 }: { children: React.ReactNode; off
    LOADING SCREEN
    ═══════════════════════════════════════════════════ */
 function LoadingScreen({ onDone }: { onDone: () => void }) {
-  const [phase, setPhase] = useState(0); // 0=animate in, 1=hold, 2=fade out
+  const [phase, setPhase] = useState(0);
+  const doneRef = useRef(onDone);
+  doneRef.current = onDone;
   useEffect(() => {
     const t1 = setTimeout(() => setPhase(1), 600);
     const t2 = setTimeout(() => setPhase(2), 2000);
-    const t3 = setTimeout(() => onDone(), 2600);
-    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
-  }, [onDone]);
+    const t3 = setTimeout(() => doneRef.current(), 2600);
+    // Safety fallback — if anything goes wrong, dismiss after 4s
+    const t4 = setTimeout(() => doneRef.current(), 4000);
+    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(t4); };
+  }, []);
   return (
     <div style={{
       position: 'fixed', inset: 0, zIndex: 99999, background: '#050507',
