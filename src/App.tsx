@@ -1552,12 +1552,9 @@ Today: ${todayStr}. Use current year or later for dates. Be friendly, conversati
 /* ═══ APP ═══ */
 export default function App() {
   const [page, setPage] = useState('home');
-  const [loading, setLoading] = useState(true);
   const go = (p: string) => { setPage(p); window.scrollTo({ top: 0, behavior: 'smooth' }); };
-  const onLoadDone = useCallback(() => setLoading(false), []);
   return (
     <div style={{ minHeight: '100vh' }}>
-      {loading && <LoadingScreen onDone={onLoadDone} />}
       <CursorGlow />
       <ChatWidget />
       <style>{`
