@@ -1300,24 +1300,148 @@ function TintLawsPage({ go }: { go: (p: string) => void }) {
   </section></div>);
 }
 
-/* ═══ AI CHATBOT WIDGET ═══ */
+/* ═══ AI CHATBOT WIDGET (with Calendly booking) ═══ */
 function ChatWidget() {
   const WORKER_URL = 'https://tints-proxy-production.up.railway.app';
+  const CALENDLY_USER = 'https://api.calendly.com/users/7f757ebd-f408-4dcd-b06f-7cd791d4ec88';
+  const EVENT_MAP: Record<string, string> = {
+    'coupe-two-side':'coupe-two-side-windows','coupe-windshield':'coupe-front-or-back-windshield','coupe-all-sides':'coupe-all-side-windows','coupe-whole-no-wind':'coupe-whole-car-without-windshield','coupe-whole':'coupe-whole-car-with-windshield',
+    'sedan-two-side':'sedan-two-side-windows','sedan-windshield':'sedan-front-or-back-windshield','sedan-all-sides':'sedan-all-side-windows','sedan-whole-no-wind':'sedan-whole-car-without-windshield','sedan-whole':'sedan-whole-car-with-windshield',
+    'suv-two-side':'suv-truck-van-two-side-windows','suv-windshield':'suv-truck-van-front-or-back-windshield','suv-all-sides':'suv-truck-van-all-side-windows','suv-whole-no-wind':'suv-truck-van-whole-car-without-windshield','suv-whole':'suv-truck-van-whole-car-with-windshield',
+    'mobile-job':'any-car-mobile-job-request',
+  };
+
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<{ role: string; content: string }[]>([]);
+  const [messages, setMessages] = useState<{ role: string; content: string; html?: string }[]>([]);
   const [input, setInput] = useState('');
   const [typing, setTyping] = useState(false);
   const [hasOpened, setHasOpened] = useState(false);
   const [showBadge, setShowBadge] = useState(true);
   const msgsRef = useRef<HTMLDivElement>(null);
   const historyRef = useRef<{ role: string; content: string }[]>([]);
+  const eventCacheRef = useRef<any[] | null>(null);
 
   const todayStr = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
-  const SYSTEM = `You are the AI booking agent for 210 Tints — a 4.9-star rated mobile window tinting service in Columbia, Maryland serving the DMV. We use UVIRON performance films. Contact: (240) 338-7762, 210tints@gmail.com. We are mobile — we come to the customer. Shop: 10451 Fair Oaks, Columbia MD 21044. Today: ${todayStr}. Be friendly, conversational, short replies. Ask 1-2 things at a time. For pricing/film details, refer them to our pricing page or compare films page. Direct to (240) 338-7762 or calendly.com/210tints to book.`;
+  const SYSTEM = `You are the AI booking agent for 210 Tints — a 4.9-star rated mobile window tinting service in Columbia, Maryland serving the DMV. We proudly use UVIRON performance films.
+
+CONTACT: (240) 338-7762, 210tints@gmail.com. Mobile service — we come to YOU. Shop: 10451 Fair Oaks, Columbia MD 21044.
+
+FILMS: Premium Carbon (entry, ~98% UV, 3-5yr warranty), Nano Carbon PUREMAX (mid, 99% UV, 35-58% TSER, lifetime warranty), Nano Ceramic KOOLMAX (top, 99% UV, 79-89% IR rejection, lifetime warranty).
+
+PRICING - COUPES: Premium Carbon: all sides $50, windshield $80, full no wind $125, whole $205. Nano Carbon: all sides $75, windshield $110, full no wind $180, whole $290. Nano Ceramic: all sides $115, windshield $170, full no wind $275, whole $445.
+SEDANS: Premium Carbon: 2 sides $65, all 4 $105, windshield $80, full no wind $185, whole $265. Nano Carbon: 2 sides $75, all 4 $145, windshield $115, full no wind $260, whole $375. Nano Ceramic: 2 sides $115, all 4 $225, windshield $180, full no wind $395, whole $575.
+TRUCKS/SUVs: Premium Carbon: 2 sides $65, all sides $120, windshield $115, full no wind $210, whole $325. Nano Carbon: 2 sides $85, all sides $170, windshield $145, full no wind $305, whole $450. Nano Ceramic: 2 sides $135, all sides $260, windshield $220, full no wind $470, whole $690.
+ADD-ON: Computer Cut Film +$50.
+
+BOOKING FLOW: Collect: name, email, phone, vehicle year/make/model, tint darkness %, tint type (Premium Carbon/Nano Carbon/Nano Ceramic), previously tinted (Yes/No/I don't know), waiting or leaving during appointment, any notes, preferred date.
+Once you have all info, output: [BOOK:event_key:YYYY-MM-DD:name:email:phone:vehicle:tint_type:prev_tinted:waiting_or_leaving:extra_notes]
+
+EVENT KEYS: coupe-two-side, coupe-windshield, coupe-all-sides, coupe-whole-no-wind, coupe-whole, sedan-two-side, sedan-windshield, sedan-all-sides, sedan-whole-no-wind, sedan-whole, suv-two-side, suv-windshield, suv-all-sides, suv-whole-no-wind, suv-whole, mobile-job
+
+CRITICAL: In [BOOK:] command, tint_type MUST be exactly "Premium Carbon", "Nano Carbon", or "Nano Ceramic" — no brand names or symbols.
+Today: ${todayStr}. Use current year or later for dates. Be friendly, conversational, short replies. Ask 1-2 things at a time.`;
 
   useEffect(() => { setTimeout(() => setShowBadge(false), 6000); }, []);
   useEffect(() => { if (msgsRef.current) msgsRef.current.scrollTop = msgsRef.current.scrollHeight; }, [messages, typing]);
+
+  const addMsg = (role: string, content: string, html?: string) => {
+    setMessages(prev => [...prev, { role, content, html }]);
+  };
+
+  const getEventTypes = async () => {
+    if (eventCacheRef.current) return eventCacheRef.current;
+    try {
+      const res = await fetch(`${WORKER_URL}/calendly/event_types?user=${encodeURIComponent(CALENDLY_USER)}&count=50`, { headers: { 'Content-Type': 'application/json' } });
+      const data = await res.json();
+      eventCacheRef.current = data.collection || [];
+      return eventCacheRef.current;
+    } catch { return []; }
+  };
+
+  const getSlots = async (eventTypeUri: string, dateStr: string) => {
+    try {
+      const d = new Date(dateStr + 'T12:00:00Z');
+      d.setDate(d.getDate() + 1);
+      const end = d.toISOString().split('T')[0] + 'T04:59:59.000000Z';
+      const res = await fetch(`${WORKER_URL}/calendly/event_type_available_times?event_type=${encodeURIComponent(eventTypeUri)}&start_time=${dateStr}T05:00:00.000000Z&end_time=${end}`, { headers: { 'Content-Type': 'application/json' } });
+      const data = await res.json();
+      return data.collection || [];
+    } catch { return []; }
+  };
+
+  const createBooking = async (eventTypeUri: string, startTime: string, name: string, email: string, phone: string, vehicle: string, tintType: string, prevTinted: string, waitOrLeave: string, extraNotes: string) => {
+    try {
+      const res = await fetch(`${WORKER_URL}/calendly/scheduling_links`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ max_event_count: 1, owner: eventTypeUri, owner_type: 'EventType' }),
+      });
+      const data = await res.json();
+      let url = data.resource?.booking_url;
+      if (url) {
+        const parts = name.trim().split(' ');
+        const cleanPhone = phone.startsWith('+1') ? phone : '+1' + phone.replace(/\D/g, '');
+        url += `?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&first_name=${encodeURIComponent(parts[0] || '')}&last_name=${encodeURIComponent(parts.slice(1).join(' ') || '')}&location=${encodeURIComponent('10451 Fair Oaks, Columbia MD 21044')}&a1=${encodeURIComponent(cleanPhone)}&a2=${encodeURIComponent(vehicle)}&a3=${encodeURIComponent(tintType)}&a4=${encodeURIComponent(prevTinted)}&a5=${encodeURIComponent(waitOrLeave)}&a6=${encodeURIComponent(extraNotes)}`;
+        const t = new Date(startTime).toLocaleString([], { weekday: 'long', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+        addMsg('assistant', '', `<div style="padding:10px 14px;border-radius:16px;border-bottom-left-radius:4px;background:#0f0f0f;border:1px solid #222;font-size:13.5px;line-height:1.6">🎉 <strong>Almost done, ${parts[0]}!</strong><br><br>Your slot for <strong>${t}</strong> is being held.<br><br><a href="${url}" target="_blank" rel="noreferrer" style="display:inline-block;background:#4B5FE0;color:#fff;padding:10px 20px;border-radius:8px;text-decoration:none;font-weight:700;font-size:13px;margin:4px 0">✅ Confirm My Appointment</a><br><br><span style="font-size:11px;color:#6b7280">You'll get a confirmation email once booked.</span></div>`);
+        return true;
+      }
+      return false;
+    } catch { return false; }
+  };
+
+  const handleBooking = async (bookCmd: string) => {
+    const parts = bookCmd.replace('[BOOK:', '').replace(']', '').split(':');
+    const [eventKey, dateStr, name, email, phone, vehicle, tintType, prevTinted, waitOrLeave] = parts;
+    const extraNotes = parts.slice(9).join(':') || '';
+
+    addMsg('assistant', `⏳ Checking availability for **${dateStr}**...`);
+
+    const eventTypes = await getEventTypes();
+    const slug = EVENT_MAP[eventKey] || eventKey;
+    const eventType = eventTypes.find((e: any) => e.slug === slug || e.name.toLowerCase().includes(slug.replace(/-/g, ' ')));
+
+    if (!eventType) {
+      addMsg('assistant', '', `<div style="padding:10px 14px;border-radius:16px;border-bottom-left-radius:4px;background:#0f0f0f;border:1px solid #222;font-size:13.5px;line-height:1.6">Couldn't find that service type. Book directly here:<br><br><div style="border-radius:12px;overflow:hidden;border:1px solid #222;margin-top:8px"><iframe src="https://calendly.com/210tints?embed_type=Inline&hide_gdpr_banner=1" style="width:100%;height:280px;border:none" title="Book"></iframe><div style="font-size:11px;color:#6b7280;padding:8px 12px;border-top:1px solid #1a1a1a">📅 Pick your date & time above</div></div></div>`);
+      return;
+    }
+
+    const slots = await getSlots(eventType.uri, dateStr);
+    if (!slots.length) {
+      addMsg('assistant', `No slots available on ${dateStr}. Would you like to try a different date?`);
+      historyRef.current.push({ role: 'assistant', content: `No slots available on ${dateStr}. Would you like to try a different date?` });
+      return;
+    }
+
+    // Show slot picker
+    const d = new Date(slots[0].start_time).toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' });
+    const slotButtons = slots.map((s: any) => {
+      const t = new Date(s.start_time);
+      const label = t.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      return `<button data-slot="${s.start_time}" data-uri="${eventType.uri}" data-name="${encodeURIComponent(name)}" data-email="${encodeURIComponent(email)}" data-phone="${encodeURIComponent(phone)}" data-vehicle="${encodeURIComponent(vehicle)}" data-tint="${encodeURIComponent(tintType)}" data-prev="${encodeURIComponent(prevTinted)}" data-wait="${encodeURIComponent(waitOrLeave)}" data-notes="${encodeURIComponent(extraNotes)}" style="background:#1a1a2e;border:1px solid #4B5FE0;color:#fff;padding:8px 14px;border-radius:8px;cursor:pointer;font-size:13px;font-family:inherit">${label}</button>`;
+    }).join('');
+
+    addMsg('assistant', '', `<div style="padding:10px 14px;border-radius:16px;border-bottom-left-radius:4px;background:#0f0f0f;border:1px solid #222;font-size:13.5px;line-height:1.6"><strong>✅ Available times on ${d}:</strong><br><br><div class="slot-picker" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px">${slotButtons}</div></div>`);
+    historyRef.current.push({ role: 'assistant', content: `Showing available slots for ${d}.` });
+  };
+
+  // Handle slot button clicks via event delegation
+  useEffect(() => {
+    const handler = async (e: MouseEvent) => {
+      const btn = (e.target as HTMLElement).closest('[data-slot]') as HTMLElement | null;
+      if (!btn) return;
+      const startTime = btn.dataset.slot!;
+      const label = new Date(startTime).toLocaleString([], { weekday: 'short', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+      addMsg('assistant', `⏳ Securing your slot for **${label}**...`);
+      const ok = await createBooking(btn.dataset.uri!, startTime, decodeURIComponent(btn.dataset.name!), decodeURIComponent(btn.dataset.email!), decodeURIComponent(btn.dataset.phone!), decodeURIComponent(btn.dataset.vehicle!), decodeURIComponent(btn.dataset.tint!), decodeURIComponent(btn.dataset.prev!), decodeURIComponent(btn.dataset.wait!), decodeURIComponent(btn.dataset.notes!));
+      if (!ok) {
+        addMsg('assistant', '', `<div style="padding:10px 14px;border-radius:16px;border-bottom-left-radius:4px;background:#0f0f0f;border:1px solid #222;font-size:13.5px;line-height:1.6">Let me open our booking page:<br><br><div style="border-radius:12px;overflow:hidden;border:1px solid #222;margin-top:8px"><iframe src="https://calendly.com/210tints?embed_type=Inline&hide_gdpr_banner=1" style="width:100%;height:280px;border:none" title="Book"></iframe></div></div>`);
+      }
+    };
+    const el = msgsRef.current;
+    el?.addEventListener('click', handler);
+    return () => { el?.removeEventListener('click', handler); };
+  }, []);
 
   const toggle = () => {
     const next = !isOpen;
@@ -1325,9 +1449,10 @@ function ChatWidget() {
     setShowBadge(false);
     if (next && !hasOpened) {
       setHasOpened(true);
-      const greet = { role: 'assistant', content: "Hey! 👋 Welcome to **210 Tints** — Columbia's mobile tinting specialists using **UVIRON** performance films.\n\nI can help with pricing, film info, or booking. What can I help with?" };
+      const greet = { role: 'assistant', content: "Hey! 👋 Welcome to **210 Tints** — Columbia's mobile tinting specialists using **UVIRON** performance films.\n\nI can help with pricing, film info, or book you in. We come to you anywhere in the DMV! What can I help with?" };
       setMessages([greet]);
       historyRef.current = [greet];
+      getEventTypes(); // pre-fetch
     }
   };
 
@@ -1347,37 +1472,38 @@ function ChatWidget() {
       const data = await res.json();
       setTyping(false);
       if (data.content?.[0]) {
-        const reply = { role: 'assistant', content: data.content[0].text };
-        setMessages(prev => [...prev, reply]);
-        historyRef.current.push(reply);
+        const reply = data.content[0].text;
+        const bookMatch = reply.match(/\[BOOK:[^\]]+\]/);
+        if (bookMatch) {
+          const cleaned = reply.replace(bookMatch[0], '').trim();
+          if (cleaned) { addMsg('assistant', cleaned); historyRef.current.push({ role: 'assistant', content: cleaned }); }
+          await handleBooking(bookMatch[0]);
+        } else {
+          addMsg('assistant', reply);
+          historyRef.current.push({ role: 'assistant', content: reply });
+        }
       }
-    } catch { setTyping(false); setMessages(prev => [...prev, { role: 'assistant', content: 'Connection issue — call us at (240) 338-7762.' }]); }
+    } catch { setTyping(false); addMsg('assistant', 'Connection issue — call us at (240) 338-7762.'); }
   };
 
   const formatMsg = (text: string) => text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
 
   return (
     <>
-      {/* Badge */}
       {showBadge && <div style={{ position: 'fixed', bottom: 100, right: 28, background: '#ff4d4d', color: '#fff', fontSize: 10, fontWeight: 700, fontFamily: 'Syne', padding: '5px 10px', borderRadius: 20, zIndex: 10000, animation: 'fadeUp 0.4s ease', boxShadow: '0 4px 12px rgba(255,77,77,0.4)' }}>Ask me anything</div>}
-      {/* Toggle */}
-      <button onClick={toggle} style={{ position: 'fixed', bottom: 28, right: 28, width: 60, height: 60, background: '#4B5FE0', border: 'none', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999, boxShadow: '0 0 0 0 rgba(75,95,224,0.4)', animation: 'tintRing 3s ease infinite', transition: 'transform 0.2s' }}
-        onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.08)'; }}
-        onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}>
+      <button onClick={toggle} style={{ position: 'fixed', bottom: 28, right: 28, width: 60, height: 60, background: '#4B5FE0', border: 'none', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999, animation: 'tintRing 3s ease infinite', transition: 'transform 0.2s' }}
+        onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.08)'; }} onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}>
         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
           {isOpen ? <><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></> : <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />}
         </svg>
       </button>
-      {/* Window */}
       <div style={{
         position: 'fixed', bottom: 100, right: 28, width: 390, maxHeight: 620, background: '#0d0d0d', border: '1px solid #222', borderRadius: 20, display: 'flex', flexDirection: 'column', overflow: 'hidden', zIndex: 9998,
         boxShadow: '0 24px 80px rgba(0,0,0,0.8)', transform: isOpen ? 'scale(1) translateY(0)' : 'scale(0.92) translateY(20px)', opacity: isOpen ? 1 : 0, pointerEvents: isOpen ? 'all' : 'none', transition: 'transform 0.3s cubic-bezier(0.34,1.56,0.64,1), opacity 0.25s ease',
       }}>
-        {/* Header */}
         <div style={{ padding: '16px 18px', background: '#111', borderBottom: '1px solid #1a1a1a', display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
           <div style={{ width: 40, height: 40, background: '#4B5FE0', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Syne', fontWeight: 800, fontSize: 14, color: '#fff', position: 'relative' }}>
-            AI
-            <span style={{ position: 'absolute', bottom: 1, right: 1, width: 10, height: 10, background: '#4ade80', borderRadius: '50%', border: '2px solid #111' }} />
+            AI<span style={{ position: 'absolute', bottom: 1, right: 1, width: 10, height: 10, background: '#4ade80', borderRadius: '50%', border: '2px solid #111' }} />
           </div>
           <div>
             <strong style={{ fontFamily: 'Syne', fontWeight: 700, fontSize: 14, display: 'block', color: '#fff' }}>210 Tints Assistant</strong>
@@ -1388,21 +1514,23 @@ function ChatWidget() {
             <button onClick={toggle} style={{ background: '#1a1a1a', border: 'none', color: '#6b7280', width: 28, height: 28, borderRadius: 7, cursor: 'pointer', fontSize: 14, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>✕</button>
           </div>
         </div>
-        {/* Messages */}
         <div ref={msgsRef} style={{ flex: 1, overflowY: 'auto', padding: 16, display: 'flex', flexDirection: 'column', gap: 10, minHeight: 300, maxHeight: 400, scrollBehavior: 'smooth' }}>
           {messages.map((m, i) => (
-            <div key={i} style={{ display: 'flex', flexDirection: 'column', maxWidth: '86%', alignSelf: m.role === 'user' ? 'flex-end' : 'flex-start', animation: 'fadeUp 0.22s ease' }}>
-              <div style={{ padding: '10px 14px', borderRadius: 16, fontSize: 13.5, lineHeight: 1.6, fontFamily: 'Plus Jakarta Sans, sans-serif', background: m.role === 'user' ? '#0c0e1f' : '#0f0f0f', border: m.role === 'user' ? '1px solid rgba(75,95,224,0.3)' : '1px solid #222', borderBottomRightRadius: m.role === 'user' ? 4 : 16, borderBottomLeftRadius: m.role === 'user' ? 16 : 4, color: '#fff' }} dangerouslySetInnerHTML={{ __html: formatMsg(m.content) }} />
+            <div key={i} style={{ display: 'flex', flexDirection: 'column', maxWidth: m.html ? '100%' : '86%', alignSelf: m.role === 'user' ? 'flex-end' : 'flex-start', animation: 'fadeUp 0.22s ease' }}>
+              {m.html ? (
+                <div dangerouslySetInnerHTML={{ __html: m.html }} />
+              ) : (
+                <div style={{ padding: '10px 14px', borderRadius: 16, fontSize: 13.5, lineHeight: 1.6, fontFamily: 'Plus Jakarta Sans, sans-serif', background: m.role === 'user' ? '#0c0e1f' : '#0f0f0f', border: m.role === 'user' ? '1px solid rgba(75,95,224,0.3)' : '1px solid #222', borderBottomRightRadius: m.role === 'user' ? 4 : 16, borderBottomLeftRadius: m.role === 'user' ? 16 : 4, color: '#fff' }} dangerouslySetInnerHTML={{ __html: formatMsg(m.content) }} />
+              )}
             </div>
           ))}
           {typing && <div style={{ alignSelf: 'flex-start', background: '#0f0f0f', border: '1px solid #222', borderRadius: 16, borderBottomLeftRadius: 4, padding: '12px 16px', display: 'flex', gap: 5 }}>
             {[0,1,2].map(i => <span key={i} style={{ width: 6, height: 6, background: '#6b7280', borderRadius: '50%', animation: `tintDot 1.3s infinite ${i * 0.18}s` }} />)}
           </div>}
         </div>
-        {/* Quick replies */}
         {messages.length <= 1 && (
           <div style={{ padding: '8px 16px 12px', display: 'flex', flexWrap: 'wrap', gap: 6, flexShrink: 0 }}>
-            {['Packages & Pricing', 'Book Now', 'KOOLMAX Ceramic?', 'Mobile Service?'].map(q => (
+            {['Packages & Pricing', 'I want to book', 'KOOLMAX Ceramic?', 'Mobile Service?'].map(q => (
               <button key={q} onClick={() => send(q)} style={{ background: 'transparent', border: '1px solid #222', color: '#fff', padding: '6px 12px', borderRadius: 20, fontSize: 12, cursor: 'pointer', transition: 'all 0.15s', fontFamily: 'Plus Jakarta Sans' }}
                 onMouseEnter={(e) => { e.currentTarget.style.background = '#4B5FE0'; e.currentTarget.style.borderColor = '#4B5FE0'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = '#222'; }}
@@ -1410,7 +1538,6 @@ function ChatWidget() {
             ))}
           </div>
         )}
-        {/* Input */}
         <div style={{ borderTop: '1px solid #1a1a1a', padding: '12px 14px', display: 'flex', gap: 8, background: '#111', flexShrink: 0 }}>
           <input value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') send(); }}
             placeholder="Ask about tinting, pricing, or book…"
