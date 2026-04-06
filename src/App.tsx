@@ -462,114 +462,157 @@ function ServiceAreaMap() {
 function TintSimulator() {
   const [tint, setTint] = useState(35);
   const [film, setFilm] = useState('ceramic');
-  const films: Record<string, { name: string; color: string }> = {
-    carbon: { name: 'Premium Carbon', color: '30,30,30' },
-    nano: { name: 'Nano Carbon', color: '20,20,25' },
-    ceramic: { name: 'Nano Ceramic', color: '15,15,20' },
+  const films: Record<string, { name: string; label: string; uv: string; heat: string; warranty: string; price: string }> = {
+    carbon: { name: 'Premium Carbon', label: 'ENTRY', uv: '~98%', heat: '25–35%', warranty: '3–5 yr', price: 'From $50' },
+    nano: { name: 'Nano Carbon', label: 'MID', uv: '~99%', heat: '35–50%', warranty: '5–7 yr', price: 'From $75' },
+    ceramic: { name: 'Nano Ceramic', label: 'TOP TIER', uv: '≥99.9%', heat: '50–75%', warranty: 'Lifetime', price: 'From $115' },
   };
-  const vlt = 100 - tint; // visible light transmission
+  const cur = films[film];
+  const vlt = 100 - tint;
+  const windowOpacity = tint / 100;
   return (
-    <div style={{ maxWidth: 800, margin: '0 auto' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32, alignItems: 'center' }}>
-        {/* Car side view silhouette */}
-        <div className="rv-l" style={{ position: 'relative', aspectRatio: '16/10', background: '#0d0d14', borderRadius: 8, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.04)' }}>
-          {/* Simple car side profile using CSS */}
-          <svg viewBox="0 0 400 250" style={{ width: '100%', height: '100%' }}>
-            {/* Car body */}
-            <path d="M50,180 L60,180 L80,130 L140,100 L180,90 L260,90 L310,100 L340,130 L360,180 L370,180" fill="none" stroke="#4a4a5a" strokeWidth="2" />
-            {/* Roof line */}
-            <path d="M140,100 L140,90 L150,75 L260,75 L270,85 L260,90" fill="none" stroke="#4a4a5a" strokeWidth="1.5" />
-            {/* Windows (these get tinted) */}
-            <path d="M152,78 L175,78 L175,98 L148,100 Z" fill={`rgba(${films[film].color},${tint / 100})`} stroke="rgba(108,99,255,0.3)" strokeWidth="0.5">
-              <animate attributeName="opacity" values="0.8;1;0.8" dur="3s" repeatCount="indefinite" />
-            </path>
-            <path d="M180,78 L258,78 L265,88 L258,92 L180,93 Z" fill={`rgba(${films[film].color},${tint / 100})`} stroke="rgba(108,99,255,0.3)" strokeWidth="0.5">
-              <animate attributeName="opacity" values="0.8;1;0.8" dur="3s" repeatCount="indefinite" />
-            </path>
-            {/* Windshield */}
-            <path d="M270,85 L310,100 L308,100 L268,88 Z" fill={`rgba(${films[film].color},${tint * 0.15 / 100})`} stroke="rgba(108,99,255,0.2)" strokeWidth="0.5" />
-            {/* Wheels */}
-            <circle cx="110" cy="185" r="22" fill="none" stroke="#4a4a5a" strokeWidth="2" />
-            <circle cx="110" cy="185" r="14" fill="none" stroke="#4a4a5a" strokeWidth="1" />
-            <circle cx="310" cy="185" r="22" fill="none" stroke="#4a4a5a" strokeWidth="2" />
-            <circle cx="310" cy="185" r="14" fill="none" stroke="#4a4a5a" strokeWidth="1" />
+    <div style={{ maxWidth: 900, margin: '0 auto' }}>
+      {/* Film selector tabs */}
+      <div className="rv" style={{ display: 'flex', gap: 10, justifyContent: 'center', marginBottom: 48, flexWrap: 'wrap' }}>
+        {Object.entries(films).map(([k, v]) => (
+          <button key={k} onClick={() => setFilm(k)} style={{
+            padding: '14px 28px', borderRadius: 4, cursor: 'pointer', transition: 'all 0.4s cubic-bezier(.16,1,.3,1)',
+            background: film === k ? 'rgba(108,99,255,0.12)' : '#0a0a0f',
+            border: film === k ? '1px solid rgba(108,99,255,0.4)' : '1px solid rgba(255,255,255,0.04)',
+            boxShadow: film === k ? '0 0 30px rgba(108,99,255,0.08)' : 'none',
+            color: film === k ? '#fff' : '#8e8ea0',
+          }}>
+            <span style={{ display: 'block', fontSize: 9, fontWeight: 700, letterSpacing: '2px', color: '#6c63ff', marginBottom: 4 }}>{v.label}</span>
+            <span style={{ fontSize: 14, fontWeight: 700, fontFamily: 'Syne' }}>{v.name}</span>
+          </button>
+        ))}
+      </div>
+
+      {/* Main simulator area */}
+      <div style={{ position: 'relative', borderRadius: 12, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.04)', background: 'linear-gradient(180deg, #0d0d14 0%, #080810 100%)' }}>
+        {/* Ambient glow behind car */}
+        <div style={{ position: 'absolute', top: '40%', left: '50%', transform: 'translate(-50%,-50%)', width: 400, height: 300, borderRadius: '50%', background: 'radial-gradient(circle, rgba(108,99,255,0.06) 0%, transparent 70%)', pointerEvents: 'none' }} />
+
+        {/* Car SVG - more detailed sedan */}
+        <div style={{ padding: '40px 40px 20px', position: 'relative' }}>
+          <svg viewBox="0 0 500 220" style={{ width: '100%', height: 'auto', maxHeight: 280 }}>
+            <defs>
+              <linearGradient id="bodyGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#2a2a35" />
+                <stop offset="100%" stopColor="#18181f" />
+              </linearGradient>
+              <linearGradient id="tintGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor={`rgba(20,15,40,${windowOpacity * 0.9})`} />
+                <stop offset="100%" stopColor={`rgba(5,5,10,${windowOpacity})`} />
+              </linearGradient>
+              <linearGradient id="glassReflect" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stopColor={`rgba(160,160,255,${0.15 * (1 - windowOpacity * 0.7)})`} />
+                <stop offset="50%" stopColor="rgba(160,160,255,0)" />
+                <stop offset="100%" stopColor={`rgba(160,160,255,${0.08 * (1 - windowOpacity * 0.7)})`} />
+              </linearGradient>
+              <filter id="glow"><feGaussianBlur stdDeviation="3" result="blur" /><feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge></filter>
+            </defs>
+            {/* Ground shadow */}
+            <ellipse cx="250" cy="188" rx="200" ry="12" fill="rgba(0,0,0,0.3)" />
             {/* Ground line */}
-            <line x1="30" y1="207" x2="370" y2="207" stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
-            {/* Bottom body */}
-            <path d="M60,180 L80,190 L85,200 L90,207 L330,207 L340,195 L360,180" fill="none" stroke="#4a4a5a" strokeWidth="1.5" />
-            {/* Door lines */}
-            <line x1="175" y1="95" x2="175" y2="180" stroke="#4a4a5a" strokeWidth="0.8" />
-            {/* Tint darkness label */}
-            <text x="200" y="230" textAnchor="middle" style={{ fontSize: 10, fill: '#6c63ff', fontFamily: 'Syne', fontWeight: 700 }}>{vlt}% VLT</text>
+            <line x1="30" y1="182" x2="470" y2="182" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
+            {/* Car body */}
+            <path d="M80,170 L88,170 L100,128 L130,105 L170,88 L185,82 L310,82 L335,90 L355,105 L380,128 L395,170 L415,170 L415,175 L80,175 Z" fill="url(#bodyGrad)" stroke="#3a3a48" strokeWidth="1" />
+            {/* Lower body accent */}
+            <path d="M90,170 L105,145 L395,145 L400,170 Z" fill="#1a1a24" opacity="0.5" />
+            {/* Rear window */}
+            <path d="M140,106 L170,88 L185,84 L198,84 L198,106 Z" fill="url(#tintGrad)" stroke="#4a4a5a" strokeWidth="0.5" />
+            <path d="M140,106 L170,88 L185,84 L198,84 L198,106 Z" fill="url(#glassReflect)" />
+            {/* Front side window */}
+            <path d="M203,84 L305,84 L316,88 L330,98 L330,106 L203,106 Z" fill="url(#tintGrad)" stroke="#4a4a5a" strokeWidth="0.5" />
+            <path d="M203,84 L305,84 L316,88 L330,98 L330,106 L203,106 Z" fill="url(#glassReflect)" />
+            {/* Windshield (lighter tint) */}
+            <path d="M335,100 L355,106 L375,125 L370,128 L340,106 Z" fill={`rgba(20,15,40,${windowOpacity * 0.2})`} stroke="#4a4a5a" strokeWidth="0.5" />
+            <path d="M335,100 L355,106 L375,125 L370,128 L340,106 Z" fill="url(#glassReflect)" />
+            {/* Door line */}
+            <line x1="200" y1="84" x2="200" y2="168" stroke="#3a3a48" strokeWidth="0.8" />
+            {/* Door handle */}
+            <rect x="220" y="118" width="18" height="3" rx="1.5" fill="#4a4a5a" />
+            {/* Headlight */}
+            <path d="M390,132 L410,142 L410,158 L395,165 Z" fill="#2a2a35" stroke="#6c63ff" strokeWidth="0.5" opacity="0.6" />
+            <path d="M393,138 L406,144 L406,155 L396,160 Z" fill="rgba(108,99,255,0.15)" filter="url(#glow)" />
+            {/* Tail light */}
+            <path d="M92,135 L100,128 L100,162 L92,168 Z" fill="rgba(255,50,50,0.25)" stroke="rgba(255,50,50,0.4)" strokeWidth="0.5" />
+            {/* Wheels */}
+            <circle cx="145" cy="172" r="22" fill="#0a0a0f" stroke="#3a3a48" strokeWidth="2" />
+            <circle cx="145" cy="172" r="16" fill="none" stroke="#2a2a35" strokeWidth="1.5" />
+            <circle cx="145" cy="172" r="6" fill="#2a2a35" />
+            {[0,60,120,180,240,300].map(a => <line key={a} x1={145+6*Math.cos(a*Math.PI/180)} y1={172+6*Math.sin(a*Math.PI/180)} x2={145+15*Math.cos(a*Math.PI/180)} y2={172+15*Math.sin(a*Math.PI/180)} stroke="#2a2a35" strokeWidth="2" />)}
+            <circle cx="355" cy="172" r="22" fill="#0a0a0f" stroke="#3a3a48" strokeWidth="2" />
+            <circle cx="355" cy="172" r="16" fill="none" stroke="#2a2a35" strokeWidth="1.5" />
+            <circle cx="355" cy="172" r="6" fill="#2a2a35" />
+            {[0,60,120,180,240,300].map(a => <line key={a} x1={355+6*Math.cos(a*Math.PI/180)} y1={172+6*Math.sin(a*Math.PI/180)} x2={355+15*Math.cos(a*Math.PI/180)} y2={172+15*Math.sin(a*Math.PI/180)} stroke="#2a2a35" strokeWidth="2" />)}
+            {/* Side mirror */}
+            <ellipse cx="340" cy="108" rx="8" ry="5" fill="#2a2a35" stroke="#3a3a48" strokeWidth="0.5" />
           </svg>
         </div>
 
-        {/* Controls */}
-        <div className="rv-r">
-          {/* Film type selector */}
-          <div style={{ marginBottom: 32 }}>
-            <label style={{ display: 'block', fontSize: 10, fontWeight: 700, letterSpacing: '3px', textTransform: 'uppercase', color: '#4a4a5a', marginBottom: 12 }}>Film Type</label>
-            <div style={{ display: 'flex', gap: 6 }}>
-              {Object.entries(films).map(([k, v]) => (
-                <button key={k} onClick={() => setFilm(k)} style={{
-                  flex: 1, padding: '10px 12px', borderRadius: 3, border: 'none', cursor: 'pointer',
-                  background: film === k ? '#6c63ff' : '#101018', color: film === k ? '#fff' : '#8e8ea0',
-                  fontSize: 11, fontWeight: 600, transition: 'all 0.3s',
-                }}>{v.name}</button>
-              ))}
+        {/* Controls bar */}
+        <div style={{ padding: '28px 40px 36px', borderTop: '1px solid rgba(255,255,255,0.04)', background: 'rgba(0,0,0,0.2)' }}>
+          {/* Tint slider */}
+          <div style={{ maxWidth: 500, margin: '0 auto' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+              <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#4a4a5a' }}>Tint Darkness</span>
+              <span style={{ fontFamily: 'Syne', fontSize: 20, fontWeight: 800, color: '#fff' }}>{tint}<span style={{ fontSize: 12, color: '#6c63ff' }}>%</span></span>
             </div>
-          </div>
-
-          {/* Tint level slider */}
-          <div style={{ marginBottom: 32 }}>
-            <label style={{ display: 'block', fontSize: 10, fontWeight: 700, letterSpacing: '3px', textTransform: 'uppercase', color: '#4a4a5a', marginBottom: 12 }}>
-              Tint Darkness — <span style={{ color: '#6c63ff' }}>{tint}%</span>
-            </label>
             <input type="range" min={5} max={95} value={tint} onChange={(e) => setTint(Number(e.target.value))}
-              style={{ width: '100%', accentColor: '#6c63ff', cursor: 'pointer' }} />
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 6 }}>
+              style={{ width: '100%', cursor: 'pointer' }} />
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 8 }}>
               <span style={{ fontSize: 10, color: '#4a4a5a' }}>Light (5%)</span>
+              <span style={{ fontSize: 10, color: '#6c63ff', fontWeight: 600 }}>{vlt}% VLT</span>
               <span style={{ fontSize: 10, color: '#4a4a5a' }}>Limo (95%)</span>
             </div>
           </div>
-
-          {/* Info */}
-          <div style={{ padding: '16px 20px', borderRadius: 4, background: '#0d0d14', border: '1px solid rgba(255,255,255,0.04)' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-              <span style={{ fontSize: 12, color: '#8e8ea0' }}>Visible Light</span>
-              <span style={{ fontSize: 12, fontWeight: 700, color: '#fff' }}>{vlt}%</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-              <span style={{ fontSize: 12, color: '#8e8ea0' }}>UV Rejection</span>
-              <span style={{ fontSize: 12, fontWeight: 700, color: '#6c63ff' }}>{film === 'ceramic' ? '99.9%' : film === 'nano' ? '99%' : '98%'}</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ fontSize: 12, color: '#8e8ea0' }}>Heat Rejection</span>
-              <span style={{ fontSize: 12, fontWeight: 700, color: '#6c63ff' }}>{film === 'ceramic' ? '50–75%' : film === 'nano' ? '35–50%' : '25–35%'}</span>
-            </div>
-          </div>
-
-          <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" className="magnetic-btn" style={{
-            display: 'block', marginTop: 20, padding: '14px', borderRadius: 3, textAlign: 'center',
-            background: '#6c63ff', color: '#fff', fontSize: 13, fontWeight: 700, textDecoration: 'none',
-            boxShadow: '0 4px 30px rgba(108,99,255,0.3)',
-          }}>Book This Film</a>
         </div>
+      </div>
+
+      {/* Stats cards below */}
+      <div className="rv" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 10, marginTop: 20 }}>
+        {[
+          { label: 'UV Rejection', value: cur.uv },
+          { label: 'Heat Rejection', value: cur.heat },
+          { label: 'Warranty', value: cur.warranty },
+          { label: 'Price', value: cur.price },
+        ].map((s, i) => (
+          <div key={i} style={{ padding: '18px 20px', borderRadius: 4, background: '#0a0a0f', border: '1px solid rgba(255,255,255,0.04)', textAlign: 'center', transition: 'all 0.4s' }}>
+            <span style={{ display: 'block', fontSize: 9, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#4a4a5a', marginBottom: 6 }}>{s.label}</span>
+            <span style={{ fontFamily: 'Syne', fontSize: 18, fontWeight: 800, color: i === 3 ? '#fff' : '#6c63ff' }}>{s.value}</span>
+          </div>
+        ))}
+      </div>
+
+      <div style={{ textAlign: 'center', marginTop: 28 }}>
+        <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" className="magnetic-btn" style={{
+          display: 'inline-block', padding: '15px 40px', borderRadius: 3,
+          background: '#6c63ff', color: '#fff', fontSize: 14, fontWeight: 700, textDecoration: 'none',
+          boxShadow: '0 4px 30px rgba(108,99,255,0.3)',
+        }}>Book {cur.name}</a>
       </div>
     </div>
   );
 }
 
 /* ═══════════════════════════════════════════════════
-   INSTAGRAM REEL CAROUSEL
+   INSTAGRAM REEL CAROUSEL (iframe-based)
    ═══════════════════════════════════════════════════ */
 function InstagramCarousel() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canLeft, setCanLeft] = useState(false);
   const [canRight, setCanRight] = useState(true);
   const reels = [
-    'DJKYiAmOlpz', 'DIsGxqtuVaZ', 'DIt7FMGOqTa', 'DIdpGtzO-Sp',
-    'DH3WLFKuJ50', 'DHwL3PLuRDZ', 'DHfNPzjO6RB', 'DHTfGNjuPiR',
+    { id: 'DJKYiAmOlpz', caption: 'Latest Install' },
+    { id: 'DIsGxqtuVaZ', caption: 'Ceramic Tint' },
+    { id: 'DIt7FMGOqTa', caption: 'Full Vehicle' },
+    { id: 'DIdpGtzO-Sp', caption: 'Before & After' },
+    { id: 'DH3WLFKuJ50', caption: 'Mobile Service' },
+    { id: 'DHwL3PLuRDZ', caption: 'Precision Cut' },
+    { id: 'DHfNPzjO6RB', caption: 'Client Review' },
+    { id: 'DHTfGNjuPiR', caption: 'Behind the Scenes' },
   ];
   const checkScroll = () => {
     if (!scrollRef.current) return;
@@ -584,15 +627,6 @@ function InstagramCarousel() {
     const el = scrollRef.current;
     if (el) { el.addEventListener('scroll', checkScroll, { passive: true }); checkScroll(); }
     return () => { el?.removeEventListener('scroll', checkScroll); };
-  }, []);
-
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://www.instagram.com/embed.js';
-    script.async = true;
-    document.body.appendChild(script);
-    script.onload = () => { (window as any).instgrm?.Embeds?.process(); };
-    return () => { document.body.removeChild(script); };
   }, []);
 
   return (
@@ -622,15 +656,22 @@ function InstagramCarousel() {
         display: 'flex', gap: 16, overflowX: 'auto', scrollSnapType: 'x mandatory',
         padding: '10px 40px', scrollbarWidth: 'none',
       }}>
-        {reels.map((id, i) => (
+        {reels.map((reel, i) => (
           <div key={i} className={`rv-s d${(i % 4) + 1}`} style={{
             minWidth: 310, maxWidth: 310, scrollSnapAlign: 'start',
             borderRadius: 8, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.04)',
-            background: '#0a0a0f', flexShrink: 0,
-          }}>
-            <blockquote className="instagram-media" data-instgrm-permalink={`https://www.instagram.com/reel/${id}/`}
-              data-instgrm-version="14"
-              style={{ background: '#0a0a0f', border: 0, margin: 0, padding: 0, width: '100%', minWidth: 0 } as CSSProperties} />
+            background: '#0a0a0f', flexShrink: 0, transition: 'all 0.5s cubic-bezier(.16,1,.3,1)',
+          }}
+            onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(108,99,255,0.25)'; e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 16px 40px rgba(0,0,0,0.4)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.04)'; e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
+          >
+            <iframe
+              src={`https://www.instagram.com/reel/${reel.id}/embed/`}
+              style={{ width: '100%', height: 440, border: 'none', background: '#0a0a0f' }}
+              allowFullScreen
+              loading="lazy"
+              title={reel.caption}
+            />
           </div>
         ))}
       </div>
@@ -644,7 +685,7 @@ function InstagramCarousel() {
           onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(108,99,255,0.3)'; e.currentTarget.style.color = '#fff'; }}
           onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'; e.currentTarget.style.color = '#8e8ea0'; }}
         >
-          <span style={{ fontSize: 18 }}>&#9741;</span> Follow @210tint on Instagram
+          Follow @210tint on Instagram &rarr;
         </a>
       </div>
     </div>
@@ -1050,7 +1091,7 @@ function HomePage({ go }: { go: (p: string) => void }) {
                 <div style={{ display: 'flex', gap: 3 }}>
                   {[1,2,3,4,5].map(s => <span key={s} style={{ color: '#FFD700', fontSize: 18 }}>&#9733;</span>)}
                 </div>
-                <span style={{ fontSize: 12, color: '#8e8ea0', marginTop: 2 }}><strong style={{ color: '#fff', fontFamily: 'Syne' }}>4.9</strong> out of 5 · 500+ reviews on Google</span>
+                <span style={{ fontSize: 12, color: '#8e8ea0', marginTop: 2 }}><strong style={{ color: '#fff', fontFamily: 'Syne' }}>4.9</strong> out of 5 · 30+ reviews on Google</span>
               </div>
             </div>
           </ScrollRevealSection>
@@ -1080,7 +1121,7 @@ function HomePage({ go }: { go: (p: string) => void }) {
           </div>
           {/* See all reviews link */}
           <div style={{ textAlign: 'center', marginTop: 40 }}>
-            <a href="https://www.google.com/maps/place/210+Tint" target="_blank" rel="noreferrer" style={{
+            <a href="https://www.google.com/maps/place/210+Tint/@39.1938115,-76.9493414,12z/data=!4m6!3m5!1s0x89b7df8c50a20153:0x9294ac751d9098b3!8m2!3d39.1938405!4d-76.8669405" target="_blank" rel="noreferrer" style={{
               display: 'inline-flex', alignItems: 'center', gap: 8, padding: '12px 28px',
               borderRadius: 3, border: '1px solid rgba(255,255,255,0.08)', color: '#8e8ea0',
               fontSize: 13, fontWeight: 600, textDecoration: 'none', transition: 'all 0.3s',
