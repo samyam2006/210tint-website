@@ -297,8 +297,6 @@ function HeroVideo() {
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '20%', background: 'linear-gradient(to bottom, rgba(5,5,7,0.5), transparent)', zIndex: 1 }} />
     </div>
   );
-    </div>
-  );
 }
 
 /* ── PARALLAX SECTION WRAPPER ── */
