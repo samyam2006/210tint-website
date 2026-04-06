@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback, type CSSProperties } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 
 /* ── SCROLL REVEAL ── */
 function useReveal() {
@@ -597,101 +597,6 @@ function TintSimulator() {
   );
 }
 
-/* ═══════════════════════════════════════════════════
-   INSTAGRAM REEL CAROUSEL (iframe-based)
-   ═══════════════════════════════════════════════════ */
-function InstagramCarousel() {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [canLeft, setCanLeft] = useState(false);
-  const [canRight, setCanRight] = useState(true);
-  const reels = [
-    { id: 'DJKYiAmOlpz', caption: 'Latest Install' },
-    { id: 'DIsGxqtuVaZ', caption: 'Ceramic Tint' },
-    { id: 'DIt7FMGOqTa', caption: 'Full Vehicle' },
-    { id: 'DIdpGtzO-Sp', caption: 'Before & After' },
-    { id: 'DH3WLFKuJ50', caption: 'Mobile Service' },
-    { id: 'DHwL3PLuRDZ', caption: 'Precision Cut' },
-    { id: 'DHfNPzjO6RB', caption: 'Client Review' },
-    { id: 'DHTfGNjuPiR', caption: 'Behind the Scenes' },
-  ];
-  const checkScroll = () => {
-    if (!scrollRef.current) return;
-    const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-    setCanLeft(scrollLeft > 10);
-    setCanRight(scrollLeft < scrollWidth - clientWidth - 10);
-  };
-  const scroll = (dir: number) => {
-    scrollRef.current?.scrollBy({ left: dir * 340, behavior: 'smooth' });
-  };
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (el) { el.addEventListener('scroll', checkScroll, { passive: true }); checkScroll(); }
-    return () => { el?.removeEventListener('scroll', checkScroll); };
-  }, []);
-
-  return (
-    <div style={{ position: 'relative' }}>
-      {/* Scroll buttons */}
-      {canLeft && (
-        <button onClick={() => scroll(-1)} style={{
-          position: 'absolute', left: -20, top: '50%', transform: 'translateY(-50%)', zIndex: 10,
-          width: 44, height: 44, borderRadius: '50%', border: '1px solid rgba(108,99,255,0.3)',
-          background: 'rgba(5,5,7,0.9)', color: '#6c63ff', fontSize: 20, cursor: 'pointer',
-          backdropFilter: 'blur(10px)', transition: 'all 0.3s',
-        }}>&lsaquo;</button>
-      )}
-      {canRight && (
-        <button onClick={() => scroll(1)} style={{
-          position: 'absolute', right: -20, top: '50%', transform: 'translateY(-50%)', zIndex: 10,
-          width: 44, height: 44, borderRadius: '50%', border: '1px solid rgba(108,99,255,0.3)',
-          background: 'rgba(5,5,7,0.9)', color: '#6c63ff', fontSize: 20, cursor: 'pointer',
-          backdropFilter: 'blur(10px)', transition: 'all 0.3s',
-        }}>&rsaquo;</button>
-      )}
-      {/* Fade edges */}
-      <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 60, background: 'linear-gradient(to right, var(--bg), transparent)', zIndex: 5, pointerEvents: 'none' }} />
-      <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: 60, background: 'linear-gradient(to left, var(--bg), transparent)', zIndex: 5, pointerEvents: 'none' }} />
-      {/* Reel strip */}
-      <div ref={scrollRef} style={{
-        display: 'flex', gap: 16, overflowX: 'auto', scrollSnapType: 'x mandatory',
-        padding: '10px 40px', scrollbarWidth: 'none',
-      }}>
-        {reels.map((reel, i) => (
-          <div key={i} className={`rv-s d${(i % 4) + 1}`} style={{
-            minWidth: 310, maxWidth: 310, scrollSnapAlign: 'start',
-            borderRadius: 8, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.04)',
-            background: '#0a0a0f', flexShrink: 0, transition: 'all 0.5s cubic-bezier(.16,1,.3,1)',
-          }}
-            onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(108,99,255,0.25)'; e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 16px 40px rgba(0,0,0,0.4)'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.04)'; e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
-          >
-            <iframe
-              src={`https://www.instagram.com/reel/${reel.id}/embed/`}
-              style={{ width: '100%', height: 440, border: 'none', background: '#0a0a0f' }}
-              allowFullScreen
-              loading="lazy"
-              title={reel.caption}
-            />
-          </div>
-        ))}
-      </div>
-      {/* Follow CTA */}
-      <div style={{ textAlign: 'center', marginTop: 32 }}>
-        <a href="https://www.instagram.com/210tint/" target="_blank" rel="noreferrer" style={{
-          display: 'inline-flex', alignItems: 'center', gap: 10, padding: '12px 28px',
-          borderRadius: 3, border: '1px solid rgba(255,255,255,0.08)', color: '#8e8ea0',
-          fontSize: 13, fontWeight: 600, textDecoration: 'none', transition: 'all 0.3s',
-        }}
-          onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(108,99,255,0.3)'; e.currentTarget.style.color = '#fff'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'; e.currentTarget.style.color = '#8e8ea0'; }}
-        >
-          Follow @210tint on Instagram &rarr;
-        </a>
-      </div>
-    </div>
-  );
-}
-
 /* ── NAV ── */
 const NAV = [
   { id: 'home', label: 'Home' }, { id: 'portfolio', label: 'Portfolio' },
@@ -901,8 +806,8 @@ function HomePage({ go }: { go: (p: string) => void }) {
         <HeroSlideshow />
         <GlassScene />
 
-        <div style={{ position: 'relative', zIndex: 10, maxWidth: 1320, margin: '0 auto', padding: '180px 28px 100px', width: '100%' }}>
-          <div style={{ maxWidth: 720 }}>
+        <div style={{ position: 'relative', zIndex: 10, maxWidth: 1320, margin: '0 auto', padding: '180px 28px 100px', width: '100%', textAlign: 'center' }}>
+          <div style={{ maxWidth: 760, margin: '0 auto' }}>
             <div style={{ animation: 'fadeUp 1s ease forwards', animationDelay: '0.3s', opacity: 0 }}>
               <span style={{
                 display: 'inline-block', padding: '8px 20px', borderRadius: 2, fontSize: 11, fontWeight: 700,
@@ -912,7 +817,7 @@ function HomePage({ go }: { go: (p: string) => void }) {
             </div>
 
             <h1 style={{
-              fontFamily: 'Syne', fontSize: 'clamp(44px,7vw,84px)', fontWeight: 800,
+              fontFamily: 'Syne', fontSize: 'clamp(38px,7vw,84px)', fontWeight: 800,
               lineHeight: 1.0, letterSpacing: '-3px', marginTop: 32,
               animation: 'fadeUp 1s ease forwards', animationDelay: '0.5s', opacity: 0,
             }}>
@@ -920,14 +825,14 @@ function HomePage({ go }: { go: (p: string) => void }) {
             </h1>
 
             <p style={{
-              color: '#8e8ea0', fontSize: 'clamp(15px,1.5vw,19px)', lineHeight: 1.8,
-              marginTop: 28, maxWidth: 460,
+              color: '#8e8ea0', fontSize: 'clamp(14px,1.5vw,19px)', lineHeight: 1.8,
+              marginTop: 28, maxWidth: 480, margin: '28px auto 0',
               animation: 'fadeUp 1s ease forwards', animationDelay: '0.7s', opacity: 0,
             }}>
               UVIRON-certified nano-ceramic film. Lifetime warranty. Precision computer-cut installation delivered to your driveway.
             </p>
 
-            <div style={{ display: 'flex', gap: 14, marginTop: 44, flexWrap: 'wrap', animation: 'fadeUp 1s ease forwards', animationDelay: '0.9s', opacity: 0 }}>
+            <div style={{ display: 'flex', gap: 14, marginTop: 44, flexWrap: 'wrap', justifyContent: 'center', animation: 'fadeUp 1s ease forwards', animationDelay: '0.9s', opacity: 0 }}>
               <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" className="magnetic-btn" style={{
                 background: '#6c63ff', color: '#fff', padding: '16px 40px', borderRadius: 3,
                 fontSize: 15, fontWeight: 700, textDecoration: 'none',
@@ -948,11 +853,11 @@ function HomePage({ go }: { go: (p: string) => void }) {
           </div>
 
           {/* Stats */}
-          <div style={{
+          <div className="hero-stats" style={{
             display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 32, marginTop: 80,
             paddingTop: 40, borderTop: '1px solid rgba(255,255,255,0.06)',
             animation: 'fadeUp 1s ease forwards', animationDelay: '1.1s', opacity: 0,
-            maxWidth: 700,
+            maxWidth: 700, margin: '80px auto 0',
           }}>
             {[
               { end: 4.9, suffix: '', label: 'Google Rating', dec: 1 },
@@ -1076,68 +981,59 @@ function HomePage({ go }: { go: (p: string) => void }) {
         </div>
       </section>
 
-      {/* ═══ GOOGLE REVIEWS ═══ */}
-      <section style={{ padding: '120px 28px', background: '#0a0a0f', position: 'relative', overflow: 'hidden' }}>
+      {/* ═══ GOOGLE REVIEWS SLIDER ═══ */}
+      <section style={{ padding: '120px 0', background: '#0a0a0f', position: 'relative', overflow: 'hidden' }}>
         <FloatingOrbs />
-        <div style={{ maxWidth: 1320, margin: '0 auto', position: 'relative', zIndex: 1 }}>
-          <div className="rv-blur"><SH tag="Google Reviews" title="Trusted Across the DMV" /></div>
-          <ScrollRevealSection direction="scale" delay={0.2}>
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 16, marginTop: -36, marginBottom: 52, flexWrap: 'wrap' }}>
-              {/* Google "G" logo */}
-              <div style={{ width: 36, height: 36, borderRadius: '50%', background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, fontSize: 20, boxShadow: '0 2px 8px rgba(0,0,0,0.2)' }}>
-                <span style={{ background: 'linear-gradient(135deg, #4285F4, #34A853, #FBBC05, #EA4335)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontFamily: 'Arial' }}>G</span>
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                <div style={{ display: 'flex', gap: 3 }}>
-                  {[1,2,3,4,5].map(s => <span key={s} style={{ color: '#FFD700', fontSize: 18 }}>&#9733;</span>)}
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          <div style={{ padding: '0 28px' }}>
+            <div className="rv-blur"><SH tag="Google Reviews" title="Trusted Across the DMV" /></div>
+            <ScrollRevealSection direction="scale" delay={0.2}>
+              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 16, marginTop: -36, marginBottom: 52, flexWrap: 'wrap' }}>
+                <div style={{ width: 36, height: 36, borderRadius: '50%', background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, fontSize: 20, boxShadow: '0 2px 8px rgba(0,0,0,0.2)' }}>
+                  <span style={{ background: 'linear-gradient(135deg, #4285F4, #34A853, #FBBC05, #EA4335)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontFamily: 'Arial' }}>G</span>
                 </div>
-                <span style={{ fontSize: 12, color: '#8e8ea0', marginTop: 2 }}><strong style={{ color: '#fff', fontFamily: 'Syne' }}>4.9</strong> out of 5 · 30+ reviews on Google</span>
-              </div>
-            </div>
-          </ScrollRevealSection>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(320px,1fr))', gap: 12 }}>
-            {testimonials.map((t, i) => (
-              <div key={i} className={`rv d${(i % 4) + 1} tilt-card`} style={{ padding: '28px', borderRadius: 4, border: '1px solid rgba(255,255,255,0.04)', background: '#0d0d14', position: 'relative' }}
-                onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(108,99,255,0.2)'; e.currentTarget.style.boxShadow = '0 16px 40px rgba(0,0,0,0.3)'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.04)'; e.currentTarget.style.boxShadow = 'none'; }}
-              >
-                {/* Google icon */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
-                  <div style={{ display: 'flex', gap: 3 }}>{[1,2,3,4,5].map(s => <span key={s} style={{ color: '#FFD700', fontSize: 11 }}>&#9733;</span>)}</div>
-                  <div style={{ width: 18, height: 18, borderRadius: '50%', background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, fontWeight: 900 }}>
-                    <span style={{ background: 'linear-gradient(135deg, #4285F4, #34A853, #FBBC05, #EA4335)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontFamily: 'Arial' }}>G</span>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                  <div style={{ display: 'flex', gap: 3 }}>
+                    {[1,2,3,4,5].map(s => <span key={s} style={{ color: '#FFD700', fontSize: 18 }}>&#9733;</span>)}
                   </div>
-                </div>
-                <p style={{ color: '#8e8ea0', fontSize: 14, lineHeight: 1.8, marginBottom: 20, fontStyle: 'italic' }}>"{t.text}"</p>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'linear-gradient(135deg, #6c63ff, #8b83ff)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Syne', fontWeight: 700, fontSize: 12, color: '#fff', boxShadow: '0 2px 12px rgba(108,99,255,0.3)' }}>{t.name[0]}</div>
-                  <div>
-                    <span style={{ fontSize: 13, fontWeight: 600, display: 'block' }}>{t.name}</span>
-                    <span style={{ fontSize: 10, color: '#4a4a5a' }}>{t.time} · via Google</span>
-                  </div>
+                  <span style={{ fontSize: 12, color: '#8e8ea0', marginTop: 2 }}><strong style={{ color: '#fff', fontFamily: 'Syne' }}>4.9</strong> out of 5 · 30+ reviews on Google</span>
                 </div>
               </div>
-            ))}
+            </ScrollRevealSection>
           </div>
-          {/* See all reviews link */}
-          <div style={{ textAlign: 'center', marginTop: 40 }}>
-            <a href="https://www.google.com/maps/place/210+Tint/@39.1938115,-76.9493414,12z/data=!4m6!3m5!1s0x89b7df8c50a20153:0x9294ac751d9098b3!8m2!3d39.1938405!4d-76.8669405" target="_blank" rel="noreferrer" style={{
-              display: 'inline-flex', alignItems: 'center', gap: 8, padding: '12px 28px',
-              borderRadius: 3, border: '1px solid rgba(255,255,255,0.08)', color: '#8e8ea0',
-              fontSize: 13, fontWeight: 600, textDecoration: 'none', transition: 'all 0.3s',
-            }}
-              onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(108,99,255,0.3)'; e.currentTarget.style.color = '#fff'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'; e.currentTarget.style.color = '#8e8ea0'; }}
-            >See All Reviews on Google &rarr;</a>
+          {/* Auto-scrolling review marquee */}
+          <div style={{ overflow: 'hidden', position: 'relative' }}>
+            <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 80, background: 'linear-gradient(to right, #0a0a0f, transparent)', zIndex: 5, pointerEvents: 'none' }} />
+            <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: 80, background: 'linear-gradient(to left, #0a0a0f, transparent)', zIndex: 5, pointerEvents: 'none' }} />
+            <div className="review-track" style={{ display: 'flex', gap: 16, animation: 'reviewSlide 35s linear infinite', width: 'max-content', padding: '10px 0' }}>
+              {[...testimonials, ...testimonials].map((t, i) => (
+                <div key={i} style={{
+                  minWidth: 340, maxWidth: 340, padding: '28px', borderRadius: 4,
+                  border: '1px solid rgba(255,255,255,0.04)', background: '#0d0d14', flexShrink: 0,
+                  transition: 'all 0.4s',
+                }}
+                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(108,99,255,0.2)'; e.currentTarget.style.transform = 'translateY(-4px)'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.04)'; e.currentTarget.style.transform = 'translateY(0)'; }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+                    <div style={{ display: 'flex', gap: 3 }}>{[1,2,3,4,5].map(s => <span key={s} style={{ color: '#FFD700', fontSize: 11 }}>&#9733;</span>)}</div>
+                    <div style={{ width: 18, height: 18, borderRadius: '50%', background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, fontWeight: 900 }}>
+                      <span style={{ background: 'linear-gradient(135deg, #4285F4, #34A853, #FBBC05, #EA4335)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontFamily: 'Arial' }}>G</span>
+                    </div>
+                  </div>
+                  <p style={{ color: '#8e8ea0', fontSize: 14, lineHeight: 1.8, marginBottom: 20, fontStyle: 'italic' }}>"{t.text}"</p>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'linear-gradient(135deg, #6c63ff, #8b83ff)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Syne', fontWeight: 700, fontSize: 12, color: '#fff' }}>{t.name[0]}</div>
+                    <div>
+                      <span style={{ fontSize: 13, fontWeight: 600, display: 'block' }}>{t.name}</span>
+                      <span style={{ fontSize: 10, color: '#4a4a5a' }}>{t.time} · via Google</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-      </section>
-
-      {/* ═══ INSTAGRAM ═══ */}
-      <SectionDivider variant="glow" />
-      <section style={{ padding: '100px 28px 140px', maxWidth: 1320, margin: '0 auto' }}>
-        <div className="rv-blur"><SH tag="Follow Us" title="See Us in Action" sub="Watch our latest installs and behind-the-scenes on Instagram." /></div>
-        <InstagramCarousel />
       </section>
 
       {/* ═══ SERVICE AREA MAP ═══ */}
@@ -1343,7 +1239,17 @@ export default function App() {
     <div style={{ minHeight: '100vh' }}>
       {loading && <LoadingScreen onDone={onLoadDone} />}
       <CursorGlow />
-      <style>{`@media(max-width:860px){.desk-nav{display:none!important}.mob-btn{display:block!important}}`}</style>
+      <style>{`
+        @media(max-width:860px){
+          .desk-nav{display:none!important}
+          .mob-btn{display:block!important}
+        }
+        @media(max-width:640px){
+          .hero-stats{grid-template-columns:repeat(2,1fr)!important;gap:20px!important}
+          .faq-toggle{padding:18px 20px!important}
+          .faq-answer{padding:0 20px 20px!important}
+        }
+      `}</style>
       <ScrollBar />
       <Nav page={page} go={go} />
       <main key={page} style={{ animation: 'fadeUp 0.6s cubic-bezier(.16,1,.3,1) forwards' }}>
