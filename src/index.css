@@ -38,6 +38,12 @@ h1,h2,h3,h4,h5,h6{font-family:'Syne',sans-serif}
 @keyframes accentLine{from{width:0}to{width:40px}}
 @keyframes countUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 @keyframes magneticPulse{0%,100%{box-shadow:0 4px 40px rgba(108,99,255,0.35)}50%{box-shadow:0 8px 60px rgba(108,99,255,0.5)}}
+/* Loading screen animations */
+@keyframes loaderLogoIn{from{opacity:0;transform:translateY(20px) scale(0.9)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes loaderBar{from{width:0}to{width:100%}}
+@keyframes loaderFadeOut{to{opacity:0;pointer-events:none}}
+@keyframes loaderGlow{0%,100%{transform:scale(1);opacity:0.6}50%{transform:scale(1.1);opacity:1}}
+
 @keyframes tintRing{0%{box-shadow:0 0 0 0 rgba(75,95,224,0.6)}60%{box-shadow:0 0 0 16px rgba(75,95,224,0)}100%{box-shadow:0 0 0 0 rgba(75,95,224,0)}}
 @keyframes tintDot{0%,80%,100%{transform:scale(0.8);opacity:0.5}40%{transform:scale(1.1);opacity:1}}
 @keyframes reviewSlide{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
