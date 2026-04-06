@@ -4,9 +4,92 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 function useReveal() {
   useEffect(() => {
     const obs = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('v'); obs.unobserve(e.target); } }), { threshold: 0.08 });
-    document.querySelectorAll('.rv,.rv-s,.rv-l,.rv-r').forEach((el) => obs.observe(el));
+    document.querySelectorAll('.rv,.rv-s,.rv-l,.rv-r,.rv-blur,.rv-rot').forEach((el) => obs.observe(el));
     return () => obs.disconnect();
   });
+}
+
+/* ── SCROLL-TRIGGERED COUNTER (for section dividers) ── */
+function useScrollProgress() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [progress, setProgress] = useState(0);
+  useEffect(() => {
+    const fn = () => {
+      if (!ref.current) return;
+      const rect = ref.current.getBoundingClientRect();
+      const p = Math.max(0, Math.min(1, 1 - rect.top / window.innerHeight));
+      setProgress(p);
+    };
+    window.addEventListener('scroll', fn, { passive: true });
+    fn();
+    return () => window.removeEventListener('scroll', fn);
+  }, []);
+  return { ref, progress };
+}
+
+/* ── ANIMATED SECTION DIVIDER ── */
+function SectionDivider({ variant = 'line' }: { variant?: 'line' | 'dots' | 'glow' }) {
+  const { ref, progress } = useScrollProgress();
+  if (variant === 'dots') {
+    return (
+      <div ref={ref} style={{ display: 'flex', justifyContent: 'center', gap: 8, padding: '40px 0' }}>
+        {[0, 1, 2, 3, 4].map(i => (
+          <div key={i} style={{
+            width: 6, height: 6, borderRadius: '50%',
+            background: '#6c63ff',
+            opacity: progress > (i * 0.15 + 0.2) ? 0.6 : 0.08,
+            transform: `scale(${progress > (i * 0.15 + 0.2) ? 1 : 0.5})`,
+            transition: 'all 0.6s cubic-bezier(.16,1,.3,1)',
+            transitionDelay: `${i * 0.1}s`,
+          }} />
+        ))}
+      </div>
+    );
+  }
+  if (variant === 'glow') {
+    return (
+      <div ref={ref} style={{ padding: '20px 0', display: 'flex', justifyContent: 'center' }}>
+        <div style={{
+          width: `${Math.min(progress * 150, 100)}%`, maxWidth: 600, height: 1,
+          background: 'linear-gradient(90deg, transparent, rgba(108,99,255,0.4), transparent)',
+          transition: 'width 0.3s ease',
+        }} />
+      </div>
+    );
+  }
+  return (
+    <div ref={ref} style={{ padding: '20px 28px', display: 'flex', justifyContent: 'center' }}>
+      <div style={{
+        width: `${Math.min(progress * 120, 100)}%`, maxWidth: 200, height: 1,
+        background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent)',
+        transition: 'width 0.3s ease',
+      }} />
+    </div>
+  );
+}
+
+/* ── PARALLAX SCROLL ELEMENT ── */
+function ScrollRevealSection({ children, direction = 'up', delay = 0 }: { children: React.ReactNode; direction?: 'up' | 'left' | 'right' | 'scale'; delay?: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } }, { threshold: 0.1 });
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, []);
+  const transforms: Record<string, string> = {
+    up: visible ? 'translateY(0)' : 'translateY(60px)',
+    left: visible ? 'translateX(0)' : 'translateX(-60px)',
+    right: visible ? 'translateX(0)' : 'translateX(60px)',
+    scale: visible ? 'scale(1)' : 'scale(0.9)',
+  };
+  return (
+    <div ref={ref} style={{
+      opacity: visible ? 1 : 0,
+      transform: transforms[direction],
+      transition: `all 1s cubic-bezier(.16,1,.3,1) ${delay}s`,
+    }}>{children}</div>
+  );
 }
 
 /* ── SCROLL PROGRESS BAR ── */
@@ -516,37 +599,30 @@ function HomePage({ go }: { go: (p: string) => void }) {
             ))}
           </div>
         </div>
-
-        {/* Scroll indicator */}
-        <div style={{
-          position: 'absolute', bottom: 40, left: '50%', transform: 'translateX(-50%)', zIndex: 10,
-          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8,
-          animation: 'fadeIn 1s ease forwards', animationDelay: '1.5s', opacity: 0,
-        }}>
-          <span style={{ fontSize: 10, letterSpacing: '3px', textTransform: 'uppercase', color: '#4a4a5a' }}>Scroll</span>
-          <div className="float-anim" style={{ width: 1, height: 40, background: 'linear-gradient(to bottom, #6c63ff, transparent)' }} />
-        </div>
       </section>
 
       {/* ═══ MARQUEE ═══ */}
-      <section style={{ borderTop: '1px solid rgba(255,255,255,0.04)', borderBottom: '1px solid rgba(255,255,255,0.04)', padding: '16px 0', overflow: 'hidden', background: '#0a0a0f' }}>
-        <div className="marquee-track">
-          {[...Array(2)].map((_, i) => (
-            <div key={i} style={{ display: 'flex', gap: 64, paddingRight: 64 }}>
-              {['Mobile Window Tinting', 'We Come To You', 'Columbia, Maryland', 'UVIRON Certified',
-                'Standard / Premium / Ceramic', '4.9 Rated on Google', 'Serving the DMV',
-                'Lifetime Warranty', 'Nano-Ceramic Film', 'Computer-Cut Precision'].map((t, j) => (
-                <span key={j} style={{ whiteSpace: 'nowrap', fontSize: 11, fontWeight: 600, color: '#4a4a5a', letterSpacing: '2px', textTransform: 'uppercase' }}>
-                  {t} <span style={{ color: '#6c63ff', margin: '0 16px', opacity: 0.4 }}>&#9670;</span>
-                </span>
-              ))}
-            </div>
-          ))}
-        </div>
-      </section>
+      <ScrollRevealSection direction="scale">
+        <section style={{ borderTop: '1px solid rgba(255,255,255,0.04)', borderBottom: '1px solid rgba(255,255,255,0.04)', padding: '16px 0', overflow: 'hidden', background: '#0a0a0f' }}>
+          <div className="marquee-track">
+            {[...Array(2)].map((_, i) => (
+              <div key={i} style={{ display: 'flex', gap: 64, paddingRight: 64 }}>
+                {['Mobile Window Tinting', 'We Come To You', 'Columbia, Maryland', 'UVIRON Certified',
+                  'Standard / Premium / Ceramic', '4.9 Rated on Google', 'Serving the DMV',
+                  'Lifetime Warranty', 'Nano-Ceramic Film', 'Computer-Cut Precision'].map((t, j) => (
+                  <span key={j} style={{ whiteSpace: 'nowrap', fontSize: 11, fontWeight: 600, color: '#4a4a5a', letterSpacing: '2px', textTransform: 'uppercase' }}>
+                    {t} <span style={{ color: '#6c63ff', margin: '0 16px', opacity: 0.4 }}>&#9670;</span>
+                  </span>
+                ))}
+              </div>
+            ))}
+          </div>
+        </section>
+      </ScrollRevealSection>
 
       {/* ═══ HOW IT WORKS ═══ */}
-      <section style={{ padding: '140px 28px', maxWidth: 1320, margin: '0 auto', position: 'relative' }}>
+      <SectionDivider variant="glow" />
+      <section style={{ padding: '100px 28px 140px', maxWidth: 1320, margin: '0 auto', position: 'relative' }}>
         <SH tag="The Process" title="Four Steps to Perfection" sub="From booking to driving away protected — built for your convenience." />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(260px,1fr))', gap: 0 }}>
           {process.map((p, i) => (
@@ -574,7 +650,7 @@ function HomePage({ go }: { go: (p: string) => void }) {
           <SH tag="The Difference" title="Why Clients Choose 210 Tint" sub="Professional mobile tinting backed by the best films, transparent pricing, and a satisfaction guarantee." />
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(360px,1fr))', gap: 12 }}>
             {whyUs.map((w, i) => (
-              <div key={i} className={`rv d${(i % 4) + 1} tilt-card`} style={{
+              <div key={i} className={`${i % 2 === 0 ? 'rv-l' : 'rv-r'} d${(i % 4) + 1} tilt-card`} style={{
                 padding: '32px 28px', border: '1px solid rgba(255,255,255,0.04)', borderRadius: 3,
                 cursor: 'default', background: '#0d0d14', position: 'relative', overflow: 'hidden',
               }}
@@ -594,7 +670,8 @@ function HomePage({ go }: { go: (p: string) => void }) {
       </section>
 
       {/* ═══ FEATURED WORK ═══ */}
-      <section style={{ padding: '140px 28px', maxWidth: 1320, margin: '0 auto' }}>
+      <SectionDivider variant="dots" />
+      <section style={{ padding: '100px 28px 140px', maxWidth: 1320, margin: '0 auto' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: 20, marginBottom: 0 }}>
           <SH tag="Portfolio" title="Recent Installations" align="left" />
           <button onClick={() => go('portfolio')} className="rv d2" style={{ background: 'none', border: '1px solid rgba(255,255,255,0.08)', color: '#8e8ea0', padding: '10px 24px', borderRadius: 3, fontSize: 13, fontWeight: 500, cursor: 'pointer', marginBottom: 60 }}>View All</button>
@@ -605,7 +682,7 @@ function HomePage({ go }: { go: (p: string) => void }) {
             { name: 'Mercedes C63', film: 'Premium Carbon', img: 'https://210tint.com/wp-content/uploads/2026/02/snowy-c63.png' },
             { name: 'BMW M8', film: 'Standard Carbon', img: 'https://210tint.com/wp-content/uploads/2026/02/snowy-m8.png' },
           ].map((p, i) => (
-            <div key={i} className={`rv-s d${i + 1}`} onClick={() => go('portfolio')} style={{
+            <div key={i} className={`${i === 1 ? 'rv' : i === 0 ? 'rv-l' : 'rv-r'} d${i + 1}`} onClick={() => go('portfolio')} style={{
               borderRadius: 4, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.04)',
               background: '#0a0a0f', transition: 'all 0.6s cubic-bezier(.16,1,.3,1)', cursor: 'pointer',
             }}
@@ -633,12 +710,14 @@ function HomePage({ go }: { go: (p: string) => void }) {
       <section style={{ padding: '120px 28px', background: '#0a0a0f', position: 'relative', overflow: 'hidden' }}>
         <FloatingOrbs />
         <div style={{ maxWidth: 1320, margin: '0 auto', position: 'relative', zIndex: 1 }}>
-          <SH tag="Testimonials" title="Trusted Across the DMV" />
-          <div style={{ display: 'flex', justifyContent: 'center', gap: 4, marginTop: -36, marginBottom: 52 }}>
-            {[1,2,3,4,5].map(s => <span key={s} style={{ color: '#FFD700', fontSize: 18 }}>&#9733;</span>)}
-            <span style={{ fontFamily: 'Syne', fontWeight: 800, fontSize: 22, marginLeft: 10 }}>4.9</span>
-            <span style={{ color: '#4a4a5a', fontSize: 13, marginLeft: 6, alignSelf: 'center' }}>on Google</span>
-          </div>
+          <div className="rv-blur"><SH tag="Testimonials" title="Trusted Across the DMV" /></div>
+          <ScrollRevealSection direction="scale" delay={0.2}>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: 4, marginTop: -36, marginBottom: 52 }}>
+              {[1,2,3,4,5].map(s => <span key={s} style={{ color: '#FFD700', fontSize: 18 }}>&#9733;</span>)}
+              <span style={{ fontFamily: 'Syne', fontWeight: 800, fontSize: 22, marginLeft: 10 }}>4.9</span>
+              <span style={{ color: '#4a4a5a', fontSize: 13, marginLeft: 6, alignSelf: 'center' }}>on Google</span>
+            </div>
+          </ScrollRevealSection>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(320px,1fr))', gap: 12 }}>
             {testimonials.map((t, i) => (
               <div key={i} className={`rv d${(i % 4) + 1} tilt-card`} style={{ padding: '28px', borderRadius: 4, border: '1px solid rgba(255,255,255,0.04)', background: '#0d0d14', position: 'relative' }}
@@ -661,10 +740,11 @@ function HomePage({ go }: { go: (p: string) => void }) {
       </section>
 
       {/* ═══ FAQ ═══ */}
-      <section style={{ padding: '140px 28px', position: 'relative', overflow: 'hidden' }}>
+      <SectionDivider variant="dots" />
+      <section style={{ padding: '100px 28px 140px', position: 'relative', overflow: 'hidden' }}>
         <FloatingOrbs />
         <div style={{ maxWidth: 1320, margin: '0 auto', position: 'relative', zIndex: 1 }}>
-          <SH tag="FAQ" title="Frequently Asked Questions" sub="Everything you need to know about our mobile window tinting service." />
+          <div className="rv-blur"><SH tag="FAQ" title="Frequently Asked Questions" sub="Everything you need to know about our mobile window tinting service." /></div>
           <FAQ />
         </div>
       </section>
