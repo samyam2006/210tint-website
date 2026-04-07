@@ -273,51 +273,62 @@ function GlassScene() {
   return <canvas ref={ref} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: 2 }} />;
 }
 
-/* ── HERO VIDEO BACKGROUND (with image fallback) ── */
+/* ── HERO VIDEO BACKGROUND (dual video crossfade with image fallback) ── */
 function HeroBackground() {
+  const videos = ['/hero.mp4', '/hero2.mp4'];
   const [videoLoaded, setVideoLoaded] = useState(false);
+  const [activeVideo, setActiveVideo] = useState(0);
   const imgs = [
     'https://210tint.com/wp-content/uploads/2026/03/15903652-ee84-47db-985f-43bee6d9839a.png',
     'https://210tint.com/wp-content/uploads/2026/02/snowy-c63.png',
     'https://210tint.com/wp-content/uploads/2026/03/bac97502-b244-47f9-873b-c1cfd6bc741d.png',
     'https://210tint.com/wp-content/uploads/2026/02/snowy-m8.png',
   ];
-  const [idx, setIdx] = useState(0);
+  const [imgIdx, setImgIdx] = useState(0);
+  // Image fallback cycling
   useEffect(() => {
     if (videoLoaded) return;
-    const t = setInterval(() => setIdx((i) => (i + 1) % imgs.length), 5000);
+    const t = setInterval(() => setImgIdx((i) => (i + 1) % imgs.length), 5000);
     return () => clearInterval(t);
   }, [videoLoaded]);
+  // Video crossfade cycling (every 10s)
+  useEffect(() => {
+    if (!videoLoaded) return;
+    const t = setInterval(() => setActiveVideo((v) => (v + 1) % videos.length), 10000);
+    return () => clearInterval(t);
+  }, [videoLoaded]);
+  const videoStyle = (active: boolean): React.CSSProperties => ({
+    position: 'absolute', top: '50%', left: '50%',
+    transform: 'translate(-50%,-50%)',
+    minWidth: '100%', minHeight: '100%',
+    width: 'auto', height: 'auto',
+    objectFit: 'cover',
+    filter: 'saturate(0.6) brightness(0.5)',
+    opacity: active && videoLoaded ? 1 : 0,
+    transition: 'opacity 1.5s ease-in-out',
+  });
   return (
     <div style={{ position: 'absolute', inset: 0, zIndex: 0, overflow: 'hidden' }}>
-      {/* Image fallback (shows while video loads) */}
+      {/* Image fallback */}
       {!videoLoaded && imgs.map((src, i) => (
         <div key={i} style={{
           position: 'absolute', inset: 0,
           backgroundImage: `url(${src})`, backgroundSize: 'cover', backgroundPosition: 'center',
-          opacity: i === idx ? 0.35 : 0,
+          opacity: i === imgIdx ? 0.35 : 0,
           transition: 'opacity 1.5s ease-in-out',
-          animation: i === idx ? 'panZoom 8s ease-in-out forwards' : 'none',
+          animation: i === imgIdx ? 'panZoom 8s ease-in-out forwards' : 'none',
           filter: 'saturate(0.5) brightness(0.7)',
         }} />
       ))}
-      {/* Video */}
-      <video
-        autoPlay muted loop playsInline
-        onCanPlay={() => setVideoLoaded(true)}
-        style={{
-          position: 'absolute', top: '50%', left: '50%',
-          transform: 'translate(-50%,-50%)',
-          minWidth: '100%', minHeight: '100%',
-          width: 'auto', height: 'auto',
-          objectFit: 'cover',
-          filter: 'saturate(0.6) brightness(0.5)',
-          opacity: videoLoaded ? 1 : 0,
-          transition: 'opacity 1s ease',
-        }}
-      >
-        <source src="/hero.mp4" type="video/mp4" />
+      {/* Video 1 */}
+      <video autoPlay muted loop playsInline onCanPlay={() => setVideoLoaded(true)} style={videoStyle(activeVideo === 0)}>
+        <source src={videos[0]} type="video/mp4" />
       </video>
+      {/* Video 2 */}
+      <video autoPlay muted loop playsInline style={videoStyle(activeVideo === 1)}>
+        <source src={videos[1]} type="video/mp4" />
+      </video>
+      {/* Overlays */}
       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(5,5,7,0.82) 0%, rgba(5,5,7,0.4) 50%, rgba(5,5,7,0.7) 100%)', zIndex: 1 }} />
       <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '30%', background: 'linear-gradient(to top, var(--bg), transparent)', zIndex: 1 }} />
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '20%', background: 'linear-gradient(to bottom, rgba(5,5,7,0.5), transparent)', zIndex: 1 }} />
