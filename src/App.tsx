@@ -275,7 +275,7 @@ function GlassScene() {
 
 /* ── HERO VIDEO BACKGROUND (dual video crossfade with image fallback) ── */
 function HeroBackground() {
-  const videos = ['/hero.mp4', '/hero2.mp4'];
+  const videos = ['/hero2.mp4', '/hero.mp4'];
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [activeVideo, setActiveVideo] = useState(0);
   const imgs = [
