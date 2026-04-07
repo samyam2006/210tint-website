@@ -374,15 +374,15 @@ function LoadingScreen() {
       <div style={{ position: 'absolute', width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle, rgba(108,99,255,0.1) 0%, transparent 70%)', pointerEvents: 'none', animation: 'loaderGlow 2s ease infinite' }} />
       {/* Logo */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, animation: 'loaderLogoIn 0.8s cubic-bezier(.16,1,.3,1) 0.2s both' }}>
-        <span style={{ fontFamily: 'Syne', fontWeight: 800, fontSize: 52, color: '#6c63ff', letterSpacing: '-1px' }}>210</span>
-        <span style={{ fontFamily: 'Syne', fontWeight: 800, fontSize: 52, color: '#fff', letterSpacing: '-1px' }}>TINT</span>
+        <span style={{ fontFamily: 'Space Grotesk', fontWeight: 800, fontSize: 52, color: '#6c63ff', letterSpacing: '-1px' }}>210</span>
+        <span style={{ fontFamily: 'Space Grotesk', fontWeight: 800, fontSize: 52, color: '#fff', letterSpacing: '-1px' }}>TINT</span>
       </div>
       {/* Loading bar */}
       <div style={{ width: 140, height: 2, background: 'rgba(255,255,255,0.06)', borderRadius: 1, marginTop: 32, overflow: 'hidden' }}>
         <div style={{ height: '100%', background: 'linear-gradient(90deg, #6c63ff, #a78bfa, #6c63ff)', backgroundSize: '200% auto', animation: 'loaderBar 1.4s cubic-bezier(.16,1,.3,1) 0.4s both, shimmer 2s linear infinite' }} />
       </div>
       {/* Tagline */}
-      <p style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 12, letterSpacing: '4px', textTransform: 'uppercase', color: '#4a4a5a', marginTop: 20, animation: 'loaderLogoIn 0.6s ease 0.8s both' }}>
+      <p style={{ fontFamily: 'Inter', fontSize: 12, letterSpacing: '4px', textTransform: 'uppercase', color: '#4a4a5a', marginTop: 20, animation: 'loaderLogoIn 0.6s ease 0.8s both' }}>
         Mobile Nano-Ceramic Specialists
       </p>
       {/* Decorative line accents */}
@@ -449,7 +449,7 @@ function ServiceAreaMap() {
               stroke={active === a.id ? '#6c63ff' : 'rgba(108,99,255,0.25)'} strokeWidth={active === a.id ? 2 : 1}
               style={{ transition: 'all 0.4s cubic-bezier(.16,1,.3,1)' }} />
             <text x={a.cx} y={a.cy} textAnchor="middle" dominantBaseline="middle"
-              style={{ fontSize: a.id === 'dc' ? 9 : 8, fill: active === a.id ? '#fff' : '#8e8ea0', fontFamily: 'Plus Jakarta Sans', fontWeight: 600, letterSpacing: '0.5px', transition: 'fill 0.3s', pointerEvents: 'none' }}>
+              style={{ fontSize: a.id === 'dc' ? 9 : 8, fill: active === a.id ? '#fff' : '#8e8ea0', fontFamily: 'Inter', fontWeight: 600, letterSpacing: '0.5px', transition: 'fill 0.3s', pointerEvents: 'none' }}>
               {a.name}
             </text>
             {a.id === 'howard' && (
@@ -460,7 +460,7 @@ function ServiceAreaMap() {
           </g>
         ))}
         {/* Home base marker */}
-        <text x={240} y={188} textAnchor="middle" style={{ fontSize: 7, fill: '#6c63ff', fontFamily: 'Plus Jakarta Sans', fontWeight: 700, letterSpacing: '1px' }}>&#9679; HOME BASE</text>
+        <text x={240} y={188} textAnchor="middle" style={{ fontSize: 7, fill: '#6c63ff', fontFamily: 'Inter', fontWeight: 700, letterSpacing: '1px' }}>&#9679; HOME BASE</text>
       </svg>
       {active && (
         <div style={{
@@ -500,7 +500,7 @@ function TintSimulator() {
             border: vlt === p.value ? '1px solid rgba(108,99,255,0.4)' : '1px solid rgba(255,255,255,0.04)',
             color: vlt === p.value ? '#fff' : '#8e8ea0',
           }}>
-            <span style={{ display: 'block', fontFamily: 'Syne', fontSize: 18, fontWeight: 800 }}>{p.label}</span>
+            <span style={{ display: 'block', fontFamily: 'Space Grotesk', fontSize: 18, fontWeight: 800 }}>{p.label}</span>
             <span style={{ fontSize: 12, color: '#4a4a5a' }}>{p.desc}</span>
           </button>
         ))}
@@ -576,7 +576,7 @@ function TintSimulator() {
           <div style={{ maxWidth: 500, margin: '0 auto' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
               <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#4a4a5a' }}>Tint Darkness</span>
-              <span style={{ fontFamily: 'Syne', fontSize: 20, fontWeight: 800, color: '#fff' }}>{tint}<span style={{ fontSize: 12, color: '#6c63ff' }}>%</span></span>
+              <span style={{ fontFamily: 'Space Grotesk', fontSize: 20, fontWeight: 800, color: '#fff' }}>{tint}<span style={{ fontSize: 12, color: '#6c63ff' }}>%</span></span>
             </div>
             <input type="range" min={5} max={95} value={tint} onChange={(e) => setTint(Number(e.target.value))}
               style={{ width: '100%', cursor: 'pointer' }} />
@@ -598,7 +598,7 @@ function TintSimulator() {
         ].map((s, i) => (
           <div key={i} style={{ textAlign: 'center' }}>
             <span style={{ display: 'block', fontSize: 12, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#4a4a5a', marginBottom: 4 }}>{s.label}</span>
-            <span style={{ fontFamily: 'Syne', fontSize: 20, fontWeight: 800, color: s.label === 'MD Legal Front' ? (vlt >= 35 ? '#4ade80' : '#ff4d4d') : '#6c63ff' }}>{s.value}</span>
+            <span style={{ fontFamily: 'Space Grotesk', fontSize: 20, fontWeight: 800, color: s.label === 'MD Legal Front' ? (vlt >= 35 ? '#4ade80' : '#ff4d4d') : '#6c63ff' }}>{s.value}</span>
           </div>
         ))}
       </div>
@@ -695,7 +695,7 @@ function PriceCalculator() {
     background: active ? 'rgba(108,99,255,0.15)' : '#101018',
     border: active ? '1px solid rgba(108,99,255,0.4)' : '1px solid rgba(255,255,255,0.04)',
     color: active ? '#fff' : '#8e8ea0', fontSize: 16, fontWeight: active ? 700 : 500,
-    fontFamily: 'Plus Jakarta Sans', textAlign: 'left' as const,
+    fontFamily: 'Inter', textAlign: 'left' as const,
   });
 
   return (
@@ -706,7 +706,7 @@ function PriceCalculator() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 8 }}>
           {Object.entries(vehicleNames).map(([k, v]) => (
             <button key={k} onClick={() => setVehicle(k)} style={btnStyle(vehicle === k)}>
-              <span style={{ display: 'block', fontFamily: 'Syne', fontSize: 16, fontWeight: 700 }}>{v}</span>
+              <span style={{ display: 'block', fontFamily: 'Space Grotesk', fontSize: 16, fontWeight: 700 }}>{v}</span>
             </button>
           ))}
         </div>
@@ -747,11 +747,11 @@ function PriceCalculator() {
           transition: 'all 0.3s', color: '#fff', textAlign: 'left',
         }}>
           <div>
-            <span style={{ display: 'block', fontSize: 16, fontWeight: 600, fontFamily: 'Syne' }}>Computer-Cut Film</span>
+            <span style={{ display: 'block', fontSize: 16, fontWeight: 600, fontFamily: 'Space Grotesk' }}>Computer-Cut Film</span>
             <span style={{ fontSize: 12, color: '#8e8ea0' }}>Pre-cut to exact window shapes. No blade touches your car.</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
-            <span style={{ fontFamily: 'Syne', fontWeight: 800, color: '#6c63ff' }}>+$50</span>
+            <span style={{ fontFamily: 'Space Grotesk', fontWeight: 800, color: '#6c63ff' }}>+$50</span>
             <div style={{ width: 20, height: 20, borderRadius: 4, border: computerCut ? '2px solid #6c63ff' : '2px solid #4a4a5a', background: computerCut ? '#6c63ff' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s', fontSize: 12, color: '#fff' }}>
               {computerCut && '✓'}
             </div>
@@ -762,7 +762,7 @@ function PriceCalculator() {
       {/* Price Display */}
       <div className="rv d4" style={{ textAlign: 'center', padding: '36px 28px', borderRadius: 8, background: 'linear-gradient(135deg, rgba(108,99,255,0.08), rgba(108,99,255,0.02))', border: '1px solid rgba(108,99,255,0.2)' }}>
         <span style={{ display: 'block', fontSize: 12, fontWeight: 700, letterSpacing: '3px', textTransform: 'uppercase', color: '#4a4a5a', marginBottom: 8 }}>Your Price</span>
-        <div style={{ fontFamily: 'Syne', fontSize: 56, fontWeight: 800, color: '#fff', lineHeight: 1 }}>
+        <div style={{ fontFamily: 'Space Grotesk', fontSize: 56, fontWeight: 800, color: '#fff', lineHeight: 1 }}>
           <span style={{ fontSize: 28, color: '#6c63ff', verticalAlign: 'top' }}>$</span>{animPrice}
         </div>
         <p style={{ color: '#8e8ea0', fontSize: 16, marginTop: 12 }}>
@@ -807,8 +807,8 @@ function Nav({ page, go }: { page: string; go: (p: string) => void }) {
     }}>
       <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <button onClick={() => nav('home')} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}>
-          <span style={{ fontFamily: 'Syne', fontWeight: 800, fontSize: 24, color: '#6c63ff', letterSpacing: '-0.5px' }}>210</span>
-          <span style={{ fontFamily: 'Syne', fontWeight: 800, fontSize: 24, color: '#fff', letterSpacing: '-0.5px' }}>TINT</span>
+          <span style={{ fontFamily: 'Space Grotesk', fontWeight: 800, fontSize: 24, color: '#6c63ff', letterSpacing: '-0.5px' }}>210</span>
+          <span style={{ fontFamily: 'Space Grotesk', fontWeight: 800, fontSize: 24, color: '#fff', letterSpacing: '-0.5px' }}>TINT</span>
         </button>
         <div className="desk-nav" style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
           {NAV.map((n) => (
@@ -816,7 +816,7 @@ function Nav({ page, go }: { page: string; go: (p: string) => void }) {
               background: 'none', border: 'none', cursor: 'pointer',
               color: page === n.id ? '#6c63ff' : '#8e8ea0',
               fontWeight: page === n.id ? 600 : 400, fontSize: 16, letterSpacing: '.3px',
-              transition: 'color 0.3s', fontFamily: 'Plus Jakarta Sans',
+              transition: 'color 0.3s', fontFamily: 'Inter',
               position: 'relative',
             }}>
               {n.label}
@@ -855,7 +855,7 @@ function SH({ tag, title, sub, align = 'center' }: { tag: string; title: string;
         <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: '4px', textTransform: 'uppercase', color: '#6c63ff' }}>{tag}</span>
         <div style={{ width: 32, height: 1, background: '#6c63ff', animation: 'accentLine 1s ease forwards' }} />
       </div>
-      <h2 style={{ fontFamily: 'Syne', fontSize: 'clamp(28px,4vw,50px)', fontWeight: 800, letterSpacing: '-1.5px', lineHeight: 1.1 }}>{title}</h2>
+      <h2 style={{ fontFamily: 'Space Grotesk', fontSize: 'clamp(28px,4vw,50px)', fontWeight: 800, letterSpacing: '-1.5px', lineHeight: 1.1 }}>{title}</h2>
       {sub && <p style={{ color: '#8e8ea0', fontSize: 16, maxWidth: align === 'center' ? 520 : 600, margin: align === 'center' ? '18px auto 0' : '18px 0 0', lineHeight: 1.8 }}>{sub}</p>}
     </div>
   );
@@ -901,8 +901,8 @@ function FAQ() {
         <div key={i} className={`faq-item${open === i ? ' active' : ''} rv d${(i % 4) + 1}`}>
           <button className="faq-toggle" onClick={() => setOpen(open === i ? null : i)}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-              <span style={{ fontFamily: 'Syne', fontSize: 16, fontWeight: 800, color: '#6c63ff', opacity: 0.4, minWidth: 28 }}>{String(i + 1).padStart(2, '0')}</span>
-              <span style={{ fontFamily: 'Syne', fontSize: 17, fontWeight: 700 }}>{f.q}</span>
+              <span style={{ fontFamily: 'Space Grotesk', fontSize: 16, fontWeight: 800, color: '#6c63ff', opacity: 0.4, minWidth: 28 }}>{String(i + 1).padStart(2, '0')}</span>
+              <span style={{ fontFamily: 'Space Grotesk', fontSize: 17, fontWeight: 700 }}>{f.q}</span>
             </div>
             <div className="faq-icon">
               <span style={{ color: open === i ? '#fff' : '#6c63ff', fontSize: 18, lineHeight: 1 }}>+</span>
@@ -925,21 +925,21 @@ function Footer({ go }: { go: (p: string) => void }) {
       <div style={{ maxWidth: 1320, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(220px,1fr))', gap: 48 }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 20 }}>
-            <span style={{ fontFamily: 'Syne', fontWeight: 800, fontSize: 22, color: '#6c63ff' }}>210</span>
-            <span style={{ fontFamily: 'Syne', fontWeight: 800, fontSize: 22, color: '#fff' }}>TINT</span>
+            <span style={{ fontFamily: 'Space Grotesk', fontWeight: 800, fontSize: 22, color: '#6c63ff' }}>210</span>
+            <span style={{ fontFamily: 'Space Grotesk', fontWeight: 800, fontSize: 22, color: '#fff' }}>TINT</span>
           </div>
           <p style={{ color: '#8e8ea0', fontSize: 16, lineHeight: 1.8, maxWidth: 280 }}>Columbia's premier mobile window tinting. Nano-ceramic protection installed at your location.</p>
         </div>
         <div>
-          <h4 style={{ fontFamily: 'Syne', fontWeight: 700, fontSize: 12, letterSpacing: '3px', color: '#4a4a5a', marginBottom: 20, textTransform: 'uppercase' }}>Navigation</h4>
+          <h4 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 12, letterSpacing: '3px', color: '#4a4a5a', marginBottom: 20, textTransform: 'uppercase' }}>Navigation</h4>
           {['Portfolio','Pricing','Compare Films','Warranty','Contact'].map(l => <button key={l} onClick={() => go(l === 'Compare Films' ? 'compare' : l.toLowerCase())} style={{ display: 'block', background: 'none', border: 'none', cursor: 'pointer', color: '#8e8ea0', fontSize: 16, padding: '5px 0' }}>{l}</button>)}
         </div>
         <div>
-          <h4 style={{ fontFamily: 'Syne', fontWeight: 700, fontSize: 12, letterSpacing: '3px', color: '#4a4a5a', marginBottom: 20, textTransform: 'uppercase' }}>Contact</h4>
+          <h4 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 12, letterSpacing: '3px', color: '#4a4a5a', marginBottom: 20, textTransform: 'uppercase' }}>Contact</h4>
           <p style={{ color: '#8e8ea0', fontSize: 16, lineHeight: 2.2 }}>210tints@gmail.com<br/>(240) 338-7762<br/>10451 Fair Oaks Drive<br/>Columbia, MD 21044</p>
         </div>
         <div>
-          <h4 style={{ fontFamily: 'Syne', fontWeight: 700, fontSize: 12, letterSpacing: '3px', color: '#4a4a5a', marginBottom: 20, textTransform: 'uppercase' }}>Hours</h4>
+          <h4 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 12, letterSpacing: '3px', color: '#4a4a5a', marginBottom: 20, textTransform: 'uppercase' }}>Hours</h4>
           <p style={{ color: '#8e8ea0', fontSize: 16, lineHeight: 2.2 }}>Mon — Sat: 8AM — 6PM<br/>Sun: By Appointment</p>
         </div>
       </div>
@@ -1000,7 +1000,7 @@ function HomePage({ go }: { go: (p: string) => void }) {
             </div>
 
             <h1 style={{
-              fontFamily: 'Syne', fontSize: 'clamp(38px,7vw,84px)', fontWeight: 800,
+              fontFamily: 'Space Grotesk', fontSize: 'clamp(38px,7vw,84px)', fontWeight: 800,
               lineHeight: 1.0, letterSpacing: '-3px', marginTop: 32,
               animation: 'fadeUp 1s ease forwards', animationDelay: '0.5s', opacity: 0,
             }}>
@@ -1049,7 +1049,7 @@ function HomePage({ go }: { go: (p: string) => void }) {
               { end: 100, suffix: '%', label: 'Satisfaction', dec: 0 },
             ].map((s, i) => (
               <div key={i}>
-                <span style={{ fontFamily: 'Syne', fontSize: 'clamp(28px,3vw,38px)', fontWeight: 800 }}>
+                <span style={{ fontFamily: 'Space Grotesk', fontSize: 'clamp(28px,3vw,38px)', fontWeight: 800 }}>
                   <Counter end={s.end} suffix={s.suffix} decimals={s.dec} />
                 </span>
                 <span style={{ display: 'block', fontSize: 12, color: '#4a4a5a', letterSpacing: '2px', textTransform: 'uppercase', marginTop: 6 }}>{s.label}</span>
@@ -1092,9 +1092,9 @@ function HomePage({ go }: { go: (p: string) => void }) {
               onMouseEnter={(e) => { e.currentTarget.style.borderTopColor = '#6c63ff'; e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 12px 40px rgba(0,0,0,0.3)'; const num = e.currentTarget.querySelector('.step-num') as HTMLElement; if(num) num.style.opacity = '0.15'; }}
               onMouseLeave={(e) => { e.currentTarget.style.borderTopColor = 'transparent'; e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; const num = e.currentTarget.querySelector('.step-num') as HTMLElement; if(num) num.style.opacity = '0.06'; }}
             >
-              <span className="step-num" style={{ fontFamily: 'Syne', fontSize: 72, fontWeight: 800, color: '#6c63ff', opacity: 0.06, position: 'absolute', top: 12, right: 16, lineHeight: 1, transition: 'opacity 0.5s ease' }}>{p.num}</span>
-              <span style={{ fontFamily: 'Syne', fontSize: 12, fontWeight: 700, color: '#6c63ff', letterSpacing: '3px' }}>Step {p.num}</span>
-              <h3 style={{ fontFamily: 'Syne', fontSize: 24, fontWeight: 700, marginTop: 16, marginBottom: 14 }}>{p.title}</h3>
+              <span className="step-num" style={{ fontFamily: 'Space Grotesk', fontSize: 72, fontWeight: 800, color: '#6c63ff', opacity: 0.06, position: 'absolute', top: 12, right: 16, lineHeight: 1, transition: 'opacity 0.5s ease' }}>{p.num}</span>
+              <span style={{ fontFamily: 'Space Grotesk', fontSize: 12, fontWeight: 700, color: '#6c63ff', letterSpacing: '3px' }}>Step {p.num}</span>
+              <h3 style={{ fontFamily: 'Space Grotesk', fontSize: 24, fontWeight: 700, marginTop: 16, marginBottom: 14 }}>{p.title}</h3>
               <p style={{ color: '#8e8ea0', fontSize: 16, lineHeight: 1.8 }}>{p.desc}</p>
             </div>
           ))}
@@ -1119,7 +1119,7 @@ function HomePage({ go }: { go: (p: string) => void }) {
                   ref={(el) => { if (el) { el.parentElement!.addEventListener('mouseenter', () => el.style.opacity = '1'); el.parentElement!.addEventListener('mouseleave', () => el.style.opacity = '0'); }}} />
                 <div style={{ width: 40, height: 2, background: '#6c63ff', marginBottom: 20, transition: 'width 0.5s ease' }}
                   ref={(el) => { if (el) { el.parentElement!.addEventListener('mouseenter', () => el.style.width = '60px'); el.parentElement!.addEventListener('mouseleave', () => el.style.width = '40px'); }}} />
-                <h3 style={{ fontFamily: 'Syne', fontSize: 18, fontWeight: 700, marginBottom: 10 }}>{w.title}</h3>
+                <h3 style={{ fontFamily: 'Space Grotesk', fontSize: 18, fontWeight: 700, marginBottom: 10 }}>{w.title}</h3>
                 <p style={{ color: '#8e8ea0', fontSize: 16, lineHeight: 1.8 }}>{w.desc}</p>
               </div>
             ))}
@@ -1154,7 +1154,7 @@ function HomePage({ go }: { go: (p: string) => void }) {
               </div>
               <div style={{ padding: '18px 22px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div>
-                  <h3 style={{ fontFamily: 'Syne', fontWeight: 700, fontSize: 17 }}>{p.name}</h3>
+                  <h3 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 17 }}>{p.name}</h3>
                   <span style={{ fontSize: 12, fontWeight: 600, letterSpacing: '2px', textTransform: 'uppercase', color: '#6c63ff' }}>{p.film}</span>
                 </div>
                 <span style={{ color: '#4a4a5a', fontSize: 20, transition: 'transform 0.3s' }}>&rarr;</span>
@@ -1179,7 +1179,7 @@ function HomePage({ go }: { go: (p: string) => void }) {
                   <div style={{ display: 'flex', gap: 3 }}>
                     {[1,2,3,4,5].map(s => <span key={s} style={{ color: '#FFD700', fontSize: 18 }}>&#9733;</span>)}
                   </div>
-                  <span style={{ fontSize: 12, color: '#8e8ea0', marginTop: 2 }}><strong style={{ color: '#fff', fontFamily: 'Syne' }}>4.9</strong> out of 5 · 30+ reviews on Google</span>
+                  <span style={{ fontSize: 12, color: '#8e8ea0', marginTop: 2 }}><strong style={{ color: '#fff', fontFamily: 'Space Grotesk' }}>4.9</strong> out of 5 · 30+ reviews on Google</span>
                 </div>
               </div>
             </ScrollRevealSection>
@@ -1206,7 +1206,7 @@ function HomePage({ go }: { go: (p: string) => void }) {
                   </div>
                   <p style={{ color: '#8e8ea0', fontSize: 16, lineHeight: 1.8, marginBottom: 20, fontStyle: 'italic' }}>"{t.text}"</p>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'linear-gradient(135deg, #6c63ff, #8b83ff)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Syne', fontWeight: 700, fontSize: 12, color: '#fff' }}>{t.name[0]}</div>
+                    <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'linear-gradient(135deg, #6c63ff, #8b83ff)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 12, color: '#fff' }}>{t.name[0]}</div>
                     <div>
                       <span style={{ fontSize: 16, fontWeight: 600, display: 'block' }}>{t.name}</span>
                       <span style={{ fontSize: 12, color: '#4a4a5a' }}>{t.time} · via Google</span>
@@ -1266,7 +1266,7 @@ function HomePage({ go }: { go: (p: string) => void }) {
             <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: '4px', textTransform: 'uppercase', color: '#6c63ff' }}>Ready?</span>
             <div style={{ width: 24, height: 1, background: '#6c63ff', animation: 'accentLine 1s ease forwards' }} />
           </div>
-          <h2 style={{ fontFamily: 'Syne', fontSize: 'clamp(30px,4.5vw,52px)', fontWeight: 800, letterSpacing: '-1.5px', marginBottom: 20, lineHeight: 1.1 }}>
+          <h2 style={{ fontFamily: 'Space Grotesk', fontSize: 'clamp(30px,4.5vw,52px)', fontWeight: 800, letterSpacing: '-1.5px', marginBottom: 20, lineHeight: 1.1 }}>
             Elevate Your <span className="grad-text">Vehicle</span>
           </h2>
           <p style={{ color: '#8e8ea0', fontSize: 16, lineHeight: 1.8, marginBottom: 44 }}>Schedule online in under two minutes. We come to you.</p>
@@ -1301,7 +1301,7 @@ function PortfolioPage() {
         onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(108,99,255,0.25)'; e.currentTarget.style.boxShadow = '0 24px 60px rgba(0,0,0,0.4), 0 0 30px rgba(108,99,255,0.06)'; }}
         onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.04)'; e.currentTarget.style.boxShadow = 'none'; }}>
         <div style={{ overflow: 'hidden', height: 260 }}><img src={p.img} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.7s cubic-bezier(.16,1,.3,1)' }} onMouseEnter={(e) => { (e.target as HTMLElement).style.transform = 'scale(1.06)'; }} onMouseLeave={(e) => { (e.target as HTMLElement).style.transform = 'scale(1)'; }} /></div>
-        <div style={{ padding: '20px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}><div><h3 style={{ fontFamily: 'Syne', fontWeight: 700, fontSize: 18 }}>{p.name}</h3><span style={{ fontSize: 12, fontWeight: 600, letterSpacing: '2px', textTransform: 'uppercase', color: '#6c63ff' }}>{p.film}</span></div><span style={{ color: '#4a4a5a', fontSize: 18 }}>&rarr;</span></div>
+        <div style={{ padding: '20px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}><div><h3 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 18 }}>{p.name}</h3><span style={{ fontSize: 12, fontWeight: 600, letterSpacing: '2px', textTransform: 'uppercase', color: '#6c63ff' }}>{p.film}</span></div><span style={{ color: '#4a4a5a', fontSize: 18 }}>&rarr;</span></div>
       </div>))}
     </div>
   </section></div>);
@@ -1446,14 +1446,14 @@ function TintLawsPage({ go }: { go: (p: string) => void }) {
         <div key={i} className={`rv d${(i % 3) + 1}`} style={{ padding: '28px 32px', borderRadius: 4, border: '1px solid rgba(255,255,255,0.04)', background: '#0a0a0f' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
             <span style={{ fontSize: 18 }}>{l.legal ? '✅' : '🚫'}</span>
-            <h3 style={{ fontFamily: 'Syne', fontSize: 18, fontWeight: 700 }}>{l.part}</h3>
+            <h3 style={{ fontFamily: 'Space Grotesk', fontSize: 18, fontWeight: 700 }}>{l.part}</h3>
           </div>
           <p style={{ color: '#8e8ea0', fontSize: 16, lineHeight: 1.8 }}>{l.rule}</p>
         </div>
       ))}
     </div>
     <div className="rv" style={{ padding: '36px', borderRadius: 4, border: '1px solid rgba(108,99,255,0.15)', background: '#0a0a0f', marginBottom: 60 }}>
-      <h3 style={{ fontFamily: 'Syne', fontSize: 20, fontWeight: 700, marginBottom: 20 }}>Quick Tips</h3>
+      <h3 style={{ fontFamily: 'Space Grotesk', fontSize: 20, fontWeight: 700, marginBottom: 20 }}>Quick Tips</h3>
       {tips.map((t, i) => (
         <div key={i} style={{ padding: '8px 0', fontSize: 16, color: '#8e8ea0', display: 'flex', gap: 12, alignItems: 'flex-start', lineHeight: 1.7 }}>
           <span style={{ color: '#6c63ff', fontSize: 8, marginTop: 8, flexShrink: 0 }}>&#9646;</span>{t}
@@ -1461,7 +1461,7 @@ function TintLawsPage({ go }: { go: (p: string) => void }) {
       ))}
     </div>
     <div className="rv" style={{ textAlign: 'center', padding: '48px 28px', borderRadius: 4, background: 'rgba(108,99,255,0.04)', border: '1px solid rgba(108,99,255,0.1)' }}>
-      <h3 style={{ fontFamily: 'Syne', fontSize: 22, fontWeight: 800, marginBottom: 12 }}>Not Sure What's Legal?</h3>
+      <h3 style={{ fontFamily: 'Space Grotesk', fontSize: 22, fontWeight: 800, marginBottom: 12 }}>Not Sure What's Legal?</h3>
       <p style={{ color: '#8e8ea0', fontSize: 16, marginBottom: 24 }}>We'll recommend the perfect shade for your vehicle — 100% legal and looking great.</p>
       <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
         <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" className="magnetic-btn" style={{ background: '#6c63ff', color: '#fff', padding: '14px 36px', borderRadius: 3, fontSize: 16, fontWeight: 700, textDecoration: 'none', boxShadow: '0 4px 30px rgba(108,99,255,0.3)' }}>Book Now</a>
@@ -1482,9 +1482,9 @@ function TintLawsPage({ go }: { go: (p: string) => void }) {
     ].map((c, i) => (
       <div key={i} className={`rv d${(i % 3) + 1}`} style={{ padding: '28px 32px', borderRadius: 4, border: '1px solid rgba(255,255,255,0.04)', background: '#0a0a0f', marginBottom: 10 }}>
         <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start' }}>
-          <span style={{ fontFamily: 'Syne', fontSize: 28, fontWeight: 800, color: '#6c63ff', opacity: 0.3, lineHeight: 1, minWidth: 32 }}>{String(i + 1).padStart(2, '0')}</span>
+          <span style={{ fontFamily: 'Space Grotesk', fontSize: 28, fontWeight: 800, color: '#6c63ff', opacity: 0.3, lineHeight: 1, minWidth: 32 }}>{String(i + 1).padStart(2, '0')}</span>
           <div>
-            <h3 style={{ fontFamily: 'Syne', fontSize: 17, fontWeight: 700, marginBottom: 8 }}>{c.title}</h3>
+            <h3 style={{ fontFamily: 'Space Grotesk', fontSize: 17, fontWeight: 700, marginBottom: 8 }}>{c.title}</h3>
             <p style={{ color: '#8e8ea0', fontSize: 16, lineHeight: 1.8 }}>{c.desc}</p>
           </div>
         </div>
@@ -1683,7 +1683,7 @@ Today: ${todayStr}. Use current year or later for dates. Be friendly, conversati
 
   return (
     <>
-      {showBadge && <div style={{ position: 'fixed', bottom: 100, right: 28, background: '#ff4d4d', color: '#fff', fontSize: 12, fontWeight: 700, fontFamily: 'Syne', padding: '5px 10px', borderRadius: 20, zIndex: 10000, animation: 'fadeUp 0.4s ease', boxShadow: '0 4px 12px rgba(255,77,77,0.4)' }}>Ask me anything</div>}
+      {showBadge && <div style={{ position: 'fixed', bottom: 100, right: 28, background: '#ff4d4d', color: '#fff', fontSize: 12, fontWeight: 700, fontFamily: 'Space Grotesk', padding: '5px 10px', borderRadius: 20, zIndex: 10000, animation: 'fadeUp 0.4s ease', boxShadow: '0 4px 12px rgba(255,77,77,0.4)' }}>Ask me anything</div>}
       <button onClick={toggle} style={{ position: 'fixed', bottom: 28, right: 28, width: 60, height: 60, background: '#4B5FE0', border: 'none', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999, animation: 'tintRing 3s ease infinite', transition: 'transform 0.2s' }}
         onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.08)'; }} onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}>
         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
@@ -1695,11 +1695,11 @@ Today: ${todayStr}. Use current year or later for dates. Be friendly, conversati
         boxShadow: '0 24px 80px rgba(0,0,0,0.8)', transform: isOpen ? 'scale(1) translateY(0)' : 'scale(0.92) translateY(20px)', opacity: isOpen ? 1 : 0, pointerEvents: isOpen ? 'all' : 'none', transition: 'transform 0.3s cubic-bezier(0.34,1.56,0.64,1), opacity 0.25s ease',
       }}>
         <div style={{ padding: '16px 18px', background: '#111', borderBottom: '1px solid #1a1a1a', display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
-          <div style={{ width: 40, height: 40, background: '#4B5FE0', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Syne', fontWeight: 800, fontSize: 16, color: '#fff', position: 'relative' }}>
+          <div style={{ width: 40, height: 40, background: '#4B5FE0', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Space Grotesk', fontWeight: 800, fontSize: 16, color: '#fff', position: 'relative' }}>
             AI<span style={{ position: 'absolute', bottom: 1, right: 1, width: 10, height: 10, background: '#4ade80', borderRadius: '50%', border: '2px solid #111' }} />
           </div>
           <div>
-            <strong style={{ fontFamily: 'Syne', fontWeight: 700, fontSize: 16, display: 'block', color: '#fff' }}>210 Tints Assistant</strong>
+            <strong style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 16, display: 'block', color: '#fff' }}>210 Tints Assistant</strong>
             <span style={{ fontSize: 12, color: '#6b7280' }}>UVIRON Certified · Columbia, MD</span>
           </div>
           <div style={{ marginLeft: 'auto', display: 'flex', gap: 6 }}>
@@ -1713,7 +1713,7 @@ Today: ${todayStr}. Use current year or later for dates. Be friendly, conversati
               {m.html ? (
                 <div dangerouslySetInnerHTML={{ __html: m.html }} />
               ) : (
-                <div style={{ padding: '10px 14px', borderRadius: 16, fontSize: 13.5, lineHeight: 1.6, fontFamily: 'Plus Jakarta Sans, sans-serif', background: m.role === 'user' ? '#0c0e1f' : '#0f0f0f', border: m.role === 'user' ? '1px solid rgba(75,95,224,0.3)' : '1px solid #222', borderBottomRightRadius: m.role === 'user' ? 4 : 16, borderBottomLeftRadius: m.role === 'user' ? 16 : 4, color: '#fff' }} dangerouslySetInnerHTML={{ __html: formatMsg(m.content) }} />
+                <div style={{ padding: '10px 14px', borderRadius: 16, fontSize: 13.5, lineHeight: 1.6, fontFamily: 'Inter, sans-serif', background: m.role === 'user' ? '#0c0e1f' : '#0f0f0f', border: m.role === 'user' ? '1px solid rgba(75,95,224,0.3)' : '1px solid #222', borderBottomRightRadius: m.role === 'user' ? 4 : 16, borderBottomLeftRadius: m.role === 'user' ? 16 : 4, color: '#fff' }} dangerouslySetInnerHTML={{ __html: formatMsg(m.content) }} />
               )}
             </div>
           ))}
@@ -1724,7 +1724,7 @@ Today: ${todayStr}. Use current year or later for dates. Be friendly, conversati
         {messages.length <= 1 && (
           <div style={{ padding: '8px 16px 12px', display: 'flex', flexWrap: 'wrap', gap: 6, flexShrink: 0 }}>
             {['Packages & Pricing', 'I want to book', 'KOOLMAX Ceramic?', 'Mobile Service?'].map(q => (
-              <button key={q} onClick={() => send(q)} style={{ background: 'transparent', border: '1px solid #222', color: '#fff', padding: '6px 12px', borderRadius: 20, fontSize: 12, cursor: 'pointer', transition: 'all 0.15s', fontFamily: 'Plus Jakarta Sans' }}
+              <button key={q} onClick={() => send(q)} style={{ background: 'transparent', border: '1px solid #222', color: '#fff', padding: '6px 12px', borderRadius: 20, fontSize: 12, cursor: 'pointer', transition: 'all 0.15s', fontFamily: 'Inter' }}
                 onMouseEnter={(e) => { e.currentTarget.style.background = '#4B5FE0'; e.currentTarget.style.borderColor = '#4B5FE0'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = '#222'; }}
               >{q}</button>
@@ -1734,7 +1734,7 @@ Today: ${todayStr}. Use current year or later for dates. Be friendly, conversati
         <div style={{ borderTop: '1px solid #1a1a1a', padding: '12px 14px', display: 'flex', gap: 8, background: '#111', flexShrink: 0 }}>
           <input value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') send(); }}
             placeholder="Ask about tinting, pricing, or book…"
-            style={{ flex: 1, background: '#1a1a1a', border: '1px solid #333', borderRadius: 10, color: '#fff', fontSize: 16, padding: '9px 13px', outline: 'none', fontFamily: 'Plus Jakarta Sans' }} />
+            style={{ flex: 1, background: '#1a1a1a', border: '1px solid #333', borderRadius: 10, color: '#fff', fontSize: 16, padding: '9px 13px', outline: 'none', fontFamily: 'Inter' }} />
           <button onClick={() => send()} style={{ width: 38, height: 38, background: '#4B5FE0', border: 'none', borderRadius: 10, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color: '#fff', fontSize: 18 }}>➤</button>
         </div>
       </div>
