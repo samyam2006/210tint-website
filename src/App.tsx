@@ -1284,8 +1284,51 @@ function HomePage({ go }: { go: (p: string) => void }) {
 }
 
 /* ═══ PORTFOLIO ═══ */
+/* ═══ LIGHTBOX ═══ */
+function Lightbox({ images, startIndex, onClose }: { images: { name: string; film: string; img: string }[]; startIndex: number; onClose: () => void }) {
+  const [idx, setIdx] = useState(startIndex);
+  const [touchStart, setTouchStart] = useState(0);
+  const cur = images[idx];
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+      if (e.key === 'ArrowRight') setIdx(i => (i + 1) % images.length);
+      if (e.key === 'ArrowLeft') setIdx(i => (i - 1 + images.length) % images.length);
+    };
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', onKey);
+    return () => { document.body.style.overflow = ''; window.removeEventListener('keydown', onKey); };
+  }, []);
+  return (
+    <div onClick={onClose} style={{ position: 'fixed', inset: 0, zIndex: 99990, background: 'rgba(0,0,0,0.92)', backdropFilter: 'blur(20px)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', animation: 'fadeIn 0.3s ease', cursor: 'zoom-out' }}
+      onTouchStart={(e) => setTouchStart(e.touches[0].clientX)}
+      onTouchEnd={(e) => { const diff = e.changedTouches[0].clientX - touchStart; if (Math.abs(diff) > 50) { setIdx(i => diff > 0 ? (i - 1 + images.length) % images.length : (i + 1) % images.length); } }}>
+      {/* Close button */}
+      <button onClick={onClose} style={{ position: 'absolute', top: 20, right: 24, background: 'none', border: 'none', color: '#fff', fontSize: 28, cursor: 'pointer', zIndex: 10, opacity: 0.7 }}>✕</button>
+      {/* Counter */}
+      <span style={{ position: 'absolute', top: 24, left: 24, fontSize: 13, color: '#8e8ea0', fontFamily: 'Space Grotesk' }}>{idx + 1} / {images.length}</span>
+      {/* Image */}
+      <img key={idx} src={cur.img} alt={cur.name} onClick={(e) => e.stopPropagation()}
+        style={{ maxWidth: '90vw', maxHeight: '75vh', objectFit: 'contain', borderRadius: 6, cursor: 'default', animation: 'fadeIn 0.3s ease' }} />
+      {/* Info */}
+      <div onClick={(e) => e.stopPropagation()} style={{ marginTop: 20, textAlign: 'center' }}>
+        <h3 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 20, color: '#fff' }}>{cur.name}</h3>
+        <span style={{ fontSize: 12, fontWeight: 600, letterSpacing: '2px', textTransform: 'uppercase', color: '#6c63ff' }}>{cur.film}</span>
+      </div>
+      {/* Nav arrows */}
+      {images.length > 1 && <>
+        <button onClick={(e) => { e.stopPropagation(); setIdx(i => (i - 1 + images.length) % images.length); }} style={{ position: 'absolute', left: 20, top: '50%', transform: 'translateY(-50%)', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', width: 48, height: 48, borderRadius: '50%', cursor: 'pointer', fontSize: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.3s' }}
+          onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(108,99,255,0.2)'; }} onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.06)'; }}>&lsaquo;</button>
+        <button onClick={(e) => { e.stopPropagation(); setIdx(i => (i + 1) % images.length); }} style={{ position: 'absolute', right: 20, top: '50%', transform: 'translateY(-50%)', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', width: 48, height: 48, borderRadius: '50%', cursor: 'pointer', fontSize: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.3s' }}
+          onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(108,99,255,0.2)'; }} onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.06)'; }}>&rsaquo;</button>
+      </>}
+    </div>
+  );
+}
+
 function PortfolioPage() {
   useReveal();
+  const [lightbox, setLightbox] = useState<number | null>(null);
   const items = [
     { name: 'Lamborghini Urus', film: 'Premium Nano Ceramic', img: 'https://210tint.com/wp-content/uploads/2026/03/15903652-ee84-47db-985f-43bee6d9839a.png' },
     { name: 'Mercedes C63', film: 'Premium Carbon', img: 'https://210tint.com/wp-content/uploads/2026/02/snowy-c63.png' },
@@ -1297,13 +1340,22 @@ function PortfolioPage() {
   return (<div style={{ paddingTop: 130 }}><section style={{ padding: '0 28px 120px', maxWidth: 1320, margin: '0 auto' }}>
     <SH tag="Our Work" title="Vehicle Tinting Portfolio" sub="Professional-grade installations on luxury, performance, and everyday vehicles." />
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(360px,1fr))', gap: 14 }}>
-      {items.map((p, i) => (<div key={i} className={`rv-s d${(i%3)+1} tilt-card`} style={{ borderRadius: 4, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.04)', background: '#0a0a0f' }}
+      {items.map((p, i) => (<div key={i} className={`rv-s d${(i%3)+1} tilt-card`} style={{ borderRadius: 4, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.04)', background: '#0a0a0f', cursor: 'pointer' }}
+        onClick={() => setLightbox(i)}
         onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(108,99,255,0.25)'; e.currentTarget.style.boxShadow = '0 24px 60px rgba(0,0,0,0.4), 0 0 30px rgba(108,99,255,0.06)'; }}
         onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.04)'; e.currentTarget.style.boxShadow = 'none'; }}>
-        <div style={{ overflow: 'hidden', height: 260 }}><img src={p.img} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.7s cubic-bezier(.16,1,.3,1)' }} onMouseEnter={(e) => { (e.target as HTMLElement).style.transform = 'scale(1.06)'; }} onMouseLeave={(e) => { (e.target as HTMLElement).style.transform = 'scale(1)'; }} /></div>
+        <div style={{ overflow: 'hidden', height: 260, position: 'relative' }}>
+          <img src={p.img} alt={p.name} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.7s cubic-bezier(.16,1,.3,1)' }} onMouseEnter={(e) => { (e.target as HTMLElement).style.transform = 'scale(1.06)'; }} onMouseLeave={(e) => { (e.target as HTMLElement).style.transform = 'scale(1)'; }} />
+          <div style={{ position: 'absolute', inset: 0, background: 'rgba(108,99,255,0)', transition: 'background 0.3s', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(108,99,255,0.1)'; }} onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(108,99,255,0)'; }}>
+            <span style={{ color: '#fff', fontSize: 24, opacity: 0, transition: 'opacity 0.3s' }}
+              ref={(el) => { if(el) { el.parentElement!.addEventListener('mouseenter', () => el.style.opacity = '1'); el.parentElement!.addEventListener('mouseleave', () => el.style.opacity = '0'); }}}>⤢</span>
+          </div>
+        </div>
         <div style={{ padding: '20px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}><div><h3 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 18 }}>{p.name}</h3><span style={{ fontSize: 12, fontWeight: 600, letterSpacing: '2px', textTransform: 'uppercase', color: '#6c63ff' }}>{p.film}</span></div><span style={{ color: '#4a4a5a', fontSize: 18 }}>&rarr;</span></div>
       </div>))}
     </div>
+    {lightbox !== null && <Lightbox images={items} startIndex={lightbox} onClose={() => setLightbox(null)} />}
   </section></div>);
 }
 
@@ -1396,15 +1448,45 @@ function WarrantyPage() {
 /* ═══ CONTACT ═══ */
 function ContactPage() {
   useReveal();
+  const [form, setForm] = useState({ name: '', phone: '', email: '', vehicle: '', message: '' });
+  const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+
+  const handleSubmit = async () => {
+    if (!form.name || !form.email || !form.message) return;
+    setSending(true);
+    try {
+      // Send via mailto as reliable fallback
+      const subject = `210 Tint Contact: ${form.vehicle || 'General Inquiry'} — ${form.name}`;
+      const body = `Name: ${form.name}\nPhone: ${form.phone}\nEmail: ${form.email}\nVehicle/Service: ${form.vehicle}\n\nMessage:\n${form.message}`;
+      window.location.href = `mailto:210tints@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      setSent(true);
+    } catch { /* fallback handled */ }
+    setSending(false);
+  };
+
+  const inputStyle = { width: '100%', padding: '12px 14px', borderRadius: 3, border: '1px solid rgba(255,255,255,0.05)', background: '#101018', color: '#eee', fontSize: 15, outline: 'none', transition: 'border-color 0.3s', fontFamily: 'Inter, sans-serif' };
+
   return (<div style={{paddingTop:130}}><section style={{padding:'0 28px 120px',maxWidth:1100,margin:'0 auto'}}>
     <SH tag="Get In Touch" title="Reach Out Today" sub="Questions or ready to book? We are here to help." />
     <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(340px,1fr))',gap:24}}>
       <div className="rv" style={{padding:36,borderRadius:4,border:'1px solid rgba(255,255,255,0.04)',background:'#0a0a0f'}}>
-        <h3 style={{fontFamily:'Syne',fontSize:19,fontWeight:700,marginBottom:4}}>Send a Message</h3>
-        <p style={{color:'#4a4a5a',fontSize:12,marginBottom:28}}>We respond within 24 hours.</p>
-        {['Name','Phone','Email','Vehicle / Service'].map((l,i)=>(<div key={i} style={{marginBottom:14}}><label style={{display:'block',fontSize:11,fontWeight:600,color:'#4a4a5a',marginBottom:6,letterSpacing:'2px',textTransform:'uppercase'}}>{l}</label><input style={{width:'100%',padding:'11px 14px',borderRadius:3,border:'1px solid rgba(255,255,255,0.05)',background:'#101018',color:'#eee',fontSize:14,outline:'none',transition:'border-color 0.3s'}} onFocus={(e)=>e.currentTarget.style.borderColor='#6c63ff'} onBlur={(e)=>e.currentTarget.style.borderColor='rgba(255,255,255,0.05)'}/></div>))}
-        <div style={{marginBottom:14}}><label style={{display:'block',fontSize:11,fontWeight:600,color:'#4a4a5a',marginBottom:6,letterSpacing:'2px',textTransform:'uppercase'}}>Message</label><textarea rows={4} style={{width:'100%',padding:'11px 14px',borderRadius:3,border:'1px solid rgba(255,255,255,0.05)',background:'#101018',color:'#eee',fontSize:14,outline:'none',resize:'vertical',transition:'border-color 0.3s'}} onFocus={(e)=>e.currentTarget.style.borderColor='#6c63ff'} onBlur={(e)=>e.currentTarget.style.borderColor='rgba(255,255,255,0.05)'}/></div>
-        <button style={{width:'100%',padding:'14px',borderRadius:3,border:'none',cursor:'pointer',background:'#6c63ff',color:'#fff',fontSize:14,fontWeight:700,boxShadow:'0 4px 20px rgba(108,99,255,0.3)',transition:'all 0.3s'}}>Send Message</button>
+        <h3 style={{fontFamily:'Space Grotesk',fontSize:19,fontWeight:700,marginBottom:4}}>Send a Message</h3>
+        <p style={{color:'#4a4a5a',fontSize:13,marginBottom:28}}>We respond within 24 hours.</p>
+        {sent ? (
+          <div style={{ textAlign: 'center', padding: '40px 20px' }}>
+            <div style={{ fontSize: 48, marginBottom: 16 }}>✓</div>
+            <h3 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 20, marginBottom: 8 }}>Message Ready!</h3>
+            <p style={{ color: '#8e8ea0', fontSize: 15, lineHeight: 1.7 }}>Your email app should open with the message pre-filled. Just hit send!</p>
+            <button onClick={() => { setSent(false); setForm({ name: '', phone: '', email: '', vehicle: '', message: '' }); }} style={{ marginTop: 20, background: 'none', border: '1px solid rgba(255,255,255,0.1)', color: '#8e8ea0', padding: '10px 24px', borderRadius: 3, cursor: 'pointer', fontSize: 13 }}>Send Another</button>
+          </div>
+        ) : (
+          <>
+            {[{label:'Name',key:'name'},{label:'Phone',key:'phone'},{label:'Email',key:'email'},{label:'Vehicle / Service',key:'vehicle'}].map((l)=>(<div key={l.key} style={{marginBottom:14}}><label style={{display:'block',fontSize:12,fontWeight:600,color:'#4a4a5a',marginBottom:6,letterSpacing:'2px',textTransform:'uppercase'}}>{l.label}{(l.key==='name'||l.key==='email')&&<span style={{color:'#6c63ff'}}> *</span>}</label><input value={(form as any)[l.key]} onChange={(e)=>setForm({...form,[l.key]:e.target.value})} style={inputStyle} onFocus={(e)=>e.currentTarget.style.borderColor='#6c63ff'} onBlur={(e)=>e.currentTarget.style.borderColor='rgba(255,255,255,0.05)'}/></div>))}
+            <div style={{marginBottom:14}}><label style={{display:'block',fontSize:12,fontWeight:600,color:'#4a4a5a',marginBottom:6,letterSpacing:'2px',textTransform:'uppercase'}}>Message <span style={{color:'#6c63ff'}}>*</span></label><textarea rows={4} value={form.message} onChange={(e)=>setForm({...form,message:e.target.value})} style={{...inputStyle,resize:'vertical'}} onFocus={(e)=>e.currentTarget.style.borderColor='#6c63ff'} onBlur={(e)=>e.currentTarget.style.borderColor='rgba(255,255,255,0.05)'}/></div>
+            <button onClick={handleSubmit} disabled={sending || !form.name || !form.email || !form.message} style={{width:'100%',padding:'14px',borderRadius:3,border:'none',cursor: (!form.name||!form.email||!form.message) ? 'not-allowed' : 'pointer',background: (!form.name||!form.email||!form.message) ? '#333' : '#6c63ff',color:'#fff',fontSize:15,fontWeight:700,boxShadow: (!form.name||!form.email||!form.message) ? 'none' : '0 4px 20px rgba(108,99,255,0.3)',transition:'all 0.3s'}}>{sending ? 'Opening...' : 'Send Message'}</button>
+          </>
+        )}
       </div>
       <div className="rv d2">
         {[{label:'Address',val:'10451 Fair Oaks Dr\nColumbia, MD 21044'},{label:'Phone',val:'(240) 338-7762'},{label:'Email',val:'210tints@gmail.com'},{label:'Hours',val:'Mon — Sat: 8 AM — 6 PM\nSun: By Appointment'}].map((c,i)=>(<div key={i} style={{padding:'22px 24px',borderRadius:4,border:'1px solid rgba(255,255,255,0.04)',background:'#0a0a0f',marginBottom:10}}>
@@ -1745,7 +1827,16 @@ Today: ${todayStr}. Use current year or later for dates. Be friendly, conversati
 /* ═══ APP ═══ */
 export default function App() {
   const [page, setPage] = useState('home');
-  const go = (p: string) => { setPage(p); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+  const [transitioning, setTransitioning] = useState(false);
+  const go = (p: string) => {
+    if (p === page) return;
+    setTransitioning(true);
+    setTimeout(() => {
+      setPage(p);
+      window.scrollTo({ top: 0 });
+      setTimeout(() => setTransitioning(false), 50);
+    }, 300);
+  };
   return (
     <div style={{ minHeight: '100vh' }}>
       <LoadingScreen />
@@ -1764,7 +1855,7 @@ export default function App() {
       `}</style>
       <ScrollBar />
       <Nav page={page} go={go} />
-      <main key={page} style={{ animation: 'fadeUp 0.6s cubic-bezier(.16,1,.3,1) forwards' }}>
+      <main key={page} style={{ opacity: transitioning ? 0 : 1, transform: transitioning ? 'translateY(20px)' : 'translateY(0)', transition: 'opacity 0.4s ease, transform 0.4s cubic-bezier(.16,1,.3,1)' }}>
         {page==='home'&&<HomePage go={go}/>}
         {page==='portfolio'&&<PortfolioPage/>}
         {page==='pricing'&&<PricingPage/>}
