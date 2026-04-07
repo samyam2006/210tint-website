@@ -273,8 +273,9 @@ function GlassScene() {
   return <canvas ref={ref} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: 2 }} />;
 }
 
-/* ── HERO IMAGE SLIDESHOW ── */
-function HeroSlideshow() {
+/* ── HERO VIDEO BACKGROUND (with image fallback) ── */
+function HeroBackground() {
+  const [videoLoaded, setVideoLoaded] = useState(false);
   const imgs = [
     'https://210tint.com/wp-content/uploads/2026/03/15903652-ee84-47db-985f-43bee6d9839a.png',
     'https://210tint.com/wp-content/uploads/2026/02/snowy-c63.png',
@@ -283,12 +284,14 @@ function HeroSlideshow() {
   ];
   const [idx, setIdx] = useState(0);
   useEffect(() => {
+    if (videoLoaded) return;
     const t = setInterval(() => setIdx((i) => (i + 1) % imgs.length), 5000);
     return () => clearInterval(t);
-  }, []);
+  }, [videoLoaded]);
   return (
     <div style={{ position: 'absolute', inset: 0, zIndex: 0, overflow: 'hidden' }}>
-      {imgs.map((src, i) => (
+      {/* Image fallback (shows while video loads) */}
+      {!videoLoaded && imgs.map((src, i) => (
         <div key={i} style={{
           position: 'absolute', inset: 0,
           backgroundImage: `url(${src})`, backgroundSize: 'cover', backgroundPosition: 'center',
@@ -298,8 +301,26 @@ function HeroSlideshow() {
           filter: 'saturate(0.5) brightness(0.7)',
         }} />
       ))}
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(5,5,7,0.85) 0%, rgba(5,5,7,0.5) 50%, rgba(5,5,7,0.75) 100%)', zIndex: 1 }} />
-      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '25%', background: 'linear-gradient(to top, var(--bg), transparent)', zIndex: 1 }} />
+      {/* Video */}
+      <video
+        autoPlay muted loop playsInline
+        onCanPlay={() => setVideoLoaded(true)}
+        style={{
+          position: 'absolute', top: '50%', left: '50%',
+          transform: 'translate(-50%,-50%)',
+          minWidth: '100%', minHeight: '100%',
+          width: 'auto', height: 'auto',
+          objectFit: 'cover',
+          filter: 'saturate(0.6) brightness(0.5)',
+          opacity: videoLoaded ? 1 : 0,
+          transition: 'opacity 1s ease',
+        }}
+      >
+        <source src="/hero.mp4" type="video/mp4" />
+      </video>
+      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(5,5,7,0.82) 0%, rgba(5,5,7,0.4) 50%, rgba(5,5,7,0.7) 100%)', zIndex: 1 }} />
+      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '30%', background: 'linear-gradient(to top, var(--bg), transparent)', zIndex: 1 }} />
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '20%', background: 'linear-gradient(to bottom, rgba(5,5,7,0.5), transparent)', zIndex: 1 }} />
     </div>
   );
 }
@@ -954,7 +975,7 @@ function HomePage({ go }: { go: (p: string) => void }) {
     <div>
       {/* ═══ HERO ═══ */}
       <section style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
-        <HeroSlideshow />
+        <HeroBackground />
         <GlassScene />
 
         <div style={{ position: 'relative', zIndex: 10, maxWidth: 1320, margin: '0 auto', padding: '180px 28px 100px', width: '100%', textAlign: 'center' }}>
