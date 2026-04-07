@@ -1608,7 +1608,6 @@ function ChatWidget() {
   const [input, setInput] = useState('');
   const [typing, setTyping] = useState(false);
   const [hasOpened, setHasOpened] = useState(false);
-  const [showBadge, setShowBadge] = useState(true);
   const msgsRef = useRef<HTMLDivElement>(null);
   const historyRef = useRef<{ role: string; content: string }[]>([]);
   const eventCacheRef = useRef<any[] | null>(null);
@@ -1634,7 +1633,6 @@ EVENT KEYS: coupe-two-side, coupe-windshield, coupe-all-sides, coupe-whole-no-wi
 CRITICAL: In [BOOK:] command, tint_type MUST be exactly "Premium Carbon", "Nano Carbon", or "Nano Ceramic" — no brand names or symbols.
 Today: ${todayStr}. Use current year or later for dates. Be friendly, conversational, short replies. Ask 1-2 things at a time.`;
 
-  useEffect(() => { setTimeout(() => setShowBadge(false), 4000); }, []);
   useEffect(() => { if (msgsRef.current) msgsRef.current.scrollTop = msgsRef.current.scrollHeight; }, [messages, typing]);
 
   const addMsg = (role: string, content: string, html?: string) => {
@@ -1738,7 +1736,6 @@ Today: ${todayStr}. Use current year or later for dates. Be friendly, conversati
   const toggle = () => {
     const next = !isOpen;
     setIsOpen(next);
-    setShowBadge(false);
     if (next && !hasOpened) {
       setHasOpened(true);
       const greet = { role: 'assistant', content: "Hey! 👋 Welcome to **210 Tints** — Columbia's mobile tinting specialists using **UVIRON** performance films.\n\nI can help with pricing, film info, or book you in. We come to you anywhere in the DMV! What can I help with?" };
@@ -1782,7 +1779,6 @@ Today: ${todayStr}. Use current year or later for dates. Be friendly, conversati
 
   return (
     <>
-      {showBadge && <div className="chat-toggle-btn" style={{ position: 'fixed', bottom: 96, right: 28, background: '#ff4d4d', color: '#fff', fontSize: 11, fontWeight: 700, fontFamily: 'Space Grotesk', padding: '5px 10px', borderRadius: 20, zIndex: 10000, animation: 'fadeUp 0.4s ease', boxShadow: '0 4px 12px rgba(255,77,77,0.4)', pointerEvents: 'none' }}>Ask me anything</div>}
       <button className="chat-toggle-btn" onClick={toggle} style={{ position: 'fixed', bottom: 28, right: 28, width: 60, height: 60, background: '#4B5FE0', border: 'none', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999, animation: 'tintRing 3s ease infinite', transition: 'transform 0.2s' }}
         onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.08)'; }} onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}>
         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
