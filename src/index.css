@@ -12,8 +12,8 @@
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth;background:var(--bg)}
-body{font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);background:var(--bg);overflow-x:hidden;-webkit-font-smoothing:antialiased}
-h1,h2,h3,h4,h5,h6{font-family:'Syne',sans-serif}
+body{font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);background:var(--bg);overflow-x:hidden;-webkit-font-smoothing:antialiased;font-size:16px;line-height:1.7;letter-spacing:0.01em}
+h1,h2,h3,h4,h5,h6{font-family:'Syne',sans-serif;letter-spacing:-0.02em}
 ::-webkit-scrollbar{width:3px}
 ::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:var(--accent);border-radius:2px}
