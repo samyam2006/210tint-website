@@ -1999,8 +1999,13 @@ export default function App() {
     setTransitioning(true);
     setTimeout(() => {
       setPage(p);
-      window.scrollTo({ top: 0 });
-      setTimeout(() => setTransitioning(false), 50);
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      requestAnimationFrame(() => {
+        window.scrollTo(0, 0);
+        setTransitioning(false);
+      });
     }, 300);
   };
   return (
