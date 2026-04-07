@@ -1456,12 +1456,25 @@ function ContactPage() {
     if (!form.name || !form.email || !form.message) return;
     setSending(true);
     try {
-      // Send via mailto as reliable fallback
-      const subject = `210 Tint Contact: ${form.vehicle || 'General Inquiry'} — ${form.name}`;
-      const body = `Name: ${form.name}\nPhone: ${form.phone}\nEmail: ${form.email}\nVehicle/Service: ${form.vehicle}\n\nMessage:\n${form.message}`;
-      window.location.href = `mailto:210tints@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      setSent(true);
-    } catch { /* fallback handled */ }
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          access_key: 'e9a25c8b-5b60-4184-a34a-746272b7c1ee',
+          subject: `210 Tint Contact: ${form.vehicle || 'General Inquiry'} — ${form.name}`,
+          from_name: form.name,
+          name: form.name,
+          email: form.email,
+          phone: form.phone,
+          vehicle: form.vehicle,
+          message: form.message,
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setSent(true);
+      }
+    } catch { /* silent fail */ }
     setSending(false);
   };
 
@@ -1476,8 +1489,8 @@ function ContactPage() {
         {sent ? (
           <div style={{ textAlign: 'center', padding: '40px 20px' }}>
             <div style={{ fontSize: 48, marginBottom: 16 }}>✓</div>
-            <h3 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 20, marginBottom: 8 }}>Message Ready!</h3>
-            <p style={{ color: '#8e8ea0', fontSize: 15, lineHeight: 1.7 }}>Your email app should open with the message pre-filled. Just hit send!</p>
+            <h3 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 20, marginBottom: 8 }}>Message Sent!</h3>
+            <p style={{ color: '#8e8ea0', fontSize: 15, lineHeight: 1.7 }}>We got your message and will respond within 24 hours.</p>
             <button onClick={() => { setSent(false); setForm({ name: '', phone: '', email: '', vehicle: '', message: '' }); }} style={{ marginTop: 20, background: 'none', border: '1px solid rgba(255,255,255,0.1)', color: '#8e8ea0', padding: '10px 24px', borderRadius: 3, cursor: 'pointer', fontSize: 13 }}>Send Another</button>
           </div>
         ) : (
