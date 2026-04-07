@@ -935,6 +935,10 @@ function Footer({ go }: { go: (p: string) => void }) {
           {['Portfolio','Pricing','Compare Films','Warranty','Contact'].map(l => <button key={l} onClick={() => go(l === 'Compare Films' ? 'compare' : l.toLowerCase())} style={{ display: 'block', background: 'none', border: 'none', cursor: 'pointer', color: '#8e8ea0', fontSize: 16, padding: '5px 0' }}>{l}</button>)}
         </div>
         <div>
+          <h4 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 12, letterSpacing: '3px', color: '#4a4a5a', marginBottom: 20, textTransform: 'uppercase' }}>Resources</h4>
+          {[{label:'MD Tint Laws',id:'tint-laws'},{label:'Ceramic vs Carbon',id:'ceramic-vs-carbon'},{label:'Best Tint for Summer',id:'md-summer-tint'}].map(l => <button key={l.id} onClick={() => go(l.id)} style={{ display: 'block', background: 'none', border: 'none', cursor: 'pointer', color: '#8e8ea0', fontSize: 16, padding: '5px 0' }}>{l.label}</button>)}
+        </div>
+        <div>
           <h4 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 12, letterSpacing: '3px', color: '#4a4a5a', marginBottom: 20, textTransform: 'uppercase' }}>Contact</h4>
           <p style={{ color: '#8e8ea0', fontSize: 16, lineHeight: 2.2 }}>210tints@gmail.com<br/>(240) 338-7762<br/>10451 Fair Oaks Drive<br/>Columbia, MD 21044</p>
         </div>
@@ -1125,6 +1129,12 @@ function HomePage({ go }: { go: (p: string) => void }) {
             ))}
           </div>
         </div>
+      </section>
+
+      {/* ═══ TRUST BADGES ═══ */}
+      <SectionDivider variant="glow" />
+      <section style={{ padding: '80px 28px', maxWidth: 1100, margin: '0 auto' }}>
+        <TrustBadges />
       </section>
 
       {/* ═══ FEATURED WORK ═══ */}
@@ -1378,15 +1388,15 @@ function PricingPage() {
       {cur.tiers.map((t,i)=>(<div key={t.name} className="rv" style={{padding:0,borderRadius:4,overflow:'hidden',border:t.top?'1px solid rgba(108,99,255,0.3)':'1px solid rgba(255,255,255,0.04)',background:'#0a0a0f',boxShadow:t.top?'0 0 40px rgba(108,99,255,0.06)':'none'}}>
         {t.top&&<div style={{background:'#6c63ff',padding:'8px',textAlign:'center',fontSize:10,fontWeight:700,letterSpacing:'3px',textTransform:'uppercase'}}>Top Tier</div>}
         <div style={{padding:32}}>
-          <h3 style={{fontFamily:'Syne',fontSize:19,fontWeight:700,marginBottom:24}}>{t.name}</h3>
-          {t.items.map((it,j)=>{const [price,desc]=it.split('—');return(<div key={j} style={{padding:'12px 0',borderBottom:'1px solid rgba(255,255,255,0.04)',fontSize:14,color:'#8e8ea0',display:'flex',justifyContent:'space-between',alignItems:'center'}}><span>{desc?.trim()}</span><span style={{fontFamily:'Syne',fontWeight:700,color:'#eee'}}>{price?.trim()}</span></div>);})}
+          <h3 style={{fontFamily:'Space Grotesk',fontSize:19,fontWeight:700,marginBottom:24}}>{t.name}</h3>
+          {t.items.map((it,j)=>{const [price,desc]=it.split('—');return(<div key={j} style={{padding:'12px 0',borderBottom:'1px solid rgba(255,255,255,0.04)',fontSize:14,color:'#8e8ea0',display:'flex',justifyContent:'space-between',alignItems:'center'}}><span>{desc?.trim()}</span><span style={{fontFamily:'Space Grotesk',fontWeight:700,color:'#eee'}}>{price?.trim()}</span></div>);})}
           <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" style={{display:'block',marginTop:28,padding:'13px',textAlign:'center',borderRadius:3,background:t.top?'#6c63ff':'transparent',border:t.top?'none':'1px solid rgba(255,255,255,0.08)',color:'#fff',fontSize:13,fontWeight:600,textDecoration:'none'}}>Book Now</a>
         </div>
       </div>))}
     </div>
     <div className="rv" style={{marginTop:40,padding:'32px 36px',borderRadius:4,border:'1px solid rgba(255,255,255,0.04)',background:'#0a0a0f',display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:20}}>
-      <div><h3 style={{fontFamily:'Syne',fontWeight:700,fontSize:18}}>Computer-Cut Film Upgrade</h3><p style={{color:'#8e8ea0',fontSize:13,marginTop:6,maxWidth:480,lineHeight:1.7}}>Pre-cut to exact window shapes. No blade touches your car. Cleaner edges, tighter fit, flawless finish.</p></div>
-      <div style={{textAlign:'center'}}><span style={{fontFamily:'Syne',fontSize:28,fontWeight:800,color:'#6c63ff'}}>+$50</span><span style={{display:'block',fontSize:11,color:'#4a4a5a'}}>one-time upgrade</span></div>
+      <div><h3 style={{fontFamily:'Space Grotesk',fontWeight:700,fontSize:18}}>Computer-Cut Film Upgrade</h3><p style={{color:'#8e8ea0',fontSize:13,marginTop:6,maxWidth:480,lineHeight:1.7}}>Pre-cut to exact window shapes. No blade touches your car. Cleaner edges, tighter fit, flawless finish.</p></div>
+      <div style={{textAlign:'center'}}><span style={{fontFamily:'Space Grotesk',fontSize:28,fontWeight:800,color:'#6c63ff'}}>+$50</span><span style={{display:'block',fontSize:11,color:'#4a4a5a'}}>one-time upgrade</span></div>
     </div>
   </section></div>);
 }
@@ -1400,7 +1410,7 @@ function ComparePage() {
     <div className="rv" style={{overflowX:'auto',marginBottom:80}}>
       <table style={{width:'100%',borderCollapse:'collapse',minWidth:640}}>
         <thead><tr style={{borderBottom:'2px solid rgba(255,255,255,0.06)'}}>
-          {['Feature','Premium Carbon','Nano Carbon','Nano Ceramic'].map((h,i)=>(<th key={i} style={{padding:'16px 20px',textAlign:'left',fontSize:12,fontWeight:700,letterSpacing:'1.5px',textTransform:'uppercase',color:i===3?'#6c63ff':i===0?'#4a4a5a':'#eee',fontFamily:'Syne'}}>{h}</th>))}
+          {['Feature','Premium Carbon','Nano Carbon','Nano Ceramic'].map((h,i)=>(<th key={i} style={{padding:'16px 20px',textAlign:'left',fontSize:12,fontWeight:700,letterSpacing:'1.5px',textTransform:'uppercase',color:i===3?'#6c63ff':i===0?'#4a4a5a':'#eee',fontFamily:'Space Grotesk'}}>{h}</th>))}
         </tr></thead>
         <tbody>{rows.map((row,i)=>(<tr key={i} style={{borderBottom:'1px solid rgba(255,255,255,0.04)',transition:'background 0.3s'}} onMouseEnter={(e)=>{e.currentTarget.style.background='rgba(108,99,255,0.03)'}} onMouseLeave={(e)=>{e.currentTarget.style.background='transparent'}}>
           {row.map((c,j)=>(<td key={j} style={{padding:'14px 20px',fontSize:14,color:j===0?'#4a4a5a':j===3?'#8b83ff':'#8e8ea0',fontWeight:j===0||j===3?600:400}}>{c}</td>))}
@@ -1414,10 +1424,10 @@ function ComparePage() {
         {tier:'Top Tier',name:'Nano Ceramic KOOLMAX',desc:'Superior heat, UV, and clarity — the last tint you will ever need.',from:'$115',top:true,pros:['Max heat and infrared rejection','Crystal clear — no haze at night','Lifetime warranty on every install','Improves A/C efficiency','Never fades, bubbles, or discolors']},
       ].map((f,i)=>(<div key={i} className={`rv d${i+1}`} style={{padding:32,borderRadius:4,border:f.top?'1px solid rgba(108,99,255,0.3)':'1px solid rgba(255,255,255,0.04)',background:'#0a0a0f',boxShadow:f.top?'0 0 40px rgba(108,99,255,0.06)':'none'}}>
         <span style={{fontSize:10,fontWeight:700,letterSpacing:'3px',textTransform:'uppercase',color:'#6c63ff'}}>{f.tier}</span>
-        <h3 style={{fontFamily:'Syne',fontSize:21,fontWeight:700,marginTop:8,marginBottom:8}}>{f.name}</h3>
+        <h3 style={{fontFamily:'Space Grotesk',fontSize:21,fontWeight:700,marginTop:8,marginBottom:8}}>{f.name}</h3>
         <p style={{color:'#8e8ea0',fontSize:14,lineHeight:1.65,marginBottom:20}}>{f.desc}</p>
         {f.pros.map((p,j)=>(<div key={j} style={{padding:'5px 0',fontSize:13,color:'#8e8ea0',display:'flex',gap:10,alignItems:'flex-start'}}><span style={{color:'#6c63ff',fontSize:8,marginTop:6}}>&#9646;</span>{p}</div>))}
-        <div style={{marginTop:24,paddingTop:20,borderTop:'1px solid rgba(255,255,255,0.04)'}}><span style={{fontSize:11,color:'#4a4a5a'}}>Starting from</span><span style={{fontFamily:'Syne',fontSize:28,fontWeight:800,marginLeft:8}}>{f.from}</span></div>
+        <div style={{marginTop:24,paddingTop:20,borderTop:'1px solid rgba(255,255,255,0.04)'}}><span style={{fontSize:11,color:'#4a4a5a'}}>Starting from</span><span style={{fontFamily:'Space Grotesk',fontSize:28,fontWeight:800,marginLeft:8}}>{f.from}</span></div>
       </div>))}
     </div>
   </section></div>);
@@ -1438,8 +1448,8 @@ function WarrantyPage() {
     <SH tag="Our Commitment" title="Warranty & Policy" sub="Backed by our satisfaction guarantee and lifetime warranty." />
     {s.map((x,i)=>(<div key={i} className={`rv d${(i%3)+1}`} style={{padding:'32px 36px',borderRadius:4,border:'1px solid rgba(255,255,255,0.04)',background:'#0a0a0f',marginBottom:10}}>
       <div style={{display:'flex',gap:20,alignItems:'flex-start'}}>
-        <span style={{fontFamily:'Syne',fontSize:32,fontWeight:800,color:'#6c63ff',opacity:0.3,lineHeight:1,minWidth:40}}>{x.num}</span>
-        <div><h3 style={{fontFamily:'Syne',fontSize:19,fontWeight:700,marginBottom:10}}>{x.title}</h3><p style={{color:'#8e8ea0',fontSize:14,lineHeight:1.8}}>{x.body}</p></div>
+        <span style={{fontFamily:'Space Grotesk',fontSize:32,fontWeight:800,color:'#6c63ff',opacity:0.3,lineHeight:1,minWidth:40}}>{x.num}</span>
+        <div><h3 style={{fontFamily:'Space Grotesk',fontSize:19,fontWeight:700,marginBottom:10}}>{x.title}</h3><p style={{color:'#8e8ea0',fontSize:14,lineHeight:1.8}}>{x.body}</p></div>
       </div>
     </div>))}
   </section></div>);
@@ -1507,7 +1517,7 @@ function ContactPage() {
           <p style={{color:'#8e8ea0',fontSize:14,whiteSpace:'pre-line',lineHeight:1.7}}>{c.val}</p>
         </div>))}
         <div style={{marginTop:10,padding:'24px',borderRadius:4,background:'#0a0a0f',border:'1px solid rgba(255,255,255,0.04)',textAlign:'center'}}>
-          <h4 style={{fontFamily:'Syne',fontWeight:700,fontSize:15,marginBottom:8}}>Mobile Service Available</h4>
+          <h4 style={{fontFamily:'Space Grotesk',fontWeight:700,fontSize:15,marginBottom:8}}>Mobile Service Available</h4>
           <p style={{color:'#8e8ea0',fontSize:12,marginBottom:16}}>We come to you — home, work, wherever works.</p>
           <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" style={{display:'inline-block',background:'#6c63ff',color:'#fff',padding:'11px 28px',borderRadius:3,fontSize:13,fontWeight:600,textDecoration:'none'}}>Schedule Online</a>
         </div>
@@ -1838,6 +1848,159 @@ Today: ${todayStr}. Use current year or later for dates. Be friendly, conversati
 }
 
 /* ═══ APP ═══ */
+/* ═══ STICKY MOBILE BOOK BAR ═══ */
+function MobileBookBar() {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    const fn = () => setShow(window.scrollY > window.innerHeight * 0.8);
+    window.addEventListener('scroll', fn, { passive: true });
+    return () => window.removeEventListener('scroll', fn);
+  }, []);
+  return (
+    <div style={{
+      position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 9990,
+      background: 'rgba(5,5,7,0.95)', backdropFilter: 'blur(20px)',
+      borderTop: '1px solid rgba(108,99,255,0.15)',
+      padding: '12px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12,
+      transform: show ? 'translateY(0)' : 'translateY(100%)',
+      transition: 'transform 0.4s cubic-bezier(.16,1,.3,1)',
+    }}>
+      <div>
+        <span style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 15, color: '#fff', display: 'block' }}>210 Tint</span>
+        <a href="tel:2403387762" style={{ fontSize: 13, color: '#8e8ea0', textDecoration: 'none' }}>(240) 338-7762</a>
+      </div>
+      <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" style={{
+        background: '#6c63ff', color: '#fff', padding: '11px 28px', borderRadius: 3,
+        fontSize: 14, fontWeight: 700, textDecoration: 'none',
+        boxShadow: '0 4px 20px rgba(108,99,255,0.3)', flexShrink: 0,
+      }}>Book Now</a>
+    </div>
+  );
+}
+
+/* ═══ BACK TO TOP BUTTON ═══ */
+function BackToTop() {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    const fn = () => setShow(window.scrollY > 600);
+    window.addEventListener('scroll', fn, { passive: true });
+    return () => window.removeEventListener('scroll', fn);
+  }, []);
+  return (
+    <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} style={{
+      position: 'fixed', bottom: 100, left: 28, width: 44, height: 44,
+      borderRadius: '50%', border: '1px solid rgba(255,255,255,0.08)',
+      background: 'rgba(5,5,7,0.9)', backdropFilter: 'blur(10px)',
+      color: '#8e8ea0', fontSize: 18, cursor: 'pointer', zIndex: 9980,
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      opacity: show ? 1 : 0, pointerEvents: show ? 'all' : 'none',
+      transform: show ? 'translateY(0)' : 'translateY(10px)',
+      transition: 'all 0.3s cubic-bezier(.16,1,.3,1)',
+    }}
+      onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(108,99,255,0.3)'; e.currentTarget.style.color = '#6c63ff'; }}
+      onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'; e.currentTarget.style.color = '#8e8ea0'; }}
+    >↑</button>
+  );
+}
+
+/* ═══ TRUST BADGES ═══ */
+function TrustBadges() {
+  const badges = [
+    { icon: '🛡️', label: 'UVIRON Certified', desc: 'Official performance film partner' },
+    { icon: '⭐', label: '4.9 Google Rating', desc: '30+ five-star reviews' },
+    { icon: '🔧', label: '500+ Vehicles', desc: 'Professionally tinted' },
+    { icon: '🏠', label: '100% Mobile', desc: 'We come to you — anywhere in DMV' },
+    { icon: '✅', label: 'Lifetime Warranty', desc: 'On Nano Ceramic KOOLMAX' },
+    { icon: '✂️', label: 'Computer-Cut', desc: 'No blade touches your car' },
+  ];
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 12 }}>
+      {badges.map((b, i) => (
+        <div key={i} className={`rv d${(i % 4) + 1}`} style={{
+          padding: '24px 20px', borderRadius: 4, background: '#0d0d14',
+          border: '1px solid rgba(255,255,255,0.04)', textAlign: 'center',
+          transition: 'all 0.4s cubic-bezier(.16,1,.3,1)',
+        }}
+          onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(108,99,255,0.2)'; e.currentTarget.style.transform = 'translateY(-4px)'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.04)'; e.currentTarget.style.transform = 'translateY(0)'; }}>
+          <span style={{ fontSize: 28, display: 'block', marginBottom: 12 }}>{b.icon}</span>
+          <span style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 14, display: 'block', marginBottom: 4 }}>{b.label}</span>
+          <span style={{ fontSize: 12, color: '#8e8ea0' }}>{b.desc}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ═══ BLOG: CERAMIC VS CARBON ═══ */
+function CeramicVsCarbonPage() {
+  useReveal();
+  return (<div style={{ paddingTop: 130 }}><section style={{ padding: '0 28px 120px', maxWidth: 880, margin: '0 auto' }}>
+    <SH tag="Film Guide" title="Ceramic vs Carbon Tint" sub="Which film is worth it? A detailed breakdown to help you decide." />
+
+    <div className="rv" style={{ padding: '32px', borderRadius: 4, border: '1px solid rgba(108,99,255,0.15)', background: '#0a0a0f', marginBottom: 32 }}>
+      <h3 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 20, marginBottom: 16 }}>The Short Answer</h3>
+      <p style={{ color: '#8e8ea0', fontSize: 16, lineHeight: 1.8 }}>If you want the <strong style={{ color: '#fff' }}>best heat rejection, clarity, and longevity</strong> — go ceramic. If you want <strong style={{ color: '#fff' }}>solid protection at a lower price</strong> — carbon is excellent. Both block 98%+ UV rays.</p>
+    </div>
+
+    {[
+      { title: 'What is Carbon Tint?', body: 'Carbon tint uses carbon particles embedded in the film to block solar heat. It produces a deep matte-black finish that won\'t fade or turn purple over time. It\'s the most popular entry-level professional film and a massive upgrade over dyed tint. Our Premium Carbon and Nano Carbon PUREMAX films fall in this category.' },
+      { title: 'What is Ceramic Tint?', body: 'Ceramic tint uses nano-ceramic particles — non-metallic, non-conductive technology that blocks significantly more infrared heat than carbon. Our UVIRON KOOLMAX Nano Ceramic rejects up to 89% of infrared heat while maintaining crystal-clear visibility, even at night. No haze, no signal interference.' },
+      { title: 'Heat Rejection', body: 'This is the biggest difference. Carbon tint blocks 25–50% of solar heat depending on the grade. Ceramic blocks 50–75%. On a hot Maryland summer day, that difference is dramatic — your AC works less, your interior stays cooler, and your passengers are more comfortable.' },
+      { title: 'Optical Clarity', body: 'Carbon tint has good clarity but can appear slightly darker from the inside, especially at night. Ceramic tint is crystal clear — it looks like there\'s nothing on the glass from the inside, even at darker shades. Night driving visibility is noticeably better with ceramic.' },
+      { title: 'Warranty & Durability', body: 'Our Premium Carbon comes with a 3–5 year warranty. Nano Carbon PUREMAX carries a lifetime warranty. Nano Ceramic KOOLMAX also has a lifetime warranty. All UVIRON films are scratch-resistant, 2-ply 1.5mil, and will never bubble, peel, or discolor.' },
+      { title: 'Price Difference', body: 'For a full sedan (no windshield), Premium Carbon is $185, Nano Carbon is $260, and Nano Ceramic is $395. The ceramic upgrade costs roughly 2x the entry price — but you get 2-3x the heat rejection and a lifetime warranty. For most customers, the comfort difference alone justifies it.' },
+      { title: 'Signal Interference', body: 'None. All three of our film tiers — Premium Carbon, Nano Carbon, and Nano Ceramic — are 100% signal-safe. No interference with GPS, Bluetooth, cell service, toll transponders, or garage door openers. This is a common myth about ceramic tint that is not true for modern films.' },
+      { title: 'Our Recommendation', body: 'If you drive daily and want the absolute best protection and comfort, go with Nano Ceramic KOOLMAX. If you\'re budget-conscious but still want quality, Nano Carbon PUREMAX is a fantastic middle ground with a lifetime warranty. Premium Carbon is perfect for daily drivers who want clean looks and UV protection at the best price.' },
+    ].map((s, i) => (
+      <div key={i} className={`rv d${(i % 3) + 1}`} style={{ padding: '28px 32px', borderRadius: 4, border: '1px solid rgba(255,255,255,0.04)', background: '#0a0a0f', marginBottom: 10 }}>
+        <h3 style={{ fontFamily: 'Space Grotesk', fontSize: 18, fontWeight: 700, marginBottom: 10 }}>{s.title}</h3>
+        <p style={{ color: '#8e8ea0', fontSize: 15, lineHeight: 1.8 }}>{s.body}</p>
+      </div>
+    ))}
+
+    <div className="rv" style={{ textAlign: 'center', padding: '48px 28px', marginTop: 40, borderRadius: 4, background: 'rgba(108,99,255,0.04)', border: '1px solid rgba(108,99,255,0.1)' }}>
+      <h3 style={{ fontFamily: 'Space Grotesk', fontSize: 22, fontWeight: 700, marginBottom: 12 }}>Ready to Choose?</h3>
+      <p style={{ color: '#8e8ea0', fontSize: 15, marginBottom: 24 }}>Our team can help you pick the perfect film for your vehicle and budget.</p>
+      <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" className="magnetic-btn" style={{ display: 'inline-block', background: '#6c63ff', color: '#fff', padding: '15px 40px', borderRadius: 3, fontSize: 16, fontWeight: 700, textDecoration: 'none', boxShadow: '0 4px 30px rgba(108,99,255,0.3)' }}>Book a Consultation</a>
+    </div>
+  </section></div>);
+}
+
+/* ═══ BLOG: BEST TINT FOR MD SUMMERS ═══ */
+function MDSummerTintPage() {
+  useReveal();
+  return (<div style={{ paddingTop: 130 }}><section style={{ padding: '0 28px 120px', maxWidth: 880, margin: '0 auto' }}>
+    <SH tag="Seasonal Guide" title="Best Tint for Maryland Summers" sub="Beat the DMV heat with the right window film. Here's what actually works." />
+
+    <div className="rv" style={{ padding: '32px', borderRadius: 4, border: '1px solid rgba(108,99,255,0.15)', background: '#0a0a0f', marginBottom: 32 }}>
+      <h3 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 20, marginBottom: 16 }}>Why Tint Matters in Maryland</h3>
+      <p style={{ color: '#8e8ea0', fontSize: 16, lineHeight: 1.8 }}>Maryland summers hit 90°F+ with brutal humidity. Your car's interior can reach <strong style={{ color: '#fff' }}>140°F or higher</strong> when parked in the sun. The right window tint blocks infrared heat before it enters your cabin, reducing interior temps by up to 40°F and saving your AC from working overtime.</p>
+    </div>
+
+    {[
+      { title: 'The #1 Pick: Nano Ceramic KOOLMAX', body: 'For Maryland summers, nano ceramic is the clear winner. UVIRON KOOLMAX blocks up to 89% of infrared radiation — the heat you feel through the glass. Even at lighter shades (35% or 50%), you get massive heat rejection without going too dark. It\'s the single best upgrade you can make for summer comfort.' },
+      { title: 'Budget Option: Nano Carbon PUREMAX', body: 'If ceramic is outside your budget, Nano Carbon PUREMAX is a strong second choice. It blocks 35–58% of solar energy and 30–59% of infrared heat. You\'ll still feel a significant difference compared to no tint, and it comes with a lifetime warranty.' },
+      { title: 'Best Shade for Front Windows (Legal)', body: 'Maryland law requires front side windows to allow more than 35% of light through. Our recommendation: 35% VLT on the fronts for maximum legal protection. At 35%, you get noticeable heat reduction while staying fully compliant. Pair it with 20% or 5% on the rears for a clean gradient look.' },
+      { title: 'Windshield Tint: Worth It?', body: 'Absolutely — the windshield is your biggest glass surface and where the most heat enters. A ceramic windshield strip along the AS-1 line (top 5 inches) is legal in Maryland and blocks a surprising amount of heat and glare. Full windshield ceramic tint at 70% VLT is nearly invisible but blocks significant infrared heat.' },
+      { title: 'How Much Cooler Will My Car Be?', body: 'With nano ceramic on all windows, expect your parked interior temperature to drop 25–40°F compared to untinted glass. Your AC will cool the cabin faster, use less fuel, and your leather/upholstery won\'t crack or fade from UV exposure. Most customers say the difference is immediately noticeable on the first hot day.' },
+      { title: 'Best Time to Tint', body: 'Spring (March–May) is the best time to schedule tinting in Maryland. You get ahead of the summer heat, the film has ideal curing conditions (not too hot, not too cold), and our schedule isn\'t as packed as June–August. That said, we install year-round — even winter installations cure perfectly in a heated garage.' },
+      { title: 'UV Protection for Your Family', body: 'All our films block 98–99.9% of UV radiation regardless of shade. This protects your skin from sun damage during daily commutes, protects kids in car seats, and prevents your dashboard, seats, and trim from fading and cracking. Even a light 70% VLT ceramic tint provides full UV protection.' },
+    ].map((s, i) => (
+      <div key={i} className={`rv d${(i % 3) + 1}`} style={{ padding: '28px 32px', borderRadius: 4, border: '1px solid rgba(255,255,255,0.04)', background: '#0a0a0f', marginBottom: 10 }}>
+        <h3 style={{ fontFamily: 'Space Grotesk', fontSize: 18, fontWeight: 700, marginBottom: 10 }}>{s.title}</h3>
+        <p style={{ color: '#8e8ea0', fontSize: 15, lineHeight: 1.8 }}>{s.body}</p>
+      </div>
+    ))}
+
+    <div className="rv" style={{ textAlign: 'center', padding: '48px 28px', marginTop: 40, borderRadius: 4, background: 'rgba(108,99,255,0.04)', border: '1px solid rgba(108,99,255,0.1)' }}>
+      <h3 style={{ fontFamily: 'Space Grotesk', fontSize: 22, fontWeight: 700, marginBottom: 12 }}>Beat the Heat This Summer</h3>
+      <p style={{ color: '#8e8ea0', fontSize: 15, marginBottom: 24 }}>Book now and we'll come to you — home, office, anywhere in the DMV.</p>
+      <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" className="magnetic-btn" style={{ display: 'inline-block', background: '#6c63ff', color: '#fff', padding: '15px 40px', borderRadius: 3, fontSize: 16, fontWeight: 700, textDecoration: 'none', boxShadow: '0 4px 30px rgba(108,99,255,0.3)' }}>Book Your Appointment</a>
+    </div>
+  </section></div>);
+}
+
 export default function App() {
   const [page, setPage] = useState('home');
   const [transitioning, setTransitioning] = useState(false);
@@ -1875,9 +2038,14 @@ export default function App() {
         {page==='compare'&&<ComparePage/>}
         {page==='warranty'&&<WarrantyPage/>}
         {page==='tint-laws'&&<TintLawsPage go={go}/>}
+        {page==='ceramic-vs-carbon'&&<CeramicVsCarbonPage/>}
+        {page==='md-summer-tint'&&<MDSummerTintPage/>}
         {page==='contact'&&<ContactPage/>}
       </main>
       <Footer go={go} />
+      <BackToTop />
+      <style>{`@media(min-width:861px){.mob-book-bar{display:none!important}}`}</style>
+      <div className="mob-book-bar"><MobileBookBar /></div>
     </div>
   );
 }
