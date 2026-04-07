@@ -577,6 +577,171 @@ function TintSimulator() {
   );
 }
 
+/* ═══ PRICING CALCULATOR ═══ */
+function PriceCalculator() {
+  const [vehicle, setVehicle] = useState('sedan');
+  const [film, setFilm] = useState('ceramic');
+  const [coverage, setCoverage] = useState('whole-no-wind');
+  const [computerCut, setComputerCut] = useState(false);
+  const [animPrice, setAnimPrice] = useState(0);
+
+  const prices: Record<string, Record<string, Record<string, number>>> = {
+    coupe: {
+      carbon: { 'all-sides': 50, 'windshield': 80, 'whole-no-wind': 125, 'whole': 205 },
+      nano: { 'all-sides': 75, 'windshield': 110, 'whole-no-wind': 180, 'whole': 290 },
+      ceramic: { 'all-sides': 115, 'windshield': 170, 'whole-no-wind': 275, 'whole': 445 },
+    },
+    sedan: {
+      carbon: { 'two-sides': 65, 'all-sides': 105, 'windshield': 80, 'whole-no-wind': 185, 'whole': 265 },
+      nano: { 'two-sides': 75, 'all-sides': 145, 'windshield': 115, 'whole-no-wind': 260, 'whole': 375 },
+      ceramic: { 'two-sides': 115, 'all-sides': 225, 'windshield': 180, 'whole-no-wind': 395, 'whole': 575 },
+    },
+    truck: {
+      carbon: { 'two-sides': 65, 'all-sides': 120, 'windshield': 115, 'whole-no-wind': 210, 'whole': 325 },
+      nano: { 'two-sides': 85, 'all-sides': 170, 'windshield': 145, 'whole-no-wind': 305, 'whole': 450 },
+      ceramic: { 'two-sides': 135, 'all-sides': 260, 'windshield': 220, 'whole-no-wind': 470, 'whole': 690 },
+    },
+  };
+
+  const coverageOptions: Record<string, { id: string; label: string }[]> = {
+    coupe: [
+      { id: 'all-sides', label: 'All Sides' },
+      { id: 'windshield', label: 'Windshield' },
+      { id: 'whole-no-wind', label: 'Full Car (no windshield)' },
+      { id: 'whole', label: 'Whole Car' },
+    ],
+    sedan: [
+      { id: 'two-sides', label: 'Two Sides' },
+      { id: 'all-sides', label: 'All Four Sides' },
+      { id: 'windshield', label: 'Windshield' },
+      { id: 'whole-no-wind', label: 'Full Car (no windshield)' },
+      { id: 'whole', label: 'Whole Car' },
+    ],
+    truck: [
+      { id: 'two-sides', label: 'Two Sides' },
+      { id: 'all-sides', label: 'All Sides' },
+      { id: 'windshield', label: 'Windshield' },
+      { id: 'whole-no-wind', label: 'Full Car (no windshield)' },
+      { id: 'whole', label: 'Whole Car' },
+    ],
+  };
+
+  const filmNames: Record<string, string> = { carbon: 'Premium Carbon', nano: 'Nano Carbon PUREMAX', ceramic: 'Nano Ceramic KOOLMAX' };
+  const vehicleNames: Record<string, string> = { coupe: 'Coupe', sedan: 'Sedan', truck: 'Truck / SUV' };
+
+  // Fix coverage when switching vehicle types
+  useEffect(() => {
+    const opts = coverageOptions[vehicle];
+    if (!opts.find(o => o.id === coverage)) setCoverage(opts[opts.length - 2]?.id || opts[0].id);
+  }, [vehicle]);
+
+  const basePrice = prices[vehicle]?.[film]?.[coverage] || 0;
+  const totalPrice = basePrice + (computerCut ? 50 : 0);
+
+  // Animate price counter
+  useEffect(() => {
+    const start = animPrice;
+    const end = totalPrice;
+    if (start === end) return;
+    const t0 = performance.now();
+    const tick = (now: number) => {
+      const p = Math.min((now - t0) / 400, 1);
+      const ease = 1 - Math.pow(1 - p, 3);
+      setAnimPrice(Math.round(start + (end - start) * ease));
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }, [totalPrice]);
+
+  const btnStyle = (active: boolean): React.CSSProperties => ({
+    padding: '12px 16px', borderRadius: 4, cursor: 'pointer', transition: 'all 0.3s cubic-bezier(.16,1,.3,1)',
+    background: active ? 'rgba(108,99,255,0.15)' : '#101018',
+    border: active ? '1px solid rgba(108,99,255,0.4)' : '1px solid rgba(255,255,255,0.04)',
+    color: active ? '#fff' : '#8e8ea0', fontSize: 13, fontWeight: active ? 700 : 500,
+    fontFamily: 'Plus Jakarta Sans', textAlign: 'left' as const,
+  });
+
+  return (
+    <div>
+      {/* Step 1: Vehicle */}
+      <div className="rv" style={{ marginBottom: 28 }}>
+        <label style={{ display: 'block', fontSize: 10, fontWeight: 700, letterSpacing: '3px', textTransform: 'uppercase', color: '#6c63ff', marginBottom: 12 }}>① Vehicle Type</label>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 8 }}>
+          {Object.entries(vehicleNames).map(([k, v]) => (
+            <button key={k} onClick={() => setVehicle(k)} style={btnStyle(vehicle === k)}>
+              <span style={{ display: 'block', fontFamily: 'Syne', fontSize: 16, fontWeight: 700 }}>{v}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Step 2: Film */}
+      <div className="rv d1" style={{ marginBottom: 28 }}>
+        <label style={{ display: 'block', fontSize: 10, fontWeight: 700, letterSpacing: '3px', textTransform: 'uppercase', color: '#6c63ff', marginBottom: 12 }}>② Film Type</label>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 8 }}>
+          {Object.entries(filmNames).map(([k, v]) => (
+            <button key={k} onClick={() => setFilm(k)} style={btnStyle(film === k)}>
+              <span style={{ display: 'block', fontSize: 9, fontWeight: 700, letterSpacing: '1px', color: film === k ? '#6c63ff' : '#4a4a5a', marginBottom: 2 }}>{k === 'carbon' ? 'ENTRY' : k === 'nano' ? 'MID' : 'TOP TIER'}</span>
+              <span style={{ fontSize: 12, fontWeight: 600 }}>{v}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Step 3: Coverage */}
+      <div className="rv d2" style={{ marginBottom: 28 }}>
+        <label style={{ display: 'block', fontSize: 10, fontWeight: 700, letterSpacing: '3px', textTransform: 'uppercase', color: '#6c63ff', marginBottom: 12 }}>③ Coverage</label>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(140px,1fr))', gap: 8 }}>
+          {coverageOptions[vehicle].map(o => (
+            <button key={o.id} onClick={() => setCoverage(o.id)} style={btnStyle(coverage === o.id)}>
+              {o.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Computer Cut Add-on */}
+      <div className="rv d3" style={{ marginBottom: 36 }}>
+        <button onClick={() => setComputerCut(!computerCut)} style={{
+          width: '100%', padding: '16px 20px', borderRadius: 4, cursor: 'pointer',
+          background: computerCut ? 'rgba(108,99,255,0.1)' : '#101018',
+          border: computerCut ? '1px solid rgba(108,99,255,0.3)' : '1px solid rgba(255,255,255,0.04)',
+          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+          transition: 'all 0.3s', color: '#fff', textAlign: 'left',
+        }}>
+          <div>
+            <span style={{ display: 'block', fontSize: 14, fontWeight: 600, fontFamily: 'Syne' }}>Computer-Cut Film</span>
+            <span style={{ fontSize: 12, color: '#8e8ea0' }}>Pre-cut to exact window shapes. No blade touches your car.</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
+            <span style={{ fontFamily: 'Syne', fontWeight: 800, color: '#6c63ff' }}>+$50</span>
+            <div style={{ width: 20, height: 20, borderRadius: 4, border: computerCut ? '2px solid #6c63ff' : '2px solid #4a4a5a', background: computerCut ? '#6c63ff' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s', fontSize: 12, color: '#fff' }}>
+              {computerCut && '✓'}
+            </div>
+          </div>
+        </button>
+      </div>
+
+      {/* Price Display */}
+      <div className="rv d4" style={{ textAlign: 'center', padding: '36px 28px', borderRadius: 8, background: 'linear-gradient(135deg, rgba(108,99,255,0.08), rgba(108,99,255,0.02))', border: '1px solid rgba(108,99,255,0.2)' }}>
+        <span style={{ display: 'block', fontSize: 10, fontWeight: 700, letterSpacing: '3px', textTransform: 'uppercase', color: '#4a4a5a', marginBottom: 8 }}>Your Price</span>
+        <div style={{ fontFamily: 'Syne', fontSize: 56, fontWeight: 800, color: '#fff', lineHeight: 1 }}>
+          <span style={{ fontSize: 28, color: '#6c63ff', verticalAlign: 'top' }}>$</span>{animPrice}
+        </div>
+        <p style={{ color: '#8e8ea0', fontSize: 13, marginTop: 12 }}>
+          {vehicleNames[vehicle]} · {filmNames[film]} · {coverageOptions[vehicle].find(o => o.id === coverage)?.label}
+          {computerCut && ' · Computer Cut'}
+        </p>
+        <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" className="magnetic-btn" style={{
+          display: 'inline-block', marginTop: 24, padding: '16px 44px', borderRadius: 3,
+          background: '#6c63ff', color: '#fff', fontSize: 15, fontWeight: 700, textDecoration: 'none',
+          boxShadow: '0 4px 30px rgba(108,99,255,0.35)',
+        }}>Book for ${totalPrice}</a>
+      </div>
+    </div>
+  );
+}
+
 /* ── NAV ── */
 const NAV = [
   { id: 'home', label: 'Home' }, { id: 'portfolio', label: 'Portfolio' },
@@ -1032,6 +1197,15 @@ function HomePage({ go }: { go: (p: string) => void }) {
         <div style={{ maxWidth: 1320, margin: '0 auto', position: 'relative', zIndex: 1 }}>
           <div className="rv-blur"><SH tag="Try It" title="Tint Simulator" sub="Preview how different films and darkness levels look on your vehicle." /></div>
           <TintSimulator />
+        </div>
+      </section>
+
+      {/* ═══ PRICING CALCULATOR ═══ */}
+      <section style={{ padding: '120px 28px', background: '#0a0a0f', position: 'relative', overflow: 'hidden' }}>
+        <FloatingOrbs />
+        <div style={{ maxWidth: 800, margin: '0 auto', position: 'relative', zIndex: 1 }}>
+          <div className="rv-blur"><SH tag="Instant Quote" title="Price Calculator" sub="Select your vehicle, film, and coverage to get an instant price." /></div>
+          <PriceCalculator />
         </div>
       </section>
 
