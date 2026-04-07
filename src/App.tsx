@@ -2012,8 +2012,8 @@ export default function App() {
         @media(max-width:860px){
           .desk-nav{display:none!important}
           .mob-btn{display:block!important}
-          .chat-toggle-btn{bottom:80px!important}
-          .chat-window{bottom:150px!important}
+          .chat-toggle-btn{bottom:68px!important;width:50px!important;height:50px!important}
+          .chat-window{bottom:130px!important;right:12px!important;left:12px!important;width:auto!important;max-height:70vh!important}
         }
         @media(max-width:640px){
           .hero-stats{grid-template-columns:repeat(2,1fr)!important;gap:20px!important}
