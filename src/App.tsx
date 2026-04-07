@@ -1131,12 +1131,6 @@ function HomePage({ go }: { go: (p: string) => void }) {
         </div>
       </section>
 
-      {/* ═══ TRUST BADGES ═══ */}
-      <SectionDivider variant="glow" />
-      <section style={{ padding: '80px 28px', maxWidth: 1100, margin: '0 auto' }}>
-        <TrustBadges />
-      </section>
-
       {/* ═══ FEATURED WORK ═══ */}
       <SectionDivider variant="dots" />
       <section style={{ padding: '100px 28px 140px', maxWidth: 1320, margin: '0 auto' }}>
@@ -1789,13 +1783,13 @@ Today: ${todayStr}. Use current year or later for dates. Be friendly, conversati
   return (
     <>
       {showBadge && <div style={{ position: 'fixed', bottom: 100, right: 28, background: '#ff4d4d', color: '#fff', fontSize: 12, fontWeight: 700, fontFamily: 'Space Grotesk', padding: '5px 10px', borderRadius: 20, zIndex: 10000, animation: 'fadeUp 0.4s ease', boxShadow: '0 4px 12px rgba(255,77,77,0.4)' }}>Ask me anything</div>}
-      <button onClick={toggle} style={{ position: 'fixed', bottom: 28, right: 28, width: 60, height: 60, background: '#4B5FE0', border: 'none', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999, animation: 'tintRing 3s ease infinite', transition: 'transform 0.2s' }}
+      <button className="chat-toggle-btn" onClick={toggle} style={{ position: 'fixed', bottom: 28, right: 28, width: 60, height: 60, background: '#4B5FE0', border: 'none', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999, animation: 'tintRing 3s ease infinite', transition: 'transform 0.2s' }}
         onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.08)'; }} onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}>
         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
           {isOpen ? <><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></> : <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />}
         </svg>
       </button>
-      <div style={{
+      <div className="chat-window" style={{
         position: 'fixed', bottom: 100, right: 28, width: 390, maxHeight: 620, background: '#0d0d0d', border: '1px solid #222', borderRadius: 20, display: 'flex', flexDirection: 'column', overflow: 'hidden', zIndex: 9998,
         boxShadow: '0 24px 80px rgba(0,0,0,0.8)', transform: isOpen ? 'scale(1) translateY(0)' : 'scale(0.92) translateY(20px)', opacity: isOpen ? 1 : 0, pointerEvents: isOpen ? 'all' : 'none', transition: 'transform 0.3s cubic-bezier(0.34,1.56,0.64,1), opacity 0.25s ease',
       }}>
@@ -2022,6 +2016,8 @@ export default function App() {
         @media(max-width:860px){
           .desk-nav{display:none!important}
           .mob-btn{display:block!important}
+          .chat-toggle-btn{bottom:80px!important}
+          .chat-window{bottom:150px!important}
         }
         @media(max-width:640px){
           .hero-stats{grid-template-columns:repeat(2,1fr)!important;gap:20px!important}
