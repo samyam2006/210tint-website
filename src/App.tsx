@@ -279,10 +279,10 @@ function HeroBackground() {
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [activeVideo, setActiveVideo] = useState(0);
   const imgs = [
-    'https://210tint.com/wp-content/uploads/2026/03/15903652-ee84-47db-985f-43bee6d9839a.png',
-    'https://210tint.com/wp-content/uploads/2026/02/snowy-c63.png',
-    'https://210tint.com/wp-content/uploads/2026/03/bac97502-b244-47f9-873b-c1cfd6bc741d.png',
-    'https://210tint.com/wp-content/uploads/2026/02/snowy-m8.png',
+    '/cars/lambo-urus.png',
+    '/cars/snowy-c63.png',
+    '/cars/mercedes-cla.png',
+    '/cars/snowy-m8.png',
   ];
   const [imgIdx, setImgIdx] = useState(0);
   // Image fallback cycling
@@ -1140,9 +1140,9 @@ function HomePage({ go }: { go: (p: string) => void }) {
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(320px,1fr))', gap: 14 }}>
           {[
-            { name: 'Lamborghini Urus', film: 'Premium Nano Ceramic', img: 'https://210tint.com/wp-content/uploads/2026/03/15903652-ee84-47db-985f-43bee6d9839a.png' },
-            { name: 'Mercedes C63', film: 'Premium Carbon', img: 'https://210tint.com/wp-content/uploads/2026/02/snowy-c63.png' },
-            { name: 'BMW M8', film: 'Standard Carbon', img: 'https://210tint.com/wp-content/uploads/2026/02/snowy-m8.png' },
+            { name: 'Lamborghini Urus', film: 'Premium Nano Ceramic', img: '/cars/lambo-urus.png' },
+            { name: 'Mercedes C63', film: 'Premium Carbon', img: '/cars/snowy-c63.png' },
+            { name: 'BMW M8', film: 'Standard Carbon', img: '/cars/snowy-m8.png' },
           ].map((p, i) => (
             <div key={i} className={`${i === 1 ? 'rv' : i === 0 ? 'rv-l' : 'rv-r'} d${i + 1}`} onClick={() => go('portfolio')} style={{
               borderRadius: 4, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.04)',
@@ -1334,12 +1334,12 @@ function PortfolioPage() {
   useReveal();
   const [lightbox, setLightbox] = useState<number | null>(null);
   const items = [
-    { name: 'Lamborghini Urus', film: 'Premium Nano Ceramic', img: 'https://210tint.com/wp-content/uploads/2026/03/15903652-ee84-47db-985f-43bee6d9839a.png' },
-    { name: 'Mercedes C63', film: 'Premium Carbon', img: 'https://210tint.com/wp-content/uploads/2026/02/snowy-c63.png' },
-    { name: 'Mercedes CLA', film: 'Premium Nano Ceramic', img: 'https://210tint.com/wp-content/uploads/2026/03/bac97502-b244-47f9-873b-c1cfd6bc741d.png' },
-    { name: 'BMW M8', film: 'Standard Carbon', img: 'https://210tint.com/wp-content/uploads/2026/02/snowy-m8.png' },
-    { name: 'Dodge Durango', film: 'Premium Nano Carbon', img: 'https://210tint.com/wp-content/uploads/2026/02/snowy-durango.png' },
-    { name: 'Dodge Durango', film: 'Premium Nano Carbon', img: 'https://210tint.com/wp-content/uploads/2026/02/dark-snowy-durango.png' },
+    { name: 'Lamborghini Urus', film: 'Premium Nano Ceramic', img: '/cars/lambo-urus.png' },
+    { name: 'Mercedes C63', film: 'Premium Carbon', img: '/cars/snowy-c63.png' },
+    { name: 'Mercedes CLA', film: 'Premium Nano Ceramic', img: '/cars/mercedes-cla.png' },
+    { name: 'BMW M8', film: 'Standard Carbon', img: '/cars/snowy-m8.png' },
+    { name: 'Dodge Durango', film: 'Premium Nano Carbon', img: '/cars/snowy-durango.png' },
+    { name: 'Dodge Durango', film: 'Premium Nano Carbon', img: '/cars/dark-snowy-durango.png' },
   ];
   return (<div style={{ paddingTop: 130 }}><section style={{ padding: '0 28px 120px', maxWidth: 1320, margin: '0 auto' }}>
     <SH tag="Our Work" title="Vehicle Tinting Portfolio" sub="Professional-grade installations on luxury, performance, and everyday vehicles." />
