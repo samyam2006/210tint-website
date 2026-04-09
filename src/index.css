@@ -109,13 +109,6 @@ h1,h2,h3,h4,h5,h6{font-family:'Space Grotesk',sans-serif;letter-spacing:-0.03em}
 /* Range slider styling */
 input[type=range]{-webkit-appearance:none;height:4px;background:#101018;border-radius:2px;outline:none}
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:#6c63ff;cursor:pointer;box-shadow:0 0 10px rgba(108,99,255,0.4)}
-input[type=range]::-webkit-slider-thumb{width:22px;height:22px}
-
-/* Car upload visualizer */
-.car-upload-zone:hover{border-color:rgba(108,99,255,0.3)!important;background:rgba(108,99,255,0.03)!important}
-@media(max-width:640px){
-  .car-upload-zone{padding:40px 20px!important}
-}
 
 /* SVG map hover */
 svg path{cursor:pointer}
