@@ -1105,6 +1105,28 @@ function HomePage({ go }: { go: (p: string) => void }) {
         </div>
       </section>
 
+      {/* ═══ MOBILE GARAGE NOTICE ═══ */}
+      <section style={{ padding: '0 28px 80px', maxWidth: 1320, margin: '0 auto' }}>
+        <div className="rv" style={{
+          padding: '28px 36px', borderRadius: 4,
+          border: '1px solid rgba(251,191,36,0.25)',
+          background: 'rgba(251,191,36,0.04)',
+          display: 'flex', gap: 20, alignItems: 'flex-start',
+        }}>
+          <span style={{ fontSize: 28, lineHeight: 1, flexShrink: 0, marginTop: 2 }}>⚠️</span>
+          <div>
+            <h3 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 17, marginBottom: 8, color: '#fbbf24' }}>
+              Mobile Jobs — Garage or Covered Space Strongly Recommended
+            </h3>
+            <p style={{ color: '#8e8ea0', fontSize: 14, lineHeight: 1.8, margin: 0 }}>
+              When we come to you, working outdoors without a garage or covered space significantly increases the chance of minor imperfections — dust, debris, or wind can affect adhesion and film clarity during install. We always do our absolute best, but{' '}
+              <strong style={{ color: '#e5e5e5' }}>we cannot guarantee a flawless result on an open-air mobile job.</strong>
+              {' '}If you have access to a garage, carport, or covered parking, please have the vehicle there at the time of your appointment. It makes a real difference.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* ═══ WHY US ═══ */}
       <section style={{ padding: '120px 28px', background: '#0a0a0f', position: 'relative', overflow: 'hidden' }}>
         <FloatingOrbs />
@@ -1398,19 +1420,45 @@ function PricingPage() {
 /* ═══ COMPARE ═══ */
 function ComparePage() {
   useReveal();
+  const [tableScrolled, setTableScrolled] = useState(false);
   const rows = [['UV Rejection','~98%','~99%','≥99.9%'],['Heat Rejection','25–35%','35–50%','50–75%'],['Infrared Blocking','Low','Moderate','Very High'],['Signal Interference','None','None','None'],['Glare Reduction','Up to 50%','Up to 60%','Up to 70%'],['Color Stability','Excellent','Excellent','Permanent'],['Optical Clarity','Good','Good','Crystal Clear'],['Warranty','3–5 Years','5–7 Years','Lifetime'],['Price Tier','Entry','Mid-Range','Premium']];
   return (<div style={{paddingTop:130}}><section style={{padding:'0 28px 120px',maxWidth:1320,margin:'0 auto'}}>
     <SH tag="Film Guide" title="Compare Tint Options" sub="Comfort, protection, and long-term value — not just darkness." />
-    <div className="rv" style={{overflowX:'auto',marginBottom:80}}>
-      <table style={{width:'100%',borderCollapse:'collapse',minWidth:640}}>
-        <thead><tr style={{borderBottom:'2px solid rgba(255,255,255,0.06)'}}>
-          {['Feature','Premium Carbon','Nano Carbon','Nano Ceramic'].map((h,i)=>(<th key={i} style={{padding:'16px 20px',textAlign:'left',fontSize:12,fontWeight:700,letterSpacing:'1.5px',textTransform:'uppercase',color:i===3?'#6c63ff':i===0?'#4a4a5a':'#eee',fontFamily:'Space Grotesk'}}>{h}</th>))}
-        </tr></thead>
-        <tbody>{rows.map((row,i)=>(<tr key={i} style={{borderBottom:'1px solid rgba(255,255,255,0.04)',transition:'background 0.3s'}} onMouseEnter={(e)=>{e.currentTarget.style.background='rgba(108,99,255,0.03)'}} onMouseLeave={(e)=>{e.currentTarget.style.background='transparent'}}>
-          {row.map((c,j)=>(<td key={j} style={{padding:'14px 20px',fontSize:14,color:j===0?'#4a4a5a':j===3?'#8b83ff':'#8e8ea0',fontWeight:j===0||j===3?600:400}}>{c}</td>))}
-        </tr>))}</tbody>
-      </table>
+    <div style={{position:'relative',marginBottom:80}}>
+      <div className="rv" style={{overflowX:'auto'}} onScroll={(e)=>{ if(e.currentTarget.scrollLeft>10) setTableScrolled(true); }}>
+        <table style={{width:'100%',borderCollapse:'collapse',minWidth:640}}>
+          <thead><tr style={{borderBottom:'2px solid rgba(255,255,255,0.06)'}}>
+            {['Feature','Premium Carbon','Nano Carbon','Nano Ceramic'].map((h,i)=>(<th key={i} style={{padding:'16px 20px',textAlign:'left',fontSize:12,fontWeight:700,letterSpacing:'1.5px',textTransform:'uppercase',color:i===3?'#6c63ff':i===0?'#4a4a5a':'#eee',fontFamily:'Space Grotesk'}}>{h}</th>))}
+          </tr></thead>
+          <tbody>{rows.map((row,i)=>(<tr key={i} style={{borderBottom:'1px solid rgba(255,255,255,0.04)',transition:'background 0.3s'}} onMouseEnter={(e)=>{e.currentTarget.style.background='rgba(108,99,255,0.03)'}} onMouseLeave={(e)=>{e.currentTarget.style.background='transparent'}}>
+            {row.map((c,j)=>(<td key={j} style={{padding:'14px 20px',fontSize:14,color:j===0?'#4a4a5a':j===3?'#8b83ff':'#8e8ea0',fontWeight:j===0||j===3?600:400}}>{c}</td>))}
+          </tr>))}</tbody>
+        </table>
+      </div>
+      {/* Right-edge fade + swipe hint — visible until user scrolls */}
+      <div style={{
+        position:'absolute', top:0, right:0, bottom:0, width:80,
+        background:'linear-gradient(to right, transparent, #05050f)',
+        pointerEvents:'none',
+        opacity: tableScrolled ? 0 : 1,
+        transition:'opacity 0.4s ease',
+      }} />
+      <div style={{
+        position:'absolute', top:'50%', right:10, transform:'translateY(-50%)',
+        display:'flex', flexDirection:'column', alignItems:'center', gap:4,
+        pointerEvents:'none',
+        opacity: tableScrolled ? 0 : 1,
+        transition:'opacity 0.4s ease',
+      }}>
+        <span style={{fontSize:18, color:'#6c63ff', animation:'bounceRight 1.2s ease-in-out infinite'}}>›</span>
+        <span style={{fontSize:18, color:'#6c63ff', animation:'bounceRight 1.2s ease-in-out infinite', animationDelay:'0.15s'}}>›</span>
+      </div>
     </div>
+    {!tableScrolled && (
+      <div style={{textAlign:'center',marginTop:-68,marginBottom:68,fontSize:11,fontWeight:600,color:'#4a4a5a',letterSpacing:'2.5px',textTransform:'uppercase'}}>
+        swipe to compare →
+      </div>
+    )}
     <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(300px,1fr))',gap:14}}>
       {[
         {tier:'Entry Level',name:'Premium Carbon',desc:'Solid protection and clean looks at the best price.',from:'$45',pros:['Budget-friendly for daily drivers','Matte black finish — clean OEM look','No signal or GPS interference','Will not fade or turn purple']},
@@ -1433,7 +1481,7 @@ function WarrantyPage() {
   const s = [
     {num:'01',title:'100% Satisfaction Guaranteed',body:'If anything beyond our accepted minor flaw standard is present, we come back and make it right at no charge.'},
     {num:'02',title:'Minor Imperfections',body:'We allow up to 4 minor imperfections per install — tiny dust particles, small edge gaps, micro bubbles during curing, or minor debris marks.'},
-    {num:'03',title:'Mobile Tinting',body:'If conditions are not suitable for a quality install, we reschedule. We never proceed on a day we cannot confidently deliver.'},
+    {num:'03',title:'Mobile Tinting & Garage Requirement',body:'For the best possible result on a mobile job, a garage or covered space is strongly recommended. Working outdoors exposes the film to dust, wind, and debris that can cause minor imperfections beyond our standard allowance. If no covered space is available, we will still do our very best — but we cannot guarantee a perfect result under open-air conditions. If conditions are not suitable for a quality install, we reschedule. We never proceed on a day we cannot confidently deliver.'},
     {num:'04',title:'Lifetime Warranty',body:'Covers bubbling, peeling, lifting, cracking, delamination, color fading, adhesive failure, and manufacturer defects. Full labor included.'},
     {num:'05',title:'Warranty Exclusions',body:'Physical damage, rolling windows within 5–7 days, ammonia-based cleaners, accident damage, third-party removal, or care neglect.'},
     {num:'06',title:'Making a Claim',body:'Contact us directly for a free inspection. Proof of original service required. Non-transferable unless agreed in writing.'},
@@ -1624,6 +1672,8 @@ PRICING - COUPES: Premium Carbon: all sides $50, windshield $80, full no wind $1
 SEDANS: Premium Carbon: 2 sides $65, all 4 $105, windshield $80, full no wind $185, whole $265. Nano Carbon: 2 sides $75, all 4 $145, windshield $115, full no wind $260, whole $375. Nano Ceramic: 2 sides $115, all 4 $225, windshield $180, full no wind $395, whole $575.
 TRUCKS/SUVs: Premium Carbon: 2 sides $65, all sides $120, windshield $115, full no wind $210, whole $325. Nano Carbon: 2 sides $85, all sides $170, windshield $145, full no wind $305, whole $450. Nano Ceramic: 2 sides $135, all sides $260, windshield $220, full no wind $470, whole $690.
 ADD-ON: Computer Cut Film +$50.
+
+MOBILE JOB NOTICE: If the customer is booking a mobile job, always ask if they have access to a garage or covered parking space at their location. Let them know that without a garage or covered area, there is a significantly higher chance of minor imperfections (dust, wind, debris) affecting the install quality. We will always do our best, but we cannot guarantee a flawless result on an open-air mobile job. Mention this early and clearly.
 
 BOOKING FLOW: Collect: name, email, phone, vehicle year/make/model, tint darkness %, tint type (Premium Carbon/Nano Carbon/Nano Ceramic), previously tinted (Yes/No/I don't know), waiting or leaving during appointment, any notes, preferred date.
 Once you have all info, output: [BOOK:event_key:YYYY-MM-DD:name:email:phone:vehicle:tint_type:prev_tinted:waiting_or_leaving:extra_notes]
