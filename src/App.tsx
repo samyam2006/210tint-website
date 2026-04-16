@@ -1421,11 +1421,13 @@ function PricingPage() {
 function ComparePage() {
   useReveal();
   const [tableScrolled, setTableScrolled] = useState(false);
+  const tableRef = useRef<HTMLDivElement>(null);
+  const scrollTable = () => { tableRef.current?.scrollBy({ left: 220, behavior: 'smooth' }); setTableScrolled(true); };
   const rows = [['UV Rejection','~98%','~99%','≥99.9%'],['Heat Rejection','25–35%','35–50%','50–75%'],['Infrared Blocking','Low','Moderate','Very High'],['Signal Interference','None','None','None'],['Glare Reduction','Up to 50%','Up to 60%','Up to 70%'],['Color Stability','Excellent','Excellent','Permanent'],['Optical Clarity','Good','Good','Crystal Clear'],['Warranty','3–5 Years','5–7 Years','Lifetime'],['Price Tier','Entry','Mid-Range','Premium']];
   return (<div style={{paddingTop:130}}><section style={{padding:'0 28px 120px',maxWidth:1320,margin:'0 auto'}}>
     <SH tag="Film Guide" title="Compare Tint Options" sub="Comfort, protection, and long-term value — not just darkness." />
     <div style={{position:'relative',marginBottom:80}}>
-      <div className="rv" style={{overflowX:'auto'}} onScroll={(e)=>{ if(e.currentTarget.scrollLeft>10) setTableScrolled(true); }}>
+      <div ref={tableRef} className="rv" style={{overflowX:'auto'}} onScroll={(e)=>{ if(e.currentTarget.scrollLeft>10) setTableScrolled(true); }}>
         <table style={{width:'100%',borderCollapse:'collapse',minWidth:640}}>
           <thead><tr style={{borderBottom:'2px solid rgba(255,255,255,0.06)'}}>
             {['Feature','Premium Carbon','Nano Carbon','Nano Ceramic'].map((h,i)=>(<th key={i} style={{padding:'16px 20px',textAlign:'left',fontSize:12,fontWeight:700,letterSpacing:'1.5px',textTransform:'uppercase',color:i===3?'#6c63ff':i===0?'#4a4a5a':'#eee',fontFamily:'Space Grotesk'}}>{h}</th>))}
@@ -1435,7 +1437,7 @@ function ComparePage() {
           </tr>))}</tbody>
         </table>
       </div>
-      {/* Right-edge fade + swipe hint — visible until user scrolls */}
+      {/* Right-edge fade — visible until user scrolls */}
       <div style={{
         position:'absolute', top:0, right:0, bottom:0, width:80,
         background:'linear-gradient(to right, transparent, #05050f)',
@@ -1443,21 +1445,26 @@ function ComparePage() {
         opacity: tableScrolled ? 0 : 1,
         transition:'opacity 0.4s ease',
       }} />
-      <div style={{
+      {/* Clickable arrow button */}
+      <button onClick={scrollTable} style={{
         position:'absolute', top:'50%', right:10, transform:'translateY(-50%)',
         display:'flex', flexDirection:'column', alignItems:'center', gap:4,
-        pointerEvents:'none',
+        background:'none', border:'none', cursor:'pointer', padding:8,
         opacity: tableScrolled ? 0 : 1,
+        pointerEvents: tableScrolled ? 'none' : 'all',
         transition:'opacity 0.4s ease',
       }}>
         <span style={{fontSize:18, color:'#6c63ff', animation:'bounceRight 1.2s ease-in-out infinite'}}>›</span>
         <span style={{fontSize:18, color:'#6c63ff', animation:'bounceRight 1.2s ease-in-out infinite', animationDelay:'0.15s'}}>›</span>
-      </div>
+      </button>
     </div>
     {!tableScrolled && (
-      <div style={{textAlign:'center',marginTop:-68,marginBottom:68,fontSize:11,fontWeight:600,color:'#4a4a5a',letterSpacing:'2.5px',textTransform:'uppercase'}}>
+      <button onClick={scrollTable} style={{
+        display:'block', margin:'-68px auto 68px', background:'none', border:'none', cursor:'pointer',
+        fontSize:11, fontWeight:600, color:'#4a4a5a', letterSpacing:'2.5px', textTransform:'uppercase',
+      }}>
         swipe to compare →
-      </div>
+      </button>
     )}
     <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(300px,1fr))',gap:14}}>
       {[
