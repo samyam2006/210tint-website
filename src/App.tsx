@@ -1414,6 +1414,9 @@ function PricingPage() {
       <div><h3 style={{fontFamily:'Space Grotesk',fontWeight:700,fontSize:18}}>Computer-Cut Film Upgrade</h3><p style={{color:'#8e8ea0',fontSize:13,marginTop:6,maxWidth:480,lineHeight:1.7}}>Pre-cut to exact window shapes. No blade touches your car. Cleaner edges, tighter fit, flawless finish.</p></div>
       <div style={{textAlign:'center'}}><span style={{fontFamily:'Space Grotesk',fontSize:28,fontWeight:800,color:'#6c63ff'}}>+$50</span><span style={{display:'block',fontSize:11,color:'#4a4a5a'}}>one-time upgrade</span></div>
     </div>
+    <p className="rv" style={{marginTop:24,fontSize:12,color:'#4a4a5a',textAlign:'center',lineHeight:1.8}}>
+      All services are non-refundable once installation has begun. If there is an issue with your install, we will correct it at no charge under our satisfaction guarantee — no monetary refunds are issued.
+    </p>
   </section></div>);
 }
 
@@ -1447,15 +1450,17 @@ function ComparePage() {
       }} />
       {/* Clickable arrow button — mobile only */}
       <button className="mobile-only" onClick={scrollTable} style={{
-        position:'absolute', top:'50%', right:10, transform:'translateY(-50%)',
-        flexDirection:'column', alignItems:'center', gap:4,
-        background:'none', border:'none', cursor:'pointer', padding:8,
+        position:'absolute', top:'50%', right:8, transform:'translateY(-50%)',
+        flexDirection:'column', alignItems:'center', gap:2,
+        background:'rgba(108,99,255,0.15)', border:'2px solid rgba(108,99,255,0.5)',
+        borderRadius:'50%', width:48, height:48,
+        cursor:'pointer', padding:0,
         opacity: tableScrolled ? 0 : 1,
         pointerEvents: tableScrolled ? 'none' : 'all',
         transition:'opacity 0.4s ease',
+        animation:'bounceRight 1.2s ease-in-out infinite',
       }}>
-        <span style={{fontSize:18, color:'#6c63ff', animation:'bounceRight 1.2s ease-in-out infinite'}}>›</span>
-        <span style={{fontSize:18, color:'#6c63ff', animation:'bounceRight 1.2s ease-in-out infinite', animationDelay:'0.15s'}}>›</span>
+        <span style={{fontSize:28, color:'#6c63ff', lineHeight:1}}>›</span>
       </button>
     </div>
     {!tableScrolled && (
@@ -1492,6 +1497,7 @@ function WarrantyPage() {
     {num:'04',title:'Lifetime Warranty',body:'Covers bubbling, peeling, lifting, cracking, delamination, color fading, adhesive failure, and manufacturer defects. Full labor included.'},
     {num:'05',title:'Warranty Exclusions',body:'Physical damage, rolling windows within 5–7 days, ammonia-based cleaners, accident damage, third-party removal, or care neglect.'},
     {num:'06',title:'Making a Claim',body:'Contact us directly for a free inspection. Proof of original service required. Non-transferable unless agreed in writing.'},
+    {num:'07',title:'No Full Refunds',body:'All services are non-refundable once the installation has begun. We do not issue cash or card refunds under any circumstances. If you are unhappy with the result, we will rebook and correct the issue at no charge under our satisfaction guarantee — but no monetary refunds will be issued.'},
   ];
   return (<div style={{paddingTop:130}}><section style={{padding:'0 28px 120px',maxWidth:880,margin:'0 auto'}}>
     <SH tag="Our Commitment" title="Warranty & Policy" sub="Backed by our satisfaction guarantee and lifetime warranty." />
