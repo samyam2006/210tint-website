@@ -1437,18 +1437,18 @@ function ComparePage() {
           </tr>))}</tbody>
         </table>
       </div>
-      {/* Right-edge fade — visible until user scrolls */}
-      <div style={{
+      {/* Right-edge fade — mobile only, visible until user scrolls */}
+      <div className="mobile-only" style={{
         position:'absolute', top:0, right:0, bottom:0, width:80,
         background:'linear-gradient(to right, transparent, #05050f)',
         pointerEvents:'none',
         opacity: tableScrolled ? 0 : 1,
         transition:'opacity 0.4s ease',
       }} />
-      {/* Clickable arrow button */}
-      <button onClick={scrollTable} style={{
+      {/* Clickable arrow button — mobile only */}
+      <button className="mobile-only" onClick={scrollTable} style={{
         position:'absolute', top:'50%', right:10, transform:'translateY(-50%)',
-        display:'flex', flexDirection:'column', alignItems:'center', gap:4,
+        flexDirection:'column', alignItems:'center', gap:4,
         background:'none', border:'none', cursor:'pointer', padding:8,
         opacity: tableScrolled ? 0 : 1,
         pointerEvents: tableScrolled ? 'none' : 'all',
@@ -1459,8 +1459,8 @@ function ComparePage() {
       </button>
     </div>
     {!tableScrolled && (
-      <button onClick={scrollTable} style={{
-        display:'block', margin:'-68px auto 68px', background:'none', border:'none', cursor:'pointer',
+      <button className="mobile-only" onClick={scrollTable} style={{
+        margin:'-68px auto 68px', background:'none', border:'none', cursor:'pointer',
         fontSize:11, fontWeight:600, color:'#4a4a5a', letterSpacing:'2.5px', textTransform:'uppercase',
       }}>
         swipe to compare →
