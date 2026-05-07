@@ -944,7 +944,7 @@ function Footer({ go }: { go: (p: string) => void }) {
         </div>
         <div>
           <h4 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 12, letterSpacing: '3px', color: '#4a4a5a', marginBottom: 20, textTransform: 'uppercase' }}>Hours</h4>
-          <p style={{ color: '#8e8ea0', fontSize: 16, lineHeight: 2.2 }}>Mon — Sat: 8AM — 6PM<br/>Sun: By Appointment</p>
+          <p style={{ color: '#8e8ea0', fontSize: 16, lineHeight: 2.2 }}>Mon — Sat: 6AM — 11PM<br/>Sun: By Appointment</p>
         </div>
       </div>
       <div style={{ maxWidth: 1320, margin: '56px auto 0', paddingTop: 24, borderTop: '1px solid rgba(255,255,255,0.04)', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
