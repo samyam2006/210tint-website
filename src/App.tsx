@@ -783,7 +783,6 @@ function PriceCalculator() {
 const NAV = [
   { id: 'home', label: 'Home' }, { id: 'portfolio', label: 'Portfolio' },
   { id: 'pricing', label: 'Pricing' }, { id: 'compare', label: 'Compare Films' },
-  { id: 'warranty', label: 'Warranty' }, { id: 'tint-laws', label: 'MD Tint Laws' },
   { id: 'contact', label: 'Contact' },
 ];
 
@@ -932,15 +931,15 @@ function Footer({ go }: { go: (p: string) => void }) {
         </div>
         <div>
           <h4 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 12, letterSpacing: '3px', color: '#4a4a5a', marginBottom: 20, textTransform: 'uppercase' }}>Navigation</h4>
-          {['Portfolio','Pricing','Compare Films','Warranty','Contact'].map(l => <button key={l} onClick={() => go(l === 'Compare Films' ? 'compare' : l.toLowerCase())} style={{ display: 'block', background: 'none', border: 'none', cursor: 'pointer', color: '#8e8ea0', fontSize: 16, padding: '5px 0' }}>{l}</button>)}
+          {['Portfolio','Pricing','Compare Films','Contact'].map(l => <button key={l} onClick={() => go(l === 'Compare Films' ? 'compare' : l.toLowerCase())} style={{ display: 'block', background: 'none', border: 'none', cursor: 'pointer', color: '#8e8ea0', fontSize: 16, padding: '5px 0' }}>{l}</button>)}
         </div>
         <div>
           <h4 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 12, letterSpacing: '3px', color: '#4a4a5a', marginBottom: 20, textTransform: 'uppercase' }}>Resources</h4>
-          {[{label:'MD Tint Laws',id:'tint-laws'},{label:'Ceramic vs Carbon',id:'ceramic-vs-carbon'},{label:'Best Tint for Summer',id:'md-summer-tint'}].map(l => <button key={l.id} onClick={() => go(l.id)} style={{ display: 'block', background: 'none', border: 'none', cursor: 'pointer', color: '#8e8ea0', fontSize: 16, padding: '5px 0' }}>{l.label}</button>)}
+          {[{label:'Tint Simulator',id:'tint-simulator'},{label:'Starlight Headliner',id:'starlight'},{label:'Warranty',id:'warranty'},{label:'MD Tint Laws',id:'tint-laws'},{label:'Ceramic vs Carbon',id:'ceramic-vs-carbon'},{label:'Best Tint for Summer',id:'md-summer-tint'}].map(l => <button key={l.id} onClick={() => go(l.id)} style={{ display: 'block', background: 'none', border: 'none', cursor: 'pointer', color: '#8e8ea0', fontSize: 16, padding: '5px 0' }}>{l.label}</button>)}
         </div>
         <div>
           <h4 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 12, letterSpacing: '3px', color: '#4a4a5a', marginBottom: 20, textTransform: 'uppercase' }}>Contact</h4>
-          <p style={{ color: '#8e8ea0', fontSize: 16, lineHeight: 2.2 }}>210tints@gmail.com<br/>(240) 338-7762<br/>10451 Fair Oaks Drive<br/>Columbia, MD 21044</p>
+          <p style={{ color: '#8e8ea0', fontSize: 16, lineHeight: 2.2 }}>210tints@gmail.com<br/>(240) 338-7762<br/>Columbia, MD</p>
         </div>
         <div>
           <h4 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 12, letterSpacing: '3px', color: '#4a4a5a', marginBottom: 20, textTransform: 'uppercase' }}>Hours</h4>
@@ -1254,24 +1253,6 @@ function HomePage({ go }: { go: (p: string) => void }) {
         </div>
       </section>
 
-      {/* ═══ TINT SIMULATOR ═══ */}
-      <SectionDivider variant="dots" />
-      <section style={{ padding: '100px 28px 140px', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ maxWidth: 1320, margin: '0 auto', position: 'relative', zIndex: 1 }}>
-          <div className="rv-blur"><SH tag="Try It" title="Tint Simulator" sub="Preview how different films and darkness levels look on your vehicle." /></div>
-          <TintSimulator />
-        </div>
-      </section>
-
-      {/* ═══ PRICING CALCULATOR ═══ */}
-      <section style={{ padding: '120px 28px', background: '#0a0a0f', position: 'relative', overflow: 'hidden' }}>
-        <FloatingOrbs />
-        <div style={{ maxWidth: 800, margin: '0 auto', position: 'relative', zIndex: 1 }}>
-          <div className="rv-blur"><SH tag="Instant Quote" title="Price Calculator" sub="Select your vehicle, film, and coverage to get an instant price." /></div>
-          <PriceCalculator />
-        </div>
-      </section>
-
       {/* ═══ FAQ ═══ */}
       <SectionDivider variant="dots" />
       <section style={{ padding: '100px 28px 140px', position: 'relative', overflow: 'hidden' }}>
@@ -1414,7 +1395,42 @@ function PricingPage() {
       <div><h3 style={{fontFamily:'Space Grotesk',fontWeight:700,fontSize:18}}>Computer-Cut Film Upgrade</h3><p style={{color:'#8e8ea0',fontSize:13,marginTop:6,maxWidth:480,lineHeight:1.7}}>Pre-cut to exact window shapes. No blade touches your car. Cleaner edges, tighter fit, flawless finish.</p></div>
       <div style={{textAlign:'center'}}><span style={{fontFamily:'Space Grotesk',fontSize:28,fontWeight:800,color:'#6c63ff'}}>+$50</span><span style={{display:'block',fontSize:11,color:'#4a4a5a'}}>one-time upgrade</span></div>
     </div>
-    <p className="rv" style={{marginTop:24,fontSize:12,color:'#4a4a5a',textAlign:'center',lineHeight:1.8}}>
+
+    {/* ═══ STARLIGHT HEADLINER PRICING ═══ */}
+    <div className="rv" style={{marginTop:60,padding:'40px 36px',borderRadius:4,border:'1px solid rgba(108,99,255,0.25)',background:'linear-gradient(180deg,#0a0a0f 0%,#0d0a1a 100%)'}}>
+      <div style={{display:'flex',alignItems:'flex-start',gap:14,flexWrap:'wrap',justifyContent:'space-between',marginBottom:20}}>
+        <div>
+          <span style={{fontSize:10,fontWeight:700,letterSpacing:'3px',textTransform:'uppercase',color:'#6c63ff'}}>New Service</span>
+          <h3 style={{fontFamily:'Space Grotesk',fontWeight:800,fontSize:26,marginTop:6}}>Starlight Headliner</h3>
+          <p style={{color:'#8e8ea0',fontSize:14,marginTop:8,maxWidth:600,lineHeight:1.7}}>Custom fiber-optic star ceiling installed in your car's headliner. A galaxy of pinpoint lights that turn on at night — fully customizable, dimmable, and wired into your dome light or a discreet switch.</p>
+        </div>
+      </div>
+      <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(220px,1fr))',gap:14,marginTop:20}}>
+        <div style={{padding:'22px 20px',borderRadius:4,background:'#0a0a0f',border:'1px solid rgba(108,99,255,0.3)'}}>
+          <span style={{fontSize:10,fontWeight:700,letterSpacing:'2.5px',textTransform:'uppercase',color:'#8b83ff'}}>Starter</span>
+          <div style={{marginTop:10}}><span style={{fontFamily:'Space Grotesk',fontSize:30,fontWeight:800,color:'#fff'}}>$700</span></div>
+          <p style={{color:'#8e8ea0',fontSize:13,marginTop:8,lineHeight:1.6}}>550 stars — clean, even galaxy effect. Great entry-level install.</p>
+        </div>
+        <div style={{padding:'22px 20px',borderRadius:4,background:'#0a0a0f',border:'1px solid rgba(255,255,255,0.04)'}}>
+          <span style={{fontSize:10,fontWeight:700,letterSpacing:'2.5px',textTransform:'uppercase',color:'#4a4a5a'}}>Add-On</span>
+          <div style={{marginTop:10}}><span style={{fontFamily:'Space Grotesk',fontSize:30,fontWeight:800,color:'#fff'}}>+$100–150</span></div>
+          <p style={{color:'#8e8ea0',fontSize:13,marginTop:8,lineHeight:1.6}}>Per additional 100 stars. Build a denser, more dramatic night sky.</p>
+        </div>
+        <div style={{padding:'22px 20px',borderRadius:4,background:'#0a0a0f',border:'1px solid rgba(255,255,255,0.04)'}}>
+          <span style={{fontSize:10,fontWeight:700,letterSpacing:'2.5px',textTransform:'uppercase',color:'#4a4a5a'}}>Includes</span>
+          <p style={{color:'#8e8ea0',fontSize:13,marginTop:14,lineHeight:1.7}}>Premium fiber optics, dimmable controller, professional headliner removal & reinstall.</p>
+        </div>
+      </div>
+      <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" style={{display:'inline-block',marginTop:24,padding:'13px 28px',borderRadius:3,background:'#6c63ff',color:'#fff',fontSize:13,fontWeight:700,textDecoration:'none',boxShadow:'0 4px 20px rgba(108,99,255,0.3)'}}>Book a Starlight Install</a>
+    </div>
+
+    {/* ═══ INSTANT PRICE CALCULATOR (moved from homepage) ═══ */}
+    <div style={{marginTop:80}}>
+      <div className="rv-blur"><SH tag="Instant Quote" title="Price Calculator" sub="Select your vehicle, film, and coverage to get an instant price." /></div>
+      <div style={{maxWidth:800,margin:'0 auto'}}><PriceCalculator /></div>
+    </div>
+
+    <p className="rv" style={{marginTop:60,fontSize:12,color:'#4a4a5a',textAlign:'center',lineHeight:1.8}}>
       All services are non-refundable once installation has begun. If there is an issue with your install, we will correct it at no charge under our satisfaction guarantee — no monetary refunds are issued.
     </p>
   </section></div>);
@@ -1567,7 +1583,7 @@ function ContactPage() {
         )}
       </div>
       <div className="rv d2">
-        {[{label:'Address',val:'10451 Fair Oaks Dr\nColumbia, MD 21044'},{label:'Phone',val:'(240) 338-7762'},{label:'Email',val:'210tints@gmail.com'},{label:'Hours',val:'Mon — Sat: 8 AM — 6 PM\nSun: By Appointment'}].map((c,i)=>(<div key={i} style={{padding:'22px 24px',borderRadius:4,border:'1px solid rgba(255,255,255,0.04)',background:'#0a0a0f',marginBottom:10}}>
+        {[{label:'Service Area',val:'Mobile — Columbia, MD\n& the entire DMV'},{label:'Phone',val:'(240) 338-7762'},{label:'Email',val:'210tints@gmail.com'},{label:'Hours',val:'Mon — Sat: 6 AM — 11 PM\nSun: By Appointment'}].map((c,i)=>(<div key={i} style={{padding:'22px 24px',borderRadius:4,border:'1px solid rgba(255,255,255,0.04)',background:'#0a0a0f',marginBottom:10}}>
           <span style={{fontSize:10,fontWeight:700,letterSpacing:'3px',textTransform:'uppercase',color:'#6c63ff',display:'block',marginBottom:6}}>{c.label}</span>
           <p style={{color:'#8e8ea0',fontSize:14,whiteSpace:'pre-line',lineHeight:1.7}}>{c.val}</p>
         </div>))}
@@ -1669,15 +1685,27 @@ function ChatWidget() {
   const [input, setInput] = useState('');
   const [typing, setTyping] = useState(false);
   const [hasOpened, setHasOpened] = useState(false);
+  const [showIntro, setShowIntro] = useState(false);
   const msgsRef = useRef<HTMLDivElement>(null);
   const historyRef = useRef<{ role: string; content: string }[]>([]);
   const eventCacheRef = useRef<any[] | null>(null);
+
+  // Intro pop-up — appears 4s after page load if user hasn't dismissed it before
+  useEffect(() => {
+    if (sessionStorage.getItem('210-intro-dismissed') === '1') return;
+    const t = setTimeout(() => setShowIntro(true), 4000);
+    return () => clearTimeout(t);
+  }, []);
+  const dismissIntro = () => {
+    setShowIntro(false);
+    sessionStorage.setItem('210-intro-dismissed', '1');
+  };
 
   const todayStr = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
   const SYSTEM = `You are the AI booking agent for 210 Tints — a 4.9-star rated mobile window tinting service in Columbia, Maryland serving the DMV. We proudly use UVIRON performance films.
 
-CONTACT: (240) 338-7762, 210tints@gmail.com. Mobile service — we come to YOU. Shop: 10451 Fair Oaks, Columbia MD 21044.
+CONTACT: (240) 338-7762, 210tints@gmail.com. 100% mobile service — we come to YOU anywhere in the DMV.
 
 FILMS: Premium Carbon (entry, ~98% UV, 3-5yr warranty), Nano Carbon PUREMAX (mid, 99% UV, 35-58% TSER, lifetime warranty), Nano Ceramic KOOLMAX (top, 99% UV, 79-89% IR rejection, lifetime warranty).
 
@@ -1734,7 +1762,7 @@ Today: ${todayStr}. Use current year or later for dates. Be friendly, conversati
       if (url) {
         const parts = name.trim().split(' ');
         const cleanPhone = phone.startsWith('+1') ? phone : '+1' + phone.replace(/\D/g, '');
-        url += `?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&first_name=${encodeURIComponent(parts[0] || '')}&last_name=${encodeURIComponent(parts.slice(1).join(' ') || '')}&location=${encodeURIComponent('10451 Fair Oaks, Columbia MD 21044')}&a1=${encodeURIComponent(cleanPhone)}&a2=${encodeURIComponent(vehicle)}&a3=${encodeURIComponent(tintType)}&a4=${encodeURIComponent(prevTinted)}&a5=${encodeURIComponent(waitOrLeave)}&a6=${encodeURIComponent(extraNotes)}`;
+        url += `?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&first_name=${encodeURIComponent(parts[0] || '')}&last_name=${encodeURIComponent(parts.slice(1).join(' ') || '')}&a1=${encodeURIComponent(cleanPhone)}&a2=${encodeURIComponent(vehicle)}&a3=${encodeURIComponent(tintType)}&a4=${encodeURIComponent(prevTinted)}&a5=${encodeURIComponent(waitOrLeave)}&a6=${encodeURIComponent(extraNotes)}`;
         const t = new Date(startTime).toLocaleString([], { weekday: 'long', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
         addMsg('assistant', '', `<div style="padding:10px 14px;border-radius:16px;border-bottom-left-radius:4px;background:#0f0f0f;border:1px solid #222;font-size:13.5px;line-height:1.6">🎉 <strong>Almost done, ${parts[0]}!</strong><br><br>Your slot for <strong>${t}</strong> is being held.<br><br><a href="${url}" target="_blank" rel="noreferrer" style="display:inline-block;background:#4B5FE0;color:#fff;padding:10px 20px;border-radius:8px;text-decoration:none;font-weight:700;font-size:13px;margin:4px 0">✅ Confirm My Appointment</a><br><br><span style="font-size:11px;color:#6b7280">You'll get a confirmation email once booked.</span></div>`);
         return true;
@@ -1799,6 +1827,7 @@ Today: ${todayStr}. Use current year or later for dates. Be friendly, conversati
   const toggle = () => {
     const next = !isOpen;
     setIsOpen(next);
+    if (next) dismissIntro();
     if (next && !hasOpened) {
       setHasOpened(true);
       const greet = { role: 'assistant', content: "Hey! 👋 Welcome to **210 Tints** — Columbia's mobile tinting specialists using **UVIRON** performance films.\n\nI can help with pricing, film info, or book you in. We come to you anywhere in the DMV! What can I help with?" };
@@ -1842,6 +1871,27 @@ Today: ${todayStr}. Use current year or later for dates. Be friendly, conversati
 
   return (
     <>
+      {/* Intro pop-up bubble — appears 4s after load, dismissible */}
+      <div className="chat-intro-bubble" style={{
+        position: 'fixed', bottom: 100, right: 28, maxWidth: 280, zIndex: 9997,
+        background: '#fff', color: '#0a0a0f', borderRadius: 16, padding: '14px 38px 14px 16px',
+        boxShadow: '0 12px 40px rgba(0,0,0,0.35), 0 0 0 1px rgba(75,95,224,0.15)',
+        opacity: showIntro && !isOpen ? 1 : 0,
+        transform: showIntro && !isOpen ? 'translateY(0) scale(1)' : 'translateY(10px) scale(0.96)',
+        pointerEvents: showIntro && !isOpen ? 'all' : 'none',
+        transition: 'opacity 0.4s ease, transform 0.4s cubic-bezier(0.34,1.56,0.64,1)',
+        cursor: 'pointer',
+      }} onClick={() => { dismissIntro(); toggle(); }}>
+        <div style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 14, marginBottom: 2 }}>Hi! I'm the 210 assistant 👋</div>
+        <div style={{ fontSize: 13, color: '#4a4a5a', lineHeight: 1.45 }}>Ask me anything — pricing, films, or book in seconds.</div>
+        <button onClick={(e) => { e.stopPropagation(); dismissIntro(); }} style={{
+          position: 'absolute', top: 6, right: 6, width: 24, height: 24, borderRadius: '50%',
+          border: 'none', background: 'rgba(0,0,0,0.06)', color: '#4a4a5a', cursor: 'pointer',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, lineHeight: 1, padding: 0,
+        }} aria-label="Dismiss">×</button>
+        {/* Tail pointing to chat button */}
+        <div style={{ position: 'absolute', bottom: -7, right: 24, width: 14, height: 14, background: '#fff', transform: 'rotate(45deg)', boxShadow: '2px 2px 4px rgba(0,0,0,0.04)' }} />
+      </div>
       <button className="chat-toggle-btn" onClick={toggle} style={{ position: 'fixed', bottom: 28, right: 28, width: 60, height: 60, background: '#4B5FE0', border: 'none', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999, animation: 'tintRing 3s ease infinite', transition: 'transform 0.2s' }}
         onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.08)'; }} onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}>
         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
@@ -2054,6 +2104,63 @@ function MDSummerTintPage() {
   </section></div>);
 }
 
+/* ═══ TINT SIMULATOR PAGE ═══ */
+function TintSimulatorPage() {
+  useReveal();
+  return (<div style={{ paddingTop: 130 }}><section style={{ padding: '0 28px 120px', maxWidth: 1320, margin: '0 auto' }}>
+    <SH tag="Try It" title="Tint Simulator" sub="Preview how different films and darkness levels look on your vehicle." />
+    <TintSimulator />
+  </section></div>);
+}
+
+/* ═══ STARLIGHT HEADLINER PAGE ═══ */
+function StarlightPage({ go }: { go: (p: string) => void }) {
+  useReveal();
+  return (<div style={{ paddingTop: 130 }}><section style={{ padding: '0 28px 120px', maxWidth: 880, margin: '0 auto' }}>
+    <SH tag="New Service" title="Starlight Headliner" sub="A custom fiber-optic galaxy installed in your car's ceiling. Made for night drives." />
+
+    <div className="rv" style={{ padding: '32px', borderRadius: 4, border: '1px solid rgba(108,99,255,0.15)', background: 'linear-gradient(180deg,#0a0a0f 0%,#0d0a1a 100%)', marginBottom: 32 }}>
+      <h3 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 20, marginBottom: 16 }}>What Is a Starlight Headliner?</h3>
+      <p style={{ color: '#8e8ea0', fontSize: 16, lineHeight: 1.8 }}>Starlight headliners replace your car's stock fabric ceiling with hundreds of fiber-optic strands that create a starry-night effect. Originally made famous by Rolls-Royce, the install is now available for any vehicle. The lights are dimmable, energy-efficient, and wired into your dome light or a hidden switch.</p>
+    </div>
+
+    <div className="rv" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(240px,1fr))', gap: 14, marginBottom: 32 }}>
+      <div style={{ padding: '24px 22px', borderRadius: 4, background: '#0a0a0f', border: '1px solid rgba(108,99,255,0.3)' }}>
+        <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2.5px', textTransform: 'uppercase', color: '#8b83ff' }}>Starter</span>
+        <div style={{ marginTop: 10 }}><span style={{ fontFamily: 'Space Grotesk', fontSize: 32, fontWeight: 800 }}>$700</span></div>
+        <p style={{ color: '#8e8ea0', fontSize: 13, marginTop: 10, lineHeight: 1.6 }}>550 stars — clean, even galaxy effect. Great entry-level install.</p>
+      </div>
+      <div style={{ padding: '24px 22px', borderRadius: 4, background: '#0a0a0f', border: '1px solid rgba(255,255,255,0.04)' }}>
+        <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2.5px', textTransform: 'uppercase', color: '#4a4a5a' }}>Add Density</span>
+        <div style={{ marginTop: 10 }}><span style={{ fontFamily: 'Space Grotesk', fontSize: 32, fontWeight: 800 }}>+$100–150</span></div>
+        <p style={{ color: '#8e8ea0', fontSize: 13, marginTop: 10, lineHeight: 1.6 }}>Per additional 100 stars. Build a denser, more dramatic night sky.</p>
+      </div>
+    </div>
+
+    {[
+      { title: 'Fully Customizable', body: 'Choose your star density (550 base, up to 1,500+), shooting-star effects, color temperature, and even constellation patterns. We design each install to match the vibe of your vehicle.' },
+      { title: 'Premium Fiber Optics', body: 'We use high-grade fiber strands paired with a dimmable LED illuminator. The result: pinpoint stars with no hot spots, no wiring visible, and zero impact on your headliner once installed.' },
+      { title: 'Professional Headliner Removal', body: 'Your headliner is carefully removed, the fiber array is hand-installed point-by-point, and the headliner is reinstalled with no signs of modification. The factory finish is preserved.' },
+      { title: 'Dimmable & Switchable', body: 'Wired into your dome light circuit by default, or we can run a discreet switch. Dim from a soft accent glow all the way up to a full night-sky effect.' },
+      { title: 'Safe for Your Vehicle', body: 'Low-voltage LED system pulls minimal power, generates no heat, and is fully reversible. No drilling into roof panels, no damage to electronics, no impact on your warranty.' },
+    ].map((s, i) => (
+      <div key={i} className={`rv d${(i % 3) + 1}`} style={{ padding: '28px 32px', borderRadius: 4, border: '1px solid rgba(255,255,255,0.04)', background: '#0a0a0f', marginBottom: 10 }}>
+        <h3 style={{ fontFamily: 'Space Grotesk', fontSize: 18, fontWeight: 700, marginBottom: 10 }}>{s.title}</h3>
+        <p style={{ color: '#8e8ea0', fontSize: 15, lineHeight: 1.8 }}>{s.body}</p>
+      </div>
+    ))}
+
+    <div className="rv" style={{ textAlign: 'center', padding: '48px 28px', marginTop: 40, borderRadius: 4, background: 'rgba(108,99,255,0.04)', border: '1px solid rgba(108,99,255,0.1)' }}>
+      <h3 style={{ fontFamily: 'Space Grotesk', fontSize: 22, fontWeight: 700, marginBottom: 12 }}>Turn Your Ceiling Into a Galaxy</h3>
+      <p style={{ color: '#8e8ea0', fontSize: 15, marginBottom: 24 }}>Book a Starlight install or chat with us about custom designs.</p>
+      <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+        <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" style={{ display: 'inline-block', background: '#6c63ff', color: '#fff', padding: '15px 40px', borderRadius: 3, fontSize: 16, fontWeight: 700, textDecoration: 'none', boxShadow: '0 4px 30px rgba(108,99,255,0.3)' }}>Book Now</a>
+        <button onClick={() => go('pricing')} style={{ background: 'transparent', color: '#fff', padding: '15px 40px', borderRadius: 3, border: '1px solid rgba(255,255,255,0.12)', fontSize: 16, fontWeight: 500, cursor: 'pointer' }}>View All Pricing</button>
+      </div>
+    </div>
+  </section></div>);
+}
+
 export default function App() {
   const [page, setPage] = useState('home');
   const [transitioning, setTransitioning] = useState(false);
@@ -2082,6 +2189,7 @@ export default function App() {
           .mob-btn{display:block!important}
           .chat-toggle-btn{bottom:68px!important;width:50px!important;height:50px!important}
           .chat-window{bottom:130px!important;right:12px!important;left:12px!important;width:auto!important;max-height:70vh!important}
+          .chat-intro-bubble{bottom:130px!important;right:12px!important;max-width:260px!important}
         }
         @media(max-width:640px){
           .hero-stats{grid-template-columns:repeat(2,1fr)!important;gap:20px!important}
@@ -2100,6 +2208,8 @@ export default function App() {
         {page==='tint-laws'&&<TintLawsPage go={go}/>}
         {page==='ceramic-vs-carbon'&&<CeramicVsCarbonPage/>}
         {page==='md-summer-tint'&&<MDSummerTintPage/>}
+        {page==='tint-simulator'&&<TintSimulatorPage/>}
+        {page==='starlight'&&<StarlightPage go={go}/>}
         {page==='contact'&&<ContactPage/>}
       </main>
       <Footer go={go} />
