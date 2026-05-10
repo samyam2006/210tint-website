@@ -1026,10 +1026,10 @@ function HomePage({ go }: { go: (p: string) => void }) {
   useReveal();
 
   const process = [
-    { num: '01', title: 'Book Online', desc: 'Select your vehicle, preferred film, and date. The entire process takes under two minutes.' },
-    { num: '02', title: 'We Come To You', desc: 'Our certified technicians arrive at your home, office, or any location across the DMV.' },
-    { num: '03', title: 'Precision Install', desc: 'UVIRON performance films applied with computer-cut precision. No blade touches your vehicle.' },
-    { num: '04', title: 'Drive Protected', desc: 'Up to 99.9% UV rejection, lifetime warranty, and a vehicle that commands attention.' },
+    { num: '01', title: 'Book Online', desc: 'Pick your vehicle, film, and date — under 2 minutes.' },
+    { num: '02', title: 'We Come To You', desc: 'Certified techs arrive anywhere in the DMV.' },
+    { num: '03', title: 'Precision Install', desc: 'Computer-cut UVIRON film, no blade on your car.' },
+    { num: '04', title: 'Drive Protected', desc: '99% UV blocked. Backed by a lifetime warranty.' },
   ];
 
   const whyUs = [
@@ -1146,26 +1146,36 @@ function HomePage({ go }: { go: (p: string) => void }) {
         </section>
       </ScrollRevealSection>
 
-      {/* ═══ HOW IT WORKS ═══ */}
+      {/* ═══ HOW IT WORKS — condensed timeline ═══ */}
       <SectionDivider variant="glow" />
-      <section style={{ padding: '100px 28px 140px', maxWidth: 1320, margin: '0 auto', position: 'relative' }}>
-        <SH tag="The Process" title="Four Steps to Perfection" sub="From booking to driving away protected — built for your convenience." />
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(260px,1fr))', gap: 0 }}>
-          {process.map((p, i) => (
-            <div key={i} className={`rv d${i + 1}`} style={{
-              padding: '48px 32px', background: i % 2 === 0 ? '#0a0a0f' : '#0d0d14',
-              borderTop: '2px solid transparent', position: 'relative', overflow: 'hidden',
-              transition: 'all 0.5s cubic-bezier(.16,1,.3,1)',
-            }}
-              onMouseEnter={(e) => { e.currentTarget.style.borderTopColor = '#6c63ff'; e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 12px 40px rgba(0,0,0,0.3)'; const num = e.currentTarget.querySelector('.step-num') as HTMLElement; if(num) num.style.opacity = '0.15'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.borderTopColor = 'transparent'; e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; const num = e.currentTarget.querySelector('.step-num') as HTMLElement; if(num) num.style.opacity = '0.06'; }}
-            >
-              <span className="step-num" style={{ fontFamily: 'Space Grotesk', fontSize: 72, fontWeight: 800, color: '#6c63ff', opacity: 0.06, position: 'absolute', top: 12, right: 16, lineHeight: 1, transition: 'opacity 0.5s ease' }}>{p.num}</span>
-              <span style={{ fontFamily: 'Space Grotesk', fontSize: 12, fontWeight: 700, color: '#6c63ff', letterSpacing: '3px' }}>Step {p.num}</span>
-              <h3 style={{ fontFamily: 'Space Grotesk', fontSize: 24, fontWeight: 700, marginTop: 16, marginBottom: 14 }}>{p.title}</h3>
-              <p style={{ color: '#8e8ea0', fontSize: 16, lineHeight: 1.8 }}>{p.desc}</p>
-            </div>
-          ))}
+      <section style={{ padding: '70px 28px 80px', maxWidth: 1100, margin: '0 auto' }}>
+        <SH tag="The Process" title="How It Works" sub="From booking to drive-away in four steps." />
+        <div className="rv" style={{ position: 'relative', marginTop: 40 }}>
+          {/* Horizontal connector line */}
+          <div className="how-line" style={{
+            position: 'absolute', left: '10%', right: '10%', top: 30, height: 2,
+            background: 'linear-gradient(90deg, transparent, rgba(108,99,255,0.35), rgba(108,99,255,0.35), transparent)',
+            zIndex: 0,
+          }} />
+          <div style={{
+            display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(180px,1fr))',
+            gap: 24, position: 'relative', zIndex: 1,
+          }}>
+            {process.map((p, i) => (
+              <div key={i} className={`rv d${i + 1}`} style={{ textAlign: 'center', padding: '0 8px' }}>
+                <div style={{
+                  width: 60, height: 60, borderRadius: '50%', margin: '0 auto 18px',
+                  background: '#0a0a0f', border: '1.5px solid rgba(108,99,255,0.4)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontFamily: 'Space Grotesk', fontSize: 17, fontWeight: 800, color: '#6c63ff',
+                  boxShadow: '0 0 28px rgba(108,99,255,0.18)',
+                  position: 'relative', zIndex: 2,
+                }}>{p.num}</div>
+                <h3 style={{ fontFamily: 'Space Grotesk', fontSize: 16, fontWeight: 700, marginBottom: 8 }}>{p.title}</h3>
+                <p style={{ color: '#8e8ea0', fontSize: 13.5, lineHeight: 1.65, maxWidth: 200, margin: '0 auto' }}>{p.desc}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -1214,43 +1224,6 @@ function HomePage({ go }: { go: (p: string) => void }) {
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* ═══ FEATURED WORK ═══ */}
-      <SectionDivider variant="dots" />
-      <section style={{ padding: '100px 28px 140px', maxWidth: 1320, margin: '0 auto' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: 20, marginBottom: 0 }}>
-          <SH tag="Portfolio" title="Recent Installations" align="left" />
-          <button onClick={() => go('portfolio')} className="rv d2" style={{ background: 'none', border: '1px solid rgba(255,255,255,0.08)', color: '#8e8ea0', padding: '10px 24px', borderRadius: 3, fontSize: 16, fontWeight: 500, cursor: 'pointer', marginBottom: 60 }}>View All</button>
-        </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(320px,1fr))', gap: 14 }}>
-          {[
-            { name: 'Lamborghini Urus', film: 'Premium Nano Ceramic', img: '/cars/lambo-urus.png' },
-            { name: 'Mercedes C63', film: 'Premium Carbon', img: '/cars/snowy-c63.png' },
-            { name: 'BMW M8', film: 'Standard Carbon', img: '/cars/snowy-m8.png' },
-          ].map((p, i) => (
-            <div key={i} className={`${i === 1 ? 'rv' : i === 0 ? 'rv-l' : 'rv-r'} d${i + 1}`} onClick={() => go('portfolio')} style={{
-              borderRadius: 4, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.04)',
-              background: '#0a0a0f', transition: 'all 0.6s cubic-bezier(.16,1,.3,1)', cursor: 'pointer',
-            }}
-              onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-8px) scale(1.01)'; e.currentTarget.style.borderColor = 'rgba(108,99,255,0.2)'; e.currentTarget.style.boxShadow = '0 20px 60px rgba(0,0,0,0.4)'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0) scale(1)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.04)'; e.currentTarget.style.boxShadow = 'none'; }}
-            >
-              <div style={{ overflow: 'hidden', height: 240 }}>
-                <img src={p.img} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.8s cubic-bezier(.16,1,.3,1)' }}
-                  onMouseEnter={(e) => { (e.target as HTMLElement).style.transform = 'scale(1.08)'; }}
-                  onMouseLeave={(e) => { (e.target as HTMLElement).style.transform = 'scale(1)'; }} />
-              </div>
-              <div style={{ padding: '18px 22px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div>
-                  <h3 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 17 }}>{p.name}</h3>
-                  <span style={{ fontSize: 12, fontWeight: 600, letterSpacing: '2px', textTransform: 'uppercase', color: '#6c63ff' }}>{p.film}</span>
-                </div>
-                <span style={{ color: '#4a4a5a', fontSize: 20, transition: 'transform 0.3s' }}>&rarr;</span>
-              </div>
-            </div>
-          ))}
         </div>
       </section>
 
