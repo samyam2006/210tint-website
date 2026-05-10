@@ -424,51 +424,116 @@ function CursorGlow() {
    ═══════════════════════════════════════════════════ */
 function ServiceAreaMap() {
   const [active, setActive] = useState<string | null>(null);
-  const areas = [
-    { id: 'howard', name: 'Howard County', d: 'M200,140 L260,120 L290,150 L280,200 L230,210 L195,180 Z', cx: 240, cy: 165 },
-    { id: 'montgomery', name: 'Montgomery County', d: 'M130,190 L195,180 L230,210 L240,260 L180,280 L120,250 Z', cx: 180, cy: 230 },
-    { id: 'pg', name: "Prince George's County", d: 'M230,210 L280,200 L310,240 L320,300 L260,310 L240,260 Z', cx: 275, cy: 260 },
-    { id: 'baltimore', name: 'Baltimore', d: 'M260,80 L330,70 L360,100 L350,150 L290,150 L260,120 Z', cx: 310, cy: 110 },
-    { id: 'dc', name: 'Washington, DC', d: 'M180,280 L240,260 L260,310 L230,340 L185,325 Z', cx: 220, cy: 300 },
-    { id: 'nova', name: 'Northern Virginia', d: 'M120,250 L180,280 L185,325 L230,340 L200,390 L110,360 L80,290 Z', cx: 155, cy: 320 },
+  // Hub: Columbia, MD at (350, 270). Scale ≈ 2.5 px per mile.
+  // Inner ring: 50 mi (125 px). Outer ring: 80 mi (200 px).
+  type Loc = { id: string; name: string; x: number; y: number; lp?: 't'|'b'|'l'|'r'; far?: boolean; hub?: boolean };
+  const locations: Loc[] = [
+    { id: 'columbia', name: 'Columbia, MD', x: 350, y: 270, hub: true },
+    // North / Northeast
+    { id: 'york', name: 'York, PA', x: 335, y: 110, lp: 't' },
+    { id: 'westminster', name: 'Westminster', x: 305, y: 200, lp: 't' },
+    { id: 'baltimore', name: 'Baltimore', x: 380, y: 200, lp: 't' },
+    { id: 'belair', name: 'Bel Air', x: 450, y: 175, lp: 't' },
+    { id: 'wilmington', name: 'Wilmington, DE', x: 535, y: 145, lp: 't' },
+    // East
+    { id: 'annapolis', name: 'Annapolis', x: 425, y: 295, lp: 'r' },
+    { id: 'easton', name: 'Easton', x: 525, y: 305, lp: 't' },
+    { id: 'oceancity', name: 'Ocean City', x: 660, y: 305, lp: 't', far: true },
+    // South / Southeast
+    { id: 'waldorf', name: 'Waldorf', x: 375, y: 370, lp: 'r' },
+    { id: 'stmarys', name: "St. Mary's", x: 445, y: 465, lp: 'b' },
+    // South-Southwest (DC + close NoVA)
+    { id: 'dc', name: 'Washington, DC', x: 330, y: 345, lp: 'l' },
+    { id: 'arlington', name: 'Arlington', x: 290, y: 365, lp: 'l' },
+    { id: 'alexandria', name: 'Alexandria', x: 320, y: 395, lp: 'r' },
+    // Southwest (NoVA outer)
+    { id: 'fairfax', name: 'Fairfax', x: 250, y: 360, lp: 'l' },
+    { id: 'manassas', name: 'Manassas', x: 215, y: 395, lp: 'l' },
+    { id: 'fredericksburg', name: 'Fredericksburg', x: 260, y: 465, lp: 'b' },
+    // West
+    { id: 'leesburg', name: 'Leesburg', x: 215, y: 285, lp: 'l' },
+    { id: 'frederick', name: 'Frederick', x: 250, y: 240, lp: 'l' },
+    { id: 'hagerstown', name: 'Hagerstown', x: 130, y: 225, lp: 'l' },
   ];
+  const labelOffsets = {
+    t: { dx: 0, dy: -10, anchor: 'middle' as const },
+    b: { dx: 0, dy: 16, anchor: 'middle' as const },
+    l: { dx: -8, dy: 3, anchor: 'end' as const },
+    r: { dx: 8, dy: 3, anchor: 'start' as const },
+  };
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 32 }}>
-      <svg viewBox="50 50 340 370" style={{ width: '100%', maxWidth: 500, height: 'auto' }}>
-        {/* Background grid effect */}
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 24 }}>
+      <svg viewBox="40 60 660 470" style={{ width: '100%', maxWidth: 720, height: 'auto' }}>
         <defs>
           <radialGradient id="mapGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="rgba(108,99,255,0.15)" />
+            <stop offset="0%" stopColor="rgba(108,99,255,0.18)" />
+            <stop offset="55%" stopColor="rgba(108,99,255,0.05)" />
+            <stop offset="100%" stopColor="rgba(108,99,255,0)" />
+          </radialGradient>
+          <radialGradient id="hubGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="rgba(108,99,255,0.55)" />
             <stop offset="100%" stopColor="rgba(108,99,255,0)" />
           </radialGradient>
         </defs>
-        <circle cx="220" cy="230" r="180" fill="url(#mapGlow)" />
-        {areas.map(a => (
-          <g key={a.id} onMouseEnter={() => setActive(a.id)} onMouseLeave={() => setActive(null)} style={{ cursor: 'pointer' }}>
-            <path d={a.d} fill={active === a.id ? 'rgba(108,99,255,0.3)' : a.id === 'howard' ? 'rgba(108,99,255,0.2)' : 'rgba(108,99,255,0.08)'}
-              stroke={active === a.id ? '#6c63ff' : 'rgba(108,99,255,0.25)'} strokeWidth={active === a.id ? 2 : 1}
-              style={{ transition: 'all 0.4s cubic-bezier(.16,1,.3,1)' }} />
-            <text x={a.cx} y={a.cy} textAnchor="middle" dominantBaseline="middle"
-              style={{ fontSize: a.id === 'dc' ? 9 : 8, fill: active === a.id ? '#fff' : '#8e8ea0', fontFamily: 'Inter', fontWeight: 600, letterSpacing: '0.5px', transition: 'fill 0.3s', pointerEvents: 'none' }}>
-              {a.name}
-            </text>
-            {a.id === 'howard' && (
-              <circle cx={a.cx} cy={a.cy + 16} r={3} fill="#6c63ff" style={{ animation: 'glowPulse 2s ease-in-out infinite' }}>
-                <animate attributeName="r" values="3;6;3" dur="2s" repeatCount="indefinite" />
-              </circle>
-            )}
-          </g>
+
+        {/* Background glow */}
+        <circle cx={350} cy={270} r={260} fill="url(#mapGlow)" />
+
+        {/* Coverage radius rings */}
+        <circle cx={350} cy={270} r={125} fill="none" stroke="rgba(108,99,255,0.18)" strokeWidth={1} strokeDasharray="2 5" />
+        <circle cx={350} cy={270} r={200} fill="none" stroke="rgba(108,99,255,0.28)" strokeWidth={1.2} strokeDasharray="4 7" />
+
+        {/* Radius labels */}
+        <text x={350} y={138} textAnchor="middle" style={{ fontSize: 8, fill: 'rgba(108,99,255,0.55)', fontFamily: 'Inter', fontWeight: 700, letterSpacing: '2.5px' }}>~80 MI RADIUS</text>
+        <text x={350} y={400} textAnchor="middle" style={{ fontSize: 7, fill: 'rgba(108,99,255,0.4)', fontFamily: 'Inter', fontWeight: 700, letterSpacing: '2px' }}>~50 MI</text>
+
+        {/* Connection lines from hub to each location */}
+        {locations.filter(l => !l.hub).map(l => (
+          <line key={`ln-${l.id}`} x1={350} y1={270} x2={l.x} y2={l.y}
+            stroke={l.far ? 'rgba(108,99,255,0.06)' : 'rgba(108,99,255,0.1)'} strokeWidth={1} strokeDasharray="1 3" />
         ))}
-        {/* Home base marker */}
-        <text x={240} y={188} textAnchor="middle" style={{ fontSize: 7, fill: '#6c63ff', fontFamily: 'Inter', fontWeight: 700, letterSpacing: '1px' }}>&#9679; HOME BASE</text>
+
+        {/* Hub glow */}
+        <circle cx={350} cy={270} r={45} fill="url(#hubGlow)" />
+
+        {/* Location pins */}
+        {locations.map(l => {
+          if (l.hub) {
+            return (
+              <g key={l.id}>
+                <circle cx={l.x} cy={l.y} r={9} fill="#6c63ff" opacity={0.9}>
+                  <animate attributeName="r" values="9;14;9" dur="2.4s" repeatCount="indefinite" />
+                  <animate attributeName="opacity" values="0.9;0.35;0.9" dur="2.4s" repeatCount="indefinite" />
+                </circle>
+                <circle cx={l.x} cy={l.y} r={5} fill="#fff" />
+                <text x={l.x} y={l.y - 18} textAnchor="middle" style={{ fontSize: 12, fill: '#fff', fontFamily: 'Space Grotesk', fontWeight: 700 }}>Columbia, MD</text>
+                <text x={l.x} y={l.y + 24} textAnchor="middle" style={{ fontSize: 8, fill: '#6c63ff', fontFamily: 'Inter', fontWeight: 700, letterSpacing: '2.5px' }}>● HOME BASE</text>
+              </g>
+            );
+          }
+          const off = labelOffsets[l.lp || 't'];
+          const isActive = active === l.id;
+          return (
+            <g key={l.id} onMouseEnter={() => setActive(l.id)} onMouseLeave={() => setActive(null)} style={{ cursor: 'pointer' }}>
+              <circle cx={l.x} cy={l.y} r={isActive ? 5.5 : 3.5}
+                fill={isActive ? '#6c63ff' : 'rgba(108,99,255,0.7)'}
+                stroke={isActive ? '#fff' : 'rgba(108,99,255,0.4)'} strokeWidth={1}
+                style={{ transition: 'all 0.3s' }} />
+              <text x={l.x + off.dx} y={l.y + off.dy} textAnchor={off.anchor}
+                style={{ fontSize: 9.5, fill: isActive ? '#fff' : '#8e8ea0', fontFamily: 'Inter', fontWeight: isActive ? 700 : 500, transition: 'all 0.3s', pointerEvents: 'none' }}>
+                {l.name}
+              </text>
+            </g>
+          );
+        })}
       </svg>
       {active && (
         <div style={{
           padding: '12px 24px', borderRadius: 4, background: 'rgba(108,99,255,0.08)',
           border: '1px solid rgba(108,99,255,0.2)', animation: 'fadeIn 0.3s ease',
         }}>
-          <span style={{ fontSize: 16, fontWeight: 600, color: '#fff' }}>{areas.find(a => a.id === active)?.name}</span>
-          <span style={{ fontSize: 12, color: '#8e8ea0', marginLeft: 12 }}>Full coverage — we come to you</span>
+          <span style={{ fontSize: 16, fontWeight: 600, color: '#fff' }}>{locations.find(l => l.id === active)?.name}</span>
+          <span style={{ fontSize: 12, color: '#8e8ea0', marginLeft: 12 }}>We come to you</span>
         </div>
       )}
     </div>
@@ -1248,7 +1313,7 @@ function HomePage({ go }: { go: (p: string) => void }) {
       <section style={{ padding: '120px 28px', background: '#0a0a0f', position: 'relative', overflow: 'hidden' }}>
         <FloatingOrbs />
         <div style={{ maxWidth: 1000, margin: '0 auto', position: 'relative', zIndex: 1 }}>
-          <div className="rv-blur"><SH tag="Coverage" title="Serving the Entire DMV" sub="Howard County, Montgomery County, PG County, Baltimore, DC, and Northern Virginia — we come to you." /></div>
+          <div className="rv-blur"><SH tag="Coverage" title="Serving the DMV & Beyond" sub="All of Maryland, DC, Northern Virginia, the Eastern Shore, southern PA & northern Delaware — anywhere within ~80 miles of Columbia. We come to you." /></div>
           <div className="rv"><ServiceAreaMap /></div>
         </div>
       </section>
