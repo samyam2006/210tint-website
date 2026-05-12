@@ -1014,6 +1014,7 @@ function Footer({ go }: { go: (p: string) => void }) {
       <div style={{ maxWidth: 1320, margin: '56px auto 0', paddingTop: 24, borderTop: '1px solid rgba(255,255,255,0.04)', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
         <p style={{ color: '#4a4a5a', fontSize: 12 }}>© 2026 210 Tint. All rights reserved.</p>
         <p style={{ color: '#4a4a5a', fontSize: 12 }}>Columbia, MD — Serving the DMV</p>
+        <p style={{ color: '#4a4a5a', fontSize: 12 }}>Powered By <a href="https://peakdigi.net" target="_blank" rel="noreferrer" style={{ color: '#4a4a5a', textDecoration: 'none', borderBottom: '1px solid rgba(74,74,90,0.4)' }}>Peak Digital</a></p>
       </div>
     </footer>
   );
