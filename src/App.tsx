@@ -1113,7 +1113,7 @@ function HomePage({ go }: { go: (p: string) => void }) {
           }}>
             {[
               { end: 4.9, suffix: '', label: 'Google Rating', dec: 1 },
-              { end: 500, suffix: '+', label: 'Vehicles Tinted', dec: 0 },
+              { end: 1000, suffix: '+', label: 'Vehicles Tinted', dec: 0 },
               { end: 99, suffix: '%', label: 'UV Rejection', dec: 0 },
               { end: 100, suffix: '%', label: 'Satisfaction', dec: 0 },
             ].map((s, i) => (
@@ -1402,6 +1402,29 @@ function PortfolioPage() {
       </div>))}
     </div>
     {lightbox !== null && <Lightbox images={items} startIndex={lightbox} onClose={() => setLightbox(null)} />}
+
+    {/* Social follow CTA */}
+    <div className="rv" style={{ marginTop: 72, padding: '52px 28px', borderRadius: 4, border: '1px solid rgba(108,99,255,0.15)', background: 'linear-gradient(135deg,rgba(108,99,255,0.04),rgba(108,99,255,0.01))', textAlign: 'center' }}>
+      <p style={{ color: '#8e8ea0', fontSize: 13, letterSpacing: '2px', textTransform: 'uppercase', marginBottom: 12 }}>Follow Our Work</p>
+      <h3 style={{ fontFamily: 'Space Grotesk', fontSize: 28, fontWeight: 700, marginBottom: 8 }}>See Every Install in Real Time</h3>
+      <p style={{ color: '#8e8ea0', fontSize: 16, marginBottom: 36 }}>Behind-the-scenes content, fresh installs, and tint tips — follow us on Instagram and TikTok.</p>
+      <div style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap' }}>
+        <a href="https://www.instagram.com/210tint" target="_blank" rel="noreferrer"
+          style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '14px 28px', borderRadius: 3, border: '1px solid rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.03)', color: '#eeeef2', textDecoration: 'none', fontSize: 15, fontWeight: 600, transition: 'all 0.3s' }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(225,48,108,0.5)'; (e.currentTarget as HTMLElement).style.background = 'rgba(225,48,108,0.08)'; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.08)'; (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.03)'; }}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          Instagram — @210tint
+        </a>
+        <a href="https://www.tiktok.com/@210tint" target="_blank" rel="noreferrer"
+          style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '14px 28px', borderRadius: 3, border: '1px solid rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.03)', color: '#eeeef2', textDecoration: 'none', fontSize: 15, fontWeight: 600, transition: 'all 0.3s' }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(105,201,208,0.5)'; (e.currentTarget as HTMLElement).style.background = 'rgba(105,201,208,0.08)'; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.08)'; (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.03)'; }}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.77a4.85 4.85 0 0 1-1.01-.08z"/></svg>
+          TikTok — @210tint
+        </a>
+      </div>
+    </div>
   </section></div>);
 }
 
@@ -2050,7 +2073,7 @@ function TrustBadges() {
   const badges = [
     { icon: '🛡️', label: 'UVIRON Certified', desc: 'Official performance film partner' },
     { icon: '⭐', label: '4.9 Google Rating', desc: '30+ five-star reviews' },
-    { icon: '🔧', label: '500+ Vehicles', desc: 'Professionally tinted' },
+    { icon: '🔧', label: '1000+ Vehicles', desc: 'Professionally tinted' },
     { icon: '🏠', label: '100% Mobile', desc: 'We come to you — anywhere in DMV' },
     { icon: '✅', label: 'Lifetime Warranty', desc: 'On Nano Ceramic KOOLMAX' },
     { icon: '✂️', label: 'Computer-Cut', desc: 'No blade touches your car' },
