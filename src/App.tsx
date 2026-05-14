@@ -373,9 +373,8 @@ function LoadingScreen() {
       {/* Ambient glow */}
       <div style={{ position: 'absolute', width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle, rgba(108,99,255,0.1) 0%, transparent 70%)', pointerEvents: 'none', animation: 'loaderGlow 2s ease infinite' }} />
       {/* Logo */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, animation: 'loaderLogoIn 0.8s cubic-bezier(.16,1,.3,1) 0.2s both' }}>
-        <span style={{ fontFamily: 'Space Grotesk', fontWeight: 800, fontSize: 52, color: '#6c63ff', letterSpacing: '-1px' }}>210</span>
-        <span style={{ fontFamily: 'Space Grotesk', fontWeight: 800, fontSize: 52, color: '#fff', letterSpacing: '-1px' }}>TINT</span>
+      <div style={{ animation: 'loaderLogoIn 0.8s cubic-bezier(.16,1,.3,1) 0.2s both' }}>
+        <img src="/210tintlogo.jpeg" alt="210 Auto Customs" style={{ height: 120, width: 'auto', objectFit: 'contain' }} />
       </div>
       {/* Loading bar */}
       <div style={{ width: 140, height: 2, background: 'rgba(255,255,255,0.06)', borderRadius: 1, marginTop: 32, overflow: 'hidden' }}>
@@ -870,9 +869,8 @@ function Nav({ page, go }: { page: string; go: (p: string) => void }) {
       padding: scrolled ? '12px 0' : '20px 0',
     }}>
       <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <button onClick={() => nav('home')} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}>
-          <span style={{ fontFamily: 'Space Grotesk', fontWeight: 800, fontSize: 24, color: '#6c63ff', letterSpacing: '-0.5px' }}>210</span>
-          <span style={{ fontFamily: 'Space Grotesk', fontWeight: 800, fontSize: 24, color: '#fff', letterSpacing: '-0.5px' }}>TINT</span>
+        <button onClick={() => nav('home')} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+          <img src="/210tintlogo.jpeg" alt="210 Auto Customs" style={{ height: 48, width: 'auto', objectFit: 'contain' }} />
         </button>
         <div className="desk-nav" style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
           {NAV.map((n) => (
@@ -988,9 +986,8 @@ function Footer({ go }: { go: (p: string) => void }) {
       <div style={{ position: 'absolute', top: 0, left: '10%', right: '10%', height: 1, background: 'linear-gradient(90deg, transparent, rgba(108,99,255,0.3), transparent)' }} />
       <div style={{ maxWidth: 1320, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(220px,1fr))', gap: 48 }}>
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 20 }}>
-            <span style={{ fontFamily: 'Space Grotesk', fontWeight: 800, fontSize: 22, color: '#6c63ff' }}>210</span>
-            <span style={{ fontFamily: 'Space Grotesk', fontWeight: 800, fontSize: 22, color: '#fff' }}>TINT</span>
+          <div style={{ marginBottom: 20 }}>
+            <img src="/210tintlogo.jpeg" alt="210 Auto Customs" style={{ height: 64, width: 'auto', objectFit: 'contain' }} />
           </div>
           <p style={{ color: '#8e8ea0', fontSize: 16, lineHeight: 1.8, maxWidth: 280 }}>Columbia's premier mobile window tinting. Nano-ceramic protection installed at your location.</p>
         </div>
@@ -1000,7 +997,7 @@ function Footer({ go }: { go: (p: string) => void }) {
         </div>
         <div>
           <h4 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 12, letterSpacing: '3px', color: '#4a4a5a', marginBottom: 20, textTransform: 'uppercase' }}>Resources</h4>
-          {[{label:'Tint Simulator',id:'tint-simulator'},{label:'Starlight Headliner',id:'starlight'},{label:'Warranty',id:'warranty'},{label:'MD Tint Laws',id:'tint-laws'},{label:'Ceramic vs Carbon',id:'ceramic-vs-carbon'},{label:'Best Tint for Summer',id:'md-summer-tint'}].map(l => <button key={l.id} onClick={() => go(l.id)} style={{ display: 'block', background: 'none', border: 'none', cursor: 'pointer', color: '#8e8ea0', fontSize: 16, padding: '5px 0' }}>{l.label}</button>)}
+          {[{label:'Tint Simulator',id:'tint-simulator'},{label:'Starlight Headliner',id:'starlight'},{label:'✦ Starlight Sale — 15% Off',id:'starlight-sale'},{label:'Warranty',id:'warranty'},{label:'MD Tint Laws',id:'tint-laws'},{label:'Ceramic vs Carbon',id:'ceramic-vs-carbon'},{label:'Best Tint for Summer',id:'md-summer-tint'}].map(l => <button key={l.id} onClick={() => go(l.id)} style={{ display: 'block', background: 'none', border: 'none', cursor: 'pointer', color: l.id==='starlight-sale'?'#a78bfa':'#8e8ea0', fontSize: 16, padding: '5px 0', fontWeight: l.id==='starlight-sale'?600:400 }}>{l.label}</button>)}
         </div>
         <div>
           <h4 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 12, letterSpacing: '3px', color: '#4a4a5a', marginBottom: 20, textTransform: 'uppercase' }}>Contact</h4>
@@ -2223,6 +2220,101 @@ function StarlightPage({ go }: { go: (p: string) => void }) {
   </section></div>);
 }
 
+/* ═══ STARLIGHT SALE PAGE ═══ */
+function StarlightSalePage({ go }: { go: (p: string) => void }) {
+  useReveal();
+  const orig = [700, 100, 150];
+  const disc = orig.map(p => Math.round(p * 0.85));
+  return (
+    <div style={{ paddingTop: 130 }}>
+      <section style={{ padding: '0 28px 120px', maxWidth: 900, margin: '0 auto' }}>
+        {/* Header */}
+        <div className="rv" style={{ textAlign: 'center', marginBottom: 56 }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(108,99,255,0.12)', border: '1px solid rgba(108,99,255,0.3)', borderRadius: 24, padding: '6px 18px', marginBottom: 20 }}>
+            <span style={{ fontSize: 18 }}>✦</span>
+            <span style={{ color: '#a78bfa', fontSize: 13, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase' }}>Limited Time Offer</span>
+          </div>
+          <h1 style={{ fontFamily: 'Space Grotesk', fontSize: 'clamp(36px,6vw,64px)', fontWeight: 800, lineHeight: 1.1, marginBottom: 16 }}>
+            Starlight Headliner<br />
+            <span className="grad-text">15% Off — Right Now</span>
+          </h1>
+          <p style={{ color: '#8e8ea0', fontSize: 18, maxWidth: 560, margin: '0 auto 32px' }}>
+            Transform your ceiling into a custom night sky. Book this week and save on every package.
+          </p>
+          {/* Countdown-feel urgency badge */}
+          <div style={{ display: 'inline-block', background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 4, padding: '8px 20px', color: '#f87171', fontWeight: 700, fontSize: 14, letterSpacing: '1px' }}>
+            SALE ENDS SOON — BOOK TO LOCK IN YOUR PRICE
+          </div>
+        </div>
+
+        {/* Pricing cards */}
+        <div className="rv d1" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(260px,1fr))', gap: 14, marginBottom: 48 }}>
+          {/* Starter */}
+          <div style={{ padding: '36px 32px', borderRadius: 4, border: '1px solid rgba(108,99,255,0.35)', background: 'linear-gradient(135deg,rgba(108,99,255,0.08),rgba(108,99,255,0.02))', boxShadow: '0 0 40px rgba(108,99,255,0.08)', textAlign: 'center' }}>
+            <div style={{ width: 48, height: 48, borderRadius: '50%', background: 'rgba(108,99,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px', fontSize: 22 }}>✦</div>
+            <h3 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 22, marginBottom: 8 }}>Starter Package</h3>
+            <p style={{ color: '#8e8ea0', fontSize: 14, marginBottom: 24 }}>550 fiber optic stars — most popular</p>
+            <div style={{ marginBottom: 8 }}>
+              <span style={{ color: '#4a4a5a', fontSize: 16, textDecoration: 'line-through', marginRight: 8 }}>${orig[0]}</span>
+              <span style={{ fontFamily: 'Space Grotesk', fontWeight: 800, fontSize: 42, color: '#fff' }}>${disc[0]}</span>
+            </div>
+            <div style={{ display: 'inline-block', background: 'rgba(108,99,255,0.2)', borderRadius: 2, padding: '3px 10px', color: '#a78bfa', fontSize: 12, fontWeight: 700, marginBottom: 28 }}>SAVE ${orig[0] - disc[0]}</div>
+            <button onClick={() => go('contact')} style={{ width: '100%', padding: '14px', background: '#6c63ff', color: '#fff', border: 'none', borderRadius: 3, fontWeight: 700, fontSize: 15, cursor: 'pointer' }}>Book Now</button>
+          </div>
+
+          {/* Add-on standard */}
+          <div style={{ padding: '36px 32px', borderRadius: 4, border: '1px solid rgba(255,255,255,0.06)', background: '#0a0a0f', textAlign: 'center' }}>
+            <div style={{ width: 48, height: 48, borderRadius: '50%', background: 'rgba(255,255,255,0.04)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px', fontSize: 22 }}>＋</div>
+            <h3 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 22, marginBottom: 8 }}>Extra Stars — Standard</h3>
+            <p style={{ color: '#8e8ea0', fontSize: 14, marginBottom: 24 }}>+100 stars added to any package</p>
+            <div style={{ marginBottom: 8 }}>
+              <span style={{ color: '#4a4a5a', fontSize: 16, textDecoration: 'line-through', marginRight: 8 }}>${orig[1]}</span>
+              <span style={{ fontFamily: 'Space Grotesk', fontWeight: 800, fontSize: 42, color: '#fff' }}>${disc[1]}</span>
+            </div>
+            <div style={{ display: 'inline-block', background: 'rgba(108,99,255,0.1)', borderRadius: 2, padding: '3px 10px', color: '#a78bfa', fontSize: 12, fontWeight: 700, marginBottom: 28 }}>SAVE ${orig[1] - disc[1]}</div>
+            <button onClick={() => go('contact')} style={{ width: '100%', padding: '14px', background: 'transparent', color: '#fff', border: '1px solid rgba(108,99,255,0.4)', borderRadius: 3, fontWeight: 700, fontSize: 15, cursor: 'pointer' }}>Add On</button>
+          </div>
+
+          {/* Add-on premium */}
+          <div style={{ padding: '36px 32px', borderRadius: 4, border: '1px solid rgba(255,255,255,0.06)', background: '#0a0a0f', textAlign: 'center' }}>
+            <div style={{ width: 48, height: 48, borderRadius: '50%', background: 'rgba(255,255,255,0.04)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px', fontSize: 22 }}>✦✦</div>
+            <h3 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 22, marginBottom: 8 }}>Extra Stars — Premium</h3>
+            <p style={{ color: '#8e8ea0', fontSize: 14, marginBottom: 24 }}>+100 premium-density stars</p>
+            <div style={{ marginBottom: 8 }}>
+              <span style={{ color: '#4a4a5a', fontSize: 16, textDecoration: 'line-through', marginRight: 8 }}>${orig[2]}</span>
+              <span style={{ fontFamily: 'Space Grotesk', fontWeight: 800, fontSize: 42, color: '#fff' }}>${disc[2]}</span>
+            </div>
+            <div style={{ display: 'inline-block', background: 'rgba(108,99,255,0.1)', borderRadius: 2, padding: '3px 10px', color: '#a78bfa', fontSize: 12, fontWeight: 700, marginBottom: 28 }}>SAVE ${orig[2] - disc[2]}</div>
+            <button onClick={() => go('contact')} style={{ width: '100%', padding: '14px', background: 'transparent', color: '#fff', border: '1px solid rgba(108,99,255,0.4)', borderRadius: 3, fontWeight: 700, fontSize: 15, cursor: 'pointer' }}>Add On</button>
+          </div>
+        </div>
+
+        {/* What's included */}
+        <div className="rv d2" style={{ padding: '40px 36px', borderRadius: 4, border: '1px solid rgba(255,255,255,0.04)', background: '#0a0a0f', marginBottom: 40 }}>
+          <h3 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 20, marginBottom: 24 }}>What's Included</h3>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(200px,1fr))', gap: 16 }}>
+            {['Fiber optic star ceiling install','Custom star density layout','100% mobile — we come to you','Professional-grade materials','Clean install, no mess left behind','Book online in under 2 minutes'].map((item, i) => (
+              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, color: '#8e8ea0', fontSize: 14 }}>
+                <span style={{ color: '#6c63ff', fontSize: 16, flexShrink: 0 }}>✓</span>
+                {item}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* CTA */}
+        <div className="rv d3" style={{ textAlign: 'center' }}>
+          <p style={{ color: '#8e8ea0', fontSize: 15, marginBottom: 24 }}>Questions? Call or text <a href="tel:2403387762" style={{ color: '#a78bfa', textDecoration: 'none' }}>(240) 338-7762</a></p>
+          <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+            <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" style={{ padding: '16px 40px', background: '#6c63ff', color: '#fff', borderRadius: 3, fontWeight: 700, fontSize: 16, textDecoration: 'none' }}>Book at Sale Price</a>
+            <button onClick={() => go('starlight')} style={{ padding: '16px 40px', background: 'transparent', color: '#fff', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 3, fontWeight: 600, fontSize: 16, cursor: 'pointer' }}>Learn More</button>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
 export default function App() {
   const [page, setPage] = useState('home');
   const [transitioning, setTransitioning] = useState(false);
@@ -2272,6 +2364,7 @@ export default function App() {
         {page==='md-summer-tint'&&<MDSummerTintPage/>}
         {page==='tint-simulator'&&<TintSimulatorPage/>}
         {page==='starlight'&&<StarlightPage go={go}/>}
+        {page==='starlight-sale'&&<StarlightSalePage go={go}/>}
         {page==='contact'&&<ContactPage/>}
       </main>
       <Footer go={go} />
