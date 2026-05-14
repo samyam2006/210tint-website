@@ -1782,6 +1782,7 @@ function ChatWidget() {
     'sedan-two-side':'sedan-two-side-windows','sedan-windshield':'sedan-front-or-back-windshield','sedan-all-sides':'sedan-all-side-windows','sedan-whole-no-wind':'sedan-whole-car-without-windshield','sedan-whole':'sedan-whole-car-with-windshield',
     'suv-two-side':'suv-truck-van-two-side-windows','suv-windshield':'suv-truck-van-front-or-back-windshield','suv-all-sides':'suv-truck-van-all-side-windows','suv-whole-no-wind':'suv-truck-van-whole-car-without-windshield','suv-whole':'suv-truck-van-whole-car-with-windshield',
     'mobile-job':'any-car-mobile-job-request',
+    'starlight':'starlight-headliner-install-15-off-sale',
   };
 
   const [isOpen, setIsOpen] = useState(false);
@@ -1818,14 +1819,19 @@ SEDANS: Premium Carbon: 2 sides $65, all 4 $105, windshield $80, full no wind $1
 TRUCKS/SUVs: Premium Carbon: 2 sides $65, all sides $120, windshield $115, full no wind $210, whole $325. Nano Carbon: 2 sides $85, all sides $170, windshield $145, full no wind $305, whole $450. Nano Ceramic: 2 sides $135, all sides $260, windshield $220, full no wind $470, whole $690.
 ADD-ON: Computer Cut Film +$50.
 
+STARLIGHT HEADLINER SERVICE: We install fiber optic star ceilings inside vehicles. The install replaces the headliner with hundreds of tiny LED fiber optic lights to create a custom night sky effect.
+STARLIGHT SALE PRICING (15% OFF — LIMITED TIME): Starter package (550 stars) normally $700, on sale $595 (save $105). Add-on 100 extra stars standard normally $100, on sale $85. Add-on 100 extra stars premium normally $150, on sale $127.
+STARLIGHT REQUIREMENTS: A garage or fully covered space is REQUIRED for starlight installs — not just recommended. The headliner must be removed and reinstalled, which cannot be done outdoors. Always confirm they have a garage before booking.
+STARLIGHT BOOKING FLOW: Collect: name, email, phone, vehicle year/make/model, package choice (Starter 550 stars / Starter + 100 standard / Starter + 100 premium / custom), headliner color (black/gray/tan), garage confirmed (yes/no), any layout requests (shooting stars, constellations, denser near sunroof), preferred date. Event key: starlight. In tint_type field put the package name e.g. "Starlight Starter 550 Stars".
+
 MOBILE JOB NOTICE: If the customer is booking a mobile job, always ask if they have access to a garage or covered parking space at their location. Let them know that without a garage or covered area, there is a significantly higher chance of minor imperfections (dust, wind, debris) affecting the install quality. We will always do our best, but we cannot guarantee a flawless result on an open-air mobile job. Mention this early and clearly.
 
-BOOKING FLOW: Collect: name, email, phone, vehicle year/make/model, tint darkness %, tint type (Premium Carbon/Nano Carbon/Nano Ceramic), previously tinted (Yes/No/I don't know), waiting or leaving during appointment, any notes, preferred date.
-Once you have all info, output: [BOOK:event_key:YYYY-MM-DD:name:email:phone:vehicle:tint_type:prev_tinted:waiting_or_leaving:extra_notes]
+BOOKING FLOW (TINTING): Collect: name, email, phone, vehicle year/make/model, tint darkness %, tint type (Premium Carbon/Nano Carbon/Nano Ceramic), previously tinted (Yes/No/I don't know), waiting or leaving during appointment, any notes, preferred date.
+Once you have all info for either service, output: [BOOK:event_key:YYYY-MM-DD:name:email:phone:vehicle:tint_type:prev_tinted:waiting_or_leaving:extra_notes]
 
-EVENT KEYS: coupe-two-side, coupe-windshield, coupe-all-sides, coupe-whole-no-wind, coupe-whole, sedan-two-side, sedan-windshield, sedan-all-sides, sedan-whole-no-wind, sedan-whole, suv-two-side, suv-windshield, suv-all-sides, suv-whole-no-wind, suv-whole, mobile-job
+EVENT KEYS: coupe-two-side, coupe-windshield, coupe-all-sides, coupe-whole-no-wind, coupe-whole, sedan-two-side, sedan-windshield, sedan-all-sides, sedan-whole-no-wind, sedan-whole, suv-two-side, suv-windshield, suv-all-sides, suv-whole-no-wind, suv-whole, mobile-job, starlight
 
-CRITICAL: In [BOOK:] command, tint_type MUST be exactly "Premium Carbon", "Nano Carbon", or "Nano Ceramic" — no brand names or symbols.
+CRITICAL: In [BOOK:] command, tint_type MUST be exactly "Premium Carbon", "Nano Carbon", "Nano Ceramic", or the starlight package name — no other formats.
 Today: ${todayStr}. Use current year or later for dates. Be friendly, conversational, short replies. Ask 1-2 things at a time.`;
 
   useEffect(() => { if (msgsRef.current) msgsRef.current.scrollTop = msgsRef.current.scrollHeight; }, [messages, typing]);
