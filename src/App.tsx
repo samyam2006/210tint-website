@@ -374,7 +374,7 @@ function LoadingScreen() {
       <div style={{ position: 'absolute', width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle, rgba(108,99,255,0.1) 0%, transparent 70%)', pointerEvents: 'none', animation: 'loaderGlow 2s ease infinite' }} />
       {/* Logo */}
       <div style={{ animation: 'loaderLogoIn 0.8s cubic-bezier(.16,1,.3,1) 0.2s both' }}>
-        <img src="/210tintlogo.jpeg" alt="210 Auto Customs" style={{ height: 120, width: 'auto', objectFit: 'contain' }} />
+        <img src="/210tintlogo.png" alt="210 Auto Customs" style={{ height: 160, width: 'auto', objectFit: 'contain' }} />
       </div>
       {/* Loading bar */}
       <div style={{ width: 140, height: 2, background: 'rgba(255,255,255,0.06)', borderRadius: 1, marginTop: 32, overflow: 'hidden' }}>
@@ -870,7 +870,7 @@ function Nav({ page, go }: { page: string; go: (p: string) => void }) {
     }}>
       <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <button onClick={() => nav('home')} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
-          <img src="/210tintlogo.jpeg" alt="210 Auto Customs" style={{ height: 48, width: 'auto', objectFit: 'contain' }} />
+          <img src="/210tintlogo.png" alt="210 Auto Customs" style={{ height: 64, width: 'auto', objectFit: 'contain' }} />
         </button>
         <div className="desk-nav" style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
           {NAV.map((n) => (
@@ -987,7 +987,7 @@ function Footer({ go }: { go: (p: string) => void }) {
       <div style={{ maxWidth: 1320, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(220px,1fr))', gap: 48 }}>
         <div>
           <div style={{ marginBottom: 20 }}>
-            <img src="/210tintlogo.jpeg" alt="210 Auto Customs" style={{ height: 64, width: 'auto', objectFit: 'contain' }} />
+            <img src="/210tintlogo.png" alt="210 Auto Customs" style={{ height: 80, width: 'auto', objectFit: 'contain' }} />
           </div>
           <p style={{ color: '#8e8ea0', fontSize: 16, lineHeight: 1.8, maxWidth: 280 }}>Columbia's premier mobile window tinting. Nano-ceramic protection installed at your location.</p>
         </div>
@@ -1143,6 +1143,51 @@ function HomePage({ go }: { go: (p: string) => void }) {
           </div>
         </section>
       </ScrollRevealSection>
+
+      {/* ═══ STARLIGHT SALE BANNER ═══ */}
+      <section style={{ padding: '0 28px', maxWidth: 1320, margin: '0 auto 0' }}>
+        <div className="rv" onClick={() => go('starlight-sale')} style={{
+          cursor: 'pointer', borderRadius: 6, overflow: 'hidden', position: 'relative',
+          background: 'linear-gradient(120deg, #0d0b1f 0%, #130f2e 40%, #0d0b1f 100%)',
+          border: '1px solid rgba(108,99,255,0.35)',
+          boxShadow: '0 0 60px rgba(108,99,255,0.12), 0 0 0 1px rgba(108,99,255,0.08)',
+          padding: 'clamp(28px,4vw,48px) clamp(24px,4vw,52px)',
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 24,
+        }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = '0 0 80px rgba(108,99,255,0.22), 0 0 0 1px rgba(108,99,255,0.2)'; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = '0 0 60px rgba(108,99,255,0.12), 0 0 0 1px rgba(108,99,255,0.08)'; }}
+        >
+          {/* Glow orbs */}
+          <div style={{ position: 'absolute', width: 300, height: 300, borderRadius: '50%', background: 'radial-gradient(circle, rgba(108,99,255,0.18) 0%, transparent 70%)', top: -100, left: -60, pointerEvents: 'none' }} />
+          <div style={{ position: 'absolute', width: 200, height: 200, borderRadius: '50%', background: 'radial-gradient(circle, rgba(167,139,250,0.12) 0%, transparent 70%)', bottom: -60, right: 80, pointerEvents: 'none' }} />
+          {/* Stars sprinkle */}
+          {[...Array(18)].map((_, i) => (
+            <div key={i} style={{ position: 'absolute', width: i % 3 === 0 ? 3 : 2, height: i % 3 === 0 ? 3 : 2, borderRadius: '50%', background: '#fff', opacity: 0.15 + (i % 5) * 0.08, left: `${5 + (i * 5.3) % 88}%`, top: `${10 + (i * 13.7) % 80}%`, pointerEvents: 'none' }} />
+          ))}
+          <div style={{ position: 'relative', zIndex: 1 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+              <span style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.35)', color: '#f87171', borderRadius: 3, padding: '3px 12px', fontSize: 11, fontWeight: 800, letterSpacing: '2px', textTransform: 'uppercase' }}>Limited Time</span>
+              <span style={{ color: '#6c63ff', fontSize: 20 }}>✦</span>
+              <span style={{ color: '#a78bfa', fontSize: 13, fontWeight: 600, letterSpacing: '1px' }}>Starlight Headliner Sale</span>
+            </div>
+            <h2 style={{ fontFamily: 'Space Grotesk', fontWeight: 800, fontSize: 'clamp(26px,4vw,48px)', lineHeight: 1.1, marginBottom: 10 }}>
+              Turn Your Ceiling Into a<br /><span className="grad-text">Night Sky — 15% Off</span>
+            </h2>
+            <p style={{ color: '#8e8ea0', fontSize: 16, maxWidth: 480 }}>
+              Fiber optic starlight install starting at <span style={{ color: '#fff', fontWeight: 600 }}>$595</span> (was $700). Book this week to lock in the sale price.
+            </p>
+          </div>
+          <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14, flexShrink: 0 }}>
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ fontFamily: 'Space Grotesk', fontWeight: 800, fontSize: 56, lineHeight: 1, color: '#fff' }}>15%</div>
+              <div style={{ color: '#a78bfa', fontWeight: 700, fontSize: 14, letterSpacing: '2px', textTransform: 'uppercase' }}>Off Everything</div>
+            </div>
+            <div style={{ background: '#6c63ff', color: '#fff', padding: '13px 32px', borderRadius: 3, fontWeight: 700, fontSize: 15, boxShadow: '0 4px 30px rgba(108,99,255,0.4)', whiteSpace: 'nowrap' }}>
+              See Sale Prices →
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* ═══ HOW IT WORKS — condensed timeline ═══ */}
       <SectionDivider variant="glow" />
