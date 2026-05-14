@@ -1174,7 +1174,7 @@ function HomePage({ go }: { go: (p: string) => void }) {
               Turn Your Ceiling Into a<br /><span className="grad-text">Night Sky — 15% Off</span>
             </h2>
             <p style={{ color: '#8e8ea0', fontSize: 16, maxWidth: 480 }}>
-              Fiber optic starlight install starting at <span style={{ color: '#fff', fontWeight: 600 }}>$595</span> (was $700). Book this week to lock in the sale price.
+              Fiber optic starlight install starting at <span style={{ color: '#fff', fontWeight: 600 }}>$700</span> (was $824). Book this week to lock in the sale price.
             </p>
           </div>
           <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14, flexShrink: 0 }}>
@@ -1822,7 +1822,7 @@ TRUCKS/SUVs: Premium Carbon: 2 sides $65, all sides $120, windshield $115, full 
 ADD-ON: Computer Cut Film +$50.
 
 STARLIGHT HEADLINER SERVICE: We install fiber optic star ceilings inside vehicles. The install replaces the headliner with hundreds of tiny LED fiber optic lights to create a custom night sky effect.
-STARLIGHT SALE PRICING (15% OFF — LIMITED TIME): Starter package (550 stars) normally $700, on sale $595 (save $105). Add-on 100 extra stars standard normally $100, on sale $85. Add-on 100 extra stars premium normally $150, on sale $127.
+STARLIGHT SALE PRICING (15% OFF — LIMITED TIME): Starter package (550 stars) normally $824, on sale $700 (save $124). Add-on 100 extra stars standard normally $100, on sale $85. Add-on 100 extra stars premium normally $150, on sale $127.
 STARLIGHT REQUIREMENTS: A garage or fully covered space is REQUIRED for starlight installs — not just recommended. The headliner must be removed and reinstalled, which cannot be done outdoors. If the customer has no garage, offer them the option to bring their vehicle to our shop at 10451 Fair Oaks, Columbia, MD 21044 instead.
 STARLIGHT BOOKING FLOW: Collect: name, email, phone, vehicle year/make/model, package choice (Starter 550 stars / Starter + 100 standard / Starter + 100 premium / custom), headliner color (black/gray/tan), garage confirmed (yes/no), any layout requests (shooting stars, constellations, denser near sunroof), preferred date. Event key: starlight. In tint_type field put the package name e.g. "Starlight Starter 550 Stars".
 
@@ -2239,7 +2239,7 @@ function StarlightPage({ go }: { go: (p: string) => void }) {
     <div className="rv" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(240px,1fr))', gap: 14, marginBottom: 32 }}>
       <div style={{ padding: '24px 22px', borderRadius: 4, background: '#0a0a0f', border: '1px solid rgba(108,99,255,0.3)' }}>
         <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2.5px', textTransform: 'uppercase', color: '#8b83ff' }}>Starter</span>
-        <div style={{ marginTop: 10 }}><span style={{ fontFamily: 'Space Grotesk', fontSize: 32, fontWeight: 800 }}>$700</span></div>
+        <div style={{ marginTop: 10 }}><span style={{ fontFamily: 'Space Grotesk', fontSize: 32, fontWeight: 800 }}>$824</span></div>
         <p style={{ color: '#8e8ea0', fontSize: 13, marginTop: 10, lineHeight: 1.6 }}>550 stars — clean, even galaxy effect. Great entry-level install.</p>
       </div>
       <div style={{ padding: '24px 22px', borderRadius: 4, background: '#0a0a0f', border: '1px solid rgba(255,255,255,0.04)' }}>
@@ -2276,8 +2276,8 @@ function StarlightPage({ go }: { go: (p: string) => void }) {
 /* ═══ STARLIGHT SALE PAGE ═══ */
 function StarlightSalePage({ go }: { go: (p: string) => void }) {
   useReveal();
-  const orig = [700, 100, 150];
-  const disc = orig.map(p => Math.round(p * 0.85));
+  const orig = [824, 100, 150];
+  const disc = [700, 85, 127];
   return (
     <div style={{ paddingTop: 130 }}>
       <section style={{ padding: '0 28px 120px', maxWidth: 900, margin: '0 auto' }}>
