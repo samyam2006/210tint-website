@@ -727,7 +727,7 @@ function PriceCalculator() {
     ],
   };
 
-  const filmNames: Record<string, string> = { carbon: 'Premium Carbon', nano: 'Nano Carbon PUREMAX', ceramic: 'Nano Ceramic KOOLMAX' };
+  const filmNames: Record<string, string> = { carbon: 'Uviron Premium Carbon', nano: 'Nano Carbon PUREMAX', ceramic: 'Nano Ceramic KOOLMAX' };
   const vehicleNames: Record<string, string> = { coupe: 'Coupe', sedan: 'Sedan', truck: 'Truck / SUV' };
 
   // Fix coverage when switching vehicle types
@@ -1419,7 +1419,7 @@ function PortfolioPage() {
   const [lightbox, setLightbox] = useState<number | null>(null);
   const items = [
     { name: 'Lamborghini Urus', film: 'Premium Nano Ceramic', img: '/cars/lambo-urus.png' },
-    { name: 'Mercedes C63', film: 'Premium Carbon', img: '/cars/snowy-c63.png' },
+    { name: 'Mercedes C63', film: 'Uviron Premium Carbon', img: '/cars/snowy-c63.png' },
     { name: 'Mercedes CLA', film: 'Premium Nano Ceramic', img: '/cars/mercedes-cla.png' },
     { name: 'BMW M8', film: 'Standard Carbon', img: '/cars/snowy-m8.png' },
     { name: 'Dodge Durango', film: 'Premium Nano Carbon', img: '/cars/snowy-durango.png' },
@@ -1475,9 +1475,9 @@ function PricingPage() {
   useReveal();
   const [tab, setTab] = useState('sedan');
   const data: Record<string,{label:string;tiers:{name:string;items:string[];top?:boolean}[]}> = {
-    coupe:{label:'Coupes',tiers:[{name:'Premium Carbon',items:['$50 — All sides','$80 — Front or back windshield','$125 — Full car (no windshield)','$205 — Whole car']},{name:'Nano Carbon PUREMAX',items:['$75 — All sides','$110 — Front or back windshield','$180 — Full car (no windshield)','$290 — Whole car']},{name:'Nano Ceramic KOOLMAX',items:['$115 — All sides','$170 — Front or back windshield','$275 — Full car (no windshield)','$445 — Whole car'],top:true}]},
-    sedan:{label:'Sedans',tiers:[{name:'Premium Carbon',items:['$65 — Two sides','$105 — All four sides','$80 — Front or back windshield','$185 — Full car (no windshield)','$265 — Whole car']},{name:'Nano Carbon PUREMAX',items:['$75 — Two sides','$145 — All four sides','$115 — Front or back windshield','$260 — Full car (no windshield)','$375 — Whole car']},{name:'Nano Ceramic KOOLMAX',items:['$115 — Two sides','$225 — All four sides','$180 — Front or back windshield','$395 — Full car (no windshield)','$575 — Whole car'],top:true}]},
-    truck:{label:'Truck / SUV',tiers:[{name:'Premium Carbon',items:['$65 — Two side windows','$120 — All four/six sides','$115 — Front or back windshield','$210 — Full car (no windshield)','$325 — Whole car']},{name:'Nano Carbon PUREMAX',items:['$85 — Two side windows','$170 — All four/six sides','$145 — Front or back windshield','$305 — Full car (no windshield)','$450 — Whole car']},{name:'Nano Ceramic KOOLMAX',items:['$135 — Two side windows','$260 — All four/six sides','$220 — Front or back windshield','$470 — Full car (no windshield)','$690 — Whole car'],top:true}]},
+    coupe:{label:'Coupes',tiers:[{name:'Uviron Premium Carbon',items:['$50 — All sides','$80 — Front or back windshield','$125 — Full car (no windshield)','$205 — Whole car']},{name:'Nano Carbon PUREMAX',items:['$75 — All sides','$110 — Front or back windshield','$180 — Full car (no windshield)','$290 — Whole car']},{name:'Nano Ceramic KOOLMAX',items:['$115 — All sides','$170 — Front or back windshield','$275 — Full car (no windshield)','$445 — Whole car'],top:true}]},
+    sedan:{label:'Sedans',tiers:[{name:'Uviron Premium Carbon',items:['$65 — Two sides','$105 — All four sides','$80 — Front or back windshield','$185 — Full car (no windshield)','$265 — Whole car']},{name:'Nano Carbon PUREMAX',items:['$75 — Two sides','$145 — All four sides','$115 — Front or back windshield','$260 — Full car (no windshield)','$375 — Whole car']},{name:'Nano Ceramic KOOLMAX',items:['$115 — Two sides','$225 — All four sides','$180 — Front or back windshield','$395 — Full car (no windshield)','$575 — Whole car'],top:true}]},
+    truck:{label:'Truck / SUV',tiers:[{name:'Uviron Premium Carbon',items:['$65 — Two side windows','$120 — All four/six sides','$115 — Front or back windshield','$210 — Full car (no windshield)','$325 — Whole car']},{name:'Nano Carbon PUREMAX',items:['$85 — Two side windows','$170 — All four/six sides','$145 — Front or back windshield','$305 — Full car (no windshield)','$450 — Whole car']},{name:'Nano Ceramic KOOLMAX',items:['$135 — Two side windows','$260 — All four/six sides','$220 — Front or back windshield','$470 — Full car (no windshield)','$690 — Whole car'],top:true}]},
   };
   const cur = data[tab];
   return (<div style={{paddingTop:130}}><section style={{padding:'0 28px 120px',maxWidth:1320,margin:'0 auto'}}>
@@ -1553,7 +1553,7 @@ function ComparePage() {
       <div ref={tableRef} className="rv" style={{overflowX:'auto'}} onScroll={(e)=>{ if(e.currentTarget.scrollLeft>10) setTableScrolled(true); }}>
         <table style={{width:'100%',borderCollapse:'collapse',minWidth:640}}>
           <thead><tr style={{borderBottom:'2px solid rgba(255,255,255,0.06)'}}>
-            {['Feature','Premium Carbon','Nano Carbon','Nano Ceramic'].map((h,i)=>(<th key={i} style={{padding:'16px 20px',textAlign:'left',fontSize:12,fontWeight:700,letterSpacing:'1.5px',textTransform:'uppercase',color:i===3?'#6c63ff':i===0?'#4a4a5a':'#eee',fontFamily:'Space Grotesk'}}>{h}</th>))}
+            {['Feature','Uviron Premium Carbon','Nano Carbon','Nano Ceramic'].map((h,i)=>(<th key={i} style={{padding:'16px 20px',textAlign:'left',fontSize:12,fontWeight:700,letterSpacing:'1.5px',textTransform:'uppercase',color:i===3?'#6c63ff':i===0?'#4a4a5a':'#eee',fontFamily:'Space Grotesk'}}>{h}</th>))}
           </tr></thead>
           <tbody>{rows.map((row,i)=>(<tr key={i} style={{borderBottom:'1px solid rgba(255,255,255,0.04)',transition:'background 0.3s'}} onMouseEnter={(e)=>{e.currentTarget.style.background='rgba(108,99,255,0.03)'}} onMouseLeave={(e)=>{e.currentTarget.style.background='transparent'}}>
             {row.map((c,j)=>(<td key={j} style={{padding:'14px 20px',fontSize:14,color:j===0?'#4a4a5a':j===3?'#8b83ff':'#8e8ea0',fontWeight:j===0||j===3?600:400}}>{c}</td>))}
@@ -1593,7 +1593,7 @@ function ComparePage() {
     )}
     <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(300px,1fr))',gap:14}}>
       {[
-        {tier:'Entry Level',name:'Premium Carbon',desc:'Solid protection and clean looks at the best price.',from:'$65',pros:['Budget-friendly for daily drivers','Matte black finish — clean OEM look','No signal or GPS interference','Will not fade or turn purple']},
+        {tier:'Entry Level',name:'Uviron Premium Carbon',desc:'Solid protection and clean looks at the best price.',from:'$65',pros:['Budget-friendly for daily drivers','Matte black finish — clean OEM look','No signal or GPS interference','Will not fade or turn purple']},
         {tier:'Mid Range',name:'Nano Carbon PUREMAX',desc:'Enhanced performance and durability without top-tier price.',from:'$75',pros:['Better heat rejection than Premium Carbon','Deep black — no fade or purple tones','Safe for all vehicle electronics','5–7 year warranty']},
         {tier:'Top Tier',name:'Nano Ceramic KOOLMAX',desc:'Superior heat, UV, and clarity — the last tint you will ever need.',from:'$115',top:true,pros:['Max heat and infrared rejection','Crystal clear — no haze at night','Lifetime warranty on every install','Improves A/C efficiency','Never fades, bubbles, or discolors']},
       ].map((f,i)=>(<div key={i} className={`rv d${i+1}`} style={{padding:32,borderRadius:4,border:f.top?'1px solid rgba(108,99,255,0.3)':'1px solid rgba(255,255,255,0.04)',background:'#0a0a0f',boxShadow:f.top?'0 0 40px rgba(108,99,255,0.06)':'none'}}>
@@ -1814,11 +1814,11 @@ CONTACT: (240) 338-7762, 210tints@gmail.com. Primarily mobile — we come to YOU
 
 SHOP LOCATION: 10451 Fair Oaks, Columbia, MD 21044. The shop address is not publicly listed on the website but you can share it with customers when relevant — especially for Starlight Headliner bookings or if a customer has no garage and wants to come to us instead.
 
-FILMS: Premium Carbon (entry, ~98% UV, 3-5yr warranty), Nano Carbon PUREMAX (mid, 99% UV, 35-58% TSER, lifetime warranty), Nano Ceramic KOOLMAX (top, 99% UV, 79-89% IR rejection, lifetime warranty).
+FILMS: Uviron Premium Carbon (entry, ~98% UV, 3-5yr warranty), PureMax Nano Carbon (mid, 99% UV, 35-58% TSER, lifetime warranty), KoolMax Nano Ceramic (top, 99% UV, 79-89% IR rejection, lifetime warranty).
 
-PRICING - COUPES: Premium Carbon: all sides $50, windshield $80, full no wind $125, whole $205. Nano Carbon: all sides $75, windshield $110, full no wind $180, whole $290. Nano Ceramic: all sides $115, windshield $170, full no wind $275, whole $445.
-SEDANS: Premium Carbon: 2 sides $65, all 4 $105, windshield $80, full no wind $185, whole $265. Nano Carbon: 2 sides $75, all 4 $145, windshield $115, full no wind $260, whole $375. Nano Ceramic: 2 sides $115, all 4 $225, windshield $180, full no wind $395, whole $575.
-TRUCKS/SUVs: Premium Carbon: 2 sides $65, all sides $120, windshield $115, full no wind $210, whole $325. Nano Carbon: 2 sides $85, all sides $170, windshield $145, full no wind $305, whole $450. Nano Ceramic: 2 sides $135, all sides $260, windshield $220, full no wind $470, whole $690.
+PRICING - COUPES: Uviron Premium Carbon: all sides $50, windshield $80, full no wind $125, whole $205. Nano Carbon: all sides $75, windshield $110, full no wind $180, whole $290. Nano Ceramic: all sides $115, windshield $170, full no wind $275, whole $445.
+SEDANS: Uviron Premium Carbon: 2 sides $65, all 4 $105, windshield $80, full no wind $185, whole $265. Nano Carbon: 2 sides $75, all 4 $145, windshield $115, full no wind $260, whole $375. Nano Ceramic: 2 sides $115, all 4 $225, windshield $180, full no wind $395, whole $575.
+TRUCKS/SUVs: Uviron Premium Carbon: 2 sides $65, all sides $120, windshield $115, full no wind $210, whole $325. Nano Carbon: 2 sides $85, all sides $170, windshield $145, full no wind $305, whole $450. Nano Ceramic: 2 sides $135, all sides $260, windshield $220, full no wind $470, whole $690.
 ADD-ON: Computer Cut Film +$50.
 
 STARLIGHT HEADLINER SERVICE: We install fiber optic star ceilings inside vehicles. The install replaces the headliner with hundreds of tiny LED fiber optic lights to create a custom night sky effect.
@@ -1828,12 +1828,12 @@ STARLIGHT BOOKING FLOW: Collect: name, email, phone, vehicle year/make/model, pa
 
 MOBILE JOB NOTICE: If the customer is booking a mobile job, always ask if they have access to a garage or covered parking space at their location. Let them know that without a garage or covered area, there is a significantly higher chance of minor imperfections (dust, wind, debris) affecting the install quality. We will always do our best, but we cannot guarantee a flawless result on an open-air mobile job. Mention this early and clearly.
 
-BOOKING FLOW (TINTING): Collect: name, email, phone, vehicle year/make/model, tint darkness %, tint type (Premium Carbon/Nano Carbon/Nano Ceramic), previously tinted (Yes/No/I don't know), waiting or leaving during appointment, any notes, preferred date.
+BOOKING FLOW (TINTING): Collect: name, email, phone, vehicle year/make/model, tint darkness %, tint type (Uviron Premium Carbon/PureMax Nano Carbon/KoolMax Nano Ceramic), previously tinted (Yes/No/I don't know), waiting or leaving during appointment, any notes, preferred date.
 Once you have all info for either service, output: [BOOK:event_key:YYYY-MM-DD:name:email:phone:vehicle:tint_type:prev_tinted:waiting_or_leaving:extra_notes]
 
 EVENT KEYS: coupe-two-side, coupe-windshield, coupe-all-sides, coupe-whole-no-wind, coupe-whole, sedan-two-side, sedan-windshield, sedan-all-sides, sedan-whole-no-wind, sedan-whole, suv-two-side, suv-windshield, suv-all-sides, suv-whole-no-wind, suv-whole, mobile-job, starlight
 
-CRITICAL: In [BOOK:] command, tint_type MUST be exactly "Premium Carbon", "Nano Carbon", "Nano Ceramic", or the starlight package name — no other formats.
+CRITICAL: In [BOOK:] command, tint_type MUST be exactly one of these — matching Calendly dropdown exactly: "Uviron Premium Carbon", "PureMax Nano Carbon", "KoolMax Nano Ceramic", or the starlight package name. No other formats or variations.
 Today: ${todayStr}. Use current year or later for dates. Be friendly, conversational, short replies. Ask 1-2 things at a time.`;
 
   useEffect(() => { if (msgsRef.current) msgsRef.current.scrollTop = msgsRef.current.scrollHeight; }, [messages, typing]);
