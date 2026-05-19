@@ -1815,10 +1815,11 @@ CONTACT: (240) 338-7762, 210tints@gmail.com. Primarily mobile — we come to YOU
 SHOP LOCATION: 10451 Fair Oaks, Columbia, MD 21044. The shop address is not publicly listed on the website but you can share it with customers when relevant — especially for Starlight Headliner bookings or if a customer has no garage and wants to come to us instead.
 
 FILMS: Uviron Premium Carbon (entry, ~98% UV, 3-5yr warranty), PureMax Nano Carbon (mid, 99% UV, 35-58% TSER, lifetime warranty), KoolMax Nano Ceramic (top, 99% UV, 79-89% IR rejection, lifetime warranty).
+IMPORTANT: There are THREE distinct tiers. Never confuse them. Uviron Premium Carbon = cheapest. PureMax Nano Carbon = middle. KoolMax Nano Ceramic = most expensive. If a customer says "Premium Carbon" they mean Uviron Premium Carbon (entry tier).
 
-PRICING - COUPES: Uviron Premium Carbon: all sides $50, windshield $80, full no wind $125, whole $205. Nano Carbon: all sides $75, windshield $110, full no wind $180, whole $290. Nano Ceramic: all sides $115, windshield $170, full no wind $275, whole $445.
-SEDANS: Uviron Premium Carbon: 2 sides $65, all 4 $105, windshield $80, full no wind $185, whole $265. Nano Carbon: 2 sides $75, all 4 $145, windshield $115, full no wind $260, whole $375. Nano Ceramic: 2 sides $115, all 4 $225, windshield $180, full no wind $395, whole $575.
-TRUCKS/SUVs: Uviron Premium Carbon: 2 sides $65, all sides $120, windshield $115, full no wind $210, whole $325. Nano Carbon: 2 sides $85, all sides $170, windshield $145, full no wind $305, whole $450. Nano Ceramic: 2 sides $135, all sides $260, windshield $220, full no wind $470, whole $690.
+PRICING - COUPES: Uviron Premium Carbon: all sides $50, windshield $80, full no wind $125, whole $205. PureMax Nano Carbon: all sides $75, windshield $110, full no wind $180, whole $290. KoolMax Nano Ceramic: all sides $115, windshield $170, full no wind $275, whole $445.
+SEDANS: Uviron Premium Carbon: 2 sides $65, all 4 $105, windshield $80, full no wind $185, whole $265. PureMax Nano Carbon: 2 sides $75, all 4 $145, windshield $115, full no wind $260, whole $375. KoolMax Nano Ceramic: 2 sides $115, all 4 $225, windshield $180, full no wind $395, whole $575.
+TRUCKS/SUVs: Uviron Premium Carbon: 2 sides $65, all sides $120, windshield $115, full no wind $210, whole $325. PureMax Nano Carbon: 2 sides $85, all sides $170, windshield $145, full no wind $305, whole $450. KoolMax Nano Ceramic: 2 sides $135, all sides $260, windshield $220, full no wind $470, whole $690.
 ADD-ON: Computer Cut Film +$50.
 
 STARLIGHT HEADLINER SERVICE: We install fiber optic star ceilings inside vehicles. The install replaces the headliner with hundreds of tiny LED fiber optic lights to create a custom night sky effect.
