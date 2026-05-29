@@ -374,7 +374,7 @@ function LoadingScreen() {
       <div style={{ position: 'absolute', width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle, rgba(108,99,255,0.1) 0%, transparent 70%)', pointerEvents: 'none', animation: 'loaderGlow 2s ease infinite' }} />
       {/* Logo */}
       <div style={{ animation: 'loaderLogoIn 0.8s cubic-bezier(.16,1,.3,1) 0.2s both' }}>
-        <img src="/210tintlogo.png" alt="210 Auto Customs" style={{ height: 160, width: 'auto', objectFit: 'contain' }} />
+        <img src="/210tintlogo.png" alt="210 Tint" style={{ height: 160, width: 'auto', objectFit: 'contain' }} />
       </div>
       {/* Loading bar */}
       <div style={{ width: 140, height: 2, background: 'rgba(255,255,255,0.06)', borderRadius: 1, marginTop: 32, overflow: 'hidden' }}>
@@ -870,7 +870,7 @@ function Nav({ page, go }: { page: string; go: (p: string) => void }) {
     }}>
       <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <button onClick={() => nav('home')} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
-          <img src="/210tintlogo.png" alt="210 Auto Customs" style={{ height: 64, width: 'auto', objectFit: 'contain' }} />
+          <img src="/210tintlogo.png" alt="210 Tint" style={{ height: 64, width: 'auto', objectFit: 'contain' }} />
         </button>
         <div className="desk-nav" style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
           {NAV.map((n) => (
@@ -987,7 +987,7 @@ function Footer({ go }: { go: (p: string) => void }) {
       <div style={{ maxWidth: 1320, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(220px,1fr))', gap: 48 }}>
         <div>
           <div style={{ marginBottom: 20 }}>
-            <img src="/210tintlogo.png" alt="210 Auto Customs" style={{ height: 80, width: 'auto', objectFit: 'contain' }} />
+            <img src="/210tintlogo.png" alt="210 Tint" style={{ height: 80, width: 'auto', objectFit: 'contain' }} />
           </div>
           <p style={{ color: '#8e8ea0', fontSize: 16, lineHeight: 1.8, maxWidth: 280 }}>Columbia's premier mobile window tinting. Nano-ceramic protection installed at your location.</p>
         </div>
@@ -1808,7 +1808,7 @@ function ChatWidget() {
 
   const todayStr = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
-  const SYSTEM = `You are the AI booking agent for 210 Auto Customs — a 4.9-star rated mobile window tinting service in Columbia, Maryland serving the DMV. We proudly use UVIRON performance films.
+  const SYSTEM = `You are the AI booking agent for 210 Tint — a 4.9-star rated mobile window tinting service in Columbia, Maryland serving the DMV. We proudly use UVIRON performance films.
 
 CONTACT: (240) 338-7762, 210tints@gmail.com. Primarily mobile — we come to YOU anywhere in the DMV. We also have a shop location at 10451 Fair Oaks, Columbia, MD 21044 for customers who prefer to come in or for jobs that require it (like Starlight Headliner installs).
 
