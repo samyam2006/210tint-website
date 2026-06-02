@@ -685,6 +685,11 @@ function PriceCalculator() {
   const [coverage, setCoverage] = useState('whole-no-wind');
   const [computerCut, setComputerCut] = useState(false);
   const [animPrice, setAnimPrice] = useState(0);
+  const [address, setAddress] = useState('');
+  const [travelMiles, setTravelMiles] = useState<number | null>(null);
+  const [travelFee, setTravelFee] = useState<number | null>(null);
+  const [travelLoading, setTravelLoading] = useState(false);
+  const [travelError, setTravelError] = useState('');
 
   const prices: Record<string, Record<string, Record<string, number>>> = {
     coupe: {
@@ -737,12 +742,13 @@ function PriceCalculator() {
   }, [vehicle]);
 
   const basePrice = prices[vehicle]?.[film]?.[coverage] || 0;
-  const totalPrice = basePrice + (computerCut ? 50 : 0);
+  const tintPrice = basePrice + (computerCut ? 50 : 0);
+  const grandTotal = tintPrice + (travelFee || 0);
 
   // Animate price counter
   useEffect(() => {
     const start = animPrice;
-    const end = totalPrice;
+    const end = grandTotal;
     if (start === end) return;
     const t0 = performance.now();
     const tick = (now: number) => {
@@ -752,7 +758,34 @@ function PriceCalculator() {
       if (p < 1) requestAnimationFrame(tick);
     };
     requestAnimationFrame(tick);
-  }, [totalPrice]);
+  }, [grandTotal]);
+
+  // Haversine distance in miles between two lat/lon points
+  const haversine = (lat1: number, lon1: number, lat2: number, lon2: number) => {
+    const R = 3958.8;
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon / 2) ** 2;
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  };
+
+  const calcTravel = async () => {
+    if (!address.trim()) return;
+    setTravelLoading(true);
+    setTravelError('');
+    setTravelFee(null);
+    setTravelMiles(null);
+    try {
+      const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)}&format=json&limit=1&countrycodes=us`, { headers: { 'User-Agent': '210tint-website' } });
+      const data = await res.json();
+      if (!data.length) { setTravelError('Address not found — try adding city and state (e.g. "Annapolis, MD")'); setTravelLoading(false); return; }
+      const straightMiles = haversine(39.2037, -76.8610, parseFloat(data[0].lat), parseFloat(data[0].lon));
+      const driveMiles = Math.round(straightMiles * 1.2);
+      setTravelMiles(driveMiles);
+      setTravelFee(Math.round(driveMiles * 1.50));
+    } catch { setTravelError('Could not calculate — check your connection and try again'); }
+    setTravelLoading(false);
+  };
 
   const btnStyle = (active: boolean): React.CSSProperties => ({
     padding: '12px 16px', borderRadius: 4, cursor: 'pointer', transition: 'all 0.3s cubic-bezier(.16,1,.3,1)',
@@ -802,7 +835,7 @@ function PriceCalculator() {
       </div>
 
       {/* Computer Cut Add-on */}
-      <div className="rv d3" style={{ marginBottom: 36 }}>
+      <div className="rv d3" style={{ marginBottom: 28 }}>
         <button onClick={() => setComputerCut(!computerCut)} style={{
           width: '100%', padding: '16px 20px', borderRadius: 4, cursor: 'pointer',
           background: computerCut ? 'rgba(108,99,255,0.1)' : '#101018',
@@ -823,9 +856,49 @@ function PriceCalculator() {
         </button>
       </div>
 
+      {/* Travel Fee Calculator */}
+      <div className="rv d3" style={{ marginBottom: 36 }}>
+        <label style={{ display: 'block', fontSize: 12, fontWeight: 700, letterSpacing: '3px', textTransform: 'uppercase', color: '#6c63ff', marginBottom: 12 }}>④ Mobile Travel Fee <span style={{ color: '#4a4a5a', fontWeight: 400, letterSpacing: 0, textTransform: 'none', fontSize: 11 }}>— optional, $1.50/mile</span></label>
+        <div style={{ display: 'flex', gap: 8 }}>
+          <input
+            type="text"
+            value={address}
+            onChange={e => { setAddress(e.target.value); setTravelFee(null); setTravelMiles(null); setTravelError(''); }}
+            onKeyDown={e => e.key === 'Enter' && calcTravel()}
+            placeholder="Your address or city (e.g. Annapolis, MD)"
+            style={{ flex: 1, padding: '13px 16px', background: '#101018', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 4, color: '#eeeef2', fontSize: 15, outline: 'none', fontFamily: 'Inter' }}
+          />
+          <button onClick={calcTravel} disabled={travelLoading || !address.trim()} style={{
+            padding: '13px 20px', borderRadius: 4, background: '#6c63ff', border: 'none',
+            color: '#fff', fontWeight: 700, fontSize: 14, cursor: address.trim() ? 'pointer' : 'default',
+            opacity: address.trim() ? 1 : 0.4, whiteSpace: 'nowrap', transition: 'opacity 0.2s',
+          }}>
+            {travelLoading ? '...' : 'Calculate'}
+          </button>
+        </div>
+        {travelError && <p style={{ color: '#f87171', fontSize: 13, marginTop: 8 }}>{travelError}</p>}
+        {travelMiles !== null && travelFee !== null && (
+          <div style={{ marginTop: 10, padding: '10px 14px', background: 'rgba(108,99,255,0.08)', border: '1px solid rgba(108,99,255,0.2)', borderRadius: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span style={{ color: '#8e8ea0', fontSize: 14 }}>~{travelMiles} miles from Columbia, MD</span>
+            <span style={{ color: '#a78bfa', fontWeight: 700, fontSize: 15, fontFamily: 'Space Grotesk' }}>+${travelFee} travel fee</span>
+          </div>
+        )}
+      </div>
+
       {/* Price Display */}
       <div className="rv d4" style={{ textAlign: 'center', padding: '36px 28px', borderRadius: 8, background: 'linear-gradient(135deg, rgba(108,99,255,0.08), rgba(108,99,255,0.02))', border: '1px solid rgba(108,99,255,0.2)' }}>
-        <span style={{ display: 'block', fontSize: 12, fontWeight: 700, letterSpacing: '3px', textTransform: 'uppercase', color: '#4a4a5a', marginBottom: 8 }}>Your Price</span>
+        {travelFee !== null && travelFee > 0 && (
+          <div style={{ marginBottom: 16, display: 'flex', flexDirection: 'column', gap: 6 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 8px', color: '#8e8ea0', fontSize: 14 }}>
+              <span>Tint service</span><span style={{ fontFamily: 'Space Grotesk', fontWeight: 600, color: '#eeeef2' }}>${tintPrice}</span>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 8px', color: '#8e8ea0', fontSize: 14 }}>
+              <span>Travel fee (~{travelMiles} mi)</span><span style={{ fontFamily: 'Space Grotesk', fontWeight: 600, color: '#a78bfa' }}>${travelFee}</span>
+            </div>
+            <div style={{ height: 1, background: 'rgba(255,255,255,0.06)', margin: '4px 0' }} />
+          </div>
+        )}
+        <span style={{ display: 'block', fontSize: 12, fontWeight: 700, letterSpacing: '3px', textTransform: 'uppercase', color: '#4a4a5a', marginBottom: 8 }}>{travelFee !== null && travelFee > 0 ? 'Total' : 'Your Price'}</span>
         <div style={{ fontFamily: 'Space Grotesk', fontSize: 56, fontWeight: 800, color: '#fff', lineHeight: 1 }}>
           <span style={{ fontSize: 28, color: '#6c63ff', verticalAlign: 'top' }}>$</span>{animPrice}
         </div>
@@ -837,7 +910,7 @@ function PriceCalculator() {
           display: 'inline-block', marginTop: 24, padding: '16px 44px', borderRadius: 3,
           background: '#6c63ff', color: '#fff', fontSize: 16, fontWeight: 700, textDecoration: 'none',
           boxShadow: '0 4px 30px rgba(108,99,255,0.35)',
-        }}>Book for ${totalPrice}</a>
+        }}>Book for ${grandTotal}</a>
       </div>
     </div>
   );
@@ -1821,6 +1894,7 @@ PRICING - COUPES: Uviron Premium Carbon: all sides $50, windshield $80, full no 
 SEDANS: Uviron Premium Carbon: 2 sides $65, all 4 $105, windshield $80, full no wind $185, whole $265. PureMax Nano Carbon: 2 sides $75, all 4 $145, windshield $115, full no wind $260, whole $375. KoolMax Nano Ceramic: 2 sides $115, all 4 $225, windshield $180, full no wind $395, whole $575.
 TRUCKS/SUVs: Uviron Premium Carbon: 2 sides $65, all sides $120, windshield $115, full no wind $210, whole $325. PureMax Nano Carbon: 2 sides $85, all sides $170, windshield $145, full no wind $305, whole $450. KoolMax Nano Ceramic: 2 sides $135, all sides $260, windshield $220, full no wind $470, whole $690.
 ADD-ON: Computer Cut Film +$50.
+TRAVEL FEE: Mobile jobs charge $1.50 per mile (one way) from Columbia, MD 21044. Always ask the customer's general location when discussing a mobile booking. Estimate the distance, calculate the fee (miles × $1.50, rounded to nearest dollar), and add it to the quoted total. Example: 20 miles away = $30 travel fee added on top. Be proactive — mention the travel fee before the customer asks.
 
 STARLIGHT HEADLINER SERVICE: We install fiber optic star ceilings inside vehicles. The install replaces the headliner with hundreds of tiny LED fiber optic lights to create a custom night sky effect.
 STARLIGHT SALE PRICING (LIMITED TIME): Starter package (550 stars) normally $824, on sale $697 (save $127). Add-on 100 extra stars standard normally $100, on sale $85. Add-on 100 extra stars premium normally $150, on sale $127.
