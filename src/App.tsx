@@ -770,17 +770,41 @@ function PriceCalculator() {
   };
 
   const calcTravel = async () => {
-    if (!address.trim()) return;
+    const q = address.trim();
+    if (!q) return;
+    // Require a real place name, not just a number or a couple stray characters
+    if (!/[a-zA-Z]{3,}/.test(q)) {
+      setTravelError('Please enter a real address, city, or ZIP — e.g. "Annapolis, MD" or "21401".');
+      return;
+    }
     setTravelLoading(true);
     setTravelError('');
     setTravelFee(null);
     setTravelMiles(null);
     try {
-      const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)}&format=json&limit=1&countrycodes=us`, { headers: { 'User-Agent': '210tint-website' } });
+      const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&addressdetails=1&limit=1&countrycodes=us`, { headers: { 'User-Agent': '210tint-website' } });
       const data = await res.json();
       if (!data.length) { setTravelError('Address not found — try adding city and state (e.g. "Annapolis, MD")'); setTravelLoading(false); return; }
-      const straightMiles = haversine(39.2037, -76.8610, parseFloat(data[0].lat), parseFloat(data[0].lon));
+
+      const hit = data[0];
+      // Reject vague / low-confidence matches (a bare number geocodes to random places)
+      const okTypes = ['house', 'building', 'residential', 'place', 'boundary', 'highway', 'amenity', 'postcode'];
+      const isPrecise = Number(hit.importance) >= 0.2 || okTypes.includes(hit.class) || hit.address?.postcode || hit.address?.city || hit.address?.town || hit.address?.road;
+      if (!isPrecise) {
+        setTravelError('Couldn’t find a precise match — please add a street, city and state (e.g. "123 Main St, Annapolis, MD").');
+        setTravelLoading(false);
+        return;
+      }
+
+      const straightMiles = haversine(39.2037, -76.8610, parseFloat(hit.lat), parseFloat(hit.lon));
       const driveMiles = Math.round(straightMiles * 1.2);
+      // We serve the DMV — anything wildly far is almost certainly a bad address
+      if (driveMiles > 150) {
+        setTravelError(`That looks like it’s ~${driveMiles} mi away — outside our DMV service area, or the address may be wrong. Try adding city and state, or call (240) 338-7762.`);
+        setTravelLoading(false);
+        return;
+      }
+
       setTravelMiles(driveMiles);
       setTravelFee(Math.round(driveMiles * 1.50));
     } catch { setTravelError('Could not calculate — check your connection and try again'); }
