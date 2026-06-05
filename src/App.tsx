@@ -36,7 +36,7 @@ function SectionDivider({ variant = 'line' }: { variant?: 'line' | 'dots' | 'glo
         {[0, 1, 2, 3, 4].map(i => (
           <div key={i} style={{
             width: 6, height: 6, borderRadius: '50%',
-            background: '#6c63ff',
+            background: '#0088ff',
             opacity: progress > (i * 0.15 + 0.2) ? 0.6 : 0.08,
             transform: `scale(${progress > (i * 0.15 + 0.2) ? 1 : 0.5})`,
             transition: 'all 0.6s cubic-bezier(.16,1,.3,1)',
@@ -51,7 +51,7 @@ function SectionDivider({ variant = 'line' }: { variant?: 'line' | 'dots' | 'glo
       <div ref={ref} style={{ padding: '20px 0', display: 'flex', justifyContent: 'center' }}>
         <div style={{
           width: `${Math.min(progress * 150, 100)}%`, maxWidth: 600, height: 1,
-          background: 'linear-gradient(90deg, transparent, rgba(108,99,255,0.4), transparent)',
+          background: 'linear-gradient(90deg, transparent, rgba(0,136,255,0.4), transparent)',
           transition: 'width 0.3s ease',
         }} />
       </div>
@@ -182,14 +182,14 @@ function GlassScene() {
 
         // Panel body
         const grad = ctx.createLinearGradient(-p.w / 2, -p.h / 2, p.w / 2, p.h / 2);
-        grad.addColorStop(0, `rgba(108,99,255,${p.opacity})`);
-        grad.addColorStop(0.5, `rgba(139,131,255,${p.opacity * 1.5})`);
-        grad.addColorStop(1, `rgba(108,99,255,${p.opacity * 0.5})`);
+        grad.addColorStop(0, `rgba(0,136,255,${p.opacity})`);
+        grad.addColorStop(0.5, `rgba(96,165,250,${p.opacity * 1.5})`);
+        grad.addColorStop(1, `rgba(0,136,255,${p.opacity * 0.5})`);
         ctx.fillStyle = grad;
         ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
 
         // Panel edge glow
-        ctx.strokeStyle = `rgba(108,99,255,${p.opacity * 2})`;
+        ctx.strokeStyle = `rgba(0,136,255,${p.opacity * 2})`;
         ctx.lineWidth = 0.5;
         ctx.strokeRect(-p.w / 2, -p.h / 2, p.w, p.h);
         ctx.restore();
@@ -205,7 +205,7 @@ function GlassScene() {
             ctx.beginPath();
             ctx.moveTo(dots[i].x, dots[i].y);
             ctx.lineTo(dots[j].x, dots[j].y);
-            ctx.strokeStyle = `rgba(108,99,255,${0.08 * (1 - dist / 180)})`;
+            ctx.strokeStyle = `rgba(0,136,255,${0.08 * (1 - dist / 180)})`;
             ctx.lineWidth = 0.5;
             ctx.stroke();
           }
@@ -232,21 +232,21 @@ function GlassScene() {
         const pulsedO = d.o * (0.6 + 0.4 * Math.sin(d.pulse));
         // Glow
         const grd = ctx.createRadialGradient(d.x, d.y, 0, d.x, d.y, d.r * 4);
-        grd.addColorStop(0, `rgba(108,99,255,${pulsedO * 0.6})`);
-        grd.addColorStop(1, 'rgba(108,99,255,0)');
+        grd.addColorStop(0, `rgba(0,136,255,${pulsedO * 0.6})`);
+        grd.addColorStop(1, 'rgba(0,136,255,0)');
         ctx.fillStyle = grd;
         ctx.fillRect(d.x - d.r * 4, d.y - d.r * 4, d.r * 8, d.r * 8);
         // Core
         ctx.beginPath();
         ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(139,131,255,${pulsedO})`;
+        ctx.fillStyle = `rgba(96,165,250,${pulsedO})`;
         ctx.fill();
       });
 
       // Large ambient glow that follows mouse
       const mgrd = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 350);
-      mgrd.addColorStop(0, 'rgba(108,99,255,0.04)');
-      mgrd.addColorStop(1, 'rgba(108,99,255,0)');
+      mgrd.addColorStop(0, 'rgba(0,136,255,0.04)');
+      mgrd.addColorStop(1, 'rgba(0,136,255,0)');
       ctx.fillStyle = mgrd;
       ctx.fillRect(mouse.x - 350, mouse.y - 350, 700, 700);
 
@@ -371,22 +371,22 @@ function LoadingScreen() {
       animation: 'loaderFadeOut 0.6s ease 2.2s forwards',
     }}>
       {/* Ambient glow */}
-      <div style={{ position: 'absolute', width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle, rgba(108,99,255,0.1) 0%, transparent 70%)', pointerEvents: 'none', animation: 'loaderGlow 2s ease infinite' }} />
+      <div style={{ position: 'absolute', width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle, rgba(0,136,255,0.1) 0%, transparent 70%)', pointerEvents: 'none', animation: 'loaderGlow 2s ease infinite' }} />
       {/* Logo */}
       <div style={{ animation: 'loaderLogoIn 0.8s cubic-bezier(.16,1,.3,1) 0.2s both' }}>
         <img src="/210tintlogo.png" alt="210 Tint" style={{ height: 160, width: 'auto', objectFit: 'contain' }} />
       </div>
       {/* Loading bar */}
       <div style={{ width: 140, height: 2, background: 'rgba(255,255,255,0.06)', borderRadius: 1, marginTop: 32, overflow: 'hidden' }}>
-        <div style={{ height: '100%', background: 'linear-gradient(90deg, #6c63ff, #a78bfa, #6c63ff)', backgroundSize: '200% auto', animation: 'loaderBar 1.4s cubic-bezier(.16,1,.3,1) 0.4s both, shimmer 2s linear infinite' }} />
+        <div style={{ height: '100%', background: 'linear-gradient(90deg, #0088ff, #7dd3ff, #0088ff)', backgroundSize: '200% auto', animation: 'loaderBar 1.4s cubic-bezier(.16,1,.3,1) 0.4s both, shimmer 2s linear infinite' }} />
       </div>
       {/* Tagline */}
       <p style={{ fontFamily: 'Inter', fontSize: 12, letterSpacing: '4px', textTransform: 'uppercase', color: '#4a4a5a', marginTop: 20, animation: 'loaderLogoIn 0.6s ease 0.8s both' }}>
         Mobile Nano-Ceramic Specialists
       </p>
       {/* Decorative line accents */}
-      <div style={{ position: 'absolute', top: '50%', left: '10%', width: 60, height: 1, background: 'linear-gradient(90deg, transparent, rgba(108,99,255,0.15))', animation: 'loaderLogoIn 1s ease 0.6s both' }} />
-      <div style={{ position: 'absolute', top: '50%', right: '10%', width: 60, height: 1, background: 'linear-gradient(270deg, transparent, rgba(108,99,255,0.15))', animation: 'loaderLogoIn 1s ease 0.6s both' }} />
+      <div style={{ position: 'absolute', top: '50%', left: '10%', width: 60, height: 1, background: 'linear-gradient(90deg, transparent, rgba(0,136,255,0.15))', animation: 'loaderLogoIn 1s ease 0.6s both' }} />
+      <div style={{ position: 'absolute', top: '50%', right: '10%', width: 60, height: 1, background: 'linear-gradient(270deg, transparent, rgba(0,136,255,0.15))', animation: 'loaderLogoIn 1s ease 0.6s both' }} />
     </div>
   );
 }
@@ -410,7 +410,7 @@ function CursorGlow() {
     <div ref={ref} style={{
       position: 'fixed', width: 500, height: 500,
       borderRadius: '50%', pointerEvents: 'none', zIndex: 9998,
-      background: 'radial-gradient(circle, rgba(108,99,255,0.04) 0%, rgba(108,99,255,0.015) 30%, transparent 70%)',
+      background: 'radial-gradient(circle, rgba(0,136,255,0.04) 0%, rgba(0,136,255,0.015) 30%, transparent 70%)',
       transform: 'translate(-50%, -50%)',
       transition: 'left 0.15s ease, top 0.15s ease',
       left: '-100px', top: '-100px',
@@ -465,13 +465,13 @@ function ServiceAreaMap() {
       <svg viewBox="40 60 660 470" style={{ width: '100%', maxWidth: 720, height: 'auto' }}>
         <defs>
           <radialGradient id="mapGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="rgba(108,99,255,0.18)" />
-            <stop offset="55%" stopColor="rgba(108,99,255,0.05)" />
-            <stop offset="100%" stopColor="rgba(108,99,255,0)" />
+            <stop offset="0%" stopColor="rgba(0,136,255,0.18)" />
+            <stop offset="55%" stopColor="rgba(0,136,255,0.05)" />
+            <stop offset="100%" stopColor="rgba(0,136,255,0)" />
           </radialGradient>
           <radialGradient id="hubGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="rgba(108,99,255,0.55)" />
-            <stop offset="100%" stopColor="rgba(108,99,255,0)" />
+            <stop offset="0%" stopColor="rgba(0,136,255,0.55)" />
+            <stop offset="100%" stopColor="rgba(0,136,255,0)" />
           </radialGradient>
         </defs>
 
@@ -479,17 +479,17 @@ function ServiceAreaMap() {
         <circle cx={350} cy={270} r={260} fill="url(#mapGlow)" />
 
         {/* Coverage radius rings */}
-        <circle cx={350} cy={270} r={125} fill="none" stroke="rgba(108,99,255,0.18)" strokeWidth={1} strokeDasharray="2 5" />
-        <circle cx={350} cy={270} r={200} fill="none" stroke="rgba(108,99,255,0.28)" strokeWidth={1.2} strokeDasharray="4 7" />
+        <circle cx={350} cy={270} r={125} fill="none" stroke="rgba(0,136,255,0.18)" strokeWidth={1} strokeDasharray="2 5" />
+        <circle cx={350} cy={270} r={200} fill="none" stroke="rgba(0,136,255,0.28)" strokeWidth={1.2} strokeDasharray="4 7" />
 
         {/* Radius labels */}
-        <text x={350} y={138} textAnchor="middle" style={{ fontSize: 8, fill: 'rgba(108,99,255,0.55)', fontFamily: 'Inter', fontWeight: 700, letterSpacing: '2.5px' }}>~80 MI RADIUS</text>
-        <text x={350} y={400} textAnchor="middle" style={{ fontSize: 7, fill: 'rgba(108,99,255,0.4)', fontFamily: 'Inter', fontWeight: 700, letterSpacing: '2px' }}>~50 MI</text>
+        <text x={350} y={138} textAnchor="middle" style={{ fontSize: 8, fill: 'rgba(0,136,255,0.55)', fontFamily: 'Inter', fontWeight: 700, letterSpacing: '2.5px' }}>~80 MI RADIUS</text>
+        <text x={350} y={400} textAnchor="middle" style={{ fontSize: 7, fill: 'rgba(0,136,255,0.4)', fontFamily: 'Inter', fontWeight: 700, letterSpacing: '2px' }}>~50 MI</text>
 
         {/* Connection lines from hub to each location */}
         {locations.filter(l => !l.hub).map(l => (
           <line key={`ln-${l.id}`} x1={350} y1={270} x2={l.x} y2={l.y}
-            stroke={l.far ? 'rgba(108,99,255,0.06)' : 'rgba(108,99,255,0.1)'} strokeWidth={1} strokeDasharray="1 3" />
+            stroke={l.far ? 'rgba(0,136,255,0.06)' : 'rgba(0,136,255,0.1)'} strokeWidth={1} strokeDasharray="1 3" />
         ))}
 
         {/* Hub glow */}
@@ -500,13 +500,13 @@ function ServiceAreaMap() {
           if (l.hub) {
             return (
               <g key={l.id}>
-                <circle cx={l.x} cy={l.y} r={9} fill="#6c63ff" opacity={0.9}>
+                <circle cx={l.x} cy={l.y} r={9} fill="#0088ff" opacity={0.9}>
                   <animate attributeName="r" values="9;14;9" dur="2.4s" repeatCount="indefinite" />
                   <animate attributeName="opacity" values="0.9;0.35;0.9" dur="2.4s" repeatCount="indefinite" />
                 </circle>
                 <circle cx={l.x} cy={l.y} r={5} fill="#fff" />
                 <text x={l.x} y={l.y - 18} textAnchor="middle" style={{ fontSize: 12, fill: '#fff', fontFamily: 'Space Grotesk', fontWeight: 700 }}>Columbia, MD</text>
-                <text x={l.x} y={l.y + 24} textAnchor="middle" style={{ fontSize: 8, fill: '#6c63ff', fontFamily: 'Inter', fontWeight: 700, letterSpacing: '2.5px' }}>● HOME BASE</text>
+                <text x={l.x} y={l.y + 24} textAnchor="middle" style={{ fontSize: 8, fill: '#0088ff', fontFamily: 'Inter', fontWeight: 700, letterSpacing: '2.5px' }}>● HOME BASE</text>
               </g>
             );
           }
@@ -515,8 +515,8 @@ function ServiceAreaMap() {
           return (
             <g key={l.id} onMouseEnter={() => setActive(l.id)} onMouseLeave={() => setActive(null)} style={{ cursor: 'pointer' }}>
               <circle cx={l.x} cy={l.y} r={isActive ? 5.5 : 3.5}
-                fill={isActive ? '#6c63ff' : 'rgba(108,99,255,0.7)'}
-                stroke={isActive ? '#fff' : 'rgba(108,99,255,0.4)'} strokeWidth={1}
+                fill={isActive ? '#0088ff' : 'rgba(0,136,255,0.7)'}
+                stroke={isActive ? '#fff' : 'rgba(0,136,255,0.4)'} strokeWidth={1}
                 style={{ transition: 'all 0.3s' }} />
               <text x={l.x + off.dx} y={l.y + off.dy} textAnchor={off.anchor}
                 style={{ fontSize: 9.5, fill: isActive ? '#fff' : '#8e8ea0', fontFamily: 'Inter', fontWeight: isActive ? 700 : 500, transition: 'all 0.3s', pointerEvents: 'none' }}>
@@ -528,8 +528,8 @@ function ServiceAreaMap() {
       </svg>
       {active && (
         <div style={{
-          padding: '12px 24px', borderRadius: 4, background: 'rgba(108,99,255,0.08)',
-          border: '1px solid rgba(108,99,255,0.2)', animation: 'fadeIn 0.3s ease',
+          padding: '12px 24px', borderRadius: 4, background: 'rgba(0,136,255,0.08)',
+          border: '1px solid rgba(0,136,255,0.2)', animation: 'fadeIn 0.3s ease',
         }}>
           <span style={{ fontSize: 16, fontWeight: 600, color: '#fff' }}>{locations.find(l => l.id === active)?.name}</span>
           <span style={{ fontSize: 12, color: '#8e8ea0', marginLeft: 12 }}>We come to you</span>
@@ -560,8 +560,8 @@ function TintSimulator() {
         {presets.map(p => (
           <button key={p.value} onClick={() => setTint(100 - p.value)} style={{
             padding: '10px 20px', borderRadius: 4, cursor: 'pointer', transition: 'all 0.3s',
-            background: vlt === p.value ? 'rgba(108,99,255,0.15)' : '#0a0a0f',
-            border: vlt === p.value ? '1px solid rgba(108,99,255,0.4)' : '1px solid rgba(255,255,255,0.04)',
+            background: vlt === p.value ? 'rgba(0,136,255,0.15)' : '#0a0a0f',
+            border: vlt === p.value ? '1px solid rgba(0,136,255,0.4)' : '1px solid rgba(255,255,255,0.04)',
             color: vlt === p.value ? '#fff' : '#8e8ea0',
           }}>
             <span style={{ display: 'block', fontFamily: 'Space Grotesk', fontSize: 18, fontWeight: 800 }}>{p.label}</span>
@@ -573,7 +573,7 @@ function TintSimulator() {
       {/* Main simulator area */}
       <div style={{ position: 'relative', borderRadius: 12, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.04)', background: 'linear-gradient(180deg, #0d0d14 0%, #080810 100%)' }}>
         {/* Ambient glow behind car */}
-        <div style={{ position: 'absolute', top: '40%', left: '50%', transform: 'translate(-50%,-50%)', width: 400, height: 300, borderRadius: '50%', background: 'radial-gradient(circle, rgba(108,99,255,0.06) 0%, transparent 70%)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', top: '40%', left: '50%', transform: 'translate(-50%,-50%)', width: 400, height: 300, borderRadius: '50%', background: 'radial-gradient(circle, rgba(0,136,255,0.06) 0%, transparent 70%)', pointerEvents: 'none' }} />
 
         {/* Car SVG - more detailed sedan */}
         <div style={{ padding: '40px 40px 20px', position: 'relative' }}>
@@ -616,8 +616,8 @@ function TintSimulator() {
             {/* Door handle */}
             <rect x="220" y="118" width="18" height="3" rx="1.5" fill="#4a4a5a" />
             {/* Headlight */}
-            <path d="M390,132 L410,142 L410,158 L395,165 Z" fill="#2a2a35" stroke="#6c63ff" strokeWidth="0.5" opacity="0.6" />
-            <path d="M393,138 L406,144 L406,155 L396,160 Z" fill="rgba(108,99,255,0.15)" filter="url(#glow)" />
+            <path d="M390,132 L410,142 L410,158 L395,165 Z" fill="#2a2a35" stroke="#0088ff" strokeWidth="0.5" opacity="0.6" />
+            <path d="M393,138 L406,144 L406,155 L396,160 Z" fill="rgba(0,136,255,0.15)" filter="url(#glow)" />
             {/* Tail light */}
             <path d="M92,135 L100,128 L100,162 L92,168 Z" fill="rgba(255,50,50,0.25)" stroke="rgba(255,50,50,0.4)" strokeWidth="0.5" />
             {/* Wheels */}
@@ -640,13 +640,13 @@ function TintSimulator() {
           <div style={{ maxWidth: 500, margin: '0 auto' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
               <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#4a4a5a' }}>Tint Darkness</span>
-              <span style={{ fontFamily: 'Space Grotesk', fontSize: 20, fontWeight: 800, color: '#fff' }}>{tint}<span style={{ fontSize: 12, color: '#6c63ff' }}>%</span></span>
+              <span style={{ fontFamily: 'Space Grotesk', fontSize: 20, fontWeight: 800, color: '#fff' }}>{tint}<span style={{ fontSize: 12, color: '#0088ff' }}>%</span></span>
             </div>
             <input type="range" min={5} max={95} value={tint} onChange={(e) => setTint(Number(e.target.value))}
               style={{ width: '100%', cursor: 'pointer' }} />
             <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 8 }}>
               <span style={{ fontSize: 12, color: '#4a4a5a' }}>Light (5%)</span>
-              <span style={{ fontSize: 12, color: '#6c63ff', fontWeight: 600 }}>{vlt}% VLT</span>
+              <span style={{ fontSize: 12, color: '#0088ff', fontWeight: 600 }}>{vlt}% VLT</span>
               <span style={{ fontSize: 12, color: '#4a4a5a' }}>Limo (95%)</span>
             </div>
           </div>
@@ -662,7 +662,7 @@ function TintSimulator() {
         ].map((s, i) => (
           <div key={i} style={{ textAlign: 'center' }}>
             <span style={{ display: 'block', fontSize: 12, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', color: '#4a4a5a', marginBottom: 4 }}>{s.label}</span>
-            <span style={{ fontFamily: 'Space Grotesk', fontSize: 20, fontWeight: 800, color: s.label === 'MD Legal Front' ? (vlt >= 35 ? '#4ade80' : '#ff4d4d') : '#6c63ff' }}>{s.value}</span>
+            <span style={{ fontFamily: 'Space Grotesk', fontSize: 20, fontWeight: 800, color: s.label === 'MD Legal Front' ? (vlt >= 35 ? '#4ade80' : '#ff4d4d') : '#0088ff' }}>{s.value}</span>
           </div>
         ))}
       </div>
@@ -670,8 +670,8 @@ function TintSimulator() {
       <div style={{ textAlign: 'center', marginTop: 28 }}>
         <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" className="magnetic-btn" style={{
           display: 'inline-block', padding: '15px 40px', borderRadius: 3,
-          background: '#6c63ff', color: '#fff', fontSize: 16, fontWeight: 700, textDecoration: 'none',
-          boxShadow: '0 4px 30px rgba(108,99,255,0.3)',
+          background: '#0088ff', color: '#fff', fontSize: 16, fontWeight: 700, textDecoration: 'none',
+          boxShadow: '0 4px 30px rgba(0,136,255,0.3)',
         }}>Book Your Tint</a>
       </div>
     </div>
@@ -813,8 +813,8 @@ function PriceCalculator() {
 
   const btnStyle = (active: boolean): React.CSSProperties => ({
     padding: '12px 16px', borderRadius: 4, cursor: 'pointer', transition: 'all 0.3s cubic-bezier(.16,1,.3,1)',
-    background: active ? 'rgba(108,99,255,0.15)' : '#101018',
-    border: active ? '1px solid rgba(108,99,255,0.4)' : '1px solid rgba(255,255,255,0.04)',
+    background: active ? 'rgba(0,136,255,0.15)' : '#101018',
+    border: active ? '1px solid rgba(0,136,255,0.4)' : '1px solid rgba(255,255,255,0.04)',
     color: active ? '#fff' : '#8e8ea0', fontSize: 16, fontWeight: active ? 700 : 500,
     fontFamily: 'Inter', textAlign: 'left' as const,
   });
@@ -823,7 +823,7 @@ function PriceCalculator() {
     <div>
       {/* Step 1: Vehicle */}
       <div className="rv" style={{ marginBottom: 28 }}>
-        <label style={{ display: 'block', fontSize: 12, fontWeight: 700, letterSpacing: '3px', textTransform: 'uppercase', color: '#6c63ff', marginBottom: 12 }}>① Vehicle Type</label>
+        <label style={{ display: 'block', fontSize: 12, fontWeight: 700, letterSpacing: '3px', textTransform: 'uppercase', color: '#0088ff', marginBottom: 12 }}>① Vehicle Type</label>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 8 }}>
           {Object.entries(vehicleNames).map(([k, v]) => (
             <button key={k} onClick={() => setVehicle(k)} style={btnStyle(vehicle === k)}>
@@ -835,11 +835,11 @@ function PriceCalculator() {
 
       {/* Step 2: Film */}
       <div className="rv d1" style={{ marginBottom: 28 }}>
-        <label style={{ display: 'block', fontSize: 12, fontWeight: 700, letterSpacing: '3px', textTransform: 'uppercase', color: '#6c63ff', marginBottom: 12 }}>② Film Type</label>
+        <label style={{ display: 'block', fontSize: 12, fontWeight: 700, letterSpacing: '3px', textTransform: 'uppercase', color: '#0088ff', marginBottom: 12 }}>② Film Type</label>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 8 }}>
           {Object.entries(filmNames).map(([k, v]) => (
             <button key={k} onClick={() => setFilm(k)} style={btnStyle(film === k)}>
-              <span style={{ display: 'block', fontSize: 12, fontWeight: 700, letterSpacing: '1px', color: film === k ? '#6c63ff' : '#4a4a5a', marginBottom: 2 }}>{k === 'carbon' ? 'ENTRY' : k === 'nano' ? 'MID' : 'TOP TIER'}</span>
+              <span style={{ display: 'block', fontSize: 12, fontWeight: 700, letterSpacing: '1px', color: film === k ? '#0088ff' : '#4a4a5a', marginBottom: 2 }}>{k === 'carbon' ? 'ENTRY' : k === 'nano' ? 'MID' : 'TOP TIER'}</span>
               <span style={{ fontSize: 12, fontWeight: 600 }}>{v}</span>
             </button>
           ))}
@@ -848,7 +848,7 @@ function PriceCalculator() {
 
       {/* Step 3: Coverage */}
       <div className="rv d2" style={{ marginBottom: 28 }}>
-        <label style={{ display: 'block', fontSize: 12, fontWeight: 700, letterSpacing: '3px', textTransform: 'uppercase', color: '#6c63ff', marginBottom: 12 }}>③ Coverage</label>
+        <label style={{ display: 'block', fontSize: 12, fontWeight: 700, letterSpacing: '3px', textTransform: 'uppercase', color: '#0088ff', marginBottom: 12 }}>③ Coverage</label>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(140px,1fr))', gap: 8 }}>
           {coverageOptions[vehicle].map(o => (
             <button key={o.id} onClick={() => setCoverage(o.id)} style={btnStyle(coverage === o.id)}>
@@ -862,8 +862,8 @@ function PriceCalculator() {
       <div className="rv d3" style={{ marginBottom: 28 }}>
         <button onClick={() => setComputerCut(!computerCut)} style={{
           width: '100%', padding: '16px 20px', borderRadius: 4, cursor: 'pointer',
-          background: computerCut ? 'rgba(108,99,255,0.1)' : '#101018',
-          border: computerCut ? '1px solid rgba(108,99,255,0.3)' : '1px solid rgba(255,255,255,0.04)',
+          background: computerCut ? 'rgba(0,136,255,0.1)' : '#101018',
+          border: computerCut ? '1px solid rgba(0,136,255,0.3)' : '1px solid rgba(255,255,255,0.04)',
           display: 'flex', justifyContent: 'space-between', alignItems: 'center',
           transition: 'all 0.3s', color: '#fff', textAlign: 'left',
         }}>
@@ -872,8 +872,8 @@ function PriceCalculator() {
             <span style={{ fontSize: 12, color: '#8e8ea0' }}>Pre-cut to exact window shapes. No blade touches your car.</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
-            <span style={{ fontFamily: 'Space Grotesk', fontWeight: 800, color: '#6c63ff' }}>+$50</span>
-            <div style={{ width: 20, height: 20, borderRadius: 4, border: computerCut ? '2px solid #6c63ff' : '2px solid #4a4a5a', background: computerCut ? '#6c63ff' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s', fontSize: 12, color: '#fff' }}>
+            <span style={{ fontFamily: 'Space Grotesk', fontWeight: 800, color: '#0088ff' }}>+$50</span>
+            <div style={{ width: 20, height: 20, borderRadius: 4, border: computerCut ? '2px solid #0088ff' : '2px solid #4a4a5a', background: computerCut ? '#0088ff' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s', fontSize: 12, color: '#fff' }}>
               {computerCut && '✓'}
             </div>
           </div>
@@ -882,7 +882,7 @@ function PriceCalculator() {
 
       {/* Travel Fee Calculator */}
       <div className="rv d3" style={{ marginBottom: 36 }}>
-        <label style={{ display: 'block', fontSize: 12, fontWeight: 700, letterSpacing: '3px', textTransform: 'uppercase', color: '#6c63ff', marginBottom: 12 }}>④ Mobile Travel Fee <span style={{ color: '#4a4a5a', fontWeight: 400, letterSpacing: 0, textTransform: 'none', fontSize: 11 }}>— optional, $1.50/mile</span></label>
+        <label style={{ display: 'block', fontSize: 12, fontWeight: 700, letterSpacing: '3px', textTransform: 'uppercase', color: '#0088ff', marginBottom: 12 }}>④ Mobile Travel Fee <span style={{ color: '#4a4a5a', fontWeight: 400, letterSpacing: 0, textTransform: 'none', fontSize: 11 }}>— optional, $1.50/mile</span></label>
         <div style={{ display: 'flex', gap: 8 }}>
           <input
             type="text"
@@ -893,7 +893,7 @@ function PriceCalculator() {
             style={{ flex: 1, padding: '13px 16px', background: '#101018', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 4, color: '#eeeef2', fontSize: 15, outline: 'none', fontFamily: 'Inter' }}
           />
           <button onClick={calcTravel} disabled={travelLoading || !address.trim()} style={{
-            padding: '13px 20px', borderRadius: 4, background: '#6c63ff', border: 'none',
+            padding: '13px 20px', borderRadius: 4, background: '#0088ff', border: 'none',
             color: '#fff', fontWeight: 700, fontSize: 14, cursor: address.trim() ? 'pointer' : 'default',
             opacity: address.trim() ? 1 : 0.4, whiteSpace: 'nowrap', transition: 'opacity 0.2s',
           }}>
@@ -902,29 +902,29 @@ function PriceCalculator() {
         </div>
         {travelError && <p style={{ color: '#f87171', fontSize: 13, marginTop: 8 }}>{travelError}</p>}
         {travelMiles !== null && travelFee !== null && (
-          <div style={{ marginTop: 10, padding: '10px 14px', background: 'rgba(108,99,255,0.08)', border: '1px solid rgba(108,99,255,0.2)', borderRadius: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ marginTop: 10, padding: '10px 14px', background: 'rgba(0,136,255,0.08)', border: '1px solid rgba(0,136,255,0.2)', borderRadius: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <span style={{ color: '#8e8ea0', fontSize: 14 }}>~{travelMiles} miles from Columbia, MD</span>
-            <span style={{ color: '#a78bfa', fontWeight: 700, fontSize: 15, fontFamily: 'Space Grotesk' }}>+${travelFee} travel fee</span>
+            <span style={{ color: '#7dd3ff', fontWeight: 700, fontSize: 15, fontFamily: 'Space Grotesk' }}>+${travelFee} travel fee</span>
           </div>
         )}
       </div>
 
       {/* Price Display */}
-      <div className="rv d4" style={{ textAlign: 'center', padding: '36px 28px', borderRadius: 8, background: 'linear-gradient(135deg, rgba(108,99,255,0.08), rgba(108,99,255,0.02))', border: '1px solid rgba(108,99,255,0.2)' }}>
+      <div className="rv d4" style={{ textAlign: 'center', padding: '36px 28px', borderRadius: 8, background: 'linear-gradient(135deg, rgba(0,136,255,0.08), rgba(0,136,255,0.02))', border: '1px solid rgba(0,136,255,0.2)' }}>
         {travelFee !== null && travelFee > 0 && (
           <div style={{ marginBottom: 16, display: 'flex', flexDirection: 'column', gap: 6 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 8px', color: '#8e8ea0', fontSize: 14 }}>
               <span>Tint service</span><span style={{ fontFamily: 'Space Grotesk', fontWeight: 600, color: '#eeeef2' }}>${tintPrice}</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 8px', color: '#8e8ea0', fontSize: 14 }}>
-              <span>Travel fee (~{travelMiles} mi)</span><span style={{ fontFamily: 'Space Grotesk', fontWeight: 600, color: '#a78bfa' }}>${travelFee}</span>
+              <span>Travel fee (~{travelMiles} mi)</span><span style={{ fontFamily: 'Space Grotesk', fontWeight: 600, color: '#7dd3ff' }}>${travelFee}</span>
             </div>
             <div style={{ height: 1, background: 'rgba(255,255,255,0.06)', margin: '4px 0' }} />
           </div>
         )}
         <span style={{ display: 'block', fontSize: 12, fontWeight: 700, letterSpacing: '3px', textTransform: 'uppercase', color: '#4a4a5a', marginBottom: 8 }}>{travelFee !== null && travelFee > 0 ? 'Total' : 'Your Price'}</span>
         <div style={{ fontFamily: 'Space Grotesk', fontSize: 56, fontWeight: 800, color: '#fff', lineHeight: 1 }}>
-          <span style={{ fontSize: 28, color: '#6c63ff', verticalAlign: 'top' }}>$</span>{animPrice}
+          <span style={{ fontSize: 28, color: '#0088ff', verticalAlign: 'top' }}>$</span>{animPrice}
         </div>
         <p style={{ color: '#8e8ea0', fontSize: 16, marginTop: 12 }}>
           {vehicleNames[vehicle]} · {filmNames[film]} · {coverageOptions[vehicle].find(o => o.id === coverage)?.label}
@@ -932,8 +932,8 @@ function PriceCalculator() {
         </p>
         <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" className="magnetic-btn" style={{
           display: 'inline-block', marginTop: 24, padding: '16px 44px', borderRadius: 3,
-          background: '#6c63ff', color: '#fff', fontSize: 16, fontWeight: 700, textDecoration: 'none',
-          boxShadow: '0 4px 30px rgba(108,99,255,0.35)',
+          background: '#0088ff', color: '#fff', fontSize: 16, fontWeight: 700, textDecoration: 'none',
+          boxShadow: '0 4px 50px rgba(0,136,255,0.6), 0 0 30px rgba(0,136,255,0.35)',
         }}>Book for ${grandTotal}</a>
       </div>
     </div>
@@ -943,7 +943,8 @@ function PriceCalculator() {
 /* ── NAV ── */
 const NAV = [
   { id: 'home', label: 'Home' }, { id: 'portfolio', label: 'Portfolio' },
-  { id: 'pricing', label: 'Pricing' }, { id: 'compare', label: 'Compare Films' },
+  { id: 'pricing', label: 'Pricing' }, { id: 'detailing', label: 'Detailing' },
+  { id: 'compare', label: 'Compare Films' },
   { id: 'contact', label: 'Contact' },
 ];
 
@@ -973,17 +974,17 @@ function Nav({ page, go }: { page: string; go: (p: string) => void }) {
           {NAV.map((n) => (
             <button key={n.id} onClick={() => nav(n.id)} style={{
               background: 'none', border: 'none', cursor: 'pointer',
-              color: page === n.id ? '#6c63ff' : '#8e8ea0',
+              color: page === n.id ? '#0088ff' : '#8e8ea0',
               fontWeight: page === n.id ? 600 : 400, fontSize: 16, letterSpacing: '.3px',
               transition: 'color 0.3s', fontFamily: 'Inter',
               position: 'relative',
             }}>
               {n.label}
-              {page === n.id && <span style={{ position: 'absolute', bottom: -6, left: 0, right: 0, height: 2, background: 'linear-gradient(90deg, #6c63ff, #a78bfa)', borderRadius: 1, animation: 'lineExpand 0.4s ease forwards', transformOrigin: 'left' }} />}
+              {page === n.id && <span style={{ position: 'absolute', bottom: -6, left: 0, right: 0, height: 2, background: 'linear-gradient(90deg, #0088ff, #7dd3ff)', borderRadius: 1, animation: 'lineExpand 0.4s ease forwards', transformOrigin: 'left' }} />}
             </button>
           ))}
           <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" style={{
-            background: '#6c63ff', color: '#fff', padding: '10px 26px', borderRadius: 3,
+            background: '#0088ff', color: '#fff', padding: '10px 26px', borderRadius: 3,
             fontSize: 16, fontWeight: 600, textDecoration: 'none', transition: 'all 0.3s',
           }}>Book Now</a>
         </div>
@@ -997,8 +998,8 @@ function Nav({ page, go }: { page: string; go: (p: string) => void }) {
       </div>
       {mob && (
         <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, background: 'rgba(5,5,7,0.97)', backdropFilter: 'blur(30px)', borderBottom: '1px solid rgba(255,255,255,0.04)', padding: '16px 28px 24px' }}>
-          {NAV.map((n) => <button key={n.id} onClick={() => nav(n.id)} style={{ display: 'block', width: '100%', textAlign: 'left', padding: '14px 0', background: 'none', border: 'none', cursor: 'pointer', color: page === n.id ? '#6c63ff' : '#eee', fontSize: 16, fontWeight: 500, borderBottom: '1px solid rgba(255,255,255,0.03)' }}>{n.label}</button>)}
-          <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" style={{ display: 'block', marginTop: 16, background: '#6c63ff', color: '#fff', padding: '14px', borderRadius: 3, textAlign: 'center', fontSize: 16, fontWeight: 600, textDecoration: 'none' }}>Book Appointment</a>
+          {NAV.map((n) => <button key={n.id} onClick={() => nav(n.id)} style={{ display: 'block', width: '100%', textAlign: 'left', padding: '14px 0', background: 'none', border: 'none', cursor: 'pointer', color: page === n.id ? '#0088ff' : '#eee', fontSize: 16, fontWeight: 500, borderBottom: '1px solid rgba(255,255,255,0.03)' }}>{n.label}</button>)}
+          <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" style={{ display: 'block', marginTop: 16, background: '#0088ff', color: '#fff', padding: '14px', borderRadius: 3, textAlign: 'center', fontSize: 16, fontWeight: 600, textDecoration: 'none' }}>Book Appointment</a>
         </div>
       )}
     </nav>
@@ -1010,9 +1011,9 @@ function SH({ tag, title, sub, align = 'center' }: { tag: string; title: string;
   return (
     <div className="rv" style={{ textAlign: align as any, marginBottom: 60 }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16, justifyContent: align === 'center' ? 'center' : 'flex-start' }}>
-        <div style={{ width: 32, height: 1, background: '#6c63ff', animation: 'accentLine 1s ease forwards' }} />
-        <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: '4px', textTransform: 'uppercase', color: '#6c63ff' }}>{tag}</span>
-        <div style={{ width: 32, height: 1, background: '#6c63ff', animation: 'accentLine 1s ease forwards' }} />
+        <div style={{ width: 32, height: 1, background: '#0088ff', animation: 'accentLine 1s ease forwards' }} />
+        <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: '4px', textTransform: 'uppercase', color: '#0088ff' }}>{tag}</span>
+        <div style={{ width: 32, height: 1, background: '#0088ff', animation: 'accentLine 1s ease forwards' }} />
       </div>
       <h2 style={{ fontFamily: 'Space Grotesk', fontSize: 'clamp(28px,4vw,50px)', fontWeight: 800, letterSpacing: '-1.5px', lineHeight: 1.1 }}>{title}</h2>
       {sub && <p style={{ color: '#8e8ea0', fontSize: 16, maxWidth: align === 'center' ? 520 : 600, margin: align === 'center' ? '18px auto 0' : '18px 0 0', lineHeight: 1.8 }}>{sub}</p>}
@@ -1030,7 +1031,7 @@ function FloatingOrbs() {
           width: 200 + i * 80,
           height: 200 + i * 80,
           borderRadius: '50%',
-          background: `radial-gradient(circle, rgba(108,99,255,${0.03 - i * 0.004}) 0%, transparent 70%)`,
+          background: `radial-gradient(circle, rgba(0,136,255,${0.03 - i * 0.004}) 0%, transparent 70%)`,
           left: `${10 + i * 20}%`,
           top: `${20 + (i % 3) * 25}%`,
           animation: `orbFloat ${12 + i * 4}s ease-in-out infinite`,
@@ -1060,11 +1061,11 @@ function FAQ() {
         <div key={i} className={`faq-item${open === i ? ' active' : ''} rv d${(i % 4) + 1}`}>
           <button className="faq-toggle" onClick={() => setOpen(open === i ? null : i)}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-              <span style={{ fontFamily: 'Space Grotesk', fontSize: 16, fontWeight: 800, color: '#6c63ff', opacity: 0.4, minWidth: 28 }}>{String(i + 1).padStart(2, '0')}</span>
+              <span style={{ fontFamily: 'Space Grotesk', fontSize: 16, fontWeight: 800, color: '#0088ff', opacity: 0.4, minWidth: 28 }}>{String(i + 1).padStart(2, '0')}</span>
               <span style={{ fontFamily: 'Space Grotesk', fontSize: 17, fontWeight: 700 }}>{f.q}</span>
             </div>
             <div className="faq-icon">
-              <span style={{ color: open === i ? '#fff' : '#6c63ff', fontSize: 18, lineHeight: 1 }}>+</span>
+              <span style={{ color: open === i ? '#fff' : '#0088ff', fontSize: 18, lineHeight: 1 }}>+</span>
             </div>
           </button>
           <div className="faq-answer">
@@ -1080,7 +1081,7 @@ function FAQ() {
 function Footer({ go }: { go: (p: string) => void }) {
   return (
     <footer style={{ background: '#0a0a0f', borderTop: '1px solid rgba(255,255,255,0.04)', padding: '72px 28px 36px', position: 'relative' }}>
-      <div style={{ position: 'absolute', top: 0, left: '10%', right: '10%', height: 1, background: 'linear-gradient(90deg, transparent, rgba(108,99,255,0.3), transparent)' }} />
+      <div style={{ position: 'absolute', top: 0, left: '10%', right: '10%', height: 1, background: 'linear-gradient(90deg, transparent, rgba(0,136,255,0.3), transparent)' }} />
       <div style={{ maxWidth: 1320, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(220px,1fr))', gap: 48 }}>
         <div>
           <div style={{ marginBottom: 20 }}>
@@ -1090,11 +1091,14 @@ function Footer({ go }: { go: (p: string) => void }) {
         </div>
         <div>
           <h4 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 12, letterSpacing: '3px', color: '#4a4a5a', marginBottom: 20, textTransform: 'uppercase' }}>Navigation</h4>
-          {['Portfolio','Pricing','Compare Films','Contact'].map(l => <button key={l} onClick={() => go(l === 'Compare Films' ? 'compare' : l.toLowerCase())} style={{ display: 'block', background: 'none', border: 'none', cursor: 'pointer', color: '#8e8ea0', fontSize: 16, padding: '5px 0' }}>{l}</button>)}
+          {[
+            { label: 'Portfolio', id: 'portfolio' }, { label: 'Pricing', id: 'pricing' },
+            { label: 'Detailing', id: 'detailing' }, { label: 'Compare Films', id: 'compare' }, { label: 'Contact', id: 'contact' },
+          ].map(l => <button key={l.id} onClick={() => go(l.id)} style={{ display: 'block', background: 'none', border: 'none', cursor: 'pointer', color: '#8e8ea0', fontSize: 16, padding: '5px 0' }}>{l.label}</button>)}
         </div>
         <div>
           <h4 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 12, letterSpacing: '3px', color: '#4a4a5a', marginBottom: 20, textTransform: 'uppercase' }}>Resources</h4>
-          {[{label:'Tint Simulator',id:'tint-simulator'},{label:'Starlight Headliner',id:'starlight'},{label:'✦ Starlight Sale — 15% Off',id:'starlight-sale'},{label:'Warranty',id:'warranty'},{label:'MD Tint Laws',id:'tint-laws'},{label:'Ceramic vs Carbon',id:'ceramic-vs-carbon'},{label:'Best Tint for Summer',id:'md-summer-tint'}].map(l => <button key={l.id} onClick={() => go(l.id)} style={{ display: 'block', background: 'none', border: 'none', cursor: 'pointer', color: l.id==='starlight-sale'?'#a78bfa':'#8e8ea0', fontSize: 16, padding: '5px 0', fontWeight: l.id==='starlight-sale'?600:400 }}>{l.label}</button>)}
+          {[{label:'Tint Simulator',id:'tint-simulator'},{label:'Starlight Headliner',id:'starlight'},{label:'✦ Starlight Sale — 15% Off',id:'starlight-sale'},{label:'Warranty',id:'warranty'},{label:'MD Tint Laws',id:'tint-laws'},{label:'Ceramic vs Carbon',id:'ceramic-vs-carbon'},{label:'Best Tint for Summer',id:'md-summer-tint'}].map(l => <button key={l.id} onClick={() => go(l.id)} style={{ display: 'block', background: 'none', border: 'none', cursor: 'pointer', color: l.id==='starlight-sale'?'#7dd3ff':'#8e8ea0', fontSize: 16, padding: '5px 0', fontWeight: l.id==='starlight-sale'?600:400 }}>{l.label}</button>)}
         </div>
         <div>
           <h4 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 12, letterSpacing: '3px', color: '#4a4a5a', marginBottom: 20, textTransform: 'uppercase' }}>Contact</h4>
@@ -1157,8 +1161,8 @@ function HomePage({ go }: { go: (p: string) => void }) {
             <div style={{ animation: 'fadeUp 1s ease forwards', animationDelay: '0.3s', opacity: 0 }}>
               <span style={{
                 display: 'inline-block', padding: '8px 20px', borderRadius: 2, fontSize: 12, fontWeight: 700,
-                letterSpacing: '3px', textTransform: 'uppercase', color: '#6c63ff',
-                border: '1px solid rgba(108,99,255,0.3)', background: 'rgba(108,99,255,0.08)',
+                letterSpacing: '3px', textTransform: 'uppercase', color: '#0088ff',
+                border: '1px solid rgba(0,136,255,0.3)', background: 'rgba(0,136,255,0.08)',
               }}>Columbia, MD — Mobile Nano-Ceramic Specialists</span>
             </div>
 
@@ -1180,9 +1184,9 @@ function HomePage({ go }: { go: (p: string) => void }) {
 
             <div style={{ display: 'flex', gap: 14, marginTop: 44, flexWrap: 'wrap', justifyContent: 'center', animation: 'fadeUp 1s ease forwards', animationDelay: '0.9s', opacity: 0 }}>
               <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" className="magnetic-btn" style={{
-                background: '#6c63ff', color: '#fff', padding: '16px 40px', borderRadius: 3,
+                background: '#0088ff', color: '#fff', padding: '16px 40px', borderRadius: 3,
                 fontSize: 16, fontWeight: 700, textDecoration: 'none',
-                boxShadow: '0 4px 40px rgba(108,99,255,0.35)', letterSpacing: '0.3px',
+                boxShadow: '0 4px 40px rgba(0,136,255,0.35)', letterSpacing: '0.3px',
                 position: 'relative', overflow: 'hidden',
               }}>
                 <span style={{ position: 'relative', zIndex: 1 }}>Book Your Appointment</span>
@@ -1192,7 +1196,7 @@ function HomePage({ go }: { go: (p: string) => void }) {
                 border: '1px solid rgba(255,255,255,0.12)', fontSize: 16, fontWeight: 500, cursor: 'pointer',
                 transition: 'all 0.4s cubic-bezier(.16,1,.3,1)',
               }}
-                onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(108,99,255,0.5)'; e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 4px 20px rgba(108,99,255,0.15)'; }}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(0,136,255,0.5)'; e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,136,255,0.15)'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)'; e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
               >View Our Work</button>
             </div>
@@ -1232,7 +1236,7 @@ function HomePage({ go }: { go: (p: string) => void }) {
                   'Standard / Premium / Ceramic', '4.9 Rated on Google', 'Serving the DMV',
                   'Lifetime Warranty', 'Nano-Ceramic Film', 'Computer-Cut Precision'].map((t, j) => (
                   <span key={j} style={{ whiteSpace: 'nowrap', fontSize: 12, fontWeight: 600, color: '#4a4a5a', letterSpacing: '2px', textTransform: 'uppercase' }}>
-                    {t} <span style={{ color: '#6c63ff', margin: '0 16px', opacity: 0.4 }}>&#9670;</span>
+                    {t} <span style={{ color: '#0088ff', margin: '0 16px', opacity: 0.4 }}>&#9670;</span>
                   </span>
                 ))}
               </div>
@@ -1245,17 +1249,17 @@ function HomePage({ go }: { go: (p: string) => void }) {
       <section style={{ padding: '0 28px', maxWidth: 1320, margin: '0 auto 0' }}>
         <div className="rv" onClick={() => go('starlight-sale')} style={{
           cursor: 'pointer', borderRadius: 6, overflow: 'hidden', position: 'relative',
-          background: 'linear-gradient(120deg, #0d0b1f 0%, #130f2e 40%, #0d0b1f 100%)',
-          border: '1px solid rgba(108,99,255,0.35)',
-          boxShadow: '0 0 60px rgba(108,99,255,0.12), 0 0 0 1px rgba(108,99,255,0.08)',
+          background: 'linear-gradient(120deg, #0a1018 0%, #0a1828 40%, #0a1018 100%)',
+          border: '1px solid rgba(0,136,255,0.35)',
+          boxShadow: '0 0 60px rgba(0,136,255,0.12), 0 0 0 1px rgba(0,136,255,0.08)',
           padding: 'clamp(28px,4vw,48px) clamp(24px,4vw,52px)',
           display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 24,
         }}
-          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = '0 0 80px rgba(108,99,255,0.22), 0 0 0 1px rgba(108,99,255,0.2)'; }}
-          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = '0 0 60px rgba(108,99,255,0.12), 0 0 0 1px rgba(108,99,255,0.08)'; }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = '0 0 80px rgba(0,136,255,0.22), 0 0 0 1px rgba(0,136,255,0.2)'; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = '0 0 60px rgba(0,136,255,0.12), 0 0 0 1px rgba(0,136,255,0.08)'; }}
         >
           {/* Glow orbs */}
-          <div style={{ position: 'absolute', width: 300, height: 300, borderRadius: '50%', background: 'radial-gradient(circle, rgba(108,99,255,0.18) 0%, transparent 70%)', top: -100, left: -60, pointerEvents: 'none' }} />
+          <div style={{ position: 'absolute', width: 300, height: 300, borderRadius: '50%', background: 'radial-gradient(circle, rgba(0,136,255,0.18) 0%, transparent 70%)', top: -100, left: -60, pointerEvents: 'none' }} />
           <div style={{ position: 'absolute', width: 200, height: 200, borderRadius: '50%', background: 'radial-gradient(circle, rgba(167,139,250,0.12) 0%, transparent 70%)', bottom: -60, right: 80, pointerEvents: 'none' }} />
           {/* Stars sprinkle */}
           {[...Array(18)].map((_, i) => (
@@ -1264,8 +1268,8 @@ function HomePage({ go }: { go: (p: string) => void }) {
           <div style={{ position: 'relative', zIndex: 1 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
               <span style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.35)', color: '#f87171', borderRadius: 3, padding: '3px 12px', fontSize: 11, fontWeight: 800, letterSpacing: '2px', textTransform: 'uppercase' }}>Limited Time</span>
-              <span style={{ color: '#6c63ff', fontSize: 20 }}>✦</span>
-              <span style={{ color: '#a78bfa', fontSize: 13, fontWeight: 600, letterSpacing: '1px' }}>Starlight Headliner Sale</span>
+              <span style={{ color: '#0088ff', fontSize: 20 }}>✦</span>
+              <span style={{ color: '#7dd3ff', fontSize: 13, fontWeight: 600, letterSpacing: '1px' }}>Starlight Headliner Sale</span>
             </div>
             <h2 style={{ fontFamily: 'Space Grotesk', fontWeight: 800, fontSize: 'clamp(26px,4vw,48px)', lineHeight: 1.1, marginBottom: 10 }}>
               Turn Your Ceiling Into a<br /><span className="grad-text">Night Sky — 15% Off</span>
@@ -1277,9 +1281,9 @@ function HomePage({ go }: { go: (p: string) => void }) {
           <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14, flexShrink: 0 }}>
             <div style={{ textAlign: 'center' }}>
               <div style={{ fontFamily: 'Space Grotesk', fontWeight: 800, fontSize: 56, lineHeight: 1, color: '#fff' }}>15%</div>
-              <div style={{ color: '#a78bfa', fontWeight: 700, fontSize: 14, letterSpacing: '2px', textTransform: 'uppercase' }}>Off Everything</div>
+              <div style={{ color: '#7dd3ff', fontWeight: 700, fontSize: 14, letterSpacing: '2px', textTransform: 'uppercase' }}>Off Everything</div>
             </div>
-            <div style={{ background: '#6c63ff', color: '#fff', padding: '13px 32px', borderRadius: 3, fontWeight: 700, fontSize: 15, boxShadow: '0 4px 30px rgba(108,99,255,0.4)', whiteSpace: 'nowrap' }}>
+            <div style={{ background: '#0088ff', color: '#fff', padding: '13px 32px', borderRadius: 3, fontWeight: 700, fontSize: 15, boxShadow: '0 4px 30px rgba(0,136,255,0.4)', whiteSpace: 'nowrap' }}>
               See Sale Prices →
             </div>
           </div>
@@ -1294,7 +1298,7 @@ function HomePage({ go }: { go: (p: string) => void }) {
           {/* Horizontal connector line */}
           <div className="how-line" style={{
             position: 'absolute', left: '10%', right: '10%', top: 30, height: 2,
-            background: 'linear-gradient(90deg, transparent, rgba(108,99,255,0.35), rgba(108,99,255,0.35), transparent)',
+            background: 'linear-gradient(90deg, transparent, rgba(0,136,255,0.35), rgba(0,136,255,0.35), transparent)',
             zIndex: 0,
           }} />
           <div style={{
@@ -1305,10 +1309,10 @@ function HomePage({ go }: { go: (p: string) => void }) {
               <div key={i} className={`rv d${i + 1}`} style={{ textAlign: 'center', padding: '0 8px' }}>
                 <div style={{
                   width: 60, height: 60, borderRadius: '50%', margin: '0 auto 18px',
-                  background: '#0a0a0f', border: '1.5px solid rgba(108,99,255,0.4)',
+                  background: '#0a0a0f', border: '1.5px solid rgba(0,136,255,0.4)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontFamily: 'Space Grotesk', fontSize: 17, fontWeight: 800, color: '#6c63ff',
-                  boxShadow: '0 0 28px rgba(108,99,255,0.18)',
+                  fontFamily: 'Space Grotesk', fontSize: 17, fontWeight: 800, color: '#0088ff',
+                  boxShadow: '0 0 28px rgba(0,136,255,0.18)',
                   position: 'relative', zIndex: 2,
                 }}>{p.num}</div>
                 <h3 style={{ fontFamily: 'Space Grotesk', fontSize: 16, fontWeight: 700, marginBottom: 8 }}>{p.title}</h3>
@@ -1352,12 +1356,12 @@ function HomePage({ go }: { go: (p: string) => void }) {
                 padding: '32px 28px', border: '1px solid rgba(255,255,255,0.04)', borderRadius: 3,
                 cursor: 'default', background: '#0d0d14', position: 'relative', overflow: 'hidden',
               }}
-                onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(108,99,255,0.25)'; e.currentTarget.style.boxShadow = '0 20px 50px rgba(0,0,0,0.3), 0 0 30px rgba(108,99,255,0.06)'; }}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(0,136,255,0.25)'; e.currentTarget.style.boxShadow = '0 20px 50px rgba(0,0,0,0.3), 0 0 30px rgba(0,136,255,0.06)'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.04)'; e.currentTarget.style.boxShadow = 'none'; }}
               >
-                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'linear-gradient(90deg, transparent, #6c63ff, transparent)', opacity: 0, transition: 'opacity 0.5s' }}
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'linear-gradient(90deg, transparent, #0088ff, transparent)', opacity: 0, transition: 'opacity 0.5s' }}
                   ref={(el) => { if (el) { el.parentElement!.addEventListener('mouseenter', () => el.style.opacity = '1'); el.parentElement!.addEventListener('mouseleave', () => el.style.opacity = '0'); }}} />
-                <div style={{ width: 40, height: 2, background: '#6c63ff', marginBottom: 20, transition: 'width 0.5s ease' }}
+                <div style={{ width: 40, height: 2, background: '#0088ff', marginBottom: 20, transition: 'width 0.5s ease' }}
                   ref={(el) => { if (el) { el.parentElement!.addEventListener('mouseenter', () => el.style.width = '60px'); el.parentElement!.addEventListener('mouseleave', () => el.style.width = '40px'); }}} />
                 <h3 style={{ fontFamily: 'Space Grotesk', fontSize: 18, fontWeight: 700, marginBottom: 10 }}>{w.title}</h3>
                 <p style={{ color: '#8e8ea0', fontSize: 16, lineHeight: 1.8 }}>{w.desc}</p>
@@ -1398,7 +1402,7 @@ function HomePage({ go }: { go: (p: string) => void }) {
                   border: '1px solid rgba(255,255,255,0.04)', background: '#0d0d14', flexShrink: 0,
                   transition: 'all 0.4s',
                 }}
-                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(108,99,255,0.2)'; e.currentTarget.style.transform = 'translateY(-4px)'; }}
+                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(0,136,255,0.2)'; e.currentTarget.style.transform = 'translateY(-4px)'; }}
                   onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.04)'; e.currentTarget.style.transform = 'translateY(0)'; }}
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
@@ -1409,7 +1413,7 @@ function HomePage({ go }: { go: (p: string) => void }) {
                   </div>
                   <p style={{ color: '#8e8ea0', fontSize: 16, lineHeight: 1.8, marginBottom: 20, fontStyle: 'italic' }}>"{t.text}"</p>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'linear-gradient(135deg, #6c63ff, #8b83ff)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 12, color: '#fff' }}>{t.name[0]}</div>
+                    <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'linear-gradient(135deg, #0088ff, #60a5fa)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 12, color: '#fff' }}>{t.name[0]}</div>
                     <div>
                       <span style={{ fontSize: 16, fontWeight: 600, display: 'block' }}>{t.name}</span>
                       <span style={{ fontSize: 12, color: '#4a4a5a' }}>{t.time} · via Google</span>
@@ -1443,22 +1447,22 @@ function HomePage({ go }: { go: (p: string) => void }) {
 
       {/* ═══ CTA ═══ */}
       <section style={{ padding: '120px 28px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at center, rgba(108,99,255,0.08) 0%, transparent 60%)' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at center, rgba(0,136,255,0.08) 0%, transparent 60%)' }} />
         <FloatingOrbs />
         <div className="rv" style={{ maxWidth: 560, margin: '0 auto', position: 'relative', zIndex: 1 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20, justifyContent: 'center' }}>
-            <div style={{ width: 24, height: 1, background: '#6c63ff', animation: 'accentLine 1s ease forwards' }} />
-            <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: '4px', textTransform: 'uppercase', color: '#6c63ff' }}>Ready?</span>
-            <div style={{ width: 24, height: 1, background: '#6c63ff', animation: 'accentLine 1s ease forwards' }} />
+            <div style={{ width: 24, height: 1, background: '#0088ff', animation: 'accentLine 1s ease forwards' }} />
+            <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: '4px', textTransform: 'uppercase', color: '#0088ff' }}>Ready?</span>
+            <div style={{ width: 24, height: 1, background: '#0088ff', animation: 'accentLine 1s ease forwards' }} />
           </div>
           <h2 style={{ fontFamily: 'Space Grotesk', fontSize: 'clamp(30px,4.5vw,52px)', fontWeight: 800, letterSpacing: '-1.5px', marginBottom: 20, lineHeight: 1.1 }}>
             Elevate Your <span className="grad-text">Vehicle</span>
           </h2>
           <p style={{ color: '#8e8ea0', fontSize: 16, lineHeight: 1.8, marginBottom: 44 }}>Schedule online in under two minutes. We come to you.</p>
           <div style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" className="magnetic-btn" style={{ background: '#6c63ff', color: '#fff', padding: '16px 44px', borderRadius: 3, fontSize: 16, fontWeight: 700, textDecoration: 'none', boxShadow: '0 4px 40px rgba(108,99,255,0.35)' }}>Book Your Appointment</a>
+            <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" className="magnetic-btn" style={{ background: '#0088ff', color: '#fff', padding: '16px 44px', borderRadius: 3, fontSize: 16, fontWeight: 700, textDecoration: 'none', boxShadow: '0 4px 40px rgba(0,136,255,0.35)' }}>Book Your Appointment</a>
             <button onClick={() => go('contact')} style={{ background: 'transparent', color: '#fff', padding: '16px 44px', borderRadius: 3, border: '1px solid rgba(255,255,255,0.1)', fontSize: 16, fontWeight: 500, cursor: 'pointer', transition: 'all 0.4s cubic-bezier(.16,1,.3,1)' }}
-              onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(108,99,255,0.5)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(0,136,255,0.5)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
               onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; e.currentTarget.style.transform = 'translateY(0)'; }}
             >Get In Touch</button>
           </div>
@@ -1498,14 +1502,14 @@ function Lightbox({ images, startIndex, onClose }: { images: { name: string; fil
       {/* Info */}
       <div onClick={(e) => e.stopPropagation()} style={{ marginTop: 20, textAlign: 'center' }}>
         <h3 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 20, color: '#fff' }}>{cur.name}</h3>
-        <span style={{ fontSize: 12, fontWeight: 600, letterSpacing: '2px', textTransform: 'uppercase', color: '#6c63ff' }}>{cur.film}</span>
+        <span style={{ fontSize: 12, fontWeight: 600, letterSpacing: '2px', textTransform: 'uppercase', color: '#0088ff' }}>{cur.film}</span>
       </div>
       {/* Nav arrows */}
       {images.length > 1 && <>
         <button onClick={(e) => { e.stopPropagation(); setIdx(i => (i - 1 + images.length) % images.length); }} style={{ position: 'absolute', left: 20, top: '50%', transform: 'translateY(-50%)', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', width: 48, height: 48, borderRadius: '50%', cursor: 'pointer', fontSize: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.3s' }}
-          onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(108,99,255,0.2)'; }} onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.06)'; }}>&lsaquo;</button>
+          onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(0,136,255,0.2)'; }} onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.06)'; }}>&lsaquo;</button>
         <button onClick={(e) => { e.stopPropagation(); setIdx(i => (i + 1) % images.length); }} style={{ position: 'absolute', right: 20, top: '50%', transform: 'translateY(-50%)', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', width: 48, height: 48, borderRadius: '50%', cursor: 'pointer', fontSize: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.3s' }}
-          onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(108,99,255,0.2)'; }} onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.06)'; }}>&rsaquo;</button>
+          onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(0,136,255,0.2)'; }} onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.06)'; }}>&rsaquo;</button>
       </>}
     </div>
   );
@@ -1527,23 +1531,23 @@ function PortfolioPage() {
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(360px,1fr))', gap: 14 }}>
       {items.map((p, i) => (<div key={i} className={`rv-s d${(i%3)+1} tilt-card`} style={{ borderRadius: 4, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.04)', background: '#0a0a0f', cursor: 'pointer' }}
         onClick={() => setLightbox(i)}
-        onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(108,99,255,0.25)'; e.currentTarget.style.boxShadow = '0 24px 60px rgba(0,0,0,0.4), 0 0 30px rgba(108,99,255,0.06)'; }}
+        onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(0,136,255,0.25)'; e.currentTarget.style.boxShadow = '0 24px 60px rgba(0,0,0,0.4), 0 0 30px rgba(0,136,255,0.06)'; }}
         onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.04)'; e.currentTarget.style.boxShadow = 'none'; }}>
         <div style={{ overflow: 'hidden', height: 260, position: 'relative' }}>
           <img src={p.img} alt={p.name} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.7s cubic-bezier(.16,1,.3,1)' }} onMouseEnter={(e) => { (e.target as HTMLElement).style.transform = 'scale(1.06)'; }} onMouseLeave={(e) => { (e.target as HTMLElement).style.transform = 'scale(1)'; }} />
-          <div style={{ position: 'absolute', inset: 0, background: 'rgba(108,99,255,0)', transition: 'background 0.3s', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-            onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(108,99,255,0.1)'; }} onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(108,99,255,0)'; }}>
+          <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,136,255,0)', transition: 'background 0.3s', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(0,136,255,0.1)'; }} onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(0,136,255,0)'; }}>
             <span style={{ color: '#fff', fontSize: 24, opacity: 0, transition: 'opacity 0.3s' }}
               ref={(el) => { if(el) { el.parentElement!.addEventListener('mouseenter', () => el.style.opacity = '1'); el.parentElement!.addEventListener('mouseleave', () => el.style.opacity = '0'); }}}>⤢</span>
           </div>
         </div>
-        <div style={{ padding: '20px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}><div><h3 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 18 }}>{p.name}</h3><span style={{ fontSize: 12, fontWeight: 600, letterSpacing: '2px', textTransform: 'uppercase', color: '#6c63ff' }}>{p.film}</span></div><span style={{ color: '#4a4a5a', fontSize: 18 }}>&rarr;</span></div>
+        <div style={{ padding: '20px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}><div><h3 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 18 }}>{p.name}</h3><span style={{ fontSize: 12, fontWeight: 600, letterSpacing: '2px', textTransform: 'uppercase', color: '#0088ff' }}>{p.film}</span></div><span style={{ color: '#4a4a5a', fontSize: 18 }}>&rarr;</span></div>
       </div>))}
     </div>
     {lightbox !== null && <Lightbox images={items} startIndex={lightbox} onClose={() => setLightbox(null)} />}
 
     {/* Social follow CTA */}
-    <div className="rv" style={{ marginTop: 72, padding: '52px 28px', borderRadius: 4, border: '1px solid rgba(108,99,255,0.15)', background: 'linear-gradient(135deg,rgba(108,99,255,0.04),rgba(108,99,255,0.01))', textAlign: 'center' }}>
+    <div className="rv" style={{ marginTop: 72, padding: '52px 28px', borderRadius: 4, border: '1px solid rgba(0,136,255,0.15)', background: 'linear-gradient(135deg,rgba(0,136,255,0.04),rgba(0,136,255,0.01))', textAlign: 'center' }}>
       <p style={{ color: '#8e8ea0', fontSize: 13, letterSpacing: '2px', textTransform: 'uppercase', marginBottom: 12 }}>Follow Our Work</p>
       <h3 style={{ fontFamily: 'Space Grotesk', fontSize: 28, fontWeight: 700, marginBottom: 8 }}>See Every Install in Real Time</h3>
       <p style={{ color: '#8e8ea0', fontSize: 16, marginBottom: 36 }}>Behind-the-scenes content, fresh installs, and tint tips — follow us on Instagram and TikTok.</p>
@@ -1580,35 +1584,35 @@ function PricingPage() {
   return (<div style={{paddingTop:130}}><section style={{padding:'0 28px 120px',maxWidth:1320,margin:'0 auto'}}>
     <SH tag="Pricing" title="Transparent Tinting Rates" sub="Flat pricing. No hidden fees. Select your vehicle and film." />
     <div style={{display:'flex',gap:2,justifyContent:'center',marginBottom:52,background:'#101018',borderRadius:3,padding:3,maxWidth:400,margin:'0 auto 52px'}}>
-      {Object.entries(data).map(([k,v])=>(<button key={k} onClick={()=>setTab(k)} style={{flex:1,padding:'11px 16px',borderRadius:2,border:'none',cursor:'pointer',fontSize:13,fontWeight:tab===k?700:400,background:tab===k?'#6c63ff':'transparent',color:tab===k?'#fff':'#8e8ea0',transition:'all 0.3s'}}>{v.label}</button>))}
+      {Object.entries(data).map(([k,v])=>(<button key={k} onClick={()=>setTab(k)} style={{flex:1,padding:'11px 16px',borderRadius:2,border:'none',cursor:'pointer',fontSize:13,fontWeight:tab===k?700:400,background:tab===k?'#0088ff':'transparent',color:tab===k?'#fff':'#8e8ea0',transition:'all 0.3s'}}>{v.label}</button>))}
     </div>
     <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(300px,1fr))',gap:14}}>
-      {cur.tiers.map((t,i)=>(<div key={t.name} className="rv" style={{padding:0,borderRadius:4,overflow:'hidden',border:t.top?'1px solid rgba(108,99,255,0.3)':'1px solid rgba(255,255,255,0.04)',background:'#0a0a0f',boxShadow:t.top?'0 0 40px rgba(108,99,255,0.06)':'none'}}>
-        {t.top&&<div style={{background:'#6c63ff',padding:'8px',textAlign:'center',fontSize:10,fontWeight:700,letterSpacing:'3px',textTransform:'uppercase'}}>Top Tier</div>}
+      {cur.tiers.map((t,i)=>(<div key={t.name} className="rv" style={{padding:0,borderRadius:4,overflow:'hidden',border:t.top?'1px solid rgba(0,136,255,0.3)':'1px solid rgba(255,255,255,0.04)',background:'#0a0a0f',boxShadow:t.top?'0 0 40px rgba(0,136,255,0.06)':'none'}}>
+        {t.top&&<div style={{background:'#0088ff',padding:'8px',textAlign:'center',fontSize:10,fontWeight:700,letterSpacing:'3px',textTransform:'uppercase'}}>Top Tier</div>}
         <div style={{padding:32}}>
           <h3 style={{fontFamily:'Space Grotesk',fontSize:19,fontWeight:700,marginBottom:24}}>{t.name}</h3>
           {t.items.map((it,j)=>{const [price,desc]=it.split('—');return(<div key={j} style={{padding:'12px 0',borderBottom:'1px solid rgba(255,255,255,0.04)',fontSize:14,color:'#8e8ea0',display:'flex',justifyContent:'space-between',alignItems:'center'}}><span>{desc?.trim()}</span><span style={{fontFamily:'Space Grotesk',fontWeight:700,color:'#eee'}}>{price?.trim()}</span></div>);})}
-          <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" style={{display:'block',marginTop:28,padding:'13px',textAlign:'center',borderRadius:3,background:t.top?'#6c63ff':'transparent',border:t.top?'none':'1px solid rgba(255,255,255,0.08)',color:'#fff',fontSize:13,fontWeight:600,textDecoration:'none'}}>Book Now</a>
+          <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" style={{display:'block',marginTop:28,padding:'13px',textAlign:'center',borderRadius:3,background:t.top?'#0088ff':'transparent',border:t.top?'none':'1px solid rgba(255,255,255,0.08)',color:'#fff',fontSize:13,fontWeight:600,textDecoration:'none'}}>Book Now</a>
         </div>
       </div>))}
     </div>
     <div className="rv" style={{marginTop:40,padding:'32px 36px',borderRadius:4,border:'1px solid rgba(255,255,255,0.04)',background:'#0a0a0f',display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:20}}>
       <div><h3 style={{fontFamily:'Space Grotesk',fontWeight:700,fontSize:18}}>Computer-Cut Film Upgrade</h3><p style={{color:'#8e8ea0',fontSize:13,marginTop:6,maxWidth:480,lineHeight:1.7}}>Pre-cut to exact window shapes. No blade touches your car. Cleaner edges, tighter fit, flawless finish.</p></div>
-      <div style={{textAlign:'center'}}><span style={{fontFamily:'Space Grotesk',fontSize:28,fontWeight:800,color:'#6c63ff'}}>+$50</span><span style={{display:'block',fontSize:11,color:'#4a4a5a'}}>one-time upgrade</span></div>
+      <div style={{textAlign:'center'}}><span style={{fontFamily:'Space Grotesk',fontSize:28,fontWeight:800,color:'#0088ff'}}>+$50</span><span style={{display:'block',fontSize:11,color:'#4a4a5a'}}>one-time upgrade</span></div>
     </div>
 
     {/* ═══ STARLIGHT HEADLINER PRICING ═══ */}
-    <div className="rv" style={{marginTop:60,padding:'40px 36px',borderRadius:4,border:'1px solid rgba(108,99,255,0.25)',background:'linear-gradient(180deg,#0a0a0f 0%,#0d0a1a 100%)'}}>
+    <div className="rv" style={{marginTop:60,padding:'40px 36px',borderRadius:4,border:'1px solid rgba(0,136,255,0.25)',background:'linear-gradient(180deg,#0a0a0f 0%,#0a1620 100%)'}}>
       <div style={{display:'flex',alignItems:'flex-start',gap:14,flexWrap:'wrap',justifyContent:'space-between',marginBottom:20}}>
         <div>
-          <span style={{fontSize:10,fontWeight:700,letterSpacing:'3px',textTransform:'uppercase',color:'#6c63ff'}}>New Service</span>
+          <span style={{fontSize:10,fontWeight:700,letterSpacing:'3px',textTransform:'uppercase',color:'#0088ff'}}>New Service</span>
           <h3 style={{fontFamily:'Space Grotesk',fontWeight:800,fontSize:26,marginTop:6}}>Starlight Headliner</h3>
           <p style={{color:'#8e8ea0',fontSize:14,marginTop:8,maxWidth:600,lineHeight:1.7}}>Custom fiber-optic star ceiling installed in your car's headliner. A galaxy of pinpoint lights that turn on at night — fully customizable, dimmable, and wired into your dome light or a discreet switch.</p>
         </div>
       </div>
       <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(220px,1fr))',gap:14,marginTop:20}}>
-        <div style={{padding:'22px 20px',borderRadius:4,background:'#0a0a0f',border:'1px solid rgba(108,99,255,0.3)'}}>
-          <span style={{fontSize:10,fontWeight:700,letterSpacing:'2.5px',textTransform:'uppercase',color:'#8b83ff'}}>Starter</span>
+        <div style={{padding:'22px 20px',borderRadius:4,background:'#0a0a0f',border:'1px solid rgba(0,136,255,0.3)'}}>
+          <span style={{fontSize:10,fontWeight:700,letterSpacing:'2.5px',textTransform:'uppercase',color:'#60a5fa'}}>Starter</span>
           <div style={{marginTop:10}}><span style={{fontFamily:'Space Grotesk',fontSize:30,fontWeight:800,color:'#fff'}}>$700</span></div>
           <p style={{color:'#8e8ea0',fontSize:13,marginTop:8,lineHeight:1.6}}>550 stars — clean, even galaxy effect. Great entry-level install.</p>
         </div>
@@ -1622,7 +1626,7 @@ function PricingPage() {
           <p style={{color:'#8e8ea0',fontSize:13,marginTop:14,lineHeight:1.7}}>Premium fiber optics, dimmable controller, professional headliner removal & reinstall.</p>
         </div>
       </div>
-      <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" style={{display:'inline-block',marginTop:24,padding:'13px 28px',borderRadius:3,background:'#6c63ff',color:'#fff',fontSize:13,fontWeight:700,textDecoration:'none',boxShadow:'0 4px 20px rgba(108,99,255,0.3)'}}>Book a Starlight Install</a>
+      <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" style={{display:'inline-block',marginTop:24,padding:'13px 28px',borderRadius:3,background:'#0088ff',color:'#fff',fontSize:13,fontWeight:700,textDecoration:'none',boxShadow:'0 4px 20px rgba(0,136,255,0.3)'}}>Book a Starlight Install</a>
     </div>
 
     {/* ═══ INSTANT PRICE CALCULATOR (moved from homepage) ═══ */}
@@ -1650,10 +1654,10 @@ function ComparePage() {
       <div ref={tableRef} className="rv" style={{overflowX:'auto'}} onScroll={(e)=>{ if(e.currentTarget.scrollLeft>10) setTableScrolled(true); }}>
         <table style={{width:'100%',borderCollapse:'collapse',minWidth:640}}>
           <thead><tr style={{borderBottom:'2px solid rgba(255,255,255,0.06)'}}>
-            {['Feature','Uviron Premium Carbon','Nano Carbon','Nano Ceramic'].map((h,i)=>(<th key={i} style={{padding:'16px 20px',textAlign:'left',fontSize:12,fontWeight:700,letterSpacing:'1.5px',textTransform:'uppercase',color:i===3?'#6c63ff':i===0?'#4a4a5a':'#eee',fontFamily:'Space Grotesk'}}>{h}</th>))}
+            {['Feature','Uviron Premium Carbon','Nano Carbon','Nano Ceramic'].map((h,i)=>(<th key={i} style={{padding:'16px 20px',textAlign:'left',fontSize:12,fontWeight:700,letterSpacing:'1.5px',textTransform:'uppercase',color:i===3?'#0088ff':i===0?'#4a4a5a':'#eee',fontFamily:'Space Grotesk'}}>{h}</th>))}
           </tr></thead>
-          <tbody>{rows.map((row,i)=>(<tr key={i} style={{borderBottom:'1px solid rgba(255,255,255,0.04)',transition:'background 0.3s'}} onMouseEnter={(e)=>{e.currentTarget.style.background='rgba(108,99,255,0.03)'}} onMouseLeave={(e)=>{e.currentTarget.style.background='transparent'}}>
-            {row.map((c,j)=>(<td key={j} style={{padding:'14px 20px',fontSize:14,color:j===0?'#4a4a5a':j===3?'#8b83ff':'#8e8ea0',fontWeight:j===0||j===3?600:400}}>{c}</td>))}
+          <tbody>{rows.map((row,i)=>(<tr key={i} style={{borderBottom:'1px solid rgba(255,255,255,0.04)',transition:'background 0.3s'}} onMouseEnter={(e)=>{e.currentTarget.style.background='rgba(0,136,255,0.03)'}} onMouseLeave={(e)=>{e.currentTarget.style.background='transparent'}}>
+            {row.map((c,j)=>(<td key={j} style={{padding:'14px 20px',fontSize:14,color:j===0?'#4a4a5a':j===3?'#60a5fa':'#8e8ea0',fontWeight:j===0||j===3?600:400}}>{c}</td>))}
           </tr>))}</tbody>
         </table>
       </div>
@@ -1669,7 +1673,7 @@ function ComparePage() {
       <button className="mobile-only" onClick={scrollTable} style={{
         position:'absolute', top:'50%', right:8, transform:'translateY(-50%)',
         flexDirection:'column', alignItems:'center', gap:2,
-        background:'rgba(108,99,255,0.15)', border:'2px solid rgba(108,99,255,0.5)',
+        background:'rgba(0,136,255,0.15)', border:'2px solid rgba(0,136,255,0.5)',
         borderRadius:'50%', width:48, height:48,
         cursor:'pointer', padding:0,
         opacity: tableScrolled ? 0 : 1,
@@ -1677,7 +1681,7 @@ function ComparePage() {
         transition:'opacity 0.4s ease',
         animation:'bounceRight 1.2s ease-in-out infinite',
       }}>
-        <span style={{fontSize:28, color:'#6c63ff', lineHeight:1}}>›</span>
+        <span style={{fontSize:28, color:'#0088ff', lineHeight:1}}>›</span>
       </button>
     </div>
     {!tableScrolled && (
@@ -1693,11 +1697,11 @@ function ComparePage() {
         {tier:'Entry Level',name:'Uviron Premium Carbon',desc:'Solid protection and clean looks at the best price.',from:'$65',pros:['Budget-friendly for daily drivers','Matte black finish — clean OEM look','No signal or GPS interference','Will not fade or turn purple']},
         {tier:'Mid Range',name:'Nano Carbon PUREMAX',desc:'Enhanced performance and durability without top-tier price.',from:'$75',pros:['Better heat rejection than Premium Carbon','Deep black — no fade or purple tones','Safe for all vehicle electronics','5–7 year warranty']},
         {tier:'Top Tier',name:'Nano Ceramic KOOLMAX',desc:'Superior heat, UV, and clarity — the last tint you will ever need.',from:'$115',top:true,pros:['Max heat and infrared rejection','Crystal clear — no haze at night','Lifetime warranty on every install','Improves A/C efficiency','Never fades, bubbles, or discolors']},
-      ].map((f,i)=>(<div key={i} className={`rv d${i+1}`} style={{padding:32,borderRadius:4,border:f.top?'1px solid rgba(108,99,255,0.3)':'1px solid rgba(255,255,255,0.04)',background:'#0a0a0f',boxShadow:f.top?'0 0 40px rgba(108,99,255,0.06)':'none'}}>
-        <span style={{fontSize:10,fontWeight:700,letterSpacing:'3px',textTransform:'uppercase',color:'#6c63ff'}}>{f.tier}</span>
+      ].map((f,i)=>(<div key={i} className={`rv d${i+1}`} style={{padding:32,borderRadius:4,border:f.top?'1px solid rgba(0,136,255,0.3)':'1px solid rgba(255,255,255,0.04)',background:'#0a0a0f',boxShadow:f.top?'0 0 40px rgba(0,136,255,0.06)':'none'}}>
+        <span style={{fontSize:10,fontWeight:700,letterSpacing:'3px',textTransform:'uppercase',color:'#0088ff'}}>{f.tier}</span>
         <h3 style={{fontFamily:'Space Grotesk',fontSize:21,fontWeight:700,marginTop:8,marginBottom:8}}>{f.name}</h3>
         <p style={{color:'#8e8ea0',fontSize:14,lineHeight:1.65,marginBottom:20}}>{f.desc}</p>
-        {f.pros.map((p,j)=>(<div key={j} style={{padding:'5px 0',fontSize:13,color:'#8e8ea0',display:'flex',gap:10,alignItems:'flex-start'}}><span style={{color:'#6c63ff',fontSize:8,marginTop:6}}>&#9646;</span>{p}</div>))}
+        {f.pros.map((p,j)=>(<div key={j} style={{padding:'5px 0',fontSize:13,color:'#8e8ea0',display:'flex',gap:10,alignItems:'flex-start'}}><span style={{color:'#0088ff',fontSize:8,marginTop:6}}>&#9646;</span>{p}</div>))}
         <div style={{marginTop:24,paddingTop:20,borderTop:'1px solid rgba(255,255,255,0.04)'}}><span style={{fontSize:11,color:'#4a4a5a'}}>Starting from</span><span style={{fontFamily:'Space Grotesk',fontSize:28,fontWeight:800,marginLeft:8}}>{f.from}</span></div>
       </div>))}
     </div>
@@ -1720,7 +1724,7 @@ function WarrantyPage() {
     <SH tag="Our Commitment" title="Warranty & Policy" sub="Backed by our satisfaction guarantee and lifetime warranty." />
     {s.map((x,i)=>(<div key={i} className={`rv d${(i%3)+1}`} style={{padding:'32px 36px',borderRadius:4,border:'1px solid rgba(255,255,255,0.04)',background:'#0a0a0f',marginBottom:10}}>
       <div style={{display:'flex',gap:20,alignItems:'flex-start'}}>
-        <span style={{fontFamily:'Space Grotesk',fontSize:32,fontWeight:800,color:'#6c63ff',opacity:0.3,lineHeight:1,minWidth:40}}>{x.num}</span>
+        <span style={{fontFamily:'Space Grotesk',fontSize:32,fontWeight:800,color:'#0088ff',opacity:0.3,lineHeight:1,minWidth:40}}>{x.num}</span>
         <div><h3 style={{fontFamily:'Space Grotesk',fontSize:19,fontWeight:700,marginBottom:10}}>{x.title}</h3><p style={{color:'#8e8ea0',fontSize:14,lineHeight:1.8}}>{x.body}</p></div>
       </div>
     </div>))}
@@ -1777,21 +1781,21 @@ function ContactPage() {
           </div>
         ) : (
           <>
-            {[{label:'Name',key:'name'},{label:'Phone',key:'phone'},{label:'Email',key:'email'},{label:'Vehicle / Service',key:'vehicle'}].map((l)=>(<div key={l.key} style={{marginBottom:14}}><label style={{display:'block',fontSize:12,fontWeight:600,color:'#4a4a5a',marginBottom:6,letterSpacing:'2px',textTransform:'uppercase'}}>{l.label}{(l.key==='name'||l.key==='email')&&<span style={{color:'#6c63ff'}}> *</span>}</label><input value={(form as any)[l.key]} onChange={(e)=>setForm({...form,[l.key]:e.target.value})} style={inputStyle} onFocus={(e)=>e.currentTarget.style.borderColor='#6c63ff'} onBlur={(e)=>e.currentTarget.style.borderColor='rgba(255,255,255,0.05)'}/></div>))}
-            <div style={{marginBottom:14}}><label style={{display:'block',fontSize:12,fontWeight:600,color:'#4a4a5a',marginBottom:6,letterSpacing:'2px',textTransform:'uppercase'}}>Message <span style={{color:'#6c63ff'}}>*</span></label><textarea rows={4} value={form.message} onChange={(e)=>setForm({...form,message:e.target.value})} style={{...inputStyle,resize:'vertical'}} onFocus={(e)=>e.currentTarget.style.borderColor='#6c63ff'} onBlur={(e)=>e.currentTarget.style.borderColor='rgba(255,255,255,0.05)'}/></div>
-            <button onClick={handleSubmit} disabled={sending || !form.name || !form.email || !form.message} style={{width:'100%',padding:'14px',borderRadius:3,border:'none',cursor: (!form.name||!form.email||!form.message) ? 'not-allowed' : 'pointer',background: (!form.name||!form.email||!form.message) ? '#333' : '#6c63ff',color:'#fff',fontSize:15,fontWeight:700,boxShadow: (!form.name||!form.email||!form.message) ? 'none' : '0 4px 20px rgba(108,99,255,0.3)',transition:'all 0.3s'}}>{sending ? 'Opening...' : 'Send Message'}</button>
+            {[{label:'Name',key:'name'},{label:'Phone',key:'phone'},{label:'Email',key:'email'},{label:'Vehicle / Service',key:'vehicle'}].map((l)=>(<div key={l.key} style={{marginBottom:14}}><label style={{display:'block',fontSize:12,fontWeight:600,color:'#4a4a5a',marginBottom:6,letterSpacing:'2px',textTransform:'uppercase'}}>{l.label}{(l.key==='name'||l.key==='email')&&<span style={{color:'#0088ff'}}> *</span>}</label><input value={(form as any)[l.key]} onChange={(e)=>setForm({...form,[l.key]:e.target.value})} style={inputStyle} onFocus={(e)=>e.currentTarget.style.borderColor='#0088ff'} onBlur={(e)=>e.currentTarget.style.borderColor='rgba(255,255,255,0.05)'}/></div>))}
+            <div style={{marginBottom:14}}><label style={{display:'block',fontSize:12,fontWeight:600,color:'#4a4a5a',marginBottom:6,letterSpacing:'2px',textTransform:'uppercase'}}>Message <span style={{color:'#0088ff'}}>*</span></label><textarea rows={4} value={form.message} onChange={(e)=>setForm({...form,message:e.target.value})} style={{...inputStyle,resize:'vertical'}} onFocus={(e)=>e.currentTarget.style.borderColor='#0088ff'} onBlur={(e)=>e.currentTarget.style.borderColor='rgba(255,255,255,0.05)'}/></div>
+            <button onClick={handleSubmit} disabled={sending || !form.name || !form.email || !form.message} style={{width:'100%',padding:'14px',borderRadius:3,border:'none',cursor: (!form.name||!form.email||!form.message) ? 'not-allowed' : 'pointer',background: (!form.name||!form.email||!form.message) ? '#333' : '#0088ff',color:'#fff',fontSize:15,fontWeight:700,boxShadow: (!form.name||!form.email||!form.message) ? 'none' : '0 4px 20px rgba(0,136,255,0.3)',transition:'all 0.3s'}}>{sending ? 'Opening...' : 'Send Message'}</button>
           </>
         )}
       </div>
       <div className="rv d2">
         {[{label:'Service Area',val:'Mobile — Columbia, MD\n& the entire DMV'},{label:'Phone',val:'(240) 338-7762'},{label:'Email',val:'210tints@gmail.com'},{label:'Hours',val:'Mon — Sat: 6 AM — 11 PM\nSun: By Appointment'}].map((c,i)=>(<div key={i} style={{padding:'22px 24px',borderRadius:4,border:'1px solid rgba(255,255,255,0.04)',background:'#0a0a0f',marginBottom:10}}>
-          <span style={{fontSize:10,fontWeight:700,letterSpacing:'3px',textTransform:'uppercase',color:'#6c63ff',display:'block',marginBottom:6}}>{c.label}</span>
+          <span style={{fontSize:10,fontWeight:700,letterSpacing:'3px',textTransform:'uppercase',color:'#0088ff',display:'block',marginBottom:6}}>{c.label}</span>
           <p style={{color:'#8e8ea0',fontSize:14,whiteSpace:'pre-line',lineHeight:1.7}}>{c.val}</p>
         </div>))}
         <div style={{marginTop:10,padding:'24px',borderRadius:4,background:'#0a0a0f',border:'1px solid rgba(255,255,255,0.04)',textAlign:'center'}}>
           <h4 style={{fontFamily:'Space Grotesk',fontWeight:700,fontSize:15,marginBottom:8}}>Mobile Service Available</h4>
           <p style={{color:'#8e8ea0',fontSize:12,marginBottom:16}}>We come to you — home, work, wherever works.</p>
-          <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" style={{display:'inline-block',background:'#6c63ff',color:'#fff',padding:'11px 28px',borderRadius:3,fontSize:13,fontWeight:600,textDecoration:'none'}}>Schedule Online</a>
+          <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" style={{display:'inline-block',background:'#0088ff',color:'#fff',padding:'11px 28px',borderRadius:3,fontSize:13,fontWeight:600,textDecoration:'none'}}>Schedule Online</a>
         </div>
       </div>
     </div>
@@ -1829,19 +1833,19 @@ function TintLawsPage({ go }: { go: (p: string) => void }) {
         </div>
       ))}
     </div>
-    <div className="rv" style={{ padding: '36px', borderRadius: 4, border: '1px solid rgba(108,99,255,0.15)', background: '#0a0a0f', marginBottom: 60 }}>
+    <div className="rv" style={{ padding: '36px', borderRadius: 4, border: '1px solid rgba(0,136,255,0.15)', background: '#0a0a0f', marginBottom: 60 }}>
       <h3 style={{ fontFamily: 'Space Grotesk', fontSize: 20, fontWeight: 700, marginBottom: 20 }}>Quick Tips</h3>
       {tips.map((t, i) => (
         <div key={i} style={{ padding: '8px 0', fontSize: 16, color: '#8e8ea0', display: 'flex', gap: 12, alignItems: 'flex-start', lineHeight: 1.7 }}>
-          <span style={{ color: '#6c63ff', fontSize: 8, marginTop: 8, flexShrink: 0 }}>&#9646;</span>{t}
+          <span style={{ color: '#0088ff', fontSize: 8, marginTop: 8, flexShrink: 0 }}>&#9646;</span>{t}
         </div>
       ))}
     </div>
-    <div className="rv" style={{ textAlign: 'center', padding: '48px 28px', borderRadius: 4, background: 'rgba(108,99,255,0.04)', border: '1px solid rgba(108,99,255,0.1)' }}>
+    <div className="rv" style={{ textAlign: 'center', padding: '48px 28px', borderRadius: 4, background: 'rgba(0,136,255,0.04)', border: '1px solid rgba(0,136,255,0.1)' }}>
       <h3 style={{ fontFamily: 'Space Grotesk', fontSize: 22, fontWeight: 800, marginBottom: 12 }}>Not Sure What's Legal?</h3>
       <p style={{ color: '#8e8ea0', fontSize: 16, marginBottom: 24 }}>We'll recommend the perfect shade for your vehicle — 100% legal and looking great.</p>
       <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-        <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" className="magnetic-btn" style={{ background: '#6c63ff', color: '#fff', padding: '14px 36px', borderRadius: 3, fontSize: 16, fontWeight: 700, textDecoration: 'none', boxShadow: '0 4px 30px rgba(108,99,255,0.3)' }}>Book Now</a>
+        <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" className="magnetic-btn" style={{ background: '#0088ff', color: '#fff', padding: '14px 36px', borderRadius: 3, fontSize: 16, fontWeight: 700, textDecoration: 'none', boxShadow: '0 4px 30px rgba(0,136,255,0.3)' }}>Book Now</a>
         <button onClick={() => go('home')} style={{ background: 'transparent', color: '#fff', padding: '14px 36px', borderRadius: 3, border: '1px solid rgba(255,255,255,0.1)', fontSize: 16, fontWeight: 500, cursor: 'pointer' }}>Try Tint Simulator</button>
       </div>
     </div>
@@ -1859,7 +1863,7 @@ function TintLawsPage({ go }: { go: (p: string) => void }) {
     ].map((c, i) => (
       <div key={i} className={`rv d${(i % 3) + 1}`} style={{ padding: '28px 32px', borderRadius: 4, border: '1px solid rgba(255,255,255,0.04)', background: '#0a0a0f', marginBottom: 10 }}>
         <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start' }}>
-          <span style={{ fontFamily: 'Space Grotesk', fontSize: 28, fontWeight: 800, color: '#6c63ff', opacity: 0.3, lineHeight: 1, minWidth: 32 }}>{String(i + 1).padStart(2, '0')}</span>
+          <span style={{ fontFamily: 'Space Grotesk', fontSize: 28, fontWeight: 800, color: '#0088ff', opacity: 0.3, lineHeight: 1, minWidth: 32 }}>{String(i + 1).padStart(2, '0')}</span>
           <div>
             <h3 style={{ fontFamily: 'Space Grotesk', fontSize: 17, fontWeight: 700, marginBottom: 8 }}>{c.title}</h3>
             <p style={{ color: '#8e8ea0', fontSize: 16, lineHeight: 1.8 }}>{c.desc}</p>
@@ -1975,7 +1979,7 @@ Today: ${todayStr}. Use current year or later for dates. Be friendly, conversati
         const cleanPhone = phone.startsWith('+1') ? phone : '+1' + phone.replace(/\D/g, '');
         url += `?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&first_name=${encodeURIComponent(parts[0] || '')}&last_name=${encodeURIComponent(parts.slice(1).join(' ') || '')}&a1=${encodeURIComponent(cleanPhone)}&a2=${encodeURIComponent(vehicle)}&a3=${encodeURIComponent(tintType)}&a4=${encodeURIComponent(prevTinted)}&a5=${encodeURIComponent(waitOrLeave)}&a6=${encodeURIComponent(extraNotes)}`;
         const t = new Date(startTime).toLocaleString([], { weekday: 'long', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-        addMsg('assistant', '', `<div style="padding:10px 14px;border-radius:16px;border-bottom-left-radius:4px;background:#0f0f0f;border:1px solid #222;font-size:13.5px;line-height:1.6">🎉 <strong>Almost done, ${parts[0]}!</strong><br><br>Your slot for <strong>${t}</strong> is being held.<br><br><a href="${url}" target="_blank" rel="noreferrer" style="display:inline-block;background:#4B5FE0;color:#fff;padding:10px 20px;border-radius:8px;text-decoration:none;font-weight:700;font-size:13px;margin:4px 0">✅ Confirm My Appointment</a><br><br><span style="font-size:11px;color:#6b7280">You'll get a confirmation email once booked.</span></div>`);
+        addMsg('assistant', '', `<div style="padding:10px 14px;border-radius:16px;border-bottom-left-radius:4px;background:#0f0f0f;border:1px solid #222;font-size:13.5px;line-height:1.6">🎉 <strong>Almost done, ${parts[0]}!</strong><br><br>Your slot for <strong>${t}</strong> is being held.<br><br><a href="${url}" target="_blank" rel="noreferrer" style="display:inline-block;background:#0088ff;color:#fff;padding:10px 20px;border-radius:8px;text-decoration:none;font-weight:700;font-size:13px;margin:4px 0">✅ Confirm My Appointment</a><br><br><span style="font-size:11px;color:#6b7280">You'll get a confirmation email once booked.</span></div>`);
         return true;
       }
       return false;
@@ -2010,7 +2014,7 @@ Today: ${todayStr}. Use current year or later for dates. Be friendly, conversati
     const slotButtons = slots.map((s: any) => {
       const t = new Date(s.start_time);
       const label = t.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      return `<button data-slot="${s.start_time}" data-uri="${eventType.uri}" data-name="${encodeURIComponent(name)}" data-email="${encodeURIComponent(email)}" data-phone="${encodeURIComponent(phone)}" data-vehicle="${encodeURIComponent(vehicle)}" data-tint="${encodeURIComponent(tintType)}" data-prev="${encodeURIComponent(prevTinted)}" data-wait="${encodeURIComponent(waitOrLeave)}" data-notes="${encodeURIComponent(extraNotes)}" style="background:#1a1a2e;border:1px solid #4B5FE0;color:#fff;padding:8px 14px;border-radius:8px;cursor:pointer;font-size:13px;font-family:inherit">${label}</button>`;
+      return `<button data-slot="${s.start_time}" data-uri="${eventType.uri}" data-name="${encodeURIComponent(name)}" data-email="${encodeURIComponent(email)}" data-phone="${encodeURIComponent(phone)}" data-vehicle="${encodeURIComponent(vehicle)}" data-tint="${encodeURIComponent(tintType)}" data-prev="${encodeURIComponent(prevTinted)}" data-wait="${encodeURIComponent(waitOrLeave)}" data-notes="${encodeURIComponent(extraNotes)}" style="background:#1a1a2e;border:1px solid #0088ff;color:#fff;padding:8px 14px;border-radius:8px;cursor:pointer;font-size:13px;font-family:inherit">${label}</button>`;
     }).join('');
 
     addMsg('assistant', '', `<div style="padding:10px 14px;border-radius:16px;border-bottom-left-radius:4px;background:#0f0f0f;border:1px solid #222;font-size:13.5px;line-height:1.6"><strong>✅ Available times on ${d}:</strong><br><br><div class="slot-picker" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px">${slotButtons}</div></div>`);
@@ -2086,7 +2090,7 @@ Today: ${todayStr}. Use current year or later for dates. Be friendly, conversati
       <div className="chat-intro-bubble" style={{
         position: 'fixed', bottom: 100, right: 28, maxWidth: 280, zIndex: 9997,
         background: '#fff', color: '#0a0a0f', borderRadius: 16, padding: '14px 38px 14px 16px',
-        boxShadow: '0 12px 40px rgba(0,0,0,0.35), 0 0 0 1px rgba(75,95,224,0.15)',
+        boxShadow: '0 12px 40px rgba(0,0,0,0.35), 0 0 0 1px rgba(0,136,255,0.15)',
         opacity: showIntro && !isOpen ? 1 : 0,
         transform: showIntro && !isOpen ? 'translateY(0) scale(1)' : 'translateY(10px) scale(0.96)',
         pointerEvents: showIntro && !isOpen ? 'all' : 'none',
@@ -2103,7 +2107,7 @@ Today: ${todayStr}. Use current year or later for dates. Be friendly, conversati
         {/* Tail pointing to chat button */}
         <div style={{ position: 'absolute', bottom: -7, right: 24, width: 14, height: 14, background: '#fff', transform: 'rotate(45deg)', boxShadow: '2px 2px 4px rgba(0,0,0,0.04)' }} />
       </div>
-      <button className="chat-toggle-btn" onClick={toggle} style={{ position: 'fixed', bottom: 28, right: 28, width: 60, height: 60, background: '#4B5FE0', border: 'none', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999, animation: 'tintRing 3s ease infinite', transition: 'transform 0.2s' }}
+      <button className="chat-toggle-btn" onClick={toggle} style={{ position: 'fixed', bottom: 28, right: 28, width: 60, height: 60, background: '#0088ff', border: 'none', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999, animation: 'tintRing 3s ease infinite', transition: 'transform 0.2s' }}
         onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.08)'; }} onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}>
         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
           {isOpen ? <><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></> : <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />}
@@ -2114,7 +2118,7 @@ Today: ${todayStr}. Use current year or later for dates. Be friendly, conversati
         boxShadow: '0 24px 80px rgba(0,0,0,0.8)', transform: isOpen ? 'scale(1) translateY(0)' : 'scale(0.92) translateY(20px)', opacity: isOpen ? 1 : 0, pointerEvents: isOpen ? 'all' : 'none', transition: 'transform 0.3s cubic-bezier(0.34,1.56,0.64,1), opacity 0.25s ease',
       }}>
         <div style={{ padding: '16px 18px', background: '#111', borderBottom: '1px solid #1a1a1a', display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
-          <div style={{ width: 40, height: 40, background: '#4B5FE0', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Space Grotesk', fontWeight: 800, fontSize: 16, color: '#fff', position: 'relative' }}>
+          <div style={{ width: 40, height: 40, background: '#0088ff', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Space Grotesk', fontWeight: 800, fontSize: 16, color: '#fff', position: 'relative' }}>
             AI<span style={{ position: 'absolute', bottom: 1, right: 1, width: 10, height: 10, background: '#4ade80', borderRadius: '50%', border: '2px solid #111' }} />
           </div>
           <div>
@@ -2132,7 +2136,7 @@ Today: ${todayStr}. Use current year or later for dates. Be friendly, conversati
               {m.html ? (
                 <div dangerouslySetInnerHTML={{ __html: m.html }} />
               ) : (
-                <div style={{ padding: '10px 14px', borderRadius: 16, fontSize: 13.5, lineHeight: 1.6, fontFamily: 'Inter, sans-serif', background: m.role === 'user' ? '#0c0e1f' : '#0f0f0f', border: m.role === 'user' ? '1px solid rgba(75,95,224,0.3)' : '1px solid #222', borderBottomRightRadius: m.role === 'user' ? 4 : 16, borderBottomLeftRadius: m.role === 'user' ? 16 : 4, color: '#fff' }} dangerouslySetInnerHTML={{ __html: formatMsg(m.content) }} />
+                <div style={{ padding: '10px 14px', borderRadius: 16, fontSize: 13.5, lineHeight: 1.6, fontFamily: 'Inter, sans-serif', background: m.role === 'user' ? '#0c0e1f' : '#0f0f0f', border: m.role === 'user' ? '1px solid rgba(0,136,255,0.3)' : '1px solid #222', borderBottomRightRadius: m.role === 'user' ? 4 : 16, borderBottomLeftRadius: m.role === 'user' ? 16 : 4, color: '#fff' }} dangerouslySetInnerHTML={{ __html: formatMsg(m.content) }} />
               )}
             </div>
           ))}
@@ -2144,7 +2148,7 @@ Today: ${todayStr}. Use current year or later for dates. Be friendly, conversati
           <div style={{ padding: '8px 16px 12px', display: 'flex', flexWrap: 'wrap', gap: 6, flexShrink: 0 }}>
             {['Packages & Pricing', 'I want to book', 'KOOLMAX Ceramic?', 'Mobile Service?'].map(q => (
               <button key={q} onClick={() => send(q)} style={{ background: 'transparent', border: '1px solid #222', color: '#fff', padding: '6px 12px', borderRadius: 20, fontSize: 12, cursor: 'pointer', transition: 'all 0.15s', fontFamily: 'Inter' }}
-                onMouseEnter={(e) => { e.currentTarget.style.background = '#4B5FE0'; e.currentTarget.style.borderColor = '#4B5FE0'; }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = '#0088ff'; e.currentTarget.style.borderColor = '#0088ff'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = '#222'; }}
               >{q}</button>
             ))}
@@ -2154,7 +2158,7 @@ Today: ${todayStr}. Use current year or later for dates. Be friendly, conversati
           <input value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') send(); }}
             placeholder="Ask about tinting, pricing, or book…"
             style={{ flex: 1, background: '#1a1a1a', border: '1px solid #333', borderRadius: 10, color: '#fff', fontSize: 16, padding: '9px 13px', outline: 'none', fontFamily: 'Inter' }} />
-          <button onClick={() => send()} style={{ width: 38, height: 38, background: '#4B5FE0', border: 'none', borderRadius: 10, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color: '#fff', fontSize: 18 }}>➤</button>
+          <button onClick={() => send()} style={{ width: 38, height: 38, background: '#0088ff', border: 'none', borderRadius: 10, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color: '#fff', fontSize: 18 }}>➤</button>
         </div>
       </div>
     </>
@@ -2174,7 +2178,7 @@ function MobileBookBar() {
     <div style={{
       position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 9990,
       background: 'rgba(5,5,7,0.95)', backdropFilter: 'blur(20px)',
-      borderTop: '1px solid rgba(108,99,255,0.15)',
+      borderTop: '1px solid rgba(0,136,255,0.15)',
       padding: '12px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12,
       transform: show ? 'translateY(0)' : 'translateY(100%)',
       transition: 'transform 0.4s cubic-bezier(.16,1,.3,1)',
@@ -2184,9 +2188,9 @@ function MobileBookBar() {
         <a href="tel:2403387762" style={{ fontSize: 13, color: '#8e8ea0', textDecoration: 'none' }}>(240) 338-7762</a>
       </div>
       <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" style={{
-        background: '#6c63ff', color: '#fff', padding: '11px 28px', borderRadius: 3,
+        background: '#0088ff', color: '#fff', padding: '11px 28px', borderRadius: 3,
         fontSize: 14, fontWeight: 700, textDecoration: 'none',
-        boxShadow: '0 4px 20px rgba(108,99,255,0.3)', flexShrink: 0,
+        boxShadow: '0 4px 20px rgba(0,136,255,0.3)', flexShrink: 0,
       }}>Book Now</a>
     </div>
   );
@@ -2211,7 +2215,7 @@ function BackToTop() {
       transform: show ? 'translateY(0)' : 'translateY(10px)',
       transition: 'all 0.3s cubic-bezier(.16,1,.3,1)',
     }}
-      onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(108,99,255,0.3)'; e.currentTarget.style.color = '#6c63ff'; }}
+      onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(0,136,255,0.3)'; e.currentTarget.style.color = '#0088ff'; }}
       onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'; e.currentTarget.style.color = '#8e8ea0'; }}
     >↑</button>
   );
@@ -2235,7 +2239,7 @@ function TrustBadges() {
           border: '1px solid rgba(255,255,255,0.04)', textAlign: 'center',
           transition: 'all 0.4s cubic-bezier(.16,1,.3,1)',
         }}
-          onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(108,99,255,0.2)'; e.currentTarget.style.transform = 'translateY(-4px)'; }}
+          onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(0,136,255,0.2)'; e.currentTarget.style.transform = 'translateY(-4px)'; }}
           onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.04)'; e.currentTarget.style.transform = 'translateY(0)'; }}>
           <span style={{ fontSize: 28, display: 'block', marginBottom: 12 }}>{b.icon}</span>
           <span style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 14, display: 'block', marginBottom: 4 }}>{b.label}</span>
@@ -2252,7 +2256,7 @@ function CeramicVsCarbonPage() {
   return (<div style={{ paddingTop: 130 }}><section style={{ padding: '0 28px 120px', maxWidth: 880, margin: '0 auto' }}>
     <SH tag="Film Guide" title="Ceramic vs Carbon Tint" sub="Which film is worth it? A detailed breakdown to help you decide." />
 
-    <div className="rv" style={{ padding: '32px', borderRadius: 4, border: '1px solid rgba(108,99,255,0.15)', background: '#0a0a0f', marginBottom: 32 }}>
+    <div className="rv" style={{ padding: '32px', borderRadius: 4, border: '1px solid rgba(0,136,255,0.15)', background: '#0a0a0f', marginBottom: 32 }}>
       <h3 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 20, marginBottom: 16 }}>The Short Answer</h3>
       <p style={{ color: '#8e8ea0', fontSize: 16, lineHeight: 1.8 }}>If you want the <strong style={{ color: '#fff' }}>best heat rejection, clarity, and longevity</strong> — go ceramic. If you want <strong style={{ color: '#fff' }}>solid protection at a lower price</strong> — carbon is excellent. Both block 98%+ UV rays.</p>
     </div>
@@ -2273,10 +2277,10 @@ function CeramicVsCarbonPage() {
       </div>
     ))}
 
-    <div className="rv" style={{ textAlign: 'center', padding: '48px 28px', marginTop: 40, borderRadius: 4, background: 'rgba(108,99,255,0.04)', border: '1px solid rgba(108,99,255,0.1)' }}>
+    <div className="rv" style={{ textAlign: 'center', padding: '48px 28px', marginTop: 40, borderRadius: 4, background: 'rgba(0,136,255,0.04)', border: '1px solid rgba(0,136,255,0.1)' }}>
       <h3 style={{ fontFamily: 'Space Grotesk', fontSize: 22, fontWeight: 700, marginBottom: 12 }}>Ready to Choose?</h3>
       <p style={{ color: '#8e8ea0', fontSize: 15, marginBottom: 24 }}>Our team can help you pick the perfect film for your vehicle and budget.</p>
-      <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" className="magnetic-btn" style={{ display: 'inline-block', background: '#6c63ff', color: '#fff', padding: '15px 40px', borderRadius: 3, fontSize: 16, fontWeight: 700, textDecoration: 'none', boxShadow: '0 4px 30px rgba(108,99,255,0.3)' }}>Book a Consultation</a>
+      <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" className="magnetic-btn" style={{ display: 'inline-block', background: '#0088ff', color: '#fff', padding: '15px 40px', borderRadius: 3, fontSize: 16, fontWeight: 700, textDecoration: 'none', boxShadow: '0 4px 30px rgba(0,136,255,0.3)' }}>Book a Consultation</a>
     </div>
   </section></div>);
 }
@@ -2287,7 +2291,7 @@ function MDSummerTintPage() {
   return (<div style={{ paddingTop: 130 }}><section style={{ padding: '0 28px 120px', maxWidth: 880, margin: '0 auto' }}>
     <SH tag="Seasonal Guide" title="Best Tint for Maryland Summers" sub="Beat the DMV heat with the right window film. Here's what actually works." />
 
-    <div className="rv" style={{ padding: '32px', borderRadius: 4, border: '1px solid rgba(108,99,255,0.15)', background: '#0a0a0f', marginBottom: 32 }}>
+    <div className="rv" style={{ padding: '32px', borderRadius: 4, border: '1px solid rgba(0,136,255,0.15)', background: '#0a0a0f', marginBottom: 32 }}>
       <h3 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 20, marginBottom: 16 }}>Why Tint Matters in Maryland</h3>
       <p style={{ color: '#8e8ea0', fontSize: 16, lineHeight: 1.8 }}>Maryland summers hit 90°F+ with brutal humidity. Your car's interior can reach <strong style={{ color: '#fff' }}>140°F or higher</strong> when parked in the sun. The right window tint blocks infrared heat before it enters your cabin, reducing interior temps by up to 40°F and saving your AC from working overtime.</p>
     </div>
@@ -2307,10 +2311,10 @@ function MDSummerTintPage() {
       </div>
     ))}
 
-    <div className="rv" style={{ textAlign: 'center', padding: '48px 28px', marginTop: 40, borderRadius: 4, background: 'rgba(108,99,255,0.04)', border: '1px solid rgba(108,99,255,0.1)' }}>
+    <div className="rv" style={{ textAlign: 'center', padding: '48px 28px', marginTop: 40, borderRadius: 4, background: 'rgba(0,136,255,0.04)', border: '1px solid rgba(0,136,255,0.1)' }}>
       <h3 style={{ fontFamily: 'Space Grotesk', fontSize: 22, fontWeight: 700, marginBottom: 12 }}>Beat the Heat This Summer</h3>
       <p style={{ color: '#8e8ea0', fontSize: 15, marginBottom: 24 }}>Book now and we'll come to you — home, office, anywhere in the DMV.</p>
-      <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" className="magnetic-btn" style={{ display: 'inline-block', background: '#6c63ff', color: '#fff', padding: '15px 40px', borderRadius: 3, fontSize: 16, fontWeight: 700, textDecoration: 'none', boxShadow: '0 4px 30px rgba(108,99,255,0.3)' }}>Book Your Appointment</a>
+      <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" className="magnetic-btn" style={{ display: 'inline-block', background: '#0088ff', color: '#fff', padding: '15px 40px', borderRadius: 3, fontSize: 16, fontWeight: 700, textDecoration: 'none', boxShadow: '0 4px 30px rgba(0,136,255,0.3)' }}>Book Your Appointment</a>
     </div>
   </section></div>);
 }
@@ -2330,14 +2334,14 @@ function StarlightPage({ go }: { go: (p: string) => void }) {
   return (<div style={{ paddingTop: 130 }}><section style={{ padding: '0 28px 120px', maxWidth: 880, margin: '0 auto' }}>
     <SH tag="New Service" title="Starlight Headliner" sub="A custom fiber-optic galaxy installed in your car's ceiling. Made for night drives." />
 
-    <div className="rv" style={{ padding: '32px', borderRadius: 4, border: '1px solid rgba(108,99,255,0.15)', background: 'linear-gradient(180deg,#0a0a0f 0%,#0d0a1a 100%)', marginBottom: 32 }}>
+    <div className="rv" style={{ padding: '32px', borderRadius: 4, border: '1px solid rgba(0,136,255,0.15)', background: 'linear-gradient(180deg,#0a0a0f 0%,#0a1620 100%)', marginBottom: 32 }}>
       <h3 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 20, marginBottom: 16 }}>What Is a Starlight Headliner?</h3>
       <p style={{ color: '#8e8ea0', fontSize: 16, lineHeight: 1.8 }}>Starlight headliners replace your car's stock fabric ceiling with hundreds of fiber-optic strands that create a starry-night effect. Originally made famous by Rolls-Royce, the install is now available for any vehicle. The lights are dimmable, energy-efficient, and wired into your dome light or a hidden switch.</p>
     </div>
 
     <div className="rv" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(240px,1fr))', gap: 14, marginBottom: 32 }}>
-      <div style={{ padding: '24px 22px', borderRadius: 4, background: '#0a0a0f', border: '1px solid rgba(108,99,255,0.3)' }}>
-        <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2.5px', textTransform: 'uppercase', color: '#8b83ff' }}>Starter</span>
+      <div style={{ padding: '24px 22px', borderRadius: 4, background: '#0a0a0f', border: '1px solid rgba(0,136,255,0.3)' }}>
+        <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2.5px', textTransform: 'uppercase', color: '#60a5fa' }}>Starter</span>
         <div style={{ marginTop: 10 }}><span style={{ fontFamily: 'Space Grotesk', fontSize: 32, fontWeight: 800 }}>$824</span></div>
         <p style={{ color: '#8e8ea0', fontSize: 13, marginTop: 10, lineHeight: 1.6 }}>550 stars — clean, even galaxy effect. Great entry-level install.</p>
       </div>
@@ -2361,11 +2365,11 @@ function StarlightPage({ go }: { go: (p: string) => void }) {
       </div>
     ))}
 
-    <div className="rv" style={{ textAlign: 'center', padding: '48px 28px', marginTop: 40, borderRadius: 4, background: 'rgba(108,99,255,0.04)', border: '1px solid rgba(108,99,255,0.1)' }}>
+    <div className="rv" style={{ textAlign: 'center', padding: '48px 28px', marginTop: 40, borderRadius: 4, background: 'rgba(0,136,255,0.04)', border: '1px solid rgba(0,136,255,0.1)' }}>
       <h3 style={{ fontFamily: 'Space Grotesk', fontSize: 22, fontWeight: 700, marginBottom: 12 }}>Turn Your Ceiling Into a Galaxy</h3>
       <p style={{ color: '#8e8ea0', fontSize: 15, marginBottom: 24 }}>Book a Starlight install or chat with us about custom designs.</p>
       <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-        <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" style={{ display: 'inline-block', background: '#6c63ff', color: '#fff', padding: '15px 40px', borderRadius: 3, fontSize: 16, fontWeight: 700, textDecoration: 'none', boxShadow: '0 4px 30px rgba(108,99,255,0.3)' }}>Book Now</a>
+        <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" style={{ display: 'inline-block', background: '#0088ff', color: '#fff', padding: '15px 40px', borderRadius: 3, fontSize: 16, fontWeight: 700, textDecoration: 'none', boxShadow: '0 4px 30px rgba(0,136,255,0.3)' }}>Book Now</a>
         <button onClick={() => go('pricing')} style={{ background: 'transparent', color: '#fff', padding: '15px 40px', borderRadius: 3, border: '1px solid rgba(255,255,255,0.12)', fontSize: 16, fontWeight: 500, cursor: 'pointer' }}>View All Pricing</button>
       </div>
     </div>
@@ -2382,9 +2386,9 @@ function StarlightSalePage({ go }: { go: (p: string) => void }) {
       <section style={{ padding: '0 28px 120px', maxWidth: 900, margin: '0 auto' }}>
         {/* Header */}
         <div className="rv" style={{ textAlign: 'center', marginBottom: 56 }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(108,99,255,0.12)', border: '1px solid rgba(108,99,255,0.3)', borderRadius: 24, padding: '6px 18px', marginBottom: 20 }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(0,136,255,0.12)', border: '1px solid rgba(0,136,255,0.3)', borderRadius: 24, padding: '6px 18px', marginBottom: 20 }}>
             <span style={{ fontSize: 18 }}>✦</span>
-            <span style={{ color: '#a78bfa', fontSize: 13, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase' }}>Limited Time Offer</span>
+            <span style={{ color: '#7dd3ff', fontSize: 13, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase' }}>Limited Time Offer</span>
           </div>
           <h1 style={{ fontFamily: 'Space Grotesk', fontSize: 'clamp(36px,6vw,64px)', fontWeight: 800, lineHeight: 1.1, marginBottom: 16 }}>
             Starlight Headliner<br />
@@ -2402,16 +2406,16 @@ function StarlightSalePage({ go }: { go: (p: string) => void }) {
         {/* Pricing cards */}
         <div className="rv d1" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(260px,1fr))', gap: 14, marginBottom: 48 }}>
           {/* Starter */}
-          <div style={{ padding: '36px 32px', borderRadius: 4, border: '1px solid rgba(108,99,255,0.35)', background: 'linear-gradient(135deg,rgba(108,99,255,0.08),rgba(108,99,255,0.02))', boxShadow: '0 0 40px rgba(108,99,255,0.08)', textAlign: 'center' }}>
-            <div style={{ width: 48, height: 48, borderRadius: '50%', background: 'rgba(108,99,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px', fontSize: 22 }}>✦</div>
+          <div style={{ padding: '36px 32px', borderRadius: 4, border: '1px solid rgba(0,136,255,0.35)', background: 'linear-gradient(135deg,rgba(0,136,255,0.08),rgba(0,136,255,0.02))', boxShadow: '0 0 40px rgba(0,136,255,0.08)', textAlign: 'center' }}>
+            <div style={{ width: 48, height: 48, borderRadius: '50%', background: 'rgba(0,136,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px', fontSize: 22 }}>✦</div>
             <h3 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 22, marginBottom: 8 }}>Starter Package</h3>
             <p style={{ color: '#8e8ea0', fontSize: 14, marginBottom: 24 }}>550 fiber optic stars — most popular</p>
             <div style={{ marginBottom: 8 }}>
               <span style={{ color: '#4a4a5a', fontSize: 16, textDecoration: 'line-through', marginRight: 8 }}>${orig[0]}</span>
               <span style={{ fontFamily: 'Space Grotesk', fontWeight: 800, fontSize: 42, color: '#fff' }}>${disc[0]}</span>
             </div>
-            <div style={{ display: 'inline-block', background: 'rgba(108,99,255,0.2)', borderRadius: 2, padding: '3px 10px', color: '#a78bfa', fontSize: 12, fontWeight: 700, marginBottom: 28 }}>SAVE ${orig[0] - disc[0]}</div>
-            <button onClick={() => go('contact')} style={{ width: '100%', padding: '14px', background: '#6c63ff', color: '#fff', border: 'none', borderRadius: 3, fontWeight: 700, fontSize: 15, cursor: 'pointer' }}>Book Now</button>
+            <div style={{ display: 'inline-block', background: 'rgba(0,136,255,0.2)', borderRadius: 2, padding: '3px 10px', color: '#7dd3ff', fontSize: 12, fontWeight: 700, marginBottom: 28 }}>SAVE ${orig[0] - disc[0]}</div>
+            <button onClick={() => go('contact')} style={{ width: '100%', padding: '14px', background: '#0088ff', color: '#fff', border: 'none', borderRadius: 3, fontWeight: 700, fontSize: 15, cursor: 'pointer' }}>Book Now</button>
           </div>
 
           {/* Add-on standard */}
@@ -2423,8 +2427,8 @@ function StarlightSalePage({ go }: { go: (p: string) => void }) {
               <span style={{ color: '#4a4a5a', fontSize: 16, textDecoration: 'line-through', marginRight: 8 }}>${orig[1]}</span>
               <span style={{ fontFamily: 'Space Grotesk', fontWeight: 800, fontSize: 42, color: '#fff' }}>${disc[1]}</span>
             </div>
-            <div style={{ display: 'inline-block', background: 'rgba(108,99,255,0.1)', borderRadius: 2, padding: '3px 10px', color: '#a78bfa', fontSize: 12, fontWeight: 700, marginBottom: 28 }}>SAVE ${orig[1] - disc[1]}</div>
-            <button onClick={() => go('contact')} style={{ width: '100%', padding: '14px', background: 'transparent', color: '#fff', border: '1px solid rgba(108,99,255,0.4)', borderRadius: 3, fontWeight: 700, fontSize: 15, cursor: 'pointer' }}>Add On</button>
+            <div style={{ display: 'inline-block', background: 'rgba(0,136,255,0.1)', borderRadius: 2, padding: '3px 10px', color: '#7dd3ff', fontSize: 12, fontWeight: 700, marginBottom: 28 }}>SAVE ${orig[1] - disc[1]}</div>
+            <button onClick={() => go('contact')} style={{ width: '100%', padding: '14px', background: 'transparent', color: '#fff', border: '1px solid rgba(0,136,255,0.4)', borderRadius: 3, fontWeight: 700, fontSize: 15, cursor: 'pointer' }}>Add On</button>
           </div>
 
           {/* Add-on premium */}
@@ -2436,8 +2440,8 @@ function StarlightSalePage({ go }: { go: (p: string) => void }) {
               <span style={{ color: '#4a4a5a', fontSize: 16, textDecoration: 'line-through', marginRight: 8 }}>${orig[2]}</span>
               <span style={{ fontFamily: 'Space Grotesk', fontWeight: 800, fontSize: 42, color: '#fff' }}>${disc[2]}</span>
             </div>
-            <div style={{ display: 'inline-block', background: 'rgba(108,99,255,0.1)', borderRadius: 2, padding: '3px 10px', color: '#a78bfa', fontSize: 12, fontWeight: 700, marginBottom: 28 }}>SAVE ${orig[2] - disc[2]}</div>
-            <button onClick={() => go('contact')} style={{ width: '100%', padding: '14px', background: 'transparent', color: '#fff', border: '1px solid rgba(108,99,255,0.4)', borderRadius: 3, fontWeight: 700, fontSize: 15, cursor: 'pointer' }}>Add On</button>
+            <div style={{ display: 'inline-block', background: 'rgba(0,136,255,0.1)', borderRadius: 2, padding: '3px 10px', color: '#7dd3ff', fontSize: 12, fontWeight: 700, marginBottom: 28 }}>SAVE ${orig[2] - disc[2]}</div>
+            <button onClick={() => go('contact')} style={{ width: '100%', padding: '14px', background: 'transparent', color: '#fff', border: '1px solid rgba(0,136,255,0.4)', borderRadius: 3, fontWeight: 700, fontSize: 15, cursor: 'pointer' }}>Add On</button>
           </div>
         </div>
 
@@ -2447,7 +2451,7 @@ function StarlightSalePage({ go }: { go: (p: string) => void }) {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(200px,1fr))', gap: 16 }}>
             {['Fiber optic star ceiling install','Custom star density layout','100% mobile — we come to you','Professional-grade materials','Clean install, no mess left behind','Book online in under 2 minutes'].map((item, i) => (
               <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, color: '#8e8ea0', fontSize: 14 }}>
-                <span style={{ color: '#6c63ff', fontSize: 16, flexShrink: 0 }}>✓</span>
+                <span style={{ color: '#0088ff', fontSize: 16, flexShrink: 0 }}>✓</span>
                 {item}
               </div>
             ))}
@@ -2456,10 +2460,375 @@ function StarlightSalePage({ go }: { go: (p: string) => void }) {
 
         {/* CTA */}
         <div className="rv d3" style={{ textAlign: 'center' }}>
-          <p style={{ color: '#8e8ea0', fontSize: 15, marginBottom: 24 }}>Questions? Call or text <a href="tel:2403387762" style={{ color: '#a78bfa', textDecoration: 'none' }}>(240) 338-7762</a></p>
+          <p style={{ color: '#8e8ea0', fontSize: 15, marginBottom: 24 }}>Questions? Call or text <a href="tel:2403387762" style={{ color: '#7dd3ff', textDecoration: 'none' }}>(240) 338-7762</a></p>
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" style={{ padding: '16px 40px', background: '#6c63ff', color: '#fff', borderRadius: 3, fontWeight: 700, fontSize: 16, textDecoration: 'none' }}>Book at Sale Price</a>
+            <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" style={{ padding: '16px 40px', background: '#0088ff', color: '#fff', borderRadius: 3, fontWeight: 700, fontSize: 16, textDecoration: 'none' }}>Book at Sale Price</a>
             <button onClick={() => go('starlight')} style={{ padding: '16px 40px', background: 'transparent', color: '#fff', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 3, fontWeight: 600, fontSize: 16, cursor: 'pointer' }}>Learn More</button>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════
+   DETAILING PAGE — DATA
+   ═══════════════════════════════════════════════════ */
+const DETAIL_PRICES: Record<string, Record<string, number>> = {
+  sedan:     { essential: 120, signature: 220, elite: 400 },
+  'suv-small': { essential: 140, signature: 260, elite: 480 },
+  'suv-large': { essential: 160, signature: 300, elite: 560 },
+};
+
+const TIERS = [
+  {
+    id: 'essential', name: 'Essential', tagline: 'Fresh & Clean', level: 'ENTRY',
+    includes: [
+      { text: 'Exterior Hand Wash', bold: false },
+      { text: 'Wheel & Tire Clean', bold: false },
+      { text: 'Tire Dressing', bold: false },
+      { text: 'Interior Vacuum', bold: false },
+      { text: 'Interior Wipe Down', bold: false },
+      { text: 'Window Cleaning (in & out)', bold: false },
+    ],
+  },
+  {
+    id: 'signature', name: 'Signature', tagline: 'Deep Protection', level: 'MID', featured: true,
+    includes: [
+      { text: 'All Essential services', bold: false },
+      { text: 'Paint Decontamination (Clay Bar)', bold: true },
+      { text: 'Paint Sealant — 6-month protection', bold: true },
+      { text: 'Interior Deep Clean (Steam + light stain removal)', bold: true },
+      { text: 'Leather Conditioning / Fabric Protection', bold: false },
+    ],
+  },
+  {
+    id: 'elite', name: 'Elite', tagline: 'Showroom Standard', level: 'TOP TIER',
+    includes: [
+      { text: 'All Signature services', bold: false },
+      { text: 'Single-Stage Paint Polish (swirl removal, enhanced gloss)', bold: true },
+      { text: 'Premium Paint Sealant — 12-month protection', bold: true },
+      { text: 'Headlight Restoration', bold: true },
+      { text: 'Engine Bay Cleaning', bold: false },
+    ],
+  },
+];
+
+const ADDONS = [
+  { name: 'Ceramic Coating', price: '$600 – $1,200+', sub: '1–3 year premium protection. Requires paint correction prep.' },
+  { name: 'Multi-Stage Paint Correction', price: '$350 – $700+', sub: 'For significant swirl marks, oxidation, and scratches.' },
+  { name: 'Odor Removal / Ozone Treatment', price: '$75 – $150', sub: 'Eliminates stubborn odors, smoke, and bacteria permanently.' },
+  { name: 'Pet Hair Removal', price: '$50 – $100', sub: 'Deep extraction of embedded pet hair from carpets and seats.' },
+  { name: 'Fabric / Carpet Extraction', price: '$100 – $200', sub: 'Hot water extraction to lift deep-set stains and grime.' },
+];
+
+/* ── DETAILING HERO ── */
+function DetailingHero({ go: _go }: { go: (p: string) => void }) {
+  return (
+    <section style={{ position: 'relative', minHeight: '82vh', display: 'flex', alignItems: 'center', overflow: 'hidden', background: 'linear-gradient(160deg, #050507 55%, #06101e 100%)' }}>
+      <div style={{ position: 'absolute', top: '35%', left: '55%', transform: 'translate(-50%,-50%)', width: 700, height: 500, borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(0,136,255,0.08) 0%, transparent 65%)', pointerEvents: 'none' }} />
+      <FloatingOrbs />
+      <div style={{ position: 'relative', zIndex: 10, maxWidth: 1320, margin: '0 auto', padding: '160px 28px 100px', width: '100%' }}>
+        <div style={{ maxWidth: 740 }}>
+          <div style={{ animation: 'fadeUp 0.9s ease forwards', animationDelay: '0.2s', opacity: 0 }}>
+            <span style={{ display: 'inline-block', padding: '8px 20px', borderRadius: 2, fontSize: 12, fontWeight: 700, letterSpacing: '3px', textTransform: 'uppercase', color: '#0088ff', border: '1px solid rgba(0,136,255,0.3)', background: 'rgba(0,136,255,0.08)', marginBottom: 28 }}>
+              Mobile Auto Detailing — Columbia, MD &amp; DMV
+            </span>
+          </div>
+          <h1 style={{ fontFamily: 'Space Grotesk', fontSize: 'clamp(36px,6vw,76px)', fontWeight: 800, lineHeight: 1.05, letterSpacing: '-2.5px', animation: 'fadeUp 0.9s ease forwards', animationDelay: '0.35s', opacity: 0 }}>
+            Detail-Grade Clean.<br /><span className="grad-text">At Your Door.</span>
+          </h1>
+          <p style={{ color: '#8e8ea0', fontSize: 'clamp(15px,1.4vw,18px)', lineHeight: 1.85, maxWidth: 520, marginTop: 24, animation: 'fadeUp 0.9s ease forwards', animationDelay: '0.5s', opacity: 0 }}>
+            From maintenance washes to multi-stage paint correction — professional mobile detailing delivered to your home or office. No shop required.
+          </p>
+          <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', marginTop: 40, animation: 'fadeUp 0.9s ease forwards', animationDelay: '0.65s', opacity: 0 }}>
+            <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" className="magnetic-btn" style={{ padding: '16px 40px', background: '#0088ff', color: '#fff', borderRadius: 3, fontWeight: 700, fontSize: 16, textDecoration: 'none', boxShadow: '0 4px 40px rgba(0,136,255,0.5)' }}>Book a Detail</a>
+            <button onClick={() => document.getElementById('detail-pricing')?.scrollIntoView({ behavior: 'smooth' })} style={{ padding: '16px 40px', background: 'transparent', color: '#fff', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 3, fontWeight: 600, fontSize: 16, cursor: 'pointer' }}>See Packages</button>
+          </div>
+          <div style={{ display: 'flex', gap: 44, marginTop: 64, flexWrap: 'wrap', animation: 'fadeUp 0.9s ease forwards', animationDelay: '0.8s', opacity: 0 }}>
+            {[['4.9★', 'Google Rating'], ['100%', 'Mobile Service'], ['DMV-Wide', 'Coverage']].map(([val, lab]) => (
+              <div key={lab}>
+                <div style={{ fontFamily: 'Space Grotesk', fontSize: 22, fontWeight: 800, color: '#fff' }}>{val}</div>
+                <div style={{ fontSize: 11, color: '#4a4a5a', letterSpacing: '2px', textTransform: 'uppercase', marginTop: 3 }}>{lab}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── PRICING MATRIX ── */
+function PricingMatrix() {
+  type Size = 'sedan' | 'suv-small' | 'suv-large';
+  const [size, setSize] = useState<Size>('sedan');
+  const [fading, setFading] = useState(false);
+
+  const switchSize = (s: Size) => {
+    if (s === size) return;
+    setFading(true);
+    setTimeout(() => { setSize(s); setFading(false); }, 180);
+  };
+
+  const sizeOpts: { id: Size; label: string }[] = [
+    { id: 'sedan', label: 'Sedan / Coupe' },
+    { id: 'suv-small', label: 'Small SUV / Truck' },
+    { id: 'suv-large', label: 'Large SUV / Van' },
+  ];
+
+  const prices = DETAIL_PRICES[size];
+
+  return (
+    <section id="detail-pricing" style={{ padding: '100px 28px' }}>
+      <div style={{ maxWidth: 1320, margin: '0 auto' }}>
+        <SH tag="Service Packages" title="Choose Your Detail Level" sub="All packages are fully mobile. We bring professional-grade equipment directly to you." />
+
+        {/* Vehicle size toggle */}
+        <div className="rv" style={{ display: 'flex', justifyContent: 'center', gap: 8, marginBottom: 56, flexWrap: 'wrap' }}>
+          {sizeOpts.map(o => (
+            <button key={o.id} onClick={() => switchSize(o.id)} style={{
+              padding: '12px 24px', borderRadius: 4, cursor: 'pointer', fontFamily: 'Inter', fontSize: 15,
+              transition: 'all 0.3s cubic-bezier(.16,1,.3,1)',
+              background: size === o.id ? 'rgba(0,136,255,0.15)' : '#101018',
+              border: size === o.id ? '1px solid rgba(0,136,255,0.45)' : '1px solid rgba(255,255,255,0.04)',
+              color: size === o.id ? '#fff' : '#8e8ea0', fontWeight: size === o.id ? 700 : 500,
+            }}>{o.label}</button>
+          ))}
+        </div>
+
+        {/* Tier cards */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(285px, 1fr))', gap: 20 }}>
+          {TIERS.map((tier, i) => {
+            const price = prices[tier.id];
+            return (
+              <div key={tier.id} className={`tilt-card rv d${i}`} style={{
+                position: 'relative', padding: '36px 32px 32px', borderRadius: 6,
+                display: 'flex', flexDirection: 'column',
+                background: tier.featured ? 'linear-gradient(150deg, rgba(0,136,255,0.12) 0%, rgba(0,136,255,0.03) 100%)' : '#0a0a0f',
+                border: tier.featured ? '1px solid rgba(0,136,255,0.38)' : '1px solid rgba(255,255,255,0.04)',
+                boxShadow: tier.featured ? '0 8px 60px rgba(0,136,255,0.14)' : 'none',
+              }}>
+                {tier.featured && (
+                  <div style={{ position: 'absolute', top: -14, left: '50%', transform: 'translateX(-50%)', background: '#0088ff', color: '#fff', padding: '4px 22px', borderRadius: 2, fontSize: 11, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>Most Popular</div>
+                )}
+                <div style={{ marginBottom: 24 }}>
+                  <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '3px', textTransform: 'uppercase', color: tier.featured ? '#0088ff' : '#4a4a5a' }}>{tier.level}</span>
+                  <h3 style={{ fontFamily: 'Space Grotesk', fontSize: 26, fontWeight: 800, marginTop: 6, marginBottom: 4 }}>{tier.name} Detail</h3>
+                  <p style={{ color: '#8e8ea0', fontSize: 14 }}>{tier.tagline}</p>
+                </div>
+
+                {/* Price — fades on vehicle switch */}
+                <div style={{ marginBottom: 28, opacity: fading ? 0 : 1, transition: 'opacity 0.18s ease' }}>
+                  <span style={{ fontSize: 12, color: '#4a4a5a', letterSpacing: '1px' }}>Starting at</span>
+                  <div style={{ fontFamily: 'Space Grotesk', fontWeight: 800, lineHeight: 1, marginTop: 4 }}>
+                    <span style={{ fontSize: 20, color: '#0088ff', verticalAlign: 'top', lineHeight: '44px' }}>$</span>
+                    <span style={{ fontSize: 52, color: '#fff' }}>{price}</span>
+                    <span style={{ fontSize: 22, color: '#4a4a5a', marginLeft: 1 }}>+</span>
+                  </div>
+                </div>
+
+                {/* Inclusions */}
+                <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 11, marginBottom: 32, flex: 1 }}>
+                  {tier.includes.map((item, j) => (
+                    <li key={j} style={{ display: 'flex', gap: 10, fontSize: 14, lineHeight: 1.5, color: '#8e8ea0' }}>
+                      <span style={{ color: '#0088ff', flexShrink: 0, marginTop: 1 }}>✓</span>
+                      <span style={{ fontWeight: item.bold ? 600 : 400, color: item.bold ? '#eeeef2' : '#8e8ea0' }}>{item.text}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" style={{
+                  display: 'block', textAlign: 'center', padding: '14px 20px', borderRadius: 3,
+                  background: tier.featured ? '#0088ff' : 'transparent',
+                  border: tier.featured ? 'none' : '1px solid rgba(0,136,255,0.4)',
+                  color: '#fff', fontWeight: 700, fontSize: 15, textDecoration: 'none',
+                  transition: 'all 0.3s cubic-bezier(.16,1,.3,1)',
+                  boxShadow: tier.featured ? '0 4px 30px rgba(0,136,255,0.4)' : 'none',
+                }}>Book {tier.name} Detail</a>
+              </div>
+            );
+          })}
+        </div>
+        <p className="rv" style={{ textAlign: 'center', color: '#4a4a5a', fontSize: 13, marginTop: 24, lineHeight: 1.7 }}>
+          All prices are starting rates. Heavily soiled or neglected vehicles may be quoted separately.<br />Mobile travel fee of $1.50/mile applies outside Columbia, MD.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+/* ── ADD-ONS GRID ── */
+function AddOnsGrid() {
+  return (
+    <section style={{ padding: '80px 28px', borderTop: '1px solid rgba(255,255,255,0.03)', borderBottom: '1px solid rgba(255,255,255,0.03)', background: 'rgba(0,136,255,0.015)' }}>
+      <div style={{ maxWidth: 1320, margin: '0 auto' }}>
+        <SH tag="À La Carte" title="Premium Add-On Services" sub="Enhance any package — or book standalone. Every service performed by certified mobile detailers." />
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 16 }}>
+          {ADDONS.map((addon, i) => (
+            <div key={addon.name} className={`rv d${i % 5}`} style={{
+              padding: '28px', background: '#0a0a0f',
+              border: '1px solid rgba(255,255,255,0.04)', borderRadius: 6,
+              transition: 'border-color 0.3s',
+            }}
+              onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(0,136,255,0.25)')}
+              onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.04)')}
+            >
+              <h3 style={{ fontFamily: 'Space Grotesk', fontSize: 17, fontWeight: 700, marginBottom: 8 }}>{addon.name}</h3>
+              <div style={{ fontFamily: 'Space Grotesk', fontSize: 20, fontWeight: 800, color: '#0088ff', marginBottom: 10 }}>{addon.price}</div>
+              <p style={{ color: '#8e8ea0', fontSize: 13, lineHeight: 1.65 }}>{addon.sub}</p>
+            </div>
+          ))}
+        </div>
+        <div className="rv" style={{ textAlign: 'center', marginTop: 40 }}>
+          <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" style={{ display: 'inline-block', padding: '14px 36px', background: 'transparent', color: '#0088ff', border: '1px solid rgba(0,136,255,0.4)', borderRadius: 3, fontWeight: 700, fontSize: 15, textDecoration: 'none' }}>Inquire About Add-Ons</a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── BUNDLES SECTION ── */
+function BundlesSection({ go }: { go: (p: string) => void }) {
+  const bundles = [
+    {
+      name: 'New Car Protection Package',
+      badge: 'Save 15%', tagline: 'Ultimate Shield',
+      services: ['Elite Detail', 'Full Vehicle Nano Ceramic KOOLMAX Tint'],
+      desc: 'The definitive new-car shield. Preserve your paint\'s depth with an elite detail, then lock in clarity and UV defense with our top-tier ceramic film — done in a single mobile visit.',
+      cta: () => window.open('https://calendly.com/210tints', '_blank'),
+    },
+    {
+      name: 'Ultimate Refresh Package',
+      badge: 'Save 10%', tagline: 'Showstopper Look',
+      services: ['Signature Detail', 'Starlight Headliner Installation'],
+      desc: 'Turn heads from every angle. A deep signature detail pairs with our hand-installed fiber-optic starlight headliner to create a cabin that\'s as luxurious as the exterior.',
+      cta: () => window.open('https://calendly.com/210tints', '_blank'),
+    },
+  ];
+
+  return (
+    <section style={{ padding: '100px 28px' }}>
+      <div style={{ maxWidth: 1320, margin: '0 auto' }}>
+        <SH tag="Bundle &amp; Save" title="Tint + Detail Packages" sub="Combine services for premium results and real savings. Installed together in one mobile visit." />
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 24 }}>
+          {bundles.map((b, i) => (
+            <div key={b.name} className={`rv d${i}`} style={{
+              padding: '40px 36px', borderRadius: 8, position: 'relative', overflow: 'hidden',
+              background: 'linear-gradient(145deg, rgba(0,136,255,0.09) 0%, rgba(0,136,255,0.02) 100%)',
+              border: '1px solid rgba(0,136,255,0.28)',
+              boxShadow: '0 4px 50px rgba(0,136,255,0.07)',
+            }}>
+              <div style={{ position: 'absolute', top: -50, right: -50, width: 200, height: 200, borderRadius: '50%', background: 'radial-gradient(circle, rgba(0,136,255,0.1) 0%, transparent 70%)', pointerEvents: 'none' }} />
+              {/* Badge row */}
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, marginBottom: 24 }}>
+                <span style={{ background: '#0088ff', color: '#fff', padding: '4px 14px', borderRadius: 2, fontSize: 12, fontWeight: 700, letterSpacing: '1px' }}>{b.badge}</span>
+                <span style={{ color: '#7dd3ff', fontSize: 12, fontWeight: 600, letterSpacing: '2px', textTransform: 'uppercase' }}>{b.tagline}</span>
+              </div>
+              <h3 style={{ fontFamily: 'Space Grotesk', fontSize: 22, fontWeight: 800, marginBottom: 18 }}>{b.name}</h3>
+              <div style={{ marginBottom: 18 }}>
+                {b.services.map(s => (
+                  <div key={s} style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 10 }}>
+                    <span style={{ color: '#0088ff', fontSize: 18, lineHeight: 1 }}>+</span>
+                    <span style={{ color: '#eeeef2', fontWeight: 600, fontSize: 15 }}>{s}</span>
+                  </div>
+                ))}
+              </div>
+              <p style={{ color: '#8e8ea0', fontSize: 14, lineHeight: 1.75, marginBottom: 30 }}>{b.desc}</p>
+              <button onClick={b.cta} style={{
+                display: 'block', width: '100%', padding: '14px', background: '#0088ff', border: 'none',
+                color: '#fff', borderRadius: 3, fontWeight: 700, fontSize: 15, cursor: 'pointer',
+                boxShadow: '0 4px 30px rgba(0,136,255,0.38)', transition: 'all 0.3s',
+              }}>Book This Bundle</button>
+            </div>
+          ))}
+        </div>
+
+        {/* Cross-link to tint page */}
+        <div className="rv" style={{ textAlign: 'center', marginTop: 40 }}>
+          <p style={{ color: '#8e8ea0', fontSize: 14, marginBottom: 12 }}>Want to explore just tinting options?</p>
+          <button onClick={() => go('pricing')} style={{ background: 'none', border: 'none', color: '#0088ff', fontWeight: 600, fontSize: 15, cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: 3 }}>View Window Tinting Packages →</button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── BEFORE / AFTER GALLERY ── */
+function BeforeAfterGallery() {
+  const gallery = [
+    { src: '/cars/mercedes-cla.png', label: 'Mercedes CLA', tag: 'Signature Detail + Tint' },
+    { src: '/cars/lambo-urus.png', label: 'Lamborghini Urus', tag: 'Elite Detail' },
+    { src: '/cars/snowy-m8.png', label: 'BMW M8', tag: 'Signature Detail' },
+    { src: '/cars/snowy-c63.png', label: 'Mercedes C63 AMG', tag: 'Elite Detail + Ceramic' },
+    { src: '/cars/snowy-durango.png', label: 'Dodge Durango', tag: 'Full Detail + Tint' },
+    { src: '/cars/dark-snowy-durango.png', label: 'Durango SRT', tag: 'Elite Detail' },
+  ];
+
+  return (
+    <section style={{ padding: '80px 28px', background: '#050507' }}>
+      <div style={{ maxWidth: 1320, margin: '0 auto' }}>
+        <SH tag="Our Work" title="Results That Speak" sub="Real vehicles. Real results. Every detail performed by our certified mobile team across the DMV." />
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 16 }}>
+          {gallery.map((img, i) => (
+            <div key={i} className={`rv d${i % 5}`} style={{
+              position: 'relative', borderRadius: 6, overflow: 'hidden',
+              border: '1px solid rgba(255,255,255,0.04)',
+              transition: 'border-color 0.3s, box-shadow 0.3s',
+            }}
+              onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(0,136,255,0.25)'; (e.currentTarget as HTMLDivElement).style.boxShadow = '0 8px 40px rgba(0,136,255,0.1)'; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(255,255,255,0.04)'; (e.currentTarget as HTMLDivElement).style.boxShadow = 'none'; }}
+            >
+              <img src={img.src} alt={img.label} loading="lazy" style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', display: 'block', transition: 'transform 0.6s cubic-bezier(.16,1,.3,1)' }}
+                onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.04)')}
+                onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')} />
+              <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'linear-gradient(transparent, rgba(5,5,7,0.88))', padding: '28px 16px 16px' }}>
+                <div style={{ fontSize: 11, color: '#0088ff', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', marginBottom: 4 }}>{img.tag}</div>
+                <div style={{ fontSize: 14, color: '#eeeef2', fontWeight: 600 }}>{img.label}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── DETAILING PAGE ── */
+function DetailingPage({ go }: { go: (p: string) => void }) {
+  useReveal();
+  useEffect(() => { document.title = 'Premium Mobile Auto Detailing & Ceramic Coating | 210 Tint'; }, []);
+  return (
+    <div>
+      <DetailingHero go={go} />
+
+      <SectionDivider variant="glow" />
+
+      <PricingMatrix />
+
+      <SectionDivider variant="dots" />
+
+      <AddOnsGrid />
+
+      <SectionDivider variant="glow" />
+
+      <BundlesSection go={go} />
+
+      <SectionDivider variant="glow" />
+
+      <BeforeAfterGallery />
+
+      {/* Bottom CTA */}
+      <section style={{ padding: '88px 28px', textAlign: 'center' }}>
+        <div style={{ maxWidth: 580, margin: '0 auto' }}>
+          <p className="rv" style={{ fontSize: 11, letterSpacing: '4px', textTransform: 'uppercase', color: '#0088ff', fontWeight: 700, marginBottom: 16 }}>Ready to Book?</p>
+          <h2 className="rv d1" style={{ fontFamily: 'Space Grotesk', fontSize: 'clamp(28px,4vw,48px)', fontWeight: 800, letterSpacing: '-1.5px', marginBottom: 16 }}>Your Car Deserves This.</h2>
+          <p className="rv d2" style={{ color: '#8e8ea0', fontSize: 16, marginBottom: 36, lineHeight: 1.75 }}>
+            Mobile detailing across Columbia, MD and the entire DMV. No shop visit. No hassle. Booked in under two minutes.
+          </p>
+          <div className="rv d3" style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+            <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" className="magnetic-btn" style={{ padding: '16px 44px', background: '#0088ff', color: '#fff', borderRadius: 3, fontWeight: 700, fontSize: 16, textDecoration: 'none', boxShadow: '0 4px 40px rgba(0,136,255,0.5)' }}>Book a Detail</a>
+            <a href="tel:2403387762" style={{ padding: '16px 40px', background: 'transparent', color: '#fff', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 3, fontWeight: 600, fontSize: 16, textDecoration: 'none' }}>(240) 338-7762</a>
           </div>
         </div>
       </section>
@@ -2517,6 +2886,7 @@ export default function App() {
         {page==='tint-simulator'&&<TintSimulatorPage/>}
         {page==='starlight'&&<StarlightPage go={go}/>}
         {page==='starlight-sale'&&<StarlightSalePage go={go}/>}
+        {page==='detailing'&&<DetailingPage go={go}/>}
         {page==='contact'&&<ContactPage/>}
       </main>
       <Footer go={go} />
