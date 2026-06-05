@@ -943,7 +943,8 @@ function PriceCalculator() {
 /* ── NAV ── */
 const NAV = [
   { id: 'home', label: 'Home' }, { id: 'portfolio', label: 'Portfolio' },
-  { id: 'pricing', label: 'Pricing' }, { id: 'compare', label: 'Compare Films' },
+  { id: 'pricing', label: 'Pricing' }, { id: 'detailing', label: 'Detailing' },
+  { id: 'compare', label: 'Compare Films' },
   { id: 'contact', label: 'Contact' },
 ];
 
@@ -1090,7 +1091,10 @@ function Footer({ go }: { go: (p: string) => void }) {
         </div>
         <div>
           <h4 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 12, letterSpacing: '3px', color: '#4a4a5a', marginBottom: 20, textTransform: 'uppercase' }}>Navigation</h4>
-          {['Portfolio','Pricing','Compare Films','Contact'].map(l => <button key={l} onClick={() => go(l === 'Compare Films' ? 'compare' : l.toLowerCase())} style={{ display: 'block', background: 'none', border: 'none', cursor: 'pointer', color: '#8e8ea0', fontSize: 16, padding: '5px 0' }}>{l}</button>)}
+          {[
+            { label: 'Portfolio', id: 'portfolio' }, { label: 'Pricing', id: 'pricing' },
+            { label: 'Detailing', id: 'detailing' }, { label: 'Compare Films', id: 'compare' }, { label: 'Contact', id: 'contact' },
+          ].map(l => <button key={l.id} onClick={() => go(l.id)} style={{ display: 'block', background: 'none', border: 'none', cursor: 'pointer', color: '#8e8ea0', fontSize: 16, padding: '5px 0' }}>{l.label}</button>)}
         </div>
         <div>
           <h4 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 12, letterSpacing: '3px', color: '#4a4a5a', marginBottom: 20, textTransform: 'uppercase' }}>Resources</h4>
@@ -2467,6 +2471,371 @@ function StarlightSalePage({ go }: { go: (p: string) => void }) {
   );
 }
 
+/* ═══════════════════════════════════════════════════
+   DETAILING PAGE — DATA
+   ═══════════════════════════════════════════════════ */
+const DETAIL_PRICES: Record<string, Record<string, number>> = {
+  sedan:     { essential: 120, signature: 220, elite: 400 },
+  'suv-small': { essential: 140, signature: 260, elite: 480 },
+  'suv-large': { essential: 160, signature: 300, elite: 560 },
+};
+
+const TIERS = [
+  {
+    id: 'essential', name: 'Essential', tagline: 'Fresh & Clean', level: 'ENTRY',
+    includes: [
+      { text: 'Exterior Hand Wash', bold: false },
+      { text: 'Wheel & Tire Clean', bold: false },
+      { text: 'Tire Dressing', bold: false },
+      { text: 'Interior Vacuum', bold: false },
+      { text: 'Interior Wipe Down', bold: false },
+      { text: 'Window Cleaning (in & out)', bold: false },
+    ],
+  },
+  {
+    id: 'signature', name: 'Signature', tagline: 'Deep Protection', level: 'MID', featured: true,
+    includes: [
+      { text: 'All Essential services', bold: false },
+      { text: 'Paint Decontamination (Clay Bar)', bold: true },
+      { text: 'Paint Sealant — 6-month protection', bold: true },
+      { text: 'Interior Deep Clean (Steam + light stain removal)', bold: true },
+      { text: 'Leather Conditioning / Fabric Protection', bold: false },
+    ],
+  },
+  {
+    id: 'elite', name: 'Elite', tagline: 'Showroom Standard', level: 'TOP TIER',
+    includes: [
+      { text: 'All Signature services', bold: false },
+      { text: 'Single-Stage Paint Polish (swirl removal, enhanced gloss)', bold: true },
+      { text: 'Premium Paint Sealant — 12-month protection', bold: true },
+      { text: 'Headlight Restoration', bold: true },
+      { text: 'Engine Bay Cleaning', bold: false },
+    ],
+  },
+];
+
+const ADDONS = [
+  { name: 'Ceramic Coating', price: '$600 – $1,200+', sub: '1–3 year premium protection. Requires paint correction prep.' },
+  { name: 'Multi-Stage Paint Correction', price: '$350 – $700+', sub: 'For significant swirl marks, oxidation, and scratches.' },
+  { name: 'Odor Removal / Ozone Treatment', price: '$75 – $150', sub: 'Eliminates stubborn odors, smoke, and bacteria permanently.' },
+  { name: 'Pet Hair Removal', price: '$50 – $100', sub: 'Deep extraction of embedded pet hair from carpets and seats.' },
+  { name: 'Fabric / Carpet Extraction', price: '$100 – $200', sub: 'Hot water extraction to lift deep-set stains and grime.' },
+];
+
+/* ── DETAILING HERO ── */
+function DetailingHero({ go: _go }: { go: (p: string) => void }) {
+  return (
+    <section style={{ position: 'relative', minHeight: '82vh', display: 'flex', alignItems: 'center', overflow: 'hidden', background: 'linear-gradient(160deg, #050507 55%, #06101e 100%)' }}>
+      <div style={{ position: 'absolute', top: '35%', left: '55%', transform: 'translate(-50%,-50%)', width: 700, height: 500, borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(0,136,255,0.08) 0%, transparent 65%)', pointerEvents: 'none' }} />
+      <FloatingOrbs />
+      <div style={{ position: 'relative', zIndex: 10, maxWidth: 1320, margin: '0 auto', padding: '160px 28px 100px', width: '100%' }}>
+        <div style={{ maxWidth: 740 }}>
+          <div style={{ animation: 'fadeUp 0.9s ease forwards', animationDelay: '0.2s', opacity: 0 }}>
+            <span style={{ display: 'inline-block', padding: '8px 20px', borderRadius: 2, fontSize: 12, fontWeight: 700, letterSpacing: '3px', textTransform: 'uppercase', color: '#0088ff', border: '1px solid rgba(0,136,255,0.3)', background: 'rgba(0,136,255,0.08)', marginBottom: 28 }}>
+              Mobile Auto Detailing — Columbia, MD &amp; DMV
+            </span>
+          </div>
+          <h1 style={{ fontFamily: 'Space Grotesk', fontSize: 'clamp(36px,6vw,76px)', fontWeight: 800, lineHeight: 1.05, letterSpacing: '-2.5px', animation: 'fadeUp 0.9s ease forwards', animationDelay: '0.35s', opacity: 0 }}>
+            Detail-Grade Clean.<br /><span className="grad-text">At Your Door.</span>
+          </h1>
+          <p style={{ color: '#8e8ea0', fontSize: 'clamp(15px,1.4vw,18px)', lineHeight: 1.85, maxWidth: 520, marginTop: 24, animation: 'fadeUp 0.9s ease forwards', animationDelay: '0.5s', opacity: 0 }}>
+            From maintenance washes to multi-stage paint correction — professional mobile detailing delivered to your home or office. No shop required.
+          </p>
+          <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', marginTop: 40, animation: 'fadeUp 0.9s ease forwards', animationDelay: '0.65s', opacity: 0 }}>
+            <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" className="magnetic-btn" style={{ padding: '16px 40px', background: '#0088ff', color: '#fff', borderRadius: 3, fontWeight: 700, fontSize: 16, textDecoration: 'none', boxShadow: '0 4px 40px rgba(0,136,255,0.5)' }}>Book a Detail</a>
+            <button onClick={() => document.getElementById('detail-pricing')?.scrollIntoView({ behavior: 'smooth' })} style={{ padding: '16px 40px', background: 'transparent', color: '#fff', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 3, fontWeight: 600, fontSize: 16, cursor: 'pointer' }}>See Packages</button>
+          </div>
+          <div style={{ display: 'flex', gap: 44, marginTop: 64, flexWrap: 'wrap', animation: 'fadeUp 0.9s ease forwards', animationDelay: '0.8s', opacity: 0 }}>
+            {[['4.9★', 'Google Rating'], ['100%', 'Mobile Service'], ['DMV-Wide', 'Coverage']].map(([val, lab]) => (
+              <div key={lab}>
+                <div style={{ fontFamily: 'Space Grotesk', fontSize: 22, fontWeight: 800, color: '#fff' }}>{val}</div>
+                <div style={{ fontSize: 11, color: '#4a4a5a', letterSpacing: '2px', textTransform: 'uppercase', marginTop: 3 }}>{lab}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── PRICING MATRIX ── */
+function PricingMatrix() {
+  type Size = 'sedan' | 'suv-small' | 'suv-large';
+  const [size, setSize] = useState<Size>('sedan');
+  const [fading, setFading] = useState(false);
+
+  const switchSize = (s: Size) => {
+    if (s === size) return;
+    setFading(true);
+    setTimeout(() => { setSize(s); setFading(false); }, 180);
+  };
+
+  const sizeOpts: { id: Size; label: string }[] = [
+    { id: 'sedan', label: 'Sedan / Coupe' },
+    { id: 'suv-small', label: 'Small SUV / Truck' },
+    { id: 'suv-large', label: 'Large SUV / Van' },
+  ];
+
+  const prices = DETAIL_PRICES[size];
+
+  return (
+    <section id="detail-pricing" style={{ padding: '100px 28px' }}>
+      <div style={{ maxWidth: 1320, margin: '0 auto' }}>
+        <SH tag="Service Packages" title="Choose Your Detail Level" sub="All packages are fully mobile. We bring professional-grade equipment directly to you." />
+
+        {/* Vehicle size toggle */}
+        <div className="rv" style={{ display: 'flex', justifyContent: 'center', gap: 8, marginBottom: 56, flexWrap: 'wrap' }}>
+          {sizeOpts.map(o => (
+            <button key={o.id} onClick={() => switchSize(o.id)} style={{
+              padding: '12px 24px', borderRadius: 4, cursor: 'pointer', fontFamily: 'Inter', fontSize: 15,
+              transition: 'all 0.3s cubic-bezier(.16,1,.3,1)',
+              background: size === o.id ? 'rgba(0,136,255,0.15)' : '#101018',
+              border: size === o.id ? '1px solid rgba(0,136,255,0.45)' : '1px solid rgba(255,255,255,0.04)',
+              color: size === o.id ? '#fff' : '#8e8ea0', fontWeight: size === o.id ? 700 : 500,
+            }}>{o.label}</button>
+          ))}
+        </div>
+
+        {/* Tier cards */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(285px, 1fr))', gap: 20 }}>
+          {TIERS.map((tier, i) => {
+            const price = prices[tier.id];
+            return (
+              <div key={tier.id} className={`tilt-card rv d${i}`} style={{
+                position: 'relative', padding: '36px 32px 32px', borderRadius: 6,
+                display: 'flex', flexDirection: 'column',
+                background: tier.featured ? 'linear-gradient(150deg, rgba(0,136,255,0.12) 0%, rgba(0,136,255,0.03) 100%)' : '#0a0a0f',
+                border: tier.featured ? '1px solid rgba(0,136,255,0.38)' : '1px solid rgba(255,255,255,0.04)',
+                boxShadow: tier.featured ? '0 8px 60px rgba(0,136,255,0.14)' : 'none',
+              }}>
+                {tier.featured && (
+                  <div style={{ position: 'absolute', top: -14, left: '50%', transform: 'translateX(-50%)', background: '#0088ff', color: '#fff', padding: '4px 22px', borderRadius: 2, fontSize: 11, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>Most Popular</div>
+                )}
+                <div style={{ marginBottom: 24 }}>
+                  <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '3px', textTransform: 'uppercase', color: tier.featured ? '#0088ff' : '#4a4a5a' }}>{tier.level}</span>
+                  <h3 style={{ fontFamily: 'Space Grotesk', fontSize: 26, fontWeight: 800, marginTop: 6, marginBottom: 4 }}>{tier.name} Detail</h3>
+                  <p style={{ color: '#8e8ea0', fontSize: 14 }}>{tier.tagline}</p>
+                </div>
+
+                {/* Price — fades on vehicle switch */}
+                <div style={{ marginBottom: 28, opacity: fading ? 0 : 1, transition: 'opacity 0.18s ease' }}>
+                  <span style={{ fontSize: 12, color: '#4a4a5a', letterSpacing: '1px' }}>Starting at</span>
+                  <div style={{ fontFamily: 'Space Grotesk', fontWeight: 800, lineHeight: 1, marginTop: 4 }}>
+                    <span style={{ fontSize: 20, color: '#0088ff', verticalAlign: 'top', lineHeight: '44px' }}>$</span>
+                    <span style={{ fontSize: 52, color: '#fff' }}>{price}</span>
+                    <span style={{ fontSize: 22, color: '#4a4a5a', marginLeft: 1 }}>+</span>
+                  </div>
+                </div>
+
+                {/* Inclusions */}
+                <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 11, marginBottom: 32, flex: 1 }}>
+                  {tier.includes.map((item, j) => (
+                    <li key={j} style={{ display: 'flex', gap: 10, fontSize: 14, lineHeight: 1.5, color: '#8e8ea0' }}>
+                      <span style={{ color: '#0088ff', flexShrink: 0, marginTop: 1 }}>✓</span>
+                      <span style={{ fontWeight: item.bold ? 600 : 400, color: item.bold ? '#eeeef2' : '#8e8ea0' }}>{item.text}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" style={{
+                  display: 'block', textAlign: 'center', padding: '14px 20px', borderRadius: 3,
+                  background: tier.featured ? '#0088ff' : 'transparent',
+                  border: tier.featured ? 'none' : '1px solid rgba(0,136,255,0.4)',
+                  color: '#fff', fontWeight: 700, fontSize: 15, textDecoration: 'none',
+                  transition: 'all 0.3s cubic-bezier(.16,1,.3,1)',
+                  boxShadow: tier.featured ? '0 4px 30px rgba(0,136,255,0.4)' : 'none',
+                }}>Book {tier.name} Detail</a>
+              </div>
+            );
+          })}
+        </div>
+        <p className="rv" style={{ textAlign: 'center', color: '#4a4a5a', fontSize: 13, marginTop: 24, lineHeight: 1.7 }}>
+          All prices are starting rates. Heavily soiled or neglected vehicles may be quoted separately.<br />Mobile travel fee of $1.50/mile applies outside Columbia, MD.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+/* ── ADD-ONS GRID ── */
+function AddOnsGrid() {
+  return (
+    <section style={{ padding: '80px 28px', borderTop: '1px solid rgba(255,255,255,0.03)', borderBottom: '1px solid rgba(255,255,255,0.03)', background: 'rgba(0,136,255,0.015)' }}>
+      <div style={{ maxWidth: 1320, margin: '0 auto' }}>
+        <SH tag="À La Carte" title="Premium Add-On Services" sub="Enhance any package — or book standalone. Every service performed by certified mobile detailers." />
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 16 }}>
+          {ADDONS.map((addon, i) => (
+            <div key={addon.name} className={`rv d${i % 5}`} style={{
+              padding: '28px', background: '#0a0a0f',
+              border: '1px solid rgba(255,255,255,0.04)', borderRadius: 6,
+              transition: 'border-color 0.3s',
+            }}
+              onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(0,136,255,0.25)')}
+              onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.04)')}
+            >
+              <h3 style={{ fontFamily: 'Space Grotesk', fontSize: 17, fontWeight: 700, marginBottom: 8 }}>{addon.name}</h3>
+              <div style={{ fontFamily: 'Space Grotesk', fontSize: 20, fontWeight: 800, color: '#0088ff', marginBottom: 10 }}>{addon.price}</div>
+              <p style={{ color: '#8e8ea0', fontSize: 13, lineHeight: 1.65 }}>{addon.sub}</p>
+            </div>
+          ))}
+        </div>
+        <div className="rv" style={{ textAlign: 'center', marginTop: 40 }}>
+          <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" style={{ display: 'inline-block', padding: '14px 36px', background: 'transparent', color: '#0088ff', border: '1px solid rgba(0,136,255,0.4)', borderRadius: 3, fontWeight: 700, fontSize: 15, textDecoration: 'none' }}>Inquire About Add-Ons</a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── BUNDLES SECTION ── */
+function BundlesSection({ go }: { go: (p: string) => void }) {
+  const bundles = [
+    {
+      name: 'New Car Protection Package',
+      badge: 'Save 15%', tagline: 'Ultimate Shield',
+      services: ['Elite Detail', 'Full Vehicle Nano Ceramic KOOLMAX Tint'],
+      desc: 'The definitive new-car shield. Preserve your paint\'s depth with an elite detail, then lock in clarity and UV defense with our top-tier ceramic film — done in a single mobile visit.',
+      cta: () => window.open('https://calendly.com/210tints', '_blank'),
+    },
+    {
+      name: 'Ultimate Refresh Package',
+      badge: 'Save 10%', tagline: 'Showstopper Look',
+      services: ['Signature Detail', 'Starlight Headliner Installation'],
+      desc: 'Turn heads from every angle. A deep signature detail pairs with our hand-installed fiber-optic starlight headliner to create a cabin that\'s as luxurious as the exterior.',
+      cta: () => window.open('https://calendly.com/210tints', '_blank'),
+    },
+  ];
+
+  return (
+    <section style={{ padding: '100px 28px' }}>
+      <div style={{ maxWidth: 1320, margin: '0 auto' }}>
+        <SH tag="Bundle &amp; Save" title="Tint + Detail Packages" sub="Combine services for premium results and real savings. Installed together in one mobile visit." />
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 24 }}>
+          {bundles.map((b, i) => (
+            <div key={b.name} className={`rv d${i}`} style={{
+              padding: '40px 36px', borderRadius: 8, position: 'relative', overflow: 'hidden',
+              background: 'linear-gradient(145deg, rgba(0,136,255,0.09) 0%, rgba(0,136,255,0.02) 100%)',
+              border: '1px solid rgba(0,136,255,0.28)',
+              boxShadow: '0 4px 50px rgba(0,136,255,0.07)',
+            }}>
+              <div style={{ position: 'absolute', top: -50, right: -50, width: 200, height: 200, borderRadius: '50%', background: 'radial-gradient(circle, rgba(0,136,255,0.1) 0%, transparent 70%)', pointerEvents: 'none' }} />
+              {/* Badge row */}
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, marginBottom: 24 }}>
+                <span style={{ background: '#0088ff', color: '#fff', padding: '4px 14px', borderRadius: 2, fontSize: 12, fontWeight: 700, letterSpacing: '1px' }}>{b.badge}</span>
+                <span style={{ color: '#7dd3ff', fontSize: 12, fontWeight: 600, letterSpacing: '2px', textTransform: 'uppercase' }}>{b.tagline}</span>
+              </div>
+              <h3 style={{ fontFamily: 'Space Grotesk', fontSize: 22, fontWeight: 800, marginBottom: 18 }}>{b.name}</h3>
+              <div style={{ marginBottom: 18 }}>
+                {b.services.map(s => (
+                  <div key={s} style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 10 }}>
+                    <span style={{ color: '#0088ff', fontSize: 18, lineHeight: 1 }}>+</span>
+                    <span style={{ color: '#eeeef2', fontWeight: 600, fontSize: 15 }}>{s}</span>
+                  </div>
+                ))}
+              </div>
+              <p style={{ color: '#8e8ea0', fontSize: 14, lineHeight: 1.75, marginBottom: 30 }}>{b.desc}</p>
+              <button onClick={b.cta} style={{
+                display: 'block', width: '100%', padding: '14px', background: '#0088ff', border: 'none',
+                color: '#fff', borderRadius: 3, fontWeight: 700, fontSize: 15, cursor: 'pointer',
+                boxShadow: '0 4px 30px rgba(0,136,255,0.38)', transition: 'all 0.3s',
+              }}>Book This Bundle</button>
+            </div>
+          ))}
+        </div>
+
+        {/* Cross-link to tint page */}
+        <div className="rv" style={{ textAlign: 'center', marginTop: 40 }}>
+          <p style={{ color: '#8e8ea0', fontSize: 14, marginBottom: 12 }}>Want to explore just tinting options?</p>
+          <button onClick={() => go('pricing')} style={{ background: 'none', border: 'none', color: '#0088ff', fontWeight: 600, fontSize: 15, cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: 3 }}>View Window Tinting Packages →</button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── BEFORE / AFTER GALLERY ── */
+function BeforeAfterGallery() {
+  const gallery = [
+    { src: '/cars/mercedes-cla.png', label: 'Mercedes CLA', tag: 'Signature Detail + Tint' },
+    { src: '/cars/lambo-urus.png', label: 'Lamborghini Urus', tag: 'Elite Detail' },
+    { src: '/cars/snowy-m8.png', label: 'BMW M8', tag: 'Signature Detail' },
+    { src: '/cars/snowy-c63.png', label: 'Mercedes C63 AMG', tag: 'Elite Detail + Ceramic' },
+    { src: '/cars/snowy-durango.png', label: 'Dodge Durango', tag: 'Full Detail + Tint' },
+    { src: '/cars/dark-snowy-durango.png', label: 'Durango SRT', tag: 'Elite Detail' },
+  ];
+
+  return (
+    <section style={{ padding: '80px 28px', background: '#050507' }}>
+      <div style={{ maxWidth: 1320, margin: '0 auto' }}>
+        <SH tag="Our Work" title="Results That Speak" sub="Real vehicles. Real results. Every detail performed by our certified mobile team across the DMV." />
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 16 }}>
+          {gallery.map((img, i) => (
+            <div key={i} className={`rv d${i % 5}`} style={{
+              position: 'relative', borderRadius: 6, overflow: 'hidden',
+              border: '1px solid rgba(255,255,255,0.04)',
+              transition: 'border-color 0.3s, box-shadow 0.3s',
+            }}
+              onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(0,136,255,0.25)'; (e.currentTarget as HTMLDivElement).style.boxShadow = '0 8px 40px rgba(0,136,255,0.1)'; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(255,255,255,0.04)'; (e.currentTarget as HTMLDivElement).style.boxShadow = 'none'; }}
+            >
+              <img src={img.src} alt={img.label} loading="lazy" style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', display: 'block', transition: 'transform 0.6s cubic-bezier(.16,1,.3,1)' }}
+                onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.04)')}
+                onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')} />
+              <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'linear-gradient(transparent, rgba(5,5,7,0.88))', padding: '28px 16px 16px' }}>
+                <div style={{ fontSize: 11, color: '#0088ff', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', marginBottom: 4 }}>{img.tag}</div>
+                <div style={{ fontSize: 14, color: '#eeeef2', fontWeight: 600 }}>{img.label}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── DETAILING PAGE ── */
+function DetailingPage({ go }: { go: (p: string) => void }) {
+  useReveal();
+  useEffect(() => { document.title = 'Premium Mobile Auto Detailing & Ceramic Coating | 210 Tint'; }, []);
+  return (
+    <div>
+      <DetailingHero go={go} />
+
+      <SectionDivider variant="glow" />
+
+      <PricingMatrix />
+
+      <SectionDivider variant="dots" />
+
+      <AddOnsGrid />
+
+      <SectionDivider variant="glow" />
+
+      <BundlesSection go={go} />
+
+      <SectionDivider variant="glow" />
+
+      <BeforeAfterGallery />
+
+      {/* Bottom CTA */}
+      <section style={{ padding: '88px 28px', textAlign: 'center' }}>
+        <div style={{ maxWidth: 580, margin: '0 auto' }}>
+          <p className="rv" style={{ fontSize: 11, letterSpacing: '4px', textTransform: 'uppercase', color: '#0088ff', fontWeight: 700, marginBottom: 16 }}>Ready to Book?</p>
+          <h2 className="rv d1" style={{ fontFamily: 'Space Grotesk', fontSize: 'clamp(28px,4vw,48px)', fontWeight: 800, letterSpacing: '-1.5px', marginBottom: 16 }}>Your Car Deserves This.</h2>
+          <p className="rv d2" style={{ color: '#8e8ea0', fontSize: 16, marginBottom: 36, lineHeight: 1.75 }}>
+            Mobile detailing across Columbia, MD and the entire DMV. No shop visit. No hassle. Booked in under two minutes.
+          </p>
+          <div className="rv d3" style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+            <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" className="magnetic-btn" style={{ padding: '16px 44px', background: '#0088ff', color: '#fff', borderRadius: 3, fontWeight: 700, fontSize: 16, textDecoration: 'none', boxShadow: '0 4px 40px rgba(0,136,255,0.5)' }}>Book a Detail</a>
+            <a href="tel:2403387762" style={{ padding: '16px 40px', background: 'transparent', color: '#fff', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 3, fontWeight: 600, fontSize: 16, textDecoration: 'none' }}>(240) 338-7762</a>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
 export default function App() {
   const [page, setPage] = useState('home');
   const [transitioning, setTransitioning] = useState(false);
@@ -2517,6 +2886,7 @@ export default function App() {
         {page==='tint-simulator'&&<TintSimulatorPage/>}
         {page==='starlight'&&<StarlightPage go={go}/>}
         {page==='starlight-sale'&&<StarlightSalePage go={go}/>}
+        {page==='detailing'&&<DetailingPage go={go}/>}
         {page==='contact'&&<ContactPage/>}
       </main>
       <Footer go={go} />
