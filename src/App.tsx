@@ -392,33 +392,6 @@ function LoadingScreen() {
 }
 
 /* ═══════════════════════════════════════════════════
-   CURSOR GLOW (follows mouse globally)
-   ═══════════════════════════════════════════════════ */
-function CursorGlow() {
-  const ref = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const fn = (e: MouseEvent) => {
-      if (ref.current) {
-        ref.current.style.left = e.clientX + 'px';
-        ref.current.style.top = e.clientY + 'px';
-      }
-    };
-    window.addEventListener('mousemove', fn, { passive: true });
-    return () => window.removeEventListener('mousemove', fn);
-  }, []);
-  return (
-    <div ref={ref} style={{
-      position: 'fixed', width: 500, height: 500,
-      borderRadius: '50%', pointerEvents: 'none', zIndex: 9998,
-      background: 'radial-gradient(circle, rgba(0,136,255,0.04) 0%, rgba(0,136,255,0.015) 30%, transparent 70%)',
-      transform: 'translate(-50%, -50%)',
-      transition: 'left 0.15s ease, top 0.15s ease',
-      left: '-100px', top: '-100px',
-    }} />
-  );
-}
-
-/* ═══════════════════════════════════════════════════
    SERVICE AREA MAP — SVG DMV region
    ═══════════════════════════════════════════════════ */
 function ServiceAreaMap() {
@@ -1021,27 +994,6 @@ function SH({ tag, title, sub, align = 'center' }: { tag: string; title: string;
   );
 }
 
-/* ── FLOATING ORBS BACKGROUND ── */
-function FloatingOrbs() {
-  return (
-    <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 0 }}>
-      {[...Array(5)].map((_, i) => (
-        <div key={i} style={{
-          position: 'absolute',
-          width: 200 + i * 80,
-          height: 200 + i * 80,
-          borderRadius: '50%',
-          background: `radial-gradient(circle, rgba(0,136,255,${0.03 - i * 0.004}) 0%, transparent 70%)`,
-          left: `${10 + i * 20}%`,
-          top: `${20 + (i % 3) * 25}%`,
-          animation: `orbFloat ${12 + i * 4}s ease-in-out infinite`,
-          animationDelay: `${i * -3}s`,
-        }} />
-      ))}
-    </div>
-  );
-}
-
 /* ── FAQ ACCORDION ── */
 function FAQ() {
   const [open, setOpen] = useState<number | null>(null);
@@ -1347,7 +1299,6 @@ function HomePage({ go }: { go: (p: string) => void }) {
 
       {/* ═══ WHY US ═══ */}
       <section style={{ padding: '120px 28px', background: '#0a0a0f', position: 'relative', overflow: 'hidden' }}>
-        <FloatingOrbs />
         <div style={{ maxWidth: 1320, margin: '0 auto', position: 'relative', zIndex: 1 }}>
           <SH tag="The Difference" title="Why Clients Choose 210 Tint" sub="Professional mobile tinting backed by the best films, transparent pricing, and a satisfaction guarantee." />
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(360px,1fr))', gap: 12 }}>
@@ -1373,7 +1324,6 @@ function HomePage({ go }: { go: (p: string) => void }) {
 
       {/* ═══ GOOGLE REVIEWS SLIDER ═══ */}
       <section style={{ padding: '120px 0', background: '#0a0a0f', position: 'relative', overflow: 'hidden' }}>
-        <FloatingOrbs />
         <div style={{ position: 'relative', zIndex: 1 }}>
           <div style={{ padding: '0 28px' }}>
             <div className="rv-blur"><SH tag="Google Reviews" title="Trusted Across the DMV" /></div>
@@ -1428,7 +1378,6 @@ function HomePage({ go }: { go: (p: string) => void }) {
 
       {/* ═══ SERVICE AREA MAP ═══ */}
       <section style={{ padding: '120px 28px', background: '#0a0a0f', position: 'relative', overflow: 'hidden' }}>
-        <FloatingOrbs />
         <div style={{ maxWidth: 1000, margin: '0 auto', position: 'relative', zIndex: 1 }}>
           <div className="rv-blur"><SH tag="Coverage" title="Serving the DMV & Beyond" sub="All of Maryland, DC, Northern Virginia, the Eastern Shore, southern PA & northern Delaware — anywhere within ~80 miles of Columbia. We come to you." /></div>
           <div className="rv"><ServiceAreaMap /></div>
@@ -1438,7 +1387,6 @@ function HomePage({ go }: { go: (p: string) => void }) {
       {/* ═══ FAQ ═══ */}
       <SectionDivider variant="dots" />
       <section style={{ padding: '100px 28px 140px', position: 'relative', overflow: 'hidden' }}>
-        <FloatingOrbs />
         <div style={{ maxWidth: 1320, margin: '0 auto', position: 'relative', zIndex: 1 }}>
           <div className="rv-blur"><SH tag="FAQ" title="Frequently Asked Questions" sub="Everything you need to know about our mobile window tinting service." /></div>
           <FAQ />
@@ -1448,7 +1396,6 @@ function HomePage({ go }: { go: (p: string) => void }) {
       {/* ═══ CTA ═══ */}
       <section style={{ padding: '120px 28px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at center, rgba(0,136,255,0.08) 0%, transparent 60%)' }} />
-        <FloatingOrbs />
         <div className="rv" style={{ maxWidth: 560, margin: '0 auto', position: 'relative', zIndex: 1 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20, justifyContent: 'center' }}>
             <div style={{ width: 24, height: 1, background: '#0088ff', animation: 'accentLine 1s ease forwards' }} />
@@ -2482,34 +2429,33 @@ const DETAIL_PRICES: Record<string, Record<string, number>> = {
 
 const TIERS = [
   {
-    id: 'essential', name: 'Essential', tagline: 'Fresh & Clean', level: 'ENTRY',
+    id: 'essential', name: 'Maintenance', tagline: 'Routine wash + interior cleanup',
     includes: [
-      { text: 'Exterior Hand Wash', bold: false },
-      { text: 'Wheel & Tire Clean', bold: false },
-      { text: 'Tire Dressing', bold: false },
-      { text: 'Interior Vacuum', bold: false },
-      { text: 'Interior Wipe Down', bold: false },
-      { text: 'Window Cleaning (in & out)', bold: false },
+      { text: 'Exterior hand wash', bold: false },
+      { text: 'Wheels and tires cleaned, tires dressed', bold: false },
+      { text: 'Interior vacuum (carpets, seats, mats)', bold: false },
+      { text: 'Interior wipe-down (dash, console, doors)', bold: false },
+      { text: 'Windows cleaned inside and out', bold: false },
     ],
   },
   {
-    id: 'signature', name: 'Signature', tagline: 'Deep Protection', level: 'MID', featured: true,
+    id: 'signature', name: 'Protect', tagline: 'Adds clay bar + 6-month paint sealant', featured: true,
     includes: [
-      { text: 'All Essential services', bold: false },
-      { text: 'Paint Decontamination (Clay Bar)', bold: true },
-      { text: 'Paint Sealant — 6-month protection', bold: true },
-      { text: 'Interior Deep Clean (Steam + light stain removal)', bold: true },
-      { text: 'Leather Conditioning / Fabric Protection', bold: false },
+      { text: 'Everything in Maintenance', bold: false },
+      { text: 'Clay-bar paint decontamination', bold: true },
+      { text: '6-month paint sealant', bold: true },
+      { text: 'Deep interior clean — steam + light stain removal', bold: true },
+      { text: 'Leather conditioning or fabric protection', bold: false },
     ],
   },
   {
-    id: 'elite', name: 'Elite', tagline: 'Showroom Standard', level: 'TOP TIER',
+    id: 'elite', name: 'Restore', tagline: 'Adds polish + 12-month sealant + headlights',
     includes: [
-      { text: 'All Signature services', bold: false },
-      { text: 'Single-Stage Paint Polish (swirl removal, enhanced gloss)', bold: true },
-      { text: 'Premium Paint Sealant — 12-month protection', bold: true },
-      { text: 'Headlight Restoration', bold: true },
-      { text: 'Engine Bay Cleaning', bold: false },
+      { text: 'Everything in Protect', bold: false },
+      { text: 'Single-stage polish (swirl removal, gloss)', bold: true },
+      { text: '12-month premium paint sealant', bold: true },
+      { text: 'Headlight restoration', bold: true },
+      { text: 'Engine bay cleaning', bold: false },
     ],
   },
 ];
@@ -2524,43 +2470,20 @@ const ADDONS = [
 
 /* ── DETAILING HERO ── */
 function DetailingHero() {
-  const menu = ['Wash', 'Decontaminate', 'Polish', 'Coat', 'Restore'];
   return (
-    <section style={{ position: 'relative', padding: '160px 28px 80px', overflow: 'hidden', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
-      {/* Subtle right-side ambient glow */}
-      <div style={{ position: 'absolute', top: '20%', right: '-10%', width: 600, height: 600, borderRadius: '50%', background: 'radial-gradient(circle, rgba(0,136,255,0.06) 0%, transparent 65%)', pointerEvents: 'none' }} />
-
-      <div style={{ position: 'relative', zIndex: 2, maxWidth: 1320, margin: '0 auto' }}>
-        {/* Eyebrow marker */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 36, animation: 'fadeUp 0.8s ease forwards', animationDelay: '0.15s', opacity: 0 }}>
-          <span style={{ width: 36, height: 1, background: '#0088ff' }} />
-          <span style={{ fontSize: 11, letterSpacing: '4px', textTransform: 'uppercase', color: '#0088ff', fontWeight: 700 }}>02 — Auto Detailing</span>
-        </div>
-
-        {/* Headline */}
-        <h1 style={{ fontFamily: 'Space Grotesk', fontSize: 'clamp(40px, 7vw, 92px)', fontWeight: 800, letterSpacing: '-3px', lineHeight: 1, maxWidth: 920, animation: 'fadeUp 0.9s ease forwards', animationDelay: '0.3s', opacity: 0 }}>
-          Detailing that protects what you drive.
+    <section style={{ position: 'relative', padding: '160px 28px 80px', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+      <div style={{ maxWidth: 1320, margin: '0 auto' }}>
+        <h1 style={{ fontFamily: 'Space Grotesk', fontSize: 'clamp(40px, 7vw, 92px)', fontWeight: 800, letterSpacing: '-3px', lineHeight: 1, maxWidth: 920, animation: 'fadeUp 0.9s ease forwards', animationDelay: '0.15s', opacity: 0 }}>
+          Hand-detailed cars. At your driveway.
         </h1>
 
-        {/* Subtitle */}
-        <p style={{ color: '#8e8ea0', fontSize: 'clamp(15px, 1.4vw, 18px)', lineHeight: 1.75, maxWidth: 560, marginTop: 32, animation: 'fadeUp 0.9s ease forwards', animationDelay: '0.45s', opacity: 0 }}>
-          Mobile washes, ceramic-grade polish, and paint correction — performed at your home or office across Columbia and the wider DMV.
+        <p style={{ color: '#8e8ea0', fontSize: 'clamp(15px, 1.4vw, 18px)', lineHeight: 1.75, maxWidth: 600, marginTop: 32, animation: 'fadeUp 0.9s ease forwards', animationDelay: '0.3s', opacity: 0 }}>
+          We bring the equipment, the water, and the supplies. You don't drive anywhere — we come to Columbia, Ellicott City, Annapolis, and across the DMV.
         </p>
 
-        {/* CTA + phone */}
-        <div style={{ display: 'flex', gap: 28, alignItems: 'center', flexWrap: 'wrap', marginTop: 44, animation: 'fadeUp 0.9s ease forwards', animationDelay: '0.6s', opacity: 0 }}>
+        <div style={{ display: 'flex', gap: 28, alignItems: 'center', flexWrap: 'wrap', marginTop: 44, animation: 'fadeUp 0.9s ease forwards', animationDelay: '0.45s', opacity: 0 }}>
           <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" className="magnetic-btn" style={{ padding: '16px 40px', background: '#0088ff', color: '#fff', borderRadius: 3, fontWeight: 700, fontSize: 16, textDecoration: 'none', boxShadow: '0 4px 40px rgba(0,136,255,0.5)' }}>Book a Detail</a>
           <a href="tel:2403387762" style={{ color: '#7dd3ff', fontSize: 15, fontWeight: 600, textDecoration: 'none' }}>or call (240) 338-7762</a>
-        </div>
-
-        {/* Service menu strip */}
-        <div style={{ marginTop: 80, padding: '22px 0', borderTop: '1px solid rgba(255,255,255,0.05)', borderBottom: '1px solid rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 0, animation: 'fadeUp 1s ease forwards', animationDelay: '0.85s', opacity: 0 }}>
-          {menu.map((s, i) => (
-            <div key={s} style={{ display: 'flex', alignItems: 'center', gap: 22 }}>
-              {i > 0 && <span style={{ width: 3, height: 3, borderRadius: '50%', background: 'rgba(0,136,255,0.5)' }} />}
-              <span style={{ fontSize: 13, fontWeight: 600, letterSpacing: '3px', textTransform: 'uppercase', color: '#8e8ea0', padding: '0 22px' }}>{s}</span>
-            </div>
-          ))}
         </div>
       </div>
     </section>
@@ -2621,9 +2544,8 @@ function PricingMatrix() {
                   <div style={{ position: 'absolute', top: -14, left: '50%', transform: 'translateX(-50%)', background: '#0088ff', color: '#fff', padding: '4px 22px', borderRadius: 2, fontSize: 11, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>Most Popular</div>
                 )}
                 <div style={{ marginBottom: 24 }}>
-                  <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '3px', textTransform: 'uppercase', color: tier.featured ? '#0088ff' : '#4a4a5a' }}>{tier.level}</span>
-                  <h3 style={{ fontFamily: 'Space Grotesk', fontSize: 26, fontWeight: 800, marginTop: 6, marginBottom: 4 }}>{tier.name} Detail</h3>
-                  <p style={{ color: '#8e8ea0', fontSize: 14 }}>{tier.tagline}</p>
+                  <h3 style={{ fontFamily: 'Space Grotesk', fontSize: 26, fontWeight: 800, marginBottom: 6 }}>{tier.name}</h3>
+                  <p style={{ color: '#8e8ea0', fontSize: 14, lineHeight: 1.5 }}>{tier.tagline}</p>
                 </div>
 
                 {/* Price — fades on vehicle switch */}
@@ -2653,7 +2575,7 @@ function PricingMatrix() {
                   color: '#fff', fontWeight: 700, fontSize: 15, textDecoration: 'none',
                   transition: 'all 0.3s cubic-bezier(.16,1,.3,1)',
                   boxShadow: tier.featured ? '0 4px 30px rgba(0,136,255,0.4)' : 'none',
-                }}>Book {tier.name} Detail</a>
+                }}>Book this package</a>
               </div>
             );
           })}
@@ -2700,17 +2622,17 @@ function AddOnsGrid() {
 function BundlesSection({ go }: { go: (p: string) => void }) {
   const bundles = [
     {
-      name: 'New Car Protection Package',
-      badge: 'Save 15%', tagline: 'Ultimate Shield',
-      services: ['Elite Detail', 'Full Vehicle Nano Ceramic KOOLMAX Tint'],
-      desc: 'The definitive new-car shield. Preserve your paint\'s depth with an elite detail, then lock in clarity and UV defense with our top-tier ceramic film — done in a single mobile visit.',
+      name: 'Detail + Ceramic Window Tint',
+      badge: 'Save 15%',
+      services: ['Restore-tier detail', 'Full-vehicle KOOLMAX Nano Ceramic tint'],
+      desc: 'Best for new or recently bought cars. Get a full polish and 12-month sealant, then add our top ceramic tint — all in one mobile visit.',
       cta: () => window.open('https://calendly.com/210tints', '_blank'),
     },
     {
-      name: 'Ultimate Refresh Package',
-      badge: 'Save 10%', tagline: 'Showstopper Look',
-      services: ['Signature Detail', 'Starlight Headliner Installation'],
-      desc: 'Turn heads from every angle. A deep signature detail pairs with our hand-installed fiber-optic starlight headliner to create a cabin that\'s as luxurious as the exterior.',
+      name: 'Detail + Starlight Headliner',
+      badge: 'Save 10%',
+      services: ['Protect-tier detail', 'Fiber-optic starlight headliner install'],
+      desc: 'Pairs a deep interior + paint sealant with a custom fiber-optic ceiling. Good if you want a clean exterior and a finished interior in one go.',
       cta: () => window.open('https://calendly.com/210tints', '_blank'),
     },
   ];
@@ -2728,11 +2650,7 @@ function BundlesSection({ go }: { go: (p: string) => void }) {
               boxShadow: '0 4px 50px rgba(0,136,255,0.07)',
             }}>
               <div style={{ position: 'absolute', top: -50, right: -50, width: 200, height: 200, borderRadius: '50%', background: 'radial-gradient(circle, rgba(0,136,255,0.1) 0%, transparent 70%)', pointerEvents: 'none' }} />
-              {/* Badge row */}
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, marginBottom: 24 }}>
-                <span style={{ background: '#0088ff', color: '#fff', padding: '4px 14px', borderRadius: 2, fontSize: 12, fontWeight: 700, letterSpacing: '1px' }}>{b.badge}</span>
-                <span style={{ color: '#7dd3ff', fontSize: 12, fontWeight: 600, letterSpacing: '2px', textTransform: 'uppercase' }}>{b.tagline}</span>
-              </div>
+              <span style={{ display: 'inline-block', background: '#0088ff', color: '#fff', padding: '4px 14px', borderRadius: 2, fontSize: 12, fontWeight: 700, letterSpacing: '1px', marginBottom: 24 }}>{b.badge}</span>
               <h3 style={{ fontFamily: 'Space Grotesk', fontSize: 22, fontWeight: 800, marginBottom: 18 }}>{b.name}</h3>
               <div style={{ marginBottom: 18 }}>
                 {b.services.map(s => (
@@ -2818,7 +2736,6 @@ export default function App() {
   return (
     <div style={{ minHeight: '100vh' }}>
       <LoadingScreen />
-      <CursorGlow />
       <ChatWidget />
       <style>{`
         @media(max-width:860px){

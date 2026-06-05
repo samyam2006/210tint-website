@@ -100,7 +100,7 @@ h1,h2,h3,h4,h5,h6{font-family:'Space Grotesk',sans-serif;letter-spacing:-0.03em}
 .rv-r.v{opacity:1;transform:translateX(0)}
 .d0{transition-delay:0s}.d1{transition-delay:.12s}.d2{transition-delay:.24s}.d3{transition-delay:.36s}.d4{transition-delay:.48s}.d5{transition-delay:.6s}.d6{transition-delay:.72s}.d7{transition-delay:.84s}
 
-.grad-text{background:linear-gradient(135deg,#0088ff,#7dd3ff,#0088ff);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s linear infinite;filter:drop-shadow(0 0 18px rgba(0,136,255,0.45))}
+.grad-text{background:linear-gradient(135deg,#0088ff,#7dd3ff,#0088ff);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 10s linear infinite}
 .marquee-track{display:flex;animation:marquee 40s linear infinite;width:max-content}
 
 /* Hide scrollbar on carousel */
