@@ -2523,36 +2523,44 @@ const ADDONS = [
 ];
 
 /* ── DETAILING HERO ── */
-function DetailingHero({ go: _go }: { go: (p: string) => void }) {
+function DetailingHero() {
+  const menu = ['Wash', 'Decontaminate', 'Polish', 'Coat', 'Restore'];
   return (
-    <section style={{ position: 'relative', minHeight: '82vh', display: 'flex', alignItems: 'center', overflow: 'hidden', background: 'linear-gradient(160deg, #050507 55%, #06101e 100%)' }}>
-      <div style={{ position: 'absolute', top: '35%', left: '55%', transform: 'translate(-50%,-50%)', width: 700, height: 500, borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(0,136,255,0.08) 0%, transparent 65%)', pointerEvents: 'none' }} />
-      <FloatingOrbs />
-      <div style={{ position: 'relative', zIndex: 10, maxWidth: 1320, margin: '0 auto', padding: '160px 28px 100px', width: '100%' }}>
-        <div style={{ maxWidth: 740 }}>
-          <div style={{ animation: 'fadeUp 0.9s ease forwards', animationDelay: '0.2s', opacity: 0 }}>
-            <span style={{ display: 'inline-block', padding: '8px 20px', borderRadius: 2, fontSize: 12, fontWeight: 700, letterSpacing: '3px', textTransform: 'uppercase', color: '#0088ff', border: '1px solid rgba(0,136,255,0.3)', background: 'rgba(0,136,255,0.08)', marginBottom: 28 }}>
-              Mobile Auto Detailing — Columbia, MD &amp; DMV
-            </span>
-          </div>
-          <h1 style={{ fontFamily: 'Space Grotesk', fontSize: 'clamp(36px,6vw,76px)', fontWeight: 800, lineHeight: 1.05, letterSpacing: '-2.5px', animation: 'fadeUp 0.9s ease forwards', animationDelay: '0.35s', opacity: 0 }}>
-            Detail-Grade Clean.<br /><span className="grad-text">At Your Door.</span>
-          </h1>
-          <p style={{ color: '#8e8ea0', fontSize: 'clamp(15px,1.4vw,18px)', lineHeight: 1.85, maxWidth: 520, marginTop: 24, animation: 'fadeUp 0.9s ease forwards', animationDelay: '0.5s', opacity: 0 }}>
-            From maintenance washes to multi-stage paint correction — professional mobile detailing delivered to your home or office. No shop required.
-          </p>
-          <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', marginTop: 40, animation: 'fadeUp 0.9s ease forwards', animationDelay: '0.65s', opacity: 0 }}>
-            <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" className="magnetic-btn" style={{ padding: '16px 40px', background: '#0088ff', color: '#fff', borderRadius: 3, fontWeight: 700, fontSize: 16, textDecoration: 'none', boxShadow: '0 4px 40px rgba(0,136,255,0.5)' }}>Book a Detail</a>
-            <button onClick={() => document.getElementById('detail-pricing')?.scrollIntoView({ behavior: 'smooth' })} style={{ padding: '16px 40px', background: 'transparent', color: '#fff', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 3, fontWeight: 600, fontSize: 16, cursor: 'pointer' }}>See Packages</button>
-          </div>
-          <div style={{ display: 'flex', gap: 44, marginTop: 64, flexWrap: 'wrap', animation: 'fadeUp 0.9s ease forwards', animationDelay: '0.8s', opacity: 0 }}>
-            {[['4.9★', 'Google Rating'], ['100%', 'Mobile Service'], ['DMV-Wide', 'Coverage']].map(([val, lab]) => (
-              <div key={lab}>
-                <div style={{ fontFamily: 'Space Grotesk', fontSize: 22, fontWeight: 800, color: '#fff' }}>{val}</div>
-                <div style={{ fontSize: 11, color: '#4a4a5a', letterSpacing: '2px', textTransform: 'uppercase', marginTop: 3 }}>{lab}</div>
-              </div>
-            ))}
-          </div>
+    <section style={{ position: 'relative', padding: '160px 28px 80px', overflow: 'hidden', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+      {/* Subtle right-side ambient glow */}
+      <div style={{ position: 'absolute', top: '20%', right: '-10%', width: 600, height: 600, borderRadius: '50%', background: 'radial-gradient(circle, rgba(0,136,255,0.06) 0%, transparent 65%)', pointerEvents: 'none' }} />
+
+      <div style={{ position: 'relative', zIndex: 2, maxWidth: 1320, margin: '0 auto' }}>
+        {/* Eyebrow marker */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 36, animation: 'fadeUp 0.8s ease forwards', animationDelay: '0.15s', opacity: 0 }}>
+          <span style={{ width: 36, height: 1, background: '#0088ff' }} />
+          <span style={{ fontSize: 11, letterSpacing: '4px', textTransform: 'uppercase', color: '#0088ff', fontWeight: 700 }}>02 — Auto Detailing</span>
+        </div>
+
+        {/* Headline */}
+        <h1 style={{ fontFamily: 'Space Grotesk', fontSize: 'clamp(40px, 7vw, 92px)', fontWeight: 800, letterSpacing: '-3px', lineHeight: 1, maxWidth: 920, animation: 'fadeUp 0.9s ease forwards', animationDelay: '0.3s', opacity: 0 }}>
+          Detailing that protects what you drive.
+        </h1>
+
+        {/* Subtitle */}
+        <p style={{ color: '#8e8ea0', fontSize: 'clamp(15px, 1.4vw, 18px)', lineHeight: 1.75, maxWidth: 560, marginTop: 32, animation: 'fadeUp 0.9s ease forwards', animationDelay: '0.45s', opacity: 0 }}>
+          Mobile washes, ceramic-grade polish, and paint correction — performed at your home or office across Columbia and the wider DMV.
+        </p>
+
+        {/* CTA + phone */}
+        <div style={{ display: 'flex', gap: 28, alignItems: 'center', flexWrap: 'wrap', marginTop: 44, animation: 'fadeUp 0.9s ease forwards', animationDelay: '0.6s', opacity: 0 }}>
+          <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" className="magnetic-btn" style={{ padding: '16px 40px', background: '#0088ff', color: '#fff', borderRadius: 3, fontWeight: 700, fontSize: 16, textDecoration: 'none', boxShadow: '0 4px 40px rgba(0,136,255,0.5)' }}>Book a Detail</a>
+          <a href="tel:2403387762" style={{ color: '#7dd3ff', fontSize: 15, fontWeight: 600, textDecoration: 'none' }}>or call (240) 338-7762</a>
+        </div>
+
+        {/* Service menu strip */}
+        <div style={{ marginTop: 80, padding: '22px 0', borderTop: '1px solid rgba(255,255,255,0.05)', borderBottom: '1px solid rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 0, animation: 'fadeUp 1s ease forwards', animationDelay: '0.85s', opacity: 0 }}>
+          {menu.map((s, i) => (
+            <div key={s} style={{ display: 'flex', alignItems: 'center', gap: 22 }}>
+              {i > 0 && <span style={{ width: 3, height: 3, borderRadius: '50%', background: 'rgba(0,136,255,0.5)' }} />}
+              <span style={{ fontSize: 13, fontWeight: 600, letterSpacing: '3px', textTransform: 'uppercase', color: '#8e8ea0', padding: '0 22px' }}>{s}</span>
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -2754,55 +2762,13 @@ function BundlesSection({ go }: { go: (p: string) => void }) {
   );
 }
 
-/* ── BEFORE / AFTER GALLERY ── */
-function BeforeAfterGallery() {
-  const gallery = [
-    { src: '/cars/mercedes-cla.png', label: 'Mercedes CLA', tag: 'Signature Detail + Tint' },
-    { src: '/cars/lambo-urus.png', label: 'Lamborghini Urus', tag: 'Elite Detail' },
-    { src: '/cars/snowy-m8.png', label: 'BMW M8', tag: 'Signature Detail' },
-    { src: '/cars/snowy-c63.png', label: 'Mercedes C63 AMG', tag: 'Elite Detail + Ceramic' },
-    { src: '/cars/snowy-durango.png', label: 'Dodge Durango', tag: 'Full Detail + Tint' },
-    { src: '/cars/dark-snowy-durango.png', label: 'Durango SRT', tag: 'Elite Detail' },
-  ];
-
-  return (
-    <section style={{ padding: '80px 28px', background: '#050507' }}>
-      <div style={{ maxWidth: 1320, margin: '0 auto' }}>
-        <SH tag="Our Work" title="Results That Speak" sub="Real vehicles. Real results. Every detail performed by our certified mobile team across the DMV." />
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 16 }}>
-          {gallery.map((img, i) => (
-            <div key={i} className={`rv d${i % 5}`} style={{
-              position: 'relative', borderRadius: 6, overflow: 'hidden',
-              border: '1px solid rgba(255,255,255,0.04)',
-              transition: 'border-color 0.3s, box-shadow 0.3s',
-            }}
-              onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(0,136,255,0.25)'; (e.currentTarget as HTMLDivElement).style.boxShadow = '0 8px 40px rgba(0,136,255,0.1)'; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(255,255,255,0.04)'; (e.currentTarget as HTMLDivElement).style.boxShadow = 'none'; }}
-            >
-              <img src={img.src} alt={img.label} loading="lazy" style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', display: 'block', transition: 'transform 0.6s cubic-bezier(.16,1,.3,1)' }}
-                onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.04)')}
-                onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')} />
-              <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'linear-gradient(transparent, rgba(5,5,7,0.88))', padding: '28px 16px 16px' }}>
-                <div style={{ fontSize: 11, color: '#0088ff', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', marginBottom: 4 }}>{img.tag}</div>
-                <div style={{ fontSize: 14, color: '#eeeef2', fontWeight: 600 }}>{img.label}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 /* ── DETAILING PAGE ── */
 function DetailingPage({ go }: { go: (p: string) => void }) {
   useReveal();
   useEffect(() => { document.title = 'Premium Mobile Auto Detailing & Ceramic Coating | 210 Tint'; }, []);
   return (
     <div>
-      <DetailingHero go={go} />
-
-      <SectionDivider variant="glow" />
+      <DetailingHero />
 
       <PricingMatrix />
 
@@ -2813,10 +2779,6 @@ function DetailingPage({ go }: { go: (p: string) => void }) {
       <SectionDivider variant="glow" />
 
       <BundlesSection go={go} />
-
-      <SectionDivider variant="glow" />
-
-      <BeforeAfterGallery />
 
       {/* Bottom CTA */}
       <section style={{ padding: '88px 28px', textAlign: 'center' }}>
