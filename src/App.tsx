@@ -374,7 +374,7 @@ function LoadingScreen() {
       <div style={{ position: 'absolute', width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle, rgba(0,136,255,0.1) 0%, transparent 70%)', pointerEvents: 'none', animation: 'loaderGlow 2s ease infinite' }} />
       {/* Logo */}
       <div style={{ animation: 'loaderLogoIn 0.8s cubic-bezier(.16,1,.3,1) 0.2s both' }}>
-        <img src="/210tintlogo.png" alt="210 Tint" style={{ height: 160, width: 'auto', objectFit: 'contain' }} />
+        <img src="/210tintlogo.webp" alt="210 Tint" style={{ height: 160, width: 'auto', objectFit: 'contain' }} />
       </div>
       {/* Loading bar */}
       <div style={{ width: 140, height: 2, background: 'rgba(255,255,255,0.06)', borderRadius: 1, marginTop: 32, overflow: 'hidden' }}>
@@ -941,7 +941,7 @@ function Nav({ page, go }: { page: string; go: (p: string) => void }) {
     }}>
       <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <button onClick={() => nav('home')} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
-          <img src="/210tintlogo.png" alt="210 Tint" style={{ height: 64, width: 'auto', objectFit: 'contain' }} />
+          <img src="/210tintlogo.webp" alt="210 Tint" style={{ height: 64, width: 'auto', objectFit: 'contain' }} />
         </button>
         <div className="desk-nav" style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
           {NAV.map((n) => (
@@ -1037,7 +1037,7 @@ function Footer({ go }: { go: (p: string) => void }) {
       <div style={{ maxWidth: 1320, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(220px,1fr))', gap: 48 }}>
         <div>
           <div style={{ marginBottom: 20 }}>
-            <img src="/210tintlogo.png" alt="210 Tint" style={{ height: 80, width: 'auto', objectFit: 'contain' }} />
+            <img src="/210tintlogo.webp" alt="210 Tint" style={{ height: 80, width: 'auto', objectFit: 'contain' }} />
           </div>
           <p style={{ color: '#8e8ea0', fontSize: 16, lineHeight: 1.8, maxWidth: 280 }}>Columbia's tinting & detailing specialists. We come to you — or visit our shop at 10451 Fair Oaks.</p>
         </div>
