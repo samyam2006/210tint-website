@@ -1881,6 +1881,8 @@ STARLIGHT BOOKING FLOW: Collect: name, email, phone, vehicle year/make/model, pa
 
 MOBILE JOB NOTICE: If the customer is booking a mobile job, always ask if they have access to a garage or covered parking space at their location. Let them know that without a garage or covered area, there is a significantly higher chance of minor imperfections (dust, wind, debris) affecting the install quality. We will always do our best, but we cannot guarantee a flawless result on an open-air mobile job. Mention this early and clearly.
 
+MEGA MAX PACKAGE: Our flagship all-in-one package. Includes: Restore-tier detail (polish + 12-month paint sealant + headlight restoration), full-vehicle KoolMax Nano Ceramic tint with windshield, fiber-optic starlight headliner (550 stars), and computer-cut precision film. Price: $1,497 for sedans/coupes, $1,797 for SUVs/trucks. Saves ~$225 vs booking each service separately. When a customer asks about the best or most complete package, always mention the Mega Max. Note: starlight portion still requires a garage or covered space.
+
 BOOKING FLOW (TINTING): Collect: name, email, phone, vehicle year/make/model, tint darkness %, tint type (Uviron Premium Carbon/PureMax Nano Carbon/KoolMax Nano Ceramic), previously tinted (Yes/No/I don't know), waiting or leaving during appointment, any notes, preferred date.
 Once you have all info for either service, output: [BOOK:event_key:YYYY-MM-DD:name:email:phone:vehicle:tint_type:prev_tinted:waiting_or_leaving:extra_notes]
 
@@ -2628,33 +2630,62 @@ function BundlesSection({ go }: { go: (p: string) => void }) {
       name: 'Detail + Ceramic Window Tint',
       badge: 'Save 15%',
       services: ['Restore-tier detail', 'Full-vehicle KOOLMAX Nano Ceramic tint'],
-      desc: 'Best for new or recently bought cars. Get a full polish and 12-month sealant, then add our top ceramic tint — all in one mobile visit.',
+      desc: 'Best for new or recently bought cars. Get a full polish and 12-month sealant, then add our top ceramic tint — all in one visit.',
       cta: () => window.open('https://calendly.com/210tints', '_blank'),
+      mega: false,
     },
     {
       name: 'Detail + Starlight Headliner',
       badge: 'Save 10%',
       services: ['Protect-tier detail', 'Fiber-optic starlight headliner install'],
-      desc: 'Pairs a deep interior + paint sealant with a custom fiber-optic ceiling. Good if you want a clean exterior and a finished interior in one go.',
+      desc: 'Pairs a deep interior + paint sealant with a custom fiber-optic ceiling. Clean exterior and a finished interior in one go.',
       cta: () => window.open('https://calendly.com/210tints', '_blank'),
+      mega: false,
+    },
+    {
+      name: 'Mega Max',
+      badge: 'Save $225',
+      price: { sedan: 1497, suv: 1797 },
+      services: [
+        'Restore-tier detail (polish + 12-month sealant + headlights)',
+        'Full-vehicle KOOLMAX Nano Ceramic tint (windshield included)',
+        'Fiber-optic starlight headliner',
+        'Computer-cut precision film',
+      ],
+      desc: 'The full 210 Tint experience. Every service we offer combined into one appointment — protection, clarity, and a showpiece interior.',
+      cta: () => window.open('https://calendly.com/210tints', '_blank'),
+      mega: true,
     },
   ];
 
   return (
     <section style={{ padding: '100px 28px' }}>
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
-        <SH tag="Bundle &amp; Save" title="Tint + Detail Packages" sub="Combine services for premium results and real savings. Installed together in one mobile visit." />
+        <SH tag="Bundle &amp; Save" title="Tint + Detail Packages" sub="Combine services for premium results and real savings. Installed together in one visit." />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 24 }}>
           {bundles.map((b, i) => (
             <div key={b.name} className={`rv d${i}`} style={{
               padding: '40px 36px', borderRadius: 8, position: 'relative', overflow: 'hidden',
-              background: 'linear-gradient(145deg, rgba(0,136,255,0.09) 0%, rgba(0,136,255,0.02) 100%)',
-              border: '1px solid rgba(0,136,255,0.28)',
-              boxShadow: '0 4px 50px rgba(0,136,255,0.07)',
+              background: b.mega
+                ? 'linear-gradient(145deg, rgba(0,136,255,0.16) 0%, rgba(0,136,255,0.05) 100%)'
+                : 'linear-gradient(145deg, rgba(0,136,255,0.09) 0%, rgba(0,136,255,0.02) 100%)',
+              border: b.mega ? '1px solid rgba(0,136,255,0.5)' : '1px solid rgba(0,136,255,0.28)',
+              boxShadow: b.mega ? '0 4px 60px rgba(0,136,255,0.18)' : '0 4px 50px rgba(0,136,255,0.07)',
             }}>
               <div style={{ position: 'absolute', top: -50, right: -50, width: 200, height: 200, borderRadius: '50%', background: 'radial-gradient(circle, rgba(0,136,255,0.1) 0%, transparent 70%)', pointerEvents: 'none' }} />
-              <span style={{ display: 'inline-block', background: '#0088ff', color: '#fff', padding: '4px 14px', borderRadius: 2, fontSize: 12, fontWeight: 700, letterSpacing: '1px', marginBottom: 24 }}>{b.badge}</span>
-              <h3 style={{ fontFamily: 'Space Grotesk', fontSize: 22, fontWeight: 800, marginBottom: 18 }}>{b.name}</h3>
+              {b.mega && (
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #0088ff, #7dd3ff, #0088ff)', backgroundSize: '200% auto', animation: 'shimmer 3s linear infinite' }} />
+              )}
+              <span style={{ display: 'inline-block', background: b.mega ? 'linear-gradient(90deg, #0088ff, #60a5fa)' : '#0088ff', color: '#fff', padding: '4px 14px', borderRadius: 2, fontSize: 12, fontWeight: 700, letterSpacing: '1px', marginBottom: 24 }}>{b.badge}</span>
+              <h3 style={{ fontFamily: 'Space Grotesk', fontSize: b.mega ? 28 : 22, fontWeight: 800, marginBottom: b.mega ? 8 : 18 }}>{b.name}</h3>
+              {'price' in b && b.price && (
+                <div style={{ marginBottom: 18 }}>
+                  <span style={{ fontFamily: 'Space Grotesk', fontSize: 36, fontWeight: 800, color: '#0088ff' }}>${b.price.sedan.toLocaleString()}</span>
+                  <span style={{ color: '#8e8ea0', fontSize: 13, marginLeft: 8 }}>sedan&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+                  <span style={{ fontFamily: 'Space Grotesk', fontSize: 22, fontWeight: 700, color: '#60a5fa' }}>${b.price.suv.toLocaleString()}</span>
+                  <span style={{ color: '#8e8ea0', fontSize: 13, marginLeft: 8 }}>SUV</span>
+                </div>
+              )}
               <div style={{ marginBottom: 18 }}>
                 {b.services.map(s => (
                   <div key={s} style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 10 }}>
@@ -2664,10 +2695,10 @@ function BundlesSection({ go }: { go: (p: string) => void }) {
                 ))}
               </div>
               <p style={{ color: '#8e8ea0', fontSize: 14, lineHeight: 1.75, marginBottom: 30 }}>{b.desc}</p>
-              <button onClick={b.cta} style={{
+              <button onClick={b.cta} className={b.mega ? 'magnetic-btn' : ''} style={{
                 display: 'block', width: '100%', padding: '14px', background: '#0088ff', border: 'none',
                 color: '#fff', borderRadius: 3, fontWeight: 700, fontSize: 15, cursor: 'pointer',
-                boxShadow: '0 4px 30px rgba(0,136,255,0.38)', transition: 'all 0.3s',
+                boxShadow: b.mega ? '0 4px 40px rgba(0,136,255,0.55)' : '0 4px 30px rgba(0,136,255,0.38)', transition: 'all 0.3s',
               }}>Book This Bundle</button>
             </div>
           ))}
