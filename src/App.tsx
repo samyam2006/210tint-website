@@ -279,10 +279,10 @@ function HeroBackground() {
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [activeVideo, setActiveVideo] = useState(0);
   const imgs = [
-    '/cars/lambo-urus.png',
-    '/cars/snowy-c63.png',
-    '/cars/mercedes-cla.png',
-    '/cars/snowy-m8.png',
+    '/cars/lambo-urus.webp',
+    '/cars/snowy-c63.webp',
+    '/cars/mercedes-cla.webp',
+    '/cars/snowy-m8.webp',
   ];
   const [imgIdx, setImgIdx] = useState(0);
   // Image fallback cycling
@@ -321,11 +321,11 @@ function HeroBackground() {
         }} />
       ))}
       {/* Video 1 */}
-      <video autoPlay muted loop playsInline onCanPlay={() => setVideoLoaded(true)} style={videoStyle(activeVideo === 0)}>
+      <video autoPlay muted loop playsInline preload="auto" poster="/cars/lambo-urus.webp" onCanPlay={() => setVideoLoaded(true)} style={videoStyle(activeVideo === 0)}>
         <source src={videos[0]} type="video/mp4" />
       </video>
-      {/* Video 2 */}
-      <video autoPlay muted loop playsInline style={videoStyle(activeVideo === 1)}>
+      {/* Video 2 — deferred until needed */}
+      <video autoPlay muted loop playsInline preload="none" style={videoStyle(activeVideo === 1)}>
         <source src={videos[1]} type="video/mp4" />
       </video>
       {/* Overlays */}
@@ -1469,12 +1469,12 @@ function PortfolioPage() {
   useReveal();
   const [lightbox, setLightbox] = useState<number | null>(null);
   const items = [
-    { name: 'Lamborghini Urus', film: 'Premium Nano Ceramic', img: '/cars/lambo-urus.png' },
-    { name: 'Mercedes C63', film: 'Uviron Premium Carbon', img: '/cars/snowy-c63.png' },
-    { name: 'Mercedes CLA', film: 'Premium Nano Ceramic', img: '/cars/mercedes-cla.png' },
-    { name: 'BMW M8', film: 'Standard Carbon', img: '/cars/snowy-m8.png' },
-    { name: 'Dodge Durango', film: 'Premium Nano Carbon', img: '/cars/snowy-durango.png' },
-    { name: 'Dodge Durango', film: 'Premium Nano Carbon', img: '/cars/dark-snowy-durango.png' },
+    { name: 'Lamborghini Urus', film: 'Premium Nano Ceramic', img: '/cars/lambo-urus.webp' },
+    { name: 'Mercedes C63', film: 'Uviron Premium Carbon', img: '/cars/snowy-c63.webp' },
+    { name: 'Mercedes CLA', film: 'Premium Nano Ceramic', img: '/cars/mercedes-cla.webp' },
+    { name: 'BMW M8', film: 'Standard Carbon', img: '/cars/snowy-m8.webp' },
+    { name: 'Dodge Durango', film: 'Premium Nano Carbon', img: '/cars/snowy-durango.webp' },
+    { name: 'Dodge Durango', film: 'Premium Nano Carbon', img: '/cars/dark-snowy-durango.webp' },
   ];
   return (<div style={{ paddingTop: 130 }}><section style={{ padding: '0 28px 120px', maxWidth: 1320, margin: '0 auto' }}>
     <SH tag="Our Work" title="Vehicle Tinting Portfolio" sub="Professional-grade installations on luxury, performance, and everyday vehicles." />
