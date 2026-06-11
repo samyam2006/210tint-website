@@ -321,7 +321,7 @@ function HeroBackground() {
         }} />
       ))}
       {/* Video 1 */}
-      <video autoPlay muted loop playsInline preload="auto" poster="/cars/lambo-urus.webp" onCanPlay={() => setVideoLoaded(true)} style={videoStyle(activeVideo === 0)}>
+      <video autoPlay muted loop playsInline preload="metadata" poster="/cars/lambo-urus.webp" onCanPlay={() => setVideoLoaded(true)} style={videoStyle(activeVideo === 0)}>
         <source src={videos[0]} type="video/mp4" />
       </video>
       {/* Video 2 — deferred until needed */}
@@ -374,7 +374,7 @@ function LoadingScreen() {
       <div style={{ position: 'absolute', width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle, rgba(0,136,255,0.1) 0%, transparent 70%)', pointerEvents: 'none', animation: 'loaderGlow 2s ease infinite' }} />
       {/* Logo */}
       <div style={{ animation: 'loaderLogoIn 0.8s cubic-bezier(.16,1,.3,1) 0.2s both' }}>
-        <img src="/210tintlogo.webp" alt="210 Tint" style={{ height: 160, width: 'auto', objectFit: 'contain' }} />
+        <img src="/210tintlogo.webp" alt="210 Tint" width={320} height={320} style={{ height: 160, width: 'auto', objectFit: 'contain' }} />
       </div>
       {/* Loading bar */}
       <div style={{ width: 140, height: 2, background: 'rgba(255,255,255,0.06)', borderRadius: 1, marginTop: 32, overflow: 'hidden' }}>
@@ -941,7 +941,7 @@ function Nav({ page, go }: { page: string; go: (p: string) => void }) {
     }}>
       <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <button onClick={() => nav('home')} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
-          <img src="/210tintlogo.webp" alt="210 Tint" style={{ height: 64, width: 'auto', objectFit: 'contain' }} />
+          <img src="/210tintlogo.webp" alt="210 Tint" width={320} height={320} style={{ height: 64, width: 'auto', objectFit: 'contain' }} />
         </button>
         <div className="desk-nav" style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
           {NAV.map((n) => (
@@ -1037,7 +1037,7 @@ function Footer({ go }: { go: (p: string) => void }) {
       <div style={{ maxWidth: 1320, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(220px,1fr))', gap: 48 }}>
         <div>
           <div style={{ marginBottom: 20 }}>
-            <img src="/210tintlogo.webp" alt="210 Tint" style={{ height: 80, width: 'auto', objectFit: 'contain' }} />
+            <img src="/210tintlogo.webp" alt="210 Tint" width={320} height={320} style={{ height: 80, width: 'auto', objectFit: 'contain' }} />
           </div>
           <p style={{ color: '#8e8ea0', fontSize: 16, lineHeight: 1.8, maxWidth: 280 }}>Columbia's tinting & detailing specialists. We come to you — or visit our shop at 10451 Fair Oaks.</p>
         </div>
@@ -1447,7 +1447,7 @@ function Lightbox({ images, startIndex, onClose }: { images: { name: string; fil
       {/* Counter */}
       <span style={{ position: 'absolute', top: 24, left: 24, fontSize: 13, color: '#8e8ea0', fontFamily: 'Space Grotesk' }}>{idx + 1} / {images.length}</span>
       {/* Image */}
-      <img key={idx} src={cur.img} alt={cur.name} onClick={(e) => e.stopPropagation()}
+      <img key={idx} src={cur.img} alt={cur.name} width={1200} height={800} onClick={(e) => e.stopPropagation()}
         style={{ maxWidth: '90vw', maxHeight: '75vh', objectFit: 'contain', borderRadius: 6, cursor: 'default', animation: 'fadeIn 0.3s ease' }} />
       {/* Info */}
       <div onClick={(e) => e.stopPropagation()} style={{ marginTop: 20, textAlign: 'center' }}>
@@ -1484,7 +1484,7 @@ function PortfolioPage() {
         onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(0,136,255,0.25)'; e.currentTarget.style.boxShadow = '0 24px 60px rgba(0,0,0,0.4), 0 0 30px rgba(0,136,255,0.06)'; }}
         onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.04)'; e.currentTarget.style.boxShadow = 'none'; }}>
         <div style={{ overflow: 'hidden', height: 260, position: 'relative' }}>
-          <img src={p.img} alt={p.name} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.7s cubic-bezier(.16,1,.3,1)' }} onMouseEnter={(e) => { (e.target as HTMLElement).style.transform = 'scale(1.06)'; }} onMouseLeave={(e) => { (e.target as HTMLElement).style.transform = 'scale(1)'; }} />
+          <img src={p.img} alt={p.name} loading="lazy" width={800} height={600} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.7s cubic-bezier(.16,1,.3,1)' }} onMouseEnter={(e) => { (e.target as HTMLElement).style.transform = 'scale(1.06)'; }} onMouseLeave={(e) => { (e.target as HTMLElement).style.transform = 'scale(1)'; }} />
           <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,136,255,0)', transition: 'background 0.3s', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
             onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(0,136,255,0.1)'; }} onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(0,136,255,0)'; }}>
             <span style={{ color: '#fff', fontSize: 24, opacity: 0, transition: 'opacity 0.3s' }}
