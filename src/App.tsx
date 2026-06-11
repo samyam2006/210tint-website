@@ -382,7 +382,7 @@ function LoadingScreen() {
       </div>
       {/* Tagline */}
       <p style={{ fontFamily: 'Inter', fontSize: 12, letterSpacing: '4px', textTransform: 'uppercase', color: '#4a4a5a', marginTop: 20, animation: 'loaderLogoIn 0.6s ease 0.8s both' }}>
-        Mobile Nano-Ceramic Specialists
+        Nano-Ceramic Specialists · Columbia, MD
       </p>
       {/* Decorative line accents */}
       <div style={{ position: 'absolute', top: '50%', left: '10%', width: 60, height: 1, background: 'linear-gradient(90deg, transparent, rgba(0,136,255,0.15))', animation: 'loaderLogoIn 1s ease 0.6s both' }} />
@@ -1000,7 +1000,7 @@ function FAQ() {
   const faqs = [
     { q: 'What types of tint film do you offer?', a: 'We offer three tiers of UVIRON performance films: Premium Carbon for budget-friendly protection with a clean matte finish, Nano Carbon PUREMAX for enhanced heat rejection and durability, and Nano Ceramic KOOLMAX — our top tier — with maximum infrared heat rejection, crystal-clear clarity, and a lifetime warranty.' },
     { q: 'How long does window tinting take?', a: 'Most installations are completed in 1.5 to 3 hours depending on the vehicle type and number of windows. Full-vehicle tinting with windshield typically takes around 2.5 to 3 hours. We handle everything on-site at your location.' },
-    { q: 'Do you really come to my location?', a: 'Yes! We are a 100% mobile tinting service. We come to your home, office, or any convenient location across the DMV — including Howard County, Montgomery County, PG County, Baltimore, DC, and Northern Virginia. No shop visit required.' },
+    { q: 'Do you really come to my location?', a: 'Yes — we come to your home, office, or anywhere convenient across the DMV. We also have our shop at 10451 Fair Oaks, Columbia MD 21044 if you\'d rather drop your car off. Either way works.' },
     { q: 'What is your warranty policy?', a: 'Our Nano Ceramic KOOLMAX film comes with a lifetime warranty covering bubbling, peeling, lifting, cracking, delamination, color fading, adhesive failure, and manufacturer defects with full labor included. Nano Carbon carries a 5–7 year warranty, and Premium Carbon carries a 3–5 year warranty.' },
     { q: 'Will window tint interfere with my electronics?', a: 'Not at all. All of our UVIRON films — Premium Carbon, Nano Carbon, and Nano Ceramic — are 100% signal-friendly. They will not interfere with GPS, Bluetooth, cell signals, toll transponders, or any other vehicle electronics.' },
     { q: 'How should I care for my new tint?', a: 'Avoid rolling your windows down for 5–7 days after installation to allow the adhesive to fully cure. Clean with a soft microfiber cloth and ammonia-free cleaner. Avoid abrasive materials. Small water bubbles during the first few weeks are normal and will disappear as the film cures.' },
@@ -1039,7 +1039,7 @@ function Footer({ go }: { go: (p: string) => void }) {
           <div style={{ marginBottom: 20 }}>
             <img src="/210tintlogo.png" alt="210 Tint" style={{ height: 80, width: 'auto', objectFit: 'contain' }} />
           </div>
-          <p style={{ color: '#8e8ea0', fontSize: 16, lineHeight: 1.8, maxWidth: 280 }}>Columbia's premier mobile window tinting. Nano-ceramic protection installed at your location.</p>
+          <p style={{ color: '#8e8ea0', fontSize: 16, lineHeight: 1.8, maxWidth: 280 }}>Columbia's tinting & detailing specialists. We come to you — or visit our shop at 10451 Fair Oaks.</p>
         </div>
         <div>
           <h4 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 12, letterSpacing: '3px', color: '#4a4a5a', marginBottom: 20, textTransform: 'uppercase' }}>Navigation</h4>
@@ -1084,7 +1084,7 @@ function HomePage({ go }: { go: (p: string) => void }) {
   ];
 
   const whyUs = [
-    { title: '100% Mobile Service', desc: 'We come to your home, office, or anywhere in the DMV. No shop visit required.' },
+    { title: 'We Come to You', desc: 'We bring everything to your home or office — or drop your car at our Columbia shop. Your call.' },
     { title: '4.9-Star Google Rating', desc: 'Hundreds of five-star reviews. Professional service on every single job.' },
     { title: 'Satisfaction Guaranteed', desc: 'Every installation backed by our guarantee. If anything is off, we fix it at no charge.' },
     { title: 'UVIRON Performance Films', desc: 'KOOLMAX nano-ceramic blocks up to 89% infrared heat and 99% UV radiation.' },
@@ -1115,7 +1115,7 @@ function HomePage({ go }: { go: (p: string) => void }) {
                 display: 'inline-block', padding: '8px 20px', borderRadius: 2, fontSize: 12, fontWeight: 700,
                 letterSpacing: '3px', textTransform: 'uppercase', color: '#0088ff',
                 border: '1px solid rgba(0,136,255,0.3)', background: 'rgba(0,136,255,0.08)',
-              }}>Columbia, MD — Mobile Nano-Ceramic Specialists</span>
+              }}>Columbia, MD — Tint & Detail Specialists</span>
             </div>
 
             <h1 style={{
@@ -1152,6 +1152,9 @@ function HomePage({ go }: { go: (p: string) => void }) {
                 onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)'; e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
               >View Our Work</button>
             </div>
+            <p style={{ fontSize: 13, color: '#4a4a5a', marginTop: 20 }}>
+              We come to you — or visit our shop at <span style={{ color: '#8e8ea0' }}>10451 Fair Oaks, Columbia MD</span>
+            </p>
           </div>
 
           {/* Stats */}
@@ -1300,7 +1303,7 @@ function HomePage({ go }: { go: (p: string) => void }) {
       {/* ═══ WHY US ═══ */}
       <section style={{ padding: '120px 28px', background: '#0a0a0f', position: 'relative', overflow: 'hidden' }}>
         <div style={{ maxWidth: 1320, margin: '0 auto', position: 'relative', zIndex: 1 }}>
-          <SH tag="The Difference" title="Why Clients Choose 210 Tint" sub="Professional mobile tinting backed by the best films, transparent pricing, and a satisfaction guarantee." />
+          <SH tag="The Difference" title="Why Clients Choose 210 Tint" sub="Professional tinting backed by the best films, transparent pricing, and a satisfaction guarantee." />
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(360px,1fr))', gap: 12 }}>
             {whyUs.map((w, i) => (
               <div key={i} className={`${i % 2 === 0 ? 'rv-l' : 'rv-r'} d${(i % 4) + 1} tilt-card`} style={{
@@ -1388,7 +1391,7 @@ function HomePage({ go }: { go: (p: string) => void }) {
       <SectionDivider variant="dots" />
       <section style={{ padding: '100px 28px 140px', position: 'relative', overflow: 'hidden' }}>
         <div style={{ maxWidth: 1320, margin: '0 auto', position: 'relative', zIndex: 1 }}>
-          <div className="rv-blur"><SH tag="FAQ" title="Frequently Asked Questions" sub="Everything you need to know about our mobile window tinting service." /></div>
+          <div className="rv-blur"><SH tag="FAQ" title="Frequently Asked Questions" sub="Everything you need to know about our window tinting service." /></div>
           <FAQ />
         </div>
       </section>
@@ -1405,7 +1408,7 @@ function HomePage({ go }: { go: (p: string) => void }) {
           <h2 style={{ fontFamily: 'Space Grotesk', fontSize: 'clamp(30px,4.5vw,52px)', fontWeight: 800, letterSpacing: '-1.5px', marginBottom: 20, lineHeight: 1.1 }}>
             Elevate Your <span className="grad-text">Vehicle</span>
           </h2>
-          <p style={{ color: '#8e8ea0', fontSize: 16, lineHeight: 1.8, marginBottom: 44 }}>Schedule online in under two minutes. We come to you.</p>
+          <p style={{ color: '#8e8ea0', fontSize: 16, lineHeight: 1.8, marginBottom: 44 }}>Schedule online in under two minutes. We come to you — or drop off at our Columbia shop.</p>
           <div style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap' }}>
             <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" className="magnetic-btn" style={{ background: '#0088ff', color: '#fff', padding: '16px 44px', borderRadius: 3, fontSize: 16, fontWeight: 700, textDecoration: 'none', boxShadow: '0 4px 40px rgba(0,136,255,0.35)' }}>Book Your Appointment</a>
             <button onClick={() => go('contact')} style={{ background: 'transparent', color: '#fff', padding: '16px 44px', borderRadius: 3, border: '1px solid rgba(255,255,255,0.1)', fontSize: 16, fontWeight: 500, cursor: 'pointer', transition: 'all 0.4s cubic-bezier(.16,1,.3,1)' }}
@@ -1992,7 +1995,7 @@ Today: ${todayStr}. Use current year or later for dates. Be friendly, conversati
     if (next) dismissIntro();
     if (next && !hasOpened) {
       setHasOpened(true);
-      const greet = { role: 'assistant', content: "Hey! 👋 Welcome to **210 Tints** — Columbia's mobile tinting specialists using **UVIRON** performance films.\n\nI can help with pricing, film info, or book you in. We come to you anywhere in the DMV! What can I help with?" };
+      const greet = { role: 'assistant', content: "Hey! 👋 Welcome to **210 Tints** — Columbia's tinting & detailing specialists using **UVIRON** performance films.\n\nWe come to you anywhere in the DMV, or you can drop off at our Columbia shop. I can help with pricing, film info, or book you in. What can I help with?" };
       setMessages([greet]);
       historyRef.current = [greet];
       getEventTypes(); // pre-fetch
@@ -2174,7 +2177,7 @@ function TrustBadges() {
     { icon: '🛡️', label: 'UVIRON Certified', desc: 'Official performance film partner' },
     { icon: '⭐', label: '4.9 Google Rating', desc: '30+ five-star reviews' },
     { icon: '🔧', label: '1000+ Vehicles', desc: 'Professionally tinted' },
-    { icon: '🏠', label: '100% Mobile', desc: 'We come to you — anywhere in DMV' },
+    { icon: '🏠', label: 'Mobile or Shop', desc: 'We come to you, or visit our Columbia shop' },
     { icon: '✅', label: 'Lifetime Warranty', desc: 'On Nano Ceramic KOOLMAX' },
     { icon: '✂️', label: 'Computer-Cut', desc: 'No blade touches your car' },
   ];
@@ -2260,7 +2263,7 @@ function MDSummerTintPage() {
 
     <div className="rv" style={{ textAlign: 'center', padding: '48px 28px', marginTop: 40, borderRadius: 4, background: 'rgba(0,136,255,0.04)', border: '1px solid rgba(0,136,255,0.1)' }}>
       <h3 style={{ fontFamily: 'Space Grotesk', fontSize: 22, fontWeight: 700, marginBottom: 12 }}>Beat the Heat This Summer</h3>
-      <p style={{ color: '#8e8ea0', fontSize: 15, marginBottom: 24 }}>Book now and we'll come to you — home, office, anywhere in the DMV.</p>
+      <p style={{ color: '#8e8ea0', fontSize: 15, marginBottom: 24 }}>Book now — we come to you, or drop off at our Columbia shop.</p>
       <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" className="magnetic-btn" style={{ display: 'inline-block', background: '#0088ff', color: '#fff', padding: '15px 40px', borderRadius: 3, fontSize: 16, fontWeight: 700, textDecoration: 'none', boxShadow: '0 4px 30px rgba(0,136,255,0.3)' }}>Book Your Appointment</a>
     </div>
   </section></div>);
@@ -2396,7 +2399,7 @@ function StarlightSalePage({ go }: { go: (p: string) => void }) {
         <div className="rv d2" style={{ padding: '40px 36px', borderRadius: 4, border: '1px solid rgba(255,255,255,0.04)', background: '#0a0a0f', marginBottom: 40 }}>
           <h3 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 20, marginBottom: 24 }}>What's Included</h3>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(200px,1fr))', gap: 16 }}>
-            {['Fiber optic star ceiling install','Custom star density layout','100% mobile — we come to you','Professional-grade materials','Clean install, no mess left behind','Book online in under 2 minutes'].map((item, i) => (
+            {['Fiber optic star ceiling install','Custom star density layout','Mobile or drop off at our shop','Professional-grade materials','Clean install, no mess left behind','Book online in under 2 minutes'].map((item, i) => (
               <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, color: '#8e8ea0', fontSize: 14 }}>
                 <span style={{ color: '#0088ff', fontSize: 16, flexShrink: 0 }}>✓</span>
                 {item}
@@ -2478,7 +2481,7 @@ function DetailingHero() {
         </h1>
 
         <p style={{ color: '#8e8ea0', fontSize: 'clamp(15px, 1.4vw, 18px)', lineHeight: 1.75, maxWidth: 600, marginTop: 32, animation: 'fadeUp 0.9s ease forwards', animationDelay: '0.3s', opacity: 0 }}>
-          We bring the equipment, the water, and the supplies. You don't drive anywhere — we come to Columbia, Ellicott City, Annapolis, and across the DMV.
+          We bring the equipment, the water, and the supplies to your driveway — or drop your car at our Columbia shop. Either way, we cover Columbia, Ellicott City, Annapolis, and across the DMV.
         </p>
 
         <div style={{ display: 'flex', gap: 28, alignItems: 'center', flexWrap: 'wrap', marginTop: 44, animation: 'fadeUp 0.9s ease forwards', animationDelay: '0.45s', opacity: 0 }}>
