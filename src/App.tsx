@@ -1881,7 +1881,7 @@ STARLIGHT BOOKING FLOW: Collect: name, email, phone, vehicle year/make/model, pa
 
 MOBILE JOB NOTICE: If the customer is booking a mobile job, always ask if they have access to a garage or covered parking space at their location. Let them know that without a garage or covered area, there is a significantly higher chance of minor imperfections (dust, wind, debris) affecting the install quality. We will always do our best, but we cannot guarantee a flawless result on an open-air mobile job. Mention this early and clearly.
 
-210 SIGNATURE PACKAGE: Our flagship all-in-one package. Includes: Restore-tier detail (polish + 12-month paint sealant + headlight restoration), full-vehicle KoolMax Nano Ceramic tint with windshield, fiber-optic starlight headliner (550 stars), and computer-cut precision film. Price: $1,097 for coupes, $1,247 for sedans, $1,447 for SUVs/trucks. Saves $600+ vs booking each service separately. When a customer asks about the best or most complete package, always mention the 210 Signature. Note: starlight portion still requires a garage or covered space.
+210 SIGNATURE PACKAGE: Our flagship all-in-one package. Includes: Restore-tier detail (polish + 12-month paint sealant + headlight restoration), full-vehicle KoolMax Nano Ceramic tint with windshield, fiber-optic starlight headliner (550 stars), and computer-cut precision film. Price: $1,316 for coupes, $1,496 for sedans, $1,736 for SUVs/trucks. Saves $600+ vs booking each service separately. When a customer asks about the best or most complete package, always mention the 210 Signature. Note: starlight portion still requires a garage or covered space.
 
 BOOKING FLOW (TINTING): Collect: name, email, phone, vehicle year/make/model, tint darkness %, tint type (Uviron Premium Carbon/PureMax Nano Carbon/KoolMax Nano Ceramic), previously tinted (Yes/No/I don't know), waiting or leaving during appointment, any notes, preferred date.
 Once you have all info for either service, output: [BOOK:event_key:YYYY-MM-DD:name:email:phone:vehicle:tint_type:prev_tinted:waiting_or_leaving:extra_notes]
@@ -2645,7 +2645,7 @@ function BundlesSection({ go }: { go: (p: string) => void }) {
     {
       name: '210 Signature',
       badge: 'Save $600+',
-      price: { coupe: 1097, sedan: 1247, suv: 1447 },
+      price: { coupe: 1316, sedan: 1496, suv: 1736 },
       services: [
         'Restore-tier detail (polish + 12-month sealant + headlights)',
         'Full-vehicle KOOLMAX Nano Ceramic tint (windshield included)',
