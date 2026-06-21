@@ -651,6 +651,9 @@ function TintSimulator() {
   );
 }
 
+/* ─ sale helper: returns the inflated "original" price (15% above actual, rounded to nearest $5) ─ */
+const saleOrig = (p: number): number => Math.round(p * 1.15 / 5) * 5;
+
 /* ═══ PRICING CALCULATOR ═══ */
 function PriceCalculator() {
   const [vehicle, setVehicle] = useState('sedan');
@@ -845,7 +848,10 @@ function PriceCalculator() {
             <span style={{ fontSize: 12, color: '#8e8ea0' }}>Pre-cut to exact window shapes. No blade touches your car.</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
-            <span style={{ fontFamily: 'Space Grotesk', fontWeight: 800, color: '#0088ff' }}>+$50</span>
+            <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 1 }}>
+              <span style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 11, color: '#ef4444', textDecoration: 'line-through' }}>+${saleOrig(50)}</span>
+              <span style={{ fontFamily: 'Space Grotesk', fontWeight: 800, color: '#7dd3ff', textShadow: '0 0 10px rgba(0,136,255,0.6)' }}>+$50</span>
+            </span>
             <div style={{ width: 20, height: 20, borderRadius: 4, border: computerCut ? '2px solid #0088ff' : '2px solid #4a4a5a', background: computerCut ? '#0088ff' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s', fontSize: 12, color: '#fff' }}>
               {computerCut && '✓'}
             </div>
@@ -887,7 +893,11 @@ function PriceCalculator() {
         {travelFee !== null && travelFee > 0 && (
           <div style={{ marginBottom: 16, display: 'flex', flexDirection: 'column', gap: 6 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 8px', color: '#8e8ea0', fontSize: 14 }}>
-              <span>Tint service</span><span style={{ fontFamily: 'Space Grotesk', fontWeight: 600, color: '#eeeef2' }}>${tintPrice}</span>
+              <span>Tint service</span>
+              <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 1 }}>
+                <span style={{ fontFamily: 'Space Grotesk', fontSize: 11, color: '#ef4444', textDecoration: 'line-through' }}>${saleOrig(tintPrice)}</span>
+                <span style={{ fontFamily: 'Space Grotesk', fontWeight: 600, color: '#7dd3ff', textShadow: '0 0 8px rgba(0,136,255,0.5)' }}>${tintPrice}</span>
+              </span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 8px', color: '#8e8ea0', fontSize: 14 }}>
               <span>Travel fee (~{travelMiles} mi)</span><span style={{ fontFamily: 'Space Grotesk', fontWeight: 600, color: '#7dd3ff' }}>${travelFee}</span>
@@ -895,11 +905,13 @@ function PriceCalculator() {
             <div style={{ height: 1, background: 'rgba(255,255,255,0.06)', margin: '4px 0' }} />
           </div>
         )}
-        <span style={{ display: 'block', fontSize: 12, fontWeight: 700, letterSpacing: '3px', textTransform: 'uppercase', color: '#4a4a5a', marginBottom: 8 }}>{travelFee !== null && travelFee > 0 ? 'Total' : 'Your Price'}</span>
-        <div style={{ fontFamily: 'Space Grotesk', fontSize: 56, fontWeight: 800, color: '#fff', lineHeight: 1 }}>
-          <span style={{ fontSize: 28, color: '#0088ff', verticalAlign: 'top' }}>$</span>{animPrice}
+        <span style={{ display: 'block', fontSize: 12, fontWeight: 700, letterSpacing: '3px', textTransform: 'uppercase', color: '#4a4a5a', marginBottom: 4 }}>{travelFee !== null && travelFee > 0 ? 'Total' : 'Your Price'}</span>
+        <div style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 16, color: '#ef4444', textDecoration: 'line-through', marginBottom: 4 }}>${saleOrig(grandTotal)}</div>
+        <div style={{ fontFamily: 'Space Grotesk', fontSize: 56, fontWeight: 800, color: '#7dd3ff', lineHeight: 1, textShadow: '0 0 24px rgba(0,136,255,0.55)' }}>
+          <span style={{ fontSize: 28, color: '#7dd3ff', verticalAlign: 'top' }}>$</span>{animPrice}
         </div>
-        <p style={{ color: '#8e8ea0', fontSize: 16, marginTop: 12 }}>
+        <div style={{ display: 'inline-block', background: 'rgba(239,68,68,0.12)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 2, padding: '2px 10px', color: '#f87171', fontSize: 11, fontWeight: 700, letterSpacing: '1px', marginTop: 6 }}>15% OFF</div>
+        <p style={{ color: '#8e8ea0', fontSize: 16, marginTop: 10 }}>
           {vehicleNames[vehicle]} · {filmNames[film]} · {coverageOptions[vehicle].find(o => o.id === coverage)?.label}
           {computerCut && ' · Computer Cut'}
         </p>
@@ -1541,14 +1553,14 @@ function PricingPage() {
         {t.top&&<div style={{background:'#0088ff',padding:'8px',textAlign:'center',fontSize:10,fontWeight:700,letterSpacing:'3px',textTransform:'uppercase'}}>Top Tier</div>}
         <div style={{padding:32}}>
           <h3 style={{fontFamily:'Space Grotesk',fontSize:19,fontWeight:700,marginBottom:24}}>{t.name}</h3>
-          {t.items.map((it,j)=>{const [price,desc]=it.split('—');return(<div key={j} style={{padding:'12px 0',borderBottom:'1px solid rgba(255,255,255,0.04)',fontSize:14,color:'#8e8ea0',display:'flex',justifyContent:'space-between',alignItems:'center'}}><span>{desc?.trim()}</span><span style={{fontFamily:'Space Grotesk',fontWeight:700,color:'#eee'}}>{price?.trim()}</span></div>);})}
+          {t.items.map((it,j)=>{const [price,desc]=it.split('—');const priceStr=price?.trim()||'';const num=parseInt(priceStr.replace(/[^0-9]/g,''))||0;const orig=num?saleOrig(num):0;return(<div key={j} style={{padding:'12px 0',borderBottom:'1px solid rgba(255,255,255,0.04)',fontSize:14,color:'#8e8ea0',display:'flex',justifyContent:'space-between',alignItems:'center'}}><span>{desc?.trim()}</span><span style={{display:'flex',flexDirection:'column',alignItems:'flex-end',gap:1}}>{orig>0&&<span style={{fontFamily:'Space Grotesk',fontSize:11,color:'#ef4444',textDecoration:'line-through'}}>${orig}</span>}<span style={{fontFamily:'Space Grotesk',fontWeight:700,color:'#7dd3ff',textShadow:'0 0 8px rgba(0,136,255,0.45)'}}>{priceStr}</span></span></div>);})}
           <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" style={{display:'block',marginTop:28,padding:'13px',textAlign:'center',borderRadius:3,background:t.top?'#0088ff':'transparent',border:t.top?'none':'1px solid rgba(255,255,255,0.08)',color:'#fff',fontSize:13,fontWeight:600,textDecoration:'none'}}>Book Now</a>
         </div>
       </div>))}
     </div>
     <div className="rv" style={{marginTop:40,padding:'32px 36px',borderRadius:4,border:'1px solid rgba(255,255,255,0.04)',background:'#0a0a0f',display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:20}}>
       <div><h3 style={{fontFamily:'Space Grotesk',fontWeight:700,fontSize:18}}>Computer-Cut Film Upgrade</h3><p style={{color:'#8e8ea0',fontSize:13,marginTop:6,maxWidth:480,lineHeight:1.7}}>Pre-cut to exact window shapes. No blade touches your car. Cleaner edges, tighter fit, flawless finish.</p></div>
-      <div style={{textAlign:'center'}}><span style={{fontFamily:'Space Grotesk',fontSize:28,fontWeight:800,color:'#0088ff'}}>+$50</span><span style={{display:'block',fontSize:11,color:'#4a4a5a'}}>one-time upgrade</span></div>
+      <div style={{textAlign:'center'}}><div style={{fontFamily:'Space Grotesk',fontSize:14,color:'#ef4444',textDecoration:'line-through'}}>+$60</div><span style={{fontFamily:'Space Grotesk',fontSize:28,fontWeight:800,color:'#7dd3ff',textShadow:'0 0 12px rgba(0,136,255,0.55)'}}>+$50</span><span style={{display:'block',fontSize:11,color:'#4a4a5a'}}>one-time upgrade</span></div>
     </div>
 
     {/* ═══ STARLIGHT HEADLINER PRICING ═══ */}
@@ -1563,12 +1575,12 @@ function PricingPage() {
       <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(220px,1fr))',gap:14,marginTop:20}}>
         <div style={{padding:'22px 20px',borderRadius:4,background:'#0a0a0f',border:'1px solid rgba(0,136,255,0.3)'}}>
           <span style={{fontSize:10,fontWeight:700,letterSpacing:'2.5px',textTransform:'uppercase',color:'#60a5fa'}}>Starter</span>
-          <div style={{marginTop:10}}><span style={{fontFamily:'Space Grotesk',fontSize:30,fontWeight:800,color:'#fff'}}>$700</span></div>
+          <div style={{marginTop:10}}><div style={{fontFamily:'Space Grotesk',fontSize:13,color:'#ef4444',textDecoration:'line-through'}}>$805</div><span style={{fontFamily:'Space Grotesk',fontSize:30,fontWeight:800,color:'#7dd3ff',textShadow:'0 0 12px rgba(0,136,255,0.55)'}}>$700</span></div>
           <p style={{color:'#8e8ea0',fontSize:13,marginTop:8,lineHeight:1.6}}>550 stars — clean, even galaxy effect. Great entry-level install.</p>
         </div>
         <div style={{padding:'22px 20px',borderRadius:4,background:'#0a0a0f',border:'1px solid rgba(255,255,255,0.04)'}}>
           <span style={{fontSize:10,fontWeight:700,letterSpacing:'2.5px',textTransform:'uppercase',color:'#4a4a5a'}}>Add-On</span>
-          <div style={{marginTop:10}}><span style={{fontFamily:'Space Grotesk',fontSize:30,fontWeight:800,color:'#fff'}}>+$100–150</span></div>
+          <div style={{marginTop:10}}><div style={{fontFamily:'Space Grotesk',fontSize:13,color:'#ef4444',textDecoration:'line-through'}}>$115–175</div><span style={{fontFamily:'Space Grotesk',fontSize:30,fontWeight:800,color:'#7dd3ff',textShadow:'0 0 12px rgba(0,136,255,0.55)'}}>+$100–150</span></div>
           <p style={{color:'#8e8ea0',fontSize:13,marginTop:8,lineHeight:1.6}}>Per additional 100 stars. Build a denser, more dramatic night sky.</p>
         </div>
         <div style={{padding:'22px 20px',borderRadius:4,background:'#0a0a0f',border:'1px solid rgba(255,255,255,0.04)'}}>
@@ -2331,7 +2343,7 @@ function StarlightPage({ go }: { go: (p: string) => void }) {
 /* ═══ STARLIGHT SALE PAGE ═══ */
 function StarlightSalePage({ go }: { go: (p: string) => void }) {
   useReveal();
-  const orig = [824, 100, 150];
+  const orig = [800, 100, 145];
   const disc = [697, 85, 127];
   return (
     <div style={{ paddingTop: 130 }}>
@@ -2556,11 +2568,13 @@ function PricingMatrix() {
                 {/* Price — fades on vehicle switch */}
                 <div style={{ marginBottom: 28, opacity: fading ? 0 : 1, transition: 'opacity 0.18s ease' }}>
                   <span style={{ fontSize: 12, color: '#4a4a5a', letterSpacing: '1px' }}>Starting at</span>
-                  <div style={{ fontFamily: 'Space Grotesk', fontWeight: 800, lineHeight: 1, marginTop: 4 }}>
-                    <span style={{ fontSize: 20, color: '#0088ff', verticalAlign: 'top', lineHeight: '44px' }}>$</span>
-                    <span style={{ fontSize: 52, color: '#fff' }}>{price}</span>
+                  <div style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 15, color: '#ef4444', textDecoration: 'line-through', marginTop: 4 }}>${saleOrig(price)}</div>
+                  <div style={{ fontFamily: 'Space Grotesk', fontWeight: 800, lineHeight: 1 }}>
+                    <span style={{ fontSize: 20, color: '#7dd3ff', verticalAlign: 'top', lineHeight: '44px', textShadow: '0 0 10px rgba(0,136,255,0.5)' }}>$</span>
+                    <span style={{ fontSize: 52, color: '#7dd3ff', textShadow: '0 0 20px rgba(0,136,255,0.45)' }}>{price}</span>
                     <span style={{ fontSize: 22, color: '#4a4a5a', marginLeft: 1 }}>+</span>
                   </div>
+                  <div style={{ display: 'inline-block', background: 'rgba(239,68,68,0.12)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 2, padding: '2px 8px', color: '#f87171', fontSize: 10, fontWeight: 700, letterSpacing: '1px', marginTop: 6 }}>15% OFF</div>
                 </div>
 
                 {/* Inclusions */}
@@ -2680,12 +2694,17 @@ function BundlesSection({ go }: { go: (p: string) => void }) {
               <h3 style={{ fontFamily: 'Space Grotesk', fontSize: b.mega ? 28 : 22, fontWeight: 800, marginBottom: b.mega ? 8 : 18 }}>{b.name}</h3>
               {'price' in b && b.price && (
                 <div style={{ marginBottom: 18 }}>
-                  <span style={{ fontFamily: 'Space Grotesk', fontSize: 36, fontWeight: 800, color: '#0088ff' }}>${b.price.sedan.toLocaleString()}</span>
-                  <span style={{ color: '#8e8ea0', fontSize: 13, marginLeft: 8 }}>sedan&nbsp;&nbsp;·&nbsp;&nbsp;</span>
-                  <span style={{ fontFamily: 'Space Grotesk', fontSize: 22, fontWeight: 700, color: '#60a5fa' }}>${b.price.suv.toLocaleString()}</span>
-                  <span style={{ color: '#8e8ea0', fontSize: 13, marginLeft: 8 }}>SUV</span>
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, flexWrap: 'wrap' }}>
+                    <span style={{ fontFamily: 'Space Grotesk', fontSize: 14, color: '#ef4444', textDecoration: 'line-through' }}>${saleOrig(b.price.sedan).toLocaleString()}</span>
+                    <span style={{ fontFamily: 'Space Grotesk', fontSize: 36, fontWeight: 800, color: '#7dd3ff', textShadow: '0 0 16px rgba(0,136,255,0.5)' }}>${b.price.sedan.toLocaleString()}</span>
+                    <span style={{ color: '#8e8ea0', fontSize: 13 }}>sedan&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+                    <span style={{ fontFamily: 'Space Grotesk', fontSize: 14, color: '#ef4444', textDecoration: 'line-through' }}>${saleOrig(b.price.suv).toLocaleString()}</span>
+                    <span style={{ fontFamily: 'Space Grotesk', fontSize: 22, fontWeight: 700, color: '#7dd3ff', textShadow: '0 0 12px rgba(0,136,255,0.45)' }}>${b.price.suv.toLocaleString()}</span>
+                    <span style={{ color: '#8e8ea0', fontSize: 13 }}>SUV</span>
+                  </div>
                   <div style={{ marginTop: 6, fontSize: 13, color: '#8e8ea0' }}>
-                    Coupe: <span style={{ color: '#eeeef2', fontWeight: 600 }}>${b.price.coupe.toLocaleString()}</span>
+                    Coupe: <span style={{ fontFamily: 'Space Grotesk', fontSize: 12, color: '#ef4444', textDecoration: 'line-through', marginRight: 4 }}>${saleOrig(b.price.coupe).toLocaleString()}</span>
+                    <span style={{ color: '#7dd3ff', fontWeight: 600, textShadow: '0 0 8px rgba(0,136,255,0.45)' }}>${b.price.coupe.toLocaleString()}</span>
                   </div>
                 </div>
               )}
@@ -2788,6 +2807,11 @@ export default function App() {
           .faq-answer{padding:0 20px 20px!important}
         }
       `}</style>
+      {/* SITEWIDE SALE BANNER */}
+      <div style={{ background: 'linear-gradient(90deg,#7f1d1d,#991b1b,#7f1d1d)', padding: '9px 16px', textAlign: 'center', fontSize: 13, fontWeight: 700, letterSpacing: '1.5px', color: '#fff', textTransform: 'uppercase', position: 'relative', zIndex: 999 }}>
+        🔥 15% Off Sitewide — Limited time.&nbsp;
+        <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" style={{ color: '#fca5a5', textDecoration: 'underline', textUnderlineOffset: 2 }}>Book now to lock in your price →</a>
+      </div>
       <ScrollBar />
       <Nav page={page} go={go} />
       <main key={page} style={{ opacity: transitioning ? 0 : 1, transform: transitioning ? 'translateY(20px)' : 'translateY(0)', transition: 'opacity 0.4s ease, transform 0.4s cubic-bezier(.16,1,.3,1)' }}>
