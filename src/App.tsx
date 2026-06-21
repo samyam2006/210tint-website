@@ -951,6 +951,10 @@ function Nav({ page, go }: { page: string; go: (p: string) => void }) {
       transition: 'all 0.5s cubic-bezier(.16,1,.3,1)',
       padding: scrolled ? '12px 0' : '20px 0',
     }}>
+      {/* Sitewide sale banner — lives inside the fixed nav so it's always on top */}
+      <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" style={{ display: 'block', background: 'linear-gradient(90deg,#7f1d1d,#991b1b,#7f1d1d)', padding: '8px 16px', textAlign: 'center', fontSize: 13, fontWeight: 700, letterSpacing: '1.5px', color: '#fff', textDecoration: 'none', textTransform: 'uppercase', lineHeight: 1.4 }}>
+        🔥 15% Off Sitewide — Limited time · <span style={{ color: '#fca5a5', textDecoration: 'underline', textUnderlineOffset: 2 }}>Book now to lock in your price →</span>
+      </a>
       <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <button onClick={() => nav('home')} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
           <img src="/210tintlogo.webp" alt="210 Tint" width={320} height={320} style={{ height: 64, width: 'auto', objectFit: 'contain' }} />
@@ -1120,7 +1124,7 @@ function HomePage({ go }: { go: (p: string) => void }) {
         <HeroBackground />
         <GlassScene />
 
-        <div style={{ position: 'relative', zIndex: 10, maxWidth: 1320, margin: '0 auto', padding: '180px 28px 100px', width: '100%', textAlign: 'center' }}>
+        <div style={{ position: 'relative', zIndex: 10, maxWidth: 1320, margin: '0 auto', padding: '218px 28px 100px', width: '100%', textAlign: 'center' }}>
           <div style={{ maxWidth: 760, margin: '0 auto' }}>
             <div style={{ animation: 'fadeUp 1s ease forwards', animationDelay: '0.3s', opacity: 0 }}>
               <span style={{
@@ -1488,7 +1492,7 @@ function PortfolioPage() {
     { name: 'Dodge Durango', film: 'Premium Nano Carbon', img: '/cars/snowy-durango.webp' },
     { name: 'Dodge Durango', film: 'Premium Nano Carbon', img: '/cars/dark-snowy-durango.webp' },
   ];
-  return (<div style={{ paddingTop: 130 }}><section style={{ padding: '0 28px 120px', maxWidth: 1320, margin: '0 auto' }}>
+  return (<div style={{ paddingTop: 168 }}><section style={{ padding: '0 28px 120px', maxWidth: 1320, margin: '0 auto' }}>
     <SH tag="Our Work" title="Vehicle Tinting Portfolio" sub="Professional-grade installations on luxury, performance, and everyday vehicles." />
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(360px,1fr))', gap: 14 }}>
       {items.map((p, i) => (<div key={i} className={`rv-s d${(i%3)+1} tilt-card`} style={{ borderRadius: 4, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.04)', background: '#0a0a0f', cursor: 'pointer' }}
@@ -1543,7 +1547,7 @@ function PricingPage() {
     truck:{label:'Truck / SUV',tiers:[{name:'Uviron Premium Carbon',items:['$65 — Two side windows','$120 — All four/six sides','$115 — Front or back windshield','$210 — Full car (no windshield)','$325 — Whole car']},{name:'Nano Carbon PUREMAX',items:['$85 — Two side windows','$170 — All four/six sides','$145 — Front or back windshield','$305 — Full car (no windshield)','$450 — Whole car']},{name:'Nano Ceramic KOOLMAX',items:['$135 — Two side windows','$260 — All four/six sides','$220 — Front or back windshield','$470 — Full car (no windshield)','$690 — Whole car'],top:true}]},
   };
   const cur = data[tab];
-  return (<div style={{paddingTop:130}}><section style={{padding:'0 28px 120px',maxWidth:1320,margin:'0 auto'}}>
+  return (<div style={{paddingTop:168}}><section style={{padding:'0 28px 120px',maxWidth:1320,margin:'0 auto'}}>
     <SH tag="Pricing" title="Transparent Tinting Rates" sub="Flat pricing. No hidden fees. Select your vehicle and film." />
     <div style={{display:'flex',gap:2,justifyContent:'center',marginBottom:52,background:'#101018',borderRadius:3,padding:3,maxWidth:400,margin:'0 auto 52px'}}>
       {Object.entries(data).map(([k,v])=>(<button key={k} onClick={()=>setTab(k)} style={{flex:1,padding:'11px 16px',borderRadius:2,border:'none',cursor:'pointer',fontSize:13,fontWeight:tab===k?700:400,background:tab===k?'#0088ff':'transparent',color:tab===k?'#fff':'#8e8ea0',transition:'all 0.3s'}}>{v.label}</button>))}
@@ -1610,7 +1614,7 @@ function ComparePage() {
   const tableRef = useRef<HTMLDivElement>(null);
   const scrollTable = () => { tableRef.current?.scrollBy({ left: 220, behavior: 'smooth' }); setTableScrolled(true); };
   const rows = [['UV Rejection','~98%','~99%','≥99.9%'],['Heat Rejection','25–35%','35–50%','50–75%'],['Infrared Blocking','Low','Moderate','Very High'],['Signal Interference','None','None','None'],['Glare Reduction','Up to 50%','Up to 60%','Up to 70%'],['Color Stability','Excellent','Excellent','Permanent'],['Optical Clarity','Good','Good','Crystal Clear'],['Warranty','3–5 Years','5–7 Years','Lifetime'],['Price Tier','Entry','Mid-Range','Premium']];
-  return (<div style={{paddingTop:130}}><section style={{padding:'0 28px 120px',maxWidth:1320,margin:'0 auto'}}>
+  return (<div style={{paddingTop:168}}><section style={{padding:'0 28px 120px',maxWidth:1320,margin:'0 auto'}}>
     <SH tag="Film Guide" title="Compare Tint Options" sub="Comfort, protection, and long-term value — not just darkness." />
     <div style={{position:'relative',marginBottom:80}}>
       <div ref={tableRef} className="rv" style={{overflowX:'auto'}} onScroll={(e)=>{ if(e.currentTarget.scrollLeft>10) setTableScrolled(true); }}>
@@ -1682,7 +1686,7 @@ function WarrantyPage() {
     {num:'06',title:'Making a Claim',body:'Contact us directly for a free inspection. Proof of original service required. Non-transferable unless agreed in writing.'},
     {num:'07',title:'No Full Refunds',body:'All services are non-refundable once the installation has begun. We do not issue cash or card refunds under any circumstances. If you are unhappy with the result, we will rebook and correct the issue at no charge under our satisfaction guarantee — but no monetary refunds will be issued.'},
   ];
-  return (<div style={{paddingTop:130}}><section style={{padding:'0 28px 120px',maxWidth:880,margin:'0 auto'}}>
+  return (<div style={{paddingTop:168}}><section style={{padding:'0 28px 120px',maxWidth:880,margin:'0 auto'}}>
     <SH tag="Our Commitment" title="Warranty & Policy" sub="Backed by our satisfaction guarantee and lifetime warranty." />
     {s.map((x,i)=>(<div key={i} className={`rv d${(i%3)+1}`} style={{padding:'32px 36px',borderRadius:4,border:'1px solid rgba(255,255,255,0.04)',background:'#0a0a0f',marginBottom:10}}>
       <div style={{display:'flex',gap:20,alignItems:'flex-start'}}>
@@ -1728,7 +1732,7 @@ function ContactPage() {
 
   const inputStyle = { width: '100%', padding: '12px 14px', borderRadius: 3, border: '1px solid rgba(255,255,255,0.05)', background: '#101018', color: '#eee', fontSize: 15, outline: 'none', transition: 'border-color 0.3s', fontFamily: 'Inter, sans-serif' };
 
-  return (<div style={{paddingTop:130}}><section style={{padding:'0 28px 120px',maxWidth:1100,margin:'0 auto'}}>
+  return (<div style={{paddingTop:168}}><section style={{padding:'0 28px 120px',maxWidth:1100,margin:'0 auto'}}>
     <SH tag="Get In Touch" title="Reach Out Today" sub="Questions or ready to book? We are here to help." />
     <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(340px,1fr))',gap:24}}>
       <div className="rv" style={{padding:36,borderRadius:4,border:'1px solid rgba(255,255,255,0.04)',background:'#0a0a0f'}}>
@@ -1782,7 +1786,7 @@ function TintLawsPage({ go }: { go: (p: string) => void }) {
     'Tint shops are not liable for your tint choice — you are responsible for compliance.',
     'Out-of-state vehicles are still subject to MD tint laws while driving in Maryland.',
   ];
-  return (<div style={{ paddingTop: 130 }}><section style={{ padding: '0 28px 80px', maxWidth: 880, margin: '0 auto' }}>
+  return (<div style={{ paddingTop: 168 }}><section style={{ padding: '0 28px 80px', maxWidth: 880, margin: '0 auto' }}>
     <SH tag="Maryland Law" title="Window Tint Laws in MD" sub="Know what's legal before you tint. Updated for 2026." />
     <div style={{ display: 'grid', gap: 10, marginBottom: 60 }}>
       {laws.map((l, i) => (
@@ -2217,7 +2221,7 @@ function TrustBadges() {
 /* ═══ BLOG: CERAMIC VS CARBON ═══ */
 function CeramicVsCarbonPage() {
   useReveal();
-  return (<div style={{ paddingTop: 130 }}><section style={{ padding: '0 28px 120px', maxWidth: 880, margin: '0 auto' }}>
+  return (<div style={{ paddingTop: 168 }}><section style={{ padding: '0 28px 120px', maxWidth: 880, margin: '0 auto' }}>
     <SH tag="Film Guide" title="Ceramic vs Carbon Tint" sub="Which film is worth it? A detailed breakdown to help you decide." />
 
     <div className="rv" style={{ padding: '32px', borderRadius: 4, border: '1px solid rgba(0,136,255,0.15)', background: '#0a0a0f', marginBottom: 32 }}>
@@ -2252,7 +2256,7 @@ function CeramicVsCarbonPage() {
 /* ═══ BLOG: BEST TINT FOR MD SUMMERS ═══ */
 function MDSummerTintPage() {
   useReveal();
-  return (<div style={{ paddingTop: 130 }}><section style={{ padding: '0 28px 120px', maxWidth: 880, margin: '0 auto' }}>
+  return (<div style={{ paddingTop: 168 }}><section style={{ padding: '0 28px 120px', maxWidth: 880, margin: '0 auto' }}>
     <SH tag="Seasonal Guide" title="Best Tint for Maryland Summers" sub="Beat the DMV heat with the right window film. Here's what actually works." />
 
     <div className="rv" style={{ padding: '32px', borderRadius: 4, border: '1px solid rgba(0,136,255,0.15)', background: '#0a0a0f', marginBottom: 32 }}>
@@ -2286,7 +2290,7 @@ function MDSummerTintPage() {
 /* ═══ TINT SIMULATOR PAGE ═══ */
 function TintSimulatorPage() {
   useReveal();
-  return (<div style={{ paddingTop: 130 }}><section style={{ padding: '0 28px 120px', maxWidth: 1320, margin: '0 auto' }}>
+  return (<div style={{ paddingTop: 168 }}><section style={{ padding: '0 28px 120px', maxWidth: 1320, margin: '0 auto' }}>
     <SH tag="Try It" title="Tint Simulator" sub="Preview how different films and darkness levels look on your vehicle." />
     <TintSimulator />
   </section></div>);
@@ -2295,7 +2299,7 @@ function TintSimulatorPage() {
 /* ═══ STARLIGHT HEADLINER PAGE ═══ */
 function StarlightPage({ go }: { go: (p: string) => void }) {
   useReveal();
-  return (<div style={{ paddingTop: 130 }}><section style={{ padding: '0 28px 120px', maxWidth: 880, margin: '0 auto' }}>
+  return (<div style={{ paddingTop: 168 }}><section style={{ padding: '0 28px 120px', maxWidth: 880, margin: '0 auto' }}>
     <SH tag="New Service" title="Starlight Headliner" sub="A custom fiber-optic galaxy installed in your car's ceiling. Made for night drives." />
 
     <div className="rv" style={{ padding: '32px', borderRadius: 4, border: '1px solid rgba(0,136,255,0.15)', background: 'linear-gradient(180deg,#0a0a0f 0%,#0a1620 100%)', marginBottom: 32 }}>
@@ -2346,7 +2350,7 @@ function StarlightSalePage({ go }: { go: (p: string) => void }) {
   const orig = [800, 100, 145];
   const disc = [697, 85, 127];
   return (
-    <div style={{ paddingTop: 130 }}>
+    <div style={{ paddingTop: 168 }}>
       <section style={{ padding: '0 28px 120px', maxWidth: 900, margin: '0 auto' }}>
         {/* Header */}
         <div className="rv" style={{ textAlign: 'center', marginBottom: 56 }}>
@@ -2488,7 +2492,7 @@ const ADDONS = [
 /* ── DETAILING HERO ── */
 function DetailingHero() {
   return (
-    <section style={{ position: 'relative', padding: '160px 28px 80px', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+    <section style={{ position: 'relative', padding: '198px 28px 80px', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
         <h1 style={{ fontFamily: 'Space Grotesk', fontSize: 'clamp(40px, 7vw, 92px)', fontWeight: 800, letterSpacing: '-3px', lineHeight: 1, maxWidth: 920, animation: 'fadeUp 0.9s ease forwards', animationDelay: '0.15s', opacity: 0 }}>
           Hand-detailed cars. At your driveway.
@@ -2807,11 +2811,6 @@ export default function App() {
           .faq-answer{padding:0 20px 20px!important}
         }
       `}</style>
-      {/* SITEWIDE SALE BANNER */}
-      <div style={{ background: 'linear-gradient(90deg,#7f1d1d,#991b1b,#7f1d1d)', padding: '9px 16px', textAlign: 'center', fontSize: 13, fontWeight: 700, letterSpacing: '1.5px', color: '#fff', textTransform: 'uppercase', position: 'relative', zIndex: 999 }}>
-        🔥 15% Off Sitewide — Limited time.&nbsp;
-        <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" style={{ color: '#fca5a5', textDecoration: 'underline', textUnderlineOffset: 2 }}>Book now to lock in your price →</a>
-      </div>
       <ScrollBar />
       <Nav page={page} go={go} />
       <main key={page} style={{ opacity: transitioning ? 0 : 1, transform: transitioning ? 'translateY(20px)' : 'translateY(0)', transition: 'opacity 0.4s ease, transform 0.4s cubic-bezier(.16,1,.3,1)' }}>
