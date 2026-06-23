@@ -2031,7 +2031,7 @@ Today: ${todayStr}. Use current year or later for dates. Be friendly, conversati
     try {
       const res = await fetch(`${WORKER_URL}/anthropic`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 600, system: SYSTEM, messages: historyRef.current }),
+        body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 600, system: SYSTEM, messages: historyRef.current }),
       });
       const data = await res.json();
       setTyping(false);
