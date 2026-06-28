@@ -2865,13 +2865,13 @@ function LeadCapturePopup() {
         {!done ? (
           <>
             <div style={{ display: 'inline-block', background: 'rgba(0,136,255,0.12)', border: '1px solid rgba(0,136,255,0.3)', borderRadius: 100, padding: '5px 14px', fontSize: 11, fontWeight: 700, letterSpacing: '1.5px', color: '#7dd3ff', textTransform: 'uppercase', marginBottom: 16 }}>
-              🔥 15% Off Sitewide
+              ✦ 210 Tint Insiders
             </div>
             <h2 style={{ fontFamily: 'Space Grotesk', fontSize: 26, fontWeight: 800, color: '#fff', lineHeight: 1.15, margin: '0 0 10px' }}>
-              Lock in your <span style={{ color: '#7dd3ff', textShadow: '0 0 20px rgba(0,136,255,0.5)' }}>15% off</span> + exclusive deals
+              Sign up for <span style={{ color: '#7dd3ff', textShadow: '0 0 20px rgba(0,136,255,0.5)' }}>exclusive offers</span>
             </h2>
             <p style={{ fontFamily: 'Inter', fontSize: 14, color: '#9a9aa5', lineHeight: 1.5, margin: '0 0 22px' }}>
-              Drop your email & number and we'll send your discount plus first access to future promos. No spam — just deals.
+              Drop your email & number to get first access to special offers and deals from 210 Tint. No spam — just the good stuff.
             </p>
             <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               <input style={inputStyle} type="text" placeholder="Name (optional)" value={name} onChange={(e) => setName(e.target.value)} />
@@ -2882,18 +2882,18 @@ function LeadCapturePopup() {
                 marginTop: 4, padding: '15px', borderRadius: 8, border: 'none', cursor: submitting ? 'default' : 'pointer',
                 background: 'linear-gradient(90deg,#0088ff,#3aa6ff)', color: '#fff', fontWeight: 700, fontSize: 16,
                 fontFamily: 'Inter', boxShadow: '0 8px 30px rgba(0,136,255,0.4)', opacity: submitting ? 0.7 : 1,
-              }}>{submitting ? 'Sending…' : 'Get My 15% Off →'}</button>
+              }}>{submitting ? 'Sending…' : 'Sign Me Up →'}</button>
             </form>
             <button onClick={close} style={{ display: 'block', margin: '14px auto 0', background: 'none', border: 'none', color: '#5a5a66', fontSize: 12, cursor: 'pointer', fontFamily: 'Inter' }}>
-              No thanks, I'll pay full price
+              No thanks, maybe later
             </button>
           </>
         ) : (
           <div style={{ textAlign: 'center', padding: '10px 0' }}>
             <div style={{ fontSize: 48, marginBottom: 12 }}>🎉</div>
-            <h2 style={{ fontFamily: 'Space Grotesk', fontSize: 24, fontWeight: 800, color: '#fff', margin: '0 0 10px' }}>You're in!</h2>
+            <h2 style={{ fontFamily: 'Space Grotesk', fontSize: 24, fontWeight: 800, color: '#fff', margin: '0 0 10px' }}>You're on the list!</h2>
             <p style={{ fontFamily: 'Inter', fontSize: 14, color: '#9a9aa5', lineHeight: 1.5, margin: '0 0 24px' }}>
-              Your <span style={{ color: '#7dd3ff', fontWeight: 700 }}>15% off</span> is locked in. We'll be in touch with your code and future deals.
+              Thanks for signing up. We'll be in touch with <span style={{ color: '#7dd3ff', fontWeight: 700 }}>exclusive offers</span> and deals from 210 Tint.
             </p>
             <button onClick={close} style={{
               padding: '13px 36px', borderRadius: 8, border: 'none', cursor: 'pointer',
