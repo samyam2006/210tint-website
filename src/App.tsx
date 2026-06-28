@@ -2776,6 +2776,137 @@ function DetailingPage({ go }: { go: (p: string) => void }) {
   );
 }
 
+/* ═══ LEAD CAPTURE POPUP — collects email + phone on first visit, posts to Google Sheet ═══ */
+function LeadCapturePopup() {
+  // Paste the Web App URL of your deployed Google Apps Script here (see DEPLOY note below).
+  const LEAD_ENDPOINT = 'https://script.google.com/macros/s/PASTE_YOUR_SCRIPT_ID/exec';
+
+  const [show, setShow] = useState(false);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [done, setDone] = useState(false);
+  const [error, setError] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+
+  // Show ~4s after load (after the loading screen fades) — once only, ever.
+  useEffect(() => {
+    if (localStorage.getItem('210-lead-captured') === '1') return;
+    const t = setTimeout(() => setShow(true), 4000);
+    return () => clearTimeout(t);
+  }, []);
+
+  const close = () => {
+    setShow(false);
+    localStorage.setItem('210-lead-captured', '1');
+  };
+
+  const validPhone = (p: string) => p.replace(/[^0-9]/g, '').length >= 10;
+  const validEmail = (e: string) => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e);
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    if (!validEmail(email)) { setError('Please enter a valid email.'); return; }
+    if (!validPhone(phone)) { setError('Please enter a valid phone number.'); return; }
+    setSubmitting(true);
+    const lead = { name: name.trim(), email: email.trim(), phone: phone.trim(), source: '210tint.com popup', ts: new Date().toISOString() };
+    // Keep a local backup of every lead in case the sheet endpoint is unreachable.
+    try {
+      const prev = JSON.parse(localStorage.getItem('210-leads') || '[]');
+      prev.push(lead);
+      localStorage.setItem('210-leads', JSON.stringify(prev));
+    } catch { /* ignore */ }
+    // Post to the Google Apps Script web app. Apps Script doesn't send CORS headers,
+    // so we use no-cors + a simple content-type to avoid a preflight; the row still lands.
+    if (LEAD_ENDPOINT && !LEAD_ENDPOINT.includes('PASTE_YOUR_SCRIPT_ID')) {
+      try {
+        await fetch(LEAD_ENDPOINT, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(lead),
+        });
+      } catch { /* opaque/no-cors — assume delivered, backup kept above */ }
+    }
+    setSubmitting(false);
+    setDone(true);
+    localStorage.setItem('210-lead-captured', '1');
+  };
+
+  if (!show) return null;
+
+  const inputStyle: React.CSSProperties = {
+    width: '100%', padding: '14px 16px', borderRadius: 8, fontSize: 15,
+    background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)',
+    color: '#fff', outline: 'none', fontFamily: 'Inter', boxSizing: 'border-box',
+  };
+
+  return (
+    <div onClick={close} style={{
+      position: 'fixed', inset: 0, zIndex: 99998, background: 'rgba(0,0,0,0.78)',
+      backdropFilter: 'blur(8px)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+      padding: 20, animation: 'fadeIn 0.4s ease',
+    }}>
+      <div onClick={(e) => e.stopPropagation()} style={{
+        position: 'relative', width: '100%', maxWidth: 420, background: '#0c0c10',
+        border: '1px solid rgba(0,136,255,0.25)', borderRadius: 18, padding: '40px 34px 34px',
+        boxShadow: '0 30px 90px rgba(0,0,0,0.7), 0 0 60px rgba(0,136,255,0.12)',
+        animation: 'popIn 0.45s cubic-bezier(0.34,1.56,0.64,1)',
+      }}>
+        <style>{`@keyframes popIn{from{opacity:0;transform:scale(0.9) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}`}</style>
+        {/* Close button */}
+        <button onClick={close} aria-label="Close" style={{
+          position: 'absolute', top: 14, right: 14, width: 32, height: 32, borderRadius: '50%',
+          border: 'none', background: 'rgba(255,255,255,0.06)', color: '#9a9aa5', cursor: 'pointer',
+          fontSize: 18, lineHeight: 1, display: 'flex', alignItems: 'center', justifyContent: 'center',
+        }}>×</button>
+
+        {!done ? (
+          <>
+            <div style={{ display: 'inline-block', background: 'rgba(0,136,255,0.12)', border: '1px solid rgba(0,136,255,0.3)', borderRadius: 100, padding: '5px 14px', fontSize: 11, fontWeight: 700, letterSpacing: '1.5px', color: '#7dd3ff', textTransform: 'uppercase', marginBottom: 16 }}>
+              🔥 15% Off Sitewide
+            </div>
+            <h2 style={{ fontFamily: 'Space Grotesk', fontSize: 26, fontWeight: 800, color: '#fff', lineHeight: 1.15, margin: '0 0 10px' }}>
+              Lock in your <span style={{ color: '#7dd3ff', textShadow: '0 0 20px rgba(0,136,255,0.5)' }}>15% off</span> + exclusive deals
+            </h2>
+            <p style={{ fontFamily: 'Inter', fontSize: 14, color: '#9a9aa5', lineHeight: 1.5, margin: '0 0 22px' }}>
+              Drop your email & number and we'll send your discount plus first access to future promos. No spam — just deals.
+            </p>
+            <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+              <input style={inputStyle} type="text" placeholder="Name (optional)" value={name} onChange={(e) => setName(e.target.value)} />
+              <input style={inputStyle} type="email" placeholder="Email address" value={email} onChange={(e) => setEmail(e.target.value)} required />
+              <input style={inputStyle} type="tel" placeholder="Phone number" value={phone} onChange={(e) => setPhone(e.target.value)} required />
+              {error && <p style={{ color: '#f87171', fontSize: 13, margin: 0, fontFamily: 'Inter' }}>{error}</p>}
+              <button type="submit" disabled={submitting} style={{
+                marginTop: 4, padding: '15px', borderRadius: 8, border: 'none', cursor: submitting ? 'default' : 'pointer',
+                background: 'linear-gradient(90deg,#0088ff,#3aa6ff)', color: '#fff', fontWeight: 700, fontSize: 16,
+                fontFamily: 'Inter', boxShadow: '0 8px 30px rgba(0,136,255,0.4)', opacity: submitting ? 0.7 : 1,
+              }}>{submitting ? 'Sending…' : 'Get My 15% Off →'}</button>
+            </form>
+            <button onClick={close} style={{ display: 'block', margin: '14px auto 0', background: 'none', border: 'none', color: '#5a5a66', fontSize: 12, cursor: 'pointer', fontFamily: 'Inter' }}>
+              No thanks, I'll pay full price
+            </button>
+          </>
+        ) : (
+          <div style={{ textAlign: 'center', padding: '10px 0' }}>
+            <div style={{ fontSize: 48, marginBottom: 12 }}>🎉</div>
+            <h2 style={{ fontFamily: 'Space Grotesk', fontSize: 24, fontWeight: 800, color: '#fff', margin: '0 0 10px' }}>You're in!</h2>
+            <p style={{ fontFamily: 'Inter', fontSize: 14, color: '#9a9aa5', lineHeight: 1.5, margin: '0 0 24px' }}>
+              Your <span style={{ color: '#7dd3ff', fontWeight: 700 }}>15% off</span> is locked in. We'll be in touch with your code and future deals.
+            </p>
+            <button onClick={close} style={{
+              padding: '13px 36px', borderRadius: 8, border: 'none', cursor: 'pointer',
+              background: 'linear-gradient(90deg,#0088ff,#3aa6ff)', color: '#fff', fontWeight: 700, fontSize: 15,
+              fontFamily: 'Inter', boxShadow: '0 8px 30px rgba(0,136,255,0.4)',
+            }}>Start Shopping</button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export default function App() {
   const [page, setPage] = useState('home');
   const [transitioning, setTransitioning] = useState(false);
@@ -2796,6 +2927,7 @@ export default function App() {
   return (
     <div style={{ minHeight: '100vh' }}>
       <LoadingScreen />
+      <LeadCapturePopup />
       <ChatWidget />
       <style>{`
         @media(max-width:860px){
