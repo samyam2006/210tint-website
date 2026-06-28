@@ -44,6 +44,13 @@ function doPost(e) {
       .setMimeType(ContentService.MimeType.JSON);
   }
 }
+
+// Lets you confirm the web app is live by opening the /exec URL in a browser.
+function doGet() {
+  return ContentService
+    .createTextOutput('210 Tint lead capture is live ✅')
+    .setMimeType(ContentService.MimeType.TEXT);
+}
 ```
 
 3. Click **Save** (disk icon).
@@ -73,6 +80,33 @@ with your real Web app URL. Then rebuild/redeploy the site.
 
 That's it — every popup submission now appends a row to your Google Sheet in
 real time. To get it as Excel: **File → Download → Microsoft Excel (.xlsx)**.
+
+## Troubleshooting
+
+### "Sorry, unable to open the file at this time" (Google Drive error)
+
+This is the #1 issue and almost always means the **access setting is wrong** or
+you're signed into the wrong Google account. Fix it:
+
+1. In Apps Script, go to **Deploy → Manage deployments**.
+2. Click the **pencil/edit** icon on your deployment.
+3. Confirm **Who has access** is set to **`Anyone`** — NOT "Anyone with Google
+   account" and NOT "Only myself". This is the most common cause.
+4. Confirm **Execute as** is **`Me`**.
+5. Pick **Version → New version**, then **Deploy**.
+6. If it asks again, **authorize** the script with your own Google account.
+
+Other things that trigger this same error:
+
+- **Wrong URL ending:** the URL must end in **`/exec`**, not `/dev`. The `/dev`
+  link only works while you're logged in as the owner.
+- **Truncated URL:** make sure you copied the *entire* URL (they're long).
+- **Wrong account:** if your browser is logged into multiple Google accounts,
+  open the URL in an Incognito window to test it as a real visitor would.
+
+Once access is `Anyone`, open the `/exec` URL in a browser — you should now see
+**"210 Tint lead capture is live ✅"** (thanks to the `doGet` above). That
+confirms it's reachable, and the popup's `POST` will work.
 
 ## Notes
 
