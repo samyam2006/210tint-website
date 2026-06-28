@@ -2779,7 +2779,7 @@ function DetailingPage({ go }: { go: (p: string) => void }) {
 /* ═══ LEAD CAPTURE POPUP — collects email + phone on first visit, posts to Google Sheet ═══ */
 function LeadCapturePopup() {
   // Paste the Web App URL of your deployed Google Apps Script here (see DEPLOY note below).
-  const LEAD_ENDPOINT = 'https://script.google.com/macros/s/PASTE_YOUR_SCRIPT_ID/exec';
+  const LEAD_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwq3_ioG3zC_Ff-KmDZFMzXDM1hBVNZqF8e1djMBLAhjAHTajpZ93YlNvtOslBD4OjF/exec';
 
   const [show, setShow] = useState(false);
   const [name, setName] = useState('');
