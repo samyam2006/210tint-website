@@ -2057,21 +2057,29 @@ Today: ${todayStr}. Use current year or later for dates. Be friendly, conversati
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 600, system: SYSTEM, messages: historyRef.current }),
       });
-      const data = await res.json();
+      const data = await res.json().catch(() => null);
       setTyping(false);
-      if (data.content?.[0]) {
-        const reply = data.content[0].text;
-        const bookMatch = reply.match(/\[BOOK:[^\]]+\]/);
-        if (bookMatch) {
-          const cleaned = reply.replace(bookMatch[0], '').trim();
-          if (cleaned) { addMsg('assistant', cleaned); historyRef.current.push({ role: 'assistant', content: cleaned }); }
-          await handleBooking(bookMatch[0]);
-        } else {
-          addMsg('assistant', reply);
-          historyRef.current.push({ role: 'assistant', content: reply });
-        }
+      // Surface the real reason in the browser console so failures are diagnosable.
+      if (!res.ok || !data || data.type === 'error' || !data.content?.[0]) {
+        console.error('[210 chat] proxy error', { status: res.status, statusText: res.statusText, data });
+        addMsg('assistant', "Sorry — I'm having trouble connecting right now. Please text or call us at (240) 338-7762 and we'll help you out right away.");
+        return;
       }
-    } catch { setTyping(false); addMsg('assistant', 'Connection issue — call us at (240) 338-7762.'); }
+      const reply = data.content[0].text;
+      const bookMatch = reply.match(/\[BOOK:[^\]]+\]/);
+      if (bookMatch) {
+        const cleaned = reply.replace(bookMatch[0], '').trim();
+        if (cleaned) { addMsg('assistant', cleaned); historyRef.current.push({ role: 'assistant', content: cleaned }); }
+        await handleBooking(bookMatch[0]);
+      } else {
+        addMsg('assistant', reply);
+        historyRef.current.push({ role: 'assistant', content: reply });
+      }
+    } catch (err) {
+      setTyping(false);
+      console.error('[210 chat] request failed', err);
+      addMsg('assistant', "Sorry — I'm having trouble connecting right now. Please text or call us at (240) 338-7762 and we'll help you out right away.");
+    }
   };
 
   const formatMsg = (text: string) => text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
