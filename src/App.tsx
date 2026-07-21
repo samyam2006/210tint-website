@@ -2842,7 +2842,7 @@ function LeadCapturePopup() {
   // Show ~4s after load (after the loading screen fades) on EVERY visit —
   // only stops appearing once the visitor actually submits their info.
   useEffect(() => {
-    if (localStorage.getItem('210-lead-captured') === '1') return;
+    if (localStorage.getItem('210-lead-submitted-v2') === '1') return;
     const t = setTimeout(() => setShow(true), 4000);
     return () => clearTimeout(t);
   }, []);
@@ -2882,7 +2882,7 @@ function LeadCapturePopup() {
     }
     setSubmitting(false);
     setDone(true);
-    localStorage.setItem('210-lead-captured', '1');
+    localStorage.setItem('210-lead-submitted-v2', '1');
   };
 
   if (!show) return null;
