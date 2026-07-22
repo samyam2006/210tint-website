@@ -669,19 +669,19 @@ function PriceCalculator() {
 
   const prices: Record<string, Record<string, Record<string, number>>> = {
     coupe: {
-      carbon: { 'all-sides': 50, 'windshield': 80, 'whole-no-wind': 125, 'whole': 205 },
-      nano: { 'all-sides': 75, 'windshield': 110, 'whole-no-wind': 180, 'whole': 290 },
-      ceramic: { 'all-sides': 115, 'windshield': 170, 'whole-no-wind': 275, 'whole': 445 },
+      carbon: { 'all-sides': 55, 'windshield': 90, 'whole-no-wind': 145, 'whole': 235 },
+      nano: { 'all-sides': 85, 'windshield': 125, 'whole-no-wind': 205, 'whole': 335 },
+      ceramic: { 'all-sides': 130, 'windshield': 195, 'whole-no-wind': 315, 'whole': 510 },
     },
     sedan: {
-      carbon: { 'two-sides': 65, 'all-sides': 105, 'windshield': 80, 'whole-no-wind': 185, 'whole': 265 },
-      nano: { 'two-sides': 75, 'all-sides': 145, 'windshield': 115, 'whole-no-wind': 260, 'whole': 375 },
-      ceramic: { 'two-sides': 115, 'all-sides': 225, 'windshield': 180, 'whole-no-wind': 395, 'whole': 575 },
+      carbon: { 'two-sides': 75, 'all-sides': 120, 'windshield': 90, 'whole-no-wind': 215, 'whole': 305 },
+      nano: { 'two-sides': 85, 'all-sides': 165, 'windshield': 130, 'whole-no-wind': 300, 'whole': 430 },
+      ceramic: { 'two-sides': 130, 'all-sides': 260, 'windshield': 205, 'whole-no-wind': 455, 'whole': 660 },
     },
     truck: {
-      carbon: { 'two-sides': 65, 'all-sides': 120, 'windshield': 115, 'whole-no-wind': 210, 'whole': 325 },
-      nano: { 'two-sides': 85, 'all-sides': 170, 'windshield': 145, 'whole-no-wind': 305, 'whole': 450 },
-      ceramic: { 'two-sides': 135, 'all-sides': 260, 'windshield': 220, 'whole-no-wind': 470, 'whole': 690 },
+      carbon: { 'two-sides': 75, 'all-sides': 140, 'windshield': 130, 'whole-no-wind': 240, 'whole': 375 },
+      nano: { 'two-sides': 100, 'all-sides': 195, 'windshield': 165, 'whole-no-wind': 350, 'whole': 520 },
+      ceramic: { 'two-sides': 155, 'all-sides': 300, 'windshield': 255, 'whole-no-wind': 540, 'whole': 795 },
     },
   };
 
@@ -718,7 +718,7 @@ function PriceCalculator() {
   }, [vehicle]);
 
   const basePrice = prices[vehicle]?.[film]?.[coverage] || 0;
-  const tintPrice = basePrice + (computerCut ? 50 : 0);
+  const tintPrice = basePrice + (computerCut ? 60 : 0);
   const grandTotal = tintPrice + (travelFee || 0);
 
   // Animate price counter
@@ -782,7 +782,7 @@ function PriceCalculator() {
       }
 
       setTravelMiles(driveMiles);
-      setTravelFee(Math.round(driveMiles * 1.50));
+      setTravelFee(Math.round(driveMiles * 1.75));
     } catch { setTravelError('Could not calculate — check your connection and try again'); }
     setTravelLoading(false);
   };
@@ -849,8 +849,8 @@ function PriceCalculator() {
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
             <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 1 }}>
-              <span style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 11, color: '#ef4444', textDecoration: 'line-through' }}>+${saleOrig(50)}</span>
-              <span style={{ fontFamily: 'Space Grotesk', fontWeight: 800, color: '#7dd3ff', textShadow: '0 0 10px rgba(0,136,255,0.6)' }}>+$50</span>
+              <span style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 11, color: '#ef4444', textDecoration: 'line-through' }}>+${saleOrig(60)}</span>
+              <span style={{ fontFamily: 'Space Grotesk', fontWeight: 800, color: '#7dd3ff', textShadow: '0 0 10px rgba(0,136,255,0.6)' }}>+$60</span>
             </span>
             <div style={{ width: 20, height: 20, borderRadius: 4, border: computerCut ? '2px solid #0088ff' : '2px solid #4a4a5a', background: computerCut ? '#0088ff' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s', fontSize: 12, color: '#fff' }}>
               {computerCut && '✓'}
@@ -861,7 +861,7 @@ function PriceCalculator() {
 
       {/* Travel Fee Calculator */}
       <div className="rv d3" style={{ marginBottom: 36 }}>
-        <label style={{ display: 'block', fontSize: 12, fontWeight: 700, letterSpacing: '3px', textTransform: 'uppercase', color: '#0088ff', marginBottom: 12 }}>④ Mobile Travel Fee <span style={{ color: '#4a4a5a', fontWeight: 400, letterSpacing: 0, textTransform: 'none', fontSize: 11 }}>— optional, $1.50/mile</span></label>
+        <label style={{ display: 'block', fontSize: 12, fontWeight: 700, letterSpacing: '3px', textTransform: 'uppercase', color: '#0088ff', marginBottom: 12 }}>④ Mobile Travel Fee <span style={{ color: '#4a4a5a', fontWeight: 400, letterSpacing: 0, textTransform: 'none', fontSize: 11 }}>— optional, $1.75/mile</span></label>
         <div style={{ display: 'flex', gap: 8 }}>
           <input
             type="text"
@@ -1406,7 +1406,7 @@ function HomePage({ go }: { go: (p: string) => void }) {
               Turn Your Ceiling Into a<br /><span className="grad-text">Night Sky — 15% Off</span>
             </h2>
             <p style={{ color: '#8e8ea0', fontSize: 16, maxWidth: 480 }}>
-              Fiber optic starlight install starting at <span style={{ color: '#fff', fontWeight: 600 }}>$697</span> (was $824). Book this week to lock in the sale price.
+              Fiber optic starlight install starting at <span style={{ color: '#fff', fontWeight: 600 }}>$800</span> (was $950). Book this week to lock in the sale price.
             </p>
           </div>
           <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14, flexShrink: 0 }}>
@@ -1560,9 +1560,9 @@ function PricingPage() {
   useReveal();
   const [tab, setTab] = useState('sedan');
   const data: Record<string,{label:string;tiers:{name:string;items:string[];top?:boolean}[]}> = {
-    coupe:{label:'Coupes',tiers:[{name:'Uviron Premium Carbon',items:['$50 — All sides','$80 — Front or back windshield','$125 — Full car (no windshield)','$205 — Whole car']},{name:'Nano Carbon PUREMAX',items:['$75 — All sides','$110 — Front or back windshield','$180 — Full car (no windshield)','$290 — Whole car']},{name:'Nano Ceramic KOOLMAX',items:['$115 — All sides','$170 — Front or back windshield','$275 — Full car (no windshield)','$445 — Whole car'],top:true}]},
-    sedan:{label:'Sedans',tiers:[{name:'Uviron Premium Carbon',items:['$65 — Two sides','$105 — All four sides','$80 — Front or back windshield','$185 — Full car (no windshield)','$265 — Whole car']},{name:'Nano Carbon PUREMAX',items:['$75 — Two sides','$145 — All four sides','$115 — Front or back windshield','$260 — Full car (no windshield)','$375 — Whole car']},{name:'Nano Ceramic KOOLMAX',items:['$115 — Two sides','$225 — All four sides','$180 — Front or back windshield','$395 — Full car (no windshield)','$575 — Whole car'],top:true}]},
-    truck:{label:'Truck / SUV',tiers:[{name:'Uviron Premium Carbon',items:['$65 — Two side windows','$120 — All four/six sides','$115 — Front or back windshield','$210 — Full car (no windshield)','$325 — Whole car']},{name:'Nano Carbon PUREMAX',items:['$85 — Two side windows','$170 — All four/six sides','$145 — Front or back windshield','$305 — Full car (no windshield)','$450 — Whole car']},{name:'Nano Ceramic KOOLMAX',items:['$135 — Two side windows','$260 — All four/six sides','$220 — Front or back windshield','$470 — Full car (no windshield)','$690 — Whole car'],top:true}]},
+    coupe:{label:'Coupes',tiers:[{name:'Uviron Premium Carbon',items:['$55 — All sides','$90 — Front or back windshield','$145 — Full car (no windshield)','$235 — Whole car']},{name:'Nano Carbon PUREMAX',items:['$85 — All sides','$125 — Front or back windshield','$205 — Full car (no windshield)','$335 — Whole car']},{name:'Nano Ceramic KOOLMAX',items:['$130 — All sides','$195 — Front or back windshield','$315 — Full car (no windshield)','$510 — Whole car'],top:true}]},
+    sedan:{label:'Sedans',tiers:[{name:'Uviron Premium Carbon',items:['$75 — Two sides','$120 — All four sides','$90 — Front or back windshield','$215 — Full car (no windshield)','$305 — Whole car']},{name:'Nano Carbon PUREMAX',items:['$85 — Two sides','$165 — All four sides','$130 — Front or back windshield','$300 — Full car (no windshield)','$430 — Whole car']},{name:'Nano Ceramic KOOLMAX',items:['$130 — Two sides','$260 — All four sides','$205 — Front or back windshield','$455 — Full car (no windshield)','$660 — Whole car'],top:true}]},
+    truck:{label:'Truck / SUV',tiers:[{name:'Uviron Premium Carbon',items:['$75 — Two side windows','$140 — All four/six sides','$130 — Front or back windshield','$240 — Full car (no windshield)','$375 — Whole car']},{name:'Nano Carbon PUREMAX',items:['$100 — Two side windows','$195 — All four/six sides','$165 — Front or back windshield','$350 — Full car (no windshield)','$520 — Whole car']},{name:'Nano Ceramic KOOLMAX',items:['$155 — Two side windows','$300 — All four/six sides','$255 — Front or back windshield','$540 — Full car (no windshield)','$795 — Whole car'],top:true}]},
   };
   const cur = data[tab];
   return (<div style={{paddingTop:130}}><section style={{padding:'0 28px 120px',maxWidth:1320,margin:'0 auto'}}>
@@ -1582,7 +1582,7 @@ function PricingPage() {
     </div>
     <div className="rv" style={{marginTop:40,padding:'32px 36px',borderRadius:4,border:'1px solid rgba(255,255,255,0.04)',background:'#0a0a0f',display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:20}}>
       <div><h3 style={{fontFamily:'Space Grotesk',fontWeight:700,fontSize:18}}>Computer-Cut Film Upgrade</h3><p style={{color:'#8e8ea0',fontSize:13,marginTop:6,maxWidth:480,lineHeight:1.7}}>Pre-cut to exact window shapes. No blade touches your car. Cleaner edges, tighter fit, flawless finish.</p></div>
-      <div style={{textAlign:'center'}}><div style={{fontFamily:'Space Grotesk',fontSize:14,color:'#ef4444',textDecoration:'line-through'}}>+$60</div><span style={{fontFamily:'Space Grotesk',fontSize:28,fontWeight:800,color:'#7dd3ff',textShadow:'0 0 12px rgba(0,136,255,0.55)'}}>+$50</span><span style={{display:'block',fontSize:11,color:'#4a4a5a'}}>one-time upgrade</span></div>
+      <div style={{textAlign:'center'}}><div style={{fontFamily:'Space Grotesk',fontSize:14,color:'#ef4444',textDecoration:'line-through'}}>+$70</div><span style={{fontFamily:'Space Grotesk',fontSize:28,fontWeight:800,color:'#7dd3ff',textShadow:'0 0 12px rgba(0,136,255,0.55)'}}>+$60</span><span style={{display:'block',fontSize:11,color:'#4a4a5a'}}>one-time upgrade</span></div>
     </div>
 
     {/* ═══ STARLIGHT HEADLINER PRICING ═══ */}
@@ -1597,12 +1597,12 @@ function PricingPage() {
       <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(220px,1fr))',gap:14,marginTop:20}}>
         <div style={{padding:'22px 20px',borderRadius:4,background:'#0a0a0f',border:'1px solid rgba(0,136,255,0.3)'}}>
           <span style={{fontSize:10,fontWeight:700,letterSpacing:'2.5px',textTransform:'uppercase',color:'#60a5fa'}}>Starter</span>
-          <div style={{marginTop:10}}><div style={{fontFamily:'Space Grotesk',fontSize:13,color:'#ef4444',textDecoration:'line-through'}}>$805</div><span style={{fontFamily:'Space Grotesk',fontSize:30,fontWeight:800,color:'#7dd3ff',textShadow:'0 0 12px rgba(0,136,255,0.55)'}}>$700</span></div>
+          <div style={{marginTop:10}}><div style={{fontFamily:'Space Grotesk',fontSize:13,color:'#ef4444',textDecoration:'line-through'}}>$925</div><span style={{fontFamily:'Space Grotesk',fontSize:30,fontWeight:800,color:'#7dd3ff',textShadow:'0 0 12px rgba(0,136,255,0.55)'}}>$805</span></div>
           <p style={{color:'#8e8ea0',fontSize:13,marginTop:8,lineHeight:1.6}}>550 stars — clean, even galaxy effect. Great entry-level install.</p>
         </div>
         <div style={{padding:'22px 20px',borderRadius:4,background:'#0a0a0f',border:'1px solid rgba(255,255,255,0.04)'}}>
           <span style={{fontSize:10,fontWeight:700,letterSpacing:'2.5px',textTransform:'uppercase',color:'#4a4a5a'}}>Add-On</span>
-          <div style={{marginTop:10}}><div style={{fontFamily:'Space Grotesk',fontSize:13,color:'#ef4444',textDecoration:'line-through'}}>$115–175</div><span style={{fontFamily:'Space Grotesk',fontSize:30,fontWeight:800,color:'#7dd3ff',textShadow:'0 0 12px rgba(0,136,255,0.55)'}}>+$100–150</span></div>
+          <div style={{marginTop:10}}><div style={{fontFamily:'Space Grotesk',fontSize:13,color:'#ef4444',textDecoration:'line-through'}}>$130–200</div><span style={{fontFamily:'Space Grotesk',fontSize:30,fontWeight:800,color:'#7dd3ff',textShadow:'0 0 12px rgba(0,136,255,0.55)'}}>+$115–175</span></div>
           <p style={{color:'#8e8ea0',fontSize:13,marginTop:8,lineHeight:1.6}}>Per additional 100 stars. Build a denser, more dramatic night sky.</p>
         </div>
         <div style={{padding:'22px 20px',borderRadius:4,background:'#0a0a0f',border:'1px solid rgba(255,255,255,0.04)'}}>
@@ -1678,9 +1678,9 @@ function ComparePage() {
     )}
     <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(300px,1fr))',gap:14}}>
       {[
-        {tier:'Entry Level',name:'Uviron Premium Carbon',desc:'Solid protection and clean looks at the best price.',from:'$65',pros:['Budget-friendly for daily drivers','Matte black finish — clean OEM look','No signal or GPS interference','Will not fade or turn purple']},
-        {tier:'Mid Range',name:'Nano Carbon PUREMAX',desc:'Enhanced performance and durability without top-tier price.',from:'$75',pros:['Better heat rejection than Premium Carbon','Deep black — no fade or purple tones','Safe for all vehicle electronics','5–7 year warranty']},
-        {tier:'Top Tier',name:'Nano Ceramic KOOLMAX',desc:'Superior heat, UV, and clarity — the last tint you will ever need.',from:'$115',top:true,pros:['Max heat and infrared rejection','Crystal clear — no haze at night','Lifetime warranty on every install','Improves A/C efficiency','Never fades, bubbles, or discolors']},
+        {tier:'Entry Level',name:'Uviron Premium Carbon',desc:'Solid protection and clean looks at the best price.',from:'$75',pros:['Budget-friendly for daily drivers','Matte black finish — clean OEM look','No signal or GPS interference','Will not fade or turn purple']},
+        {tier:'Mid Range',name:'Nano Carbon PUREMAX',desc:'Enhanced performance and durability without top-tier price.',from:'$85',pros:['Better heat rejection than Premium Carbon','Deep black — no fade or purple tones','Safe for all vehicle electronics','5–7 year warranty']},
+        {tier:'Top Tier',name:'Nano Ceramic KOOLMAX',desc:'Superior heat, UV, and clarity — the last tint you will ever need.',from:'$130',top:true,pros:['Max heat and infrared rejection','Crystal clear — no haze at night','Lifetime warranty on every install','Improves A/C efficiency','Never fades, bubbles, or discolors']},
       ].map((f,i)=>(<div key={i} className={`rv d${i+1}`} style={{padding:32,borderRadius:4,border:f.top?'1px solid rgba(0,136,255,0.3)':'1px solid rgba(255,255,255,0.04)',background:'#0a0a0f',boxShadow:f.top?'0 0 40px rgba(0,136,255,0.06)':'none'}}>
         <span style={{fontSize:10,fontWeight:700,letterSpacing:'3px',textTransform:'uppercase',color:'#0088ff'}}>{f.tier}</span>
         <h3 style={{fontFamily:'Space Grotesk',fontSize:21,fontWeight:700,marginTop:8,marginBottom:8}}>{f.name}</h3>
@@ -1909,29 +1909,29 @@ SHOP LOCATION: 10451 Fair Oaks, Columbia, MD 21044. The shop address is not publ
 FILMS: Uviron Premium Carbon (entry, ~98% UV, 3-5yr warranty), PureMax Nano Carbon (mid, 99% UV, 35-58% TSER, lifetime warranty), KoolMax Nano Ceramic (top, 99% UV, 79-89% IR rejection, lifetime warranty).
 IMPORTANT: There are THREE distinct tiers. Never confuse them. Uviron Premium Carbon = cheapest. PureMax Nano Carbon = middle. KoolMax Nano Ceramic = most expensive. If a customer says "Premium Carbon" they mean Uviron Premium Carbon (entry tier).
 
-PRICING - COUPES: Uviron Premium Carbon: all sides $50, windshield $80, full no wind $125, whole $205. PureMax Nano Carbon: all sides $75, windshield $110, full no wind $180, whole $290. KoolMax Nano Ceramic: all sides $115, windshield $170, full no wind $275, whole $445.
-SEDANS: Uviron Premium Carbon: 2 sides $65, all 4 $105, windshield $80, full no wind $185, whole $265. PureMax Nano Carbon: 2 sides $75, all 4 $145, windshield $115, full no wind $260, whole $375. KoolMax Nano Ceramic: 2 sides $115, all 4 $225, windshield $180, full no wind $395, whole $575.
-TRUCKS/SUVs: Uviron Premium Carbon: 2 sides $65, all sides $120, windshield $115, full no wind $210, whole $325. PureMax Nano Carbon: 2 sides $85, all sides $170, windshield $145, full no wind $305, whole $450. KoolMax Nano Ceramic: 2 sides $135, all sides $260, windshield $220, full no wind $470, whole $690.
-ADD-ON: Computer Cut Film +$50.
-TRAVEL FEE: Mobile jobs charge $1.50 per mile (one way) from Columbia, MD 21044. Always ask the customer's general location when discussing a mobile booking. Estimate the distance, calculate the fee (miles × $1.50, rounded to nearest dollar), and add it to the quoted total. Example: 20 miles away = $30 travel fee added on top. Be proactive — mention the travel fee before the customer asks.
+PRICING - COUPES: Uviron Premium Carbon: all sides $55, windshield $90, full no wind $145, whole $235. PureMax Nano Carbon: all sides $85, windshield $125, full no wind $205, whole $335. KoolMax Nano Ceramic: all sides $130, windshield $195, full no wind $315, whole $510.
+SEDANS: Uviron Premium Carbon: 2 sides $75, all 4 $120, windshield $90, full no wind $215, whole $305. PureMax Nano Carbon: 2 sides $85, all 4 $165, windshield $130, full no wind $300, whole $430. KoolMax Nano Ceramic: 2 sides $130, all 4 $260, windshield $205, full no wind $455, whole $660.
+TRUCKS/SUVs: Uviron Premium Carbon: 2 sides $75, all sides $140, windshield $130, full no wind $240, whole $375. PureMax Nano Carbon: 2 sides $100, all sides $195, windshield $165, full no wind $350, whole $520. KoolMax Nano Ceramic: 2 sides $155, all sides $300, windshield $255, full no wind $540, whole $795.
+ADD-ON: Computer Cut Film +$60.
+TRAVEL FEE: Mobile jobs charge $1.75 per mile (one way) from Columbia, MD 21044. Always ask the customer's general location when discussing a mobile booking. Estimate the distance, calculate the fee (miles × $1.75, rounded to nearest dollar), and add it to the quoted total. Example: 20 miles away = $35 travel fee added on top. Be proactive — mention the travel fee before the customer asks.
 
 STARLIGHT HEADLINER SERVICE: We install fiber optic star ceilings inside vehicles. The install replaces the headliner with hundreds of tiny LED fiber optic lights to create a custom night sky effect.
-STARLIGHT SALE PRICING (LIMITED TIME): Starter package (550 stars) normally $824, on sale $697 (save $127). Add-on 100 extra stars standard normally $100, on sale $85. Add-on 100 extra stars premium normally $150, on sale $127.
+STARLIGHT SALE PRICING (LIMITED TIME): Starter package (550 stars) normally $950, on sale $800 (save $150). Add-on 100 extra stars standard normally $115, on sale $100. Add-on 100 extra stars premium normally $175, on sale $145.
 STARLIGHT REQUIREMENTS: A garage or fully covered space is REQUIRED for starlight installs — not just recommended. The headliner must be removed and reinstalled, which cannot be done outdoors. If the customer has no garage, offer them the option to bring their vehicle to our shop at 10451 Fair Oaks, Columbia, MD 21044 instead.
 STARLIGHT BOOKING FLOW: Collect: name, email, phone, vehicle year/make/model, package choice (Starter 550 stars / Starter + 100 standard / Starter + 100 premium / custom), headliner color (black/gray/tan), garage confirmed (yes/no), any layout requests (shooting stars, constellations, denser near sunroof), preferred date. Event key: starlight. In tint_type field put the package name e.g. "Starlight Starter 550 Stars".
 
 MOBILE JOB NOTICE: If the customer is booking a mobile job, always ask if they have access to a garage or covered parking space at their location. Let them know that without a garage or covered area, there is a significantly higher chance of minor imperfections (dust, wind, debris) affecting the install quality. We will always do our best, but we cannot guarantee a flawless result on an open-air mobile job. Mention this early and clearly.
 
 DETAILING (STANDALONE SERVICE — fully mobile, we bring equipment/water/supplies to their driveway, or they drop off at our Columbia shop; we cover Columbia, Ellicott City, Annapolis, and across the DMV). Three packages, priced by vehicle size:
-- MAINTENANCE (routine wash + interior cleanup): exterior hand wash; wheels & tires cleaned + tires dressed; interior vacuum (carpets, seats, mats); interior wipe-down (dash, console, doors); windows cleaned inside & out. Price: Sedan/Coupe $120, Small SUV/Truck $140, Large SUV/Van $160.
-- PROTECT (most popular — adds clay bar + 6-month sealant): everything in Maintenance PLUS clay-bar paint decontamination, 6-month paint sealant, deep interior clean (steam + light stain removal), leather conditioning or fabric protection. Price: Sedan/Coupe $220, Small SUV/Truck $260, Large SUV/Van $300.
-- RESTORE (top-tier detail — adds polish + 12-month sealant + headlights): everything in Protect PLUS single-stage polish (swirl removal, gloss), 12-month premium paint sealant, headlight restoration, engine bay cleaning. Price: Sedan/Coupe $400, Small SUV/Truck $480, Large SUV/Van $560.
-DETAILING ADD-ONS: Ceramic Coating $600–$1,200+ (1–3 year protection, requires paint-correction prep); Multi-Stage Paint Correction $350–$700+; Odor Removal / Ozone Treatment $75–$150; Pet Hair Removal $50–$100; Fabric/Carpet Extraction $100–$200.
+- MAINTENANCE (routine wash + interior cleanup): exterior hand wash; wheels & tires cleaned + tires dressed; interior vacuum (carpets, seats, mats); interior wipe-down (dash, console, doors); windows cleaned inside & out. Price: Sedan/Coupe $140, Small SUV/Truck $160, Large SUV/Van $185.
+- PROTECT (most popular — adds clay bar + 6-month sealant): everything in Maintenance PLUS clay-bar paint decontamination, 6-month paint sealant, deep interior clean (steam + light stain removal), leather conditioning or fabric protection. Price: Sedan/Coupe $255, Small SUV/Truck $300, Large SUV/Van $345.
+- RESTORE (top-tier detail — adds polish + 12-month sealant + headlights): everything in Protect PLUS single-stage polish (swirl removal, gloss), 12-month premium paint sealant, headlight restoration, engine bay cleaning. Price: Sedan/Coupe $460, Small SUV/Truck $550, Large SUV/Van $645.
+DETAILING ADD-ONS: Ceramic Coating $690–$1,380+ (1–3 year protection, requires paint-correction prep); Multi-Stage Paint Correction $405–$805+; Odor Removal / Ozone Treatment $85–$175; Pet Hair Removal $60–$115; Fabric/Carpet Extraction $115–$230.
 
 BUNDLES (combine services in one visit for real savings):
 - Detail + Ceramic Window Tint (Save 15%): Restore-tier detail + full-vehicle KoolMax Nano Ceramic tint. Best for new or recently bought cars.
 - Detail + Starlight Headliner (Save 10%): Protect-tier detail + fiber-optic starlight headliner install.
-- 210 SIGNATURE (Save $600+): our flagship all-in-one — Restore-tier detail (polish + 12-month sealant + headlight restoration) + full-vehicle KoolMax Nano Ceramic tint with windshield + fiber-optic starlight headliner (550 stars) + computer-cut precision film. Price: Coupe $1,316, Sedan $1,496, SUV/Truck $1,736. When a customer asks about the best or most complete package, always mention the 210 Signature. Note: the starlight portion still requires a garage or covered space.
+- 210 SIGNATURE (Save $600+): our flagship all-in-one — Restore-tier detail (polish + 12-month sealant + headlight restoration) + full-vehicle KoolMax Nano Ceramic tint with windshield + fiber-optic starlight headliner (550 stars) + computer-cut precision film. Price: Coupe $1,515, Sedan $1,720, SUV/Truck $1,995. When a customer asks about the best or most complete package, always mention the 210 Signature. Note: the starlight portion still requires a garage or covered space.
 
 HOURS: Monday–Saturday 6AM–11PM. Sunday by appointment.
 
@@ -2285,7 +2285,7 @@ function CeramicVsCarbonPage() {
       { title: 'Heat Rejection', body: 'This is the biggest difference. Carbon tint blocks 25–50% of solar heat depending on the grade. Ceramic blocks 50–75%. On a hot Maryland summer day, that difference is dramatic — your AC works less, your interior stays cooler, and your passengers are more comfortable.' },
       { title: 'Optical Clarity', body: 'Carbon tint has good clarity but can appear slightly darker from the inside, especially at night. Ceramic tint is crystal clear — it looks like there\'s nothing on the glass from the inside, even at darker shades. Night driving visibility is noticeably better with ceramic.' },
       { title: 'Warranty & Durability', body: 'Our Premium Carbon comes with a 3–5 year warranty. Nano Carbon PUREMAX carries a lifetime warranty. Nano Ceramic KOOLMAX also has a lifetime warranty. All UVIRON films are scratch-resistant, 2-ply 1.5mil, and will never bubble, peel, or discolor.' },
-      { title: 'Price Difference', body: 'For a full sedan (no windshield), Premium Carbon is $185, Nano Carbon is $260, and Nano Ceramic is $395. The ceramic upgrade costs roughly 2x the entry price — but you get 2-3x the heat rejection and a lifetime warranty. For most customers, the comfort difference alone justifies it.' },
+      { title: 'Price Difference', body: 'For a full sedan (no windshield), Premium Carbon is $215, Nano Carbon is $300, and Nano Ceramic is $455. The ceramic upgrade costs roughly 2x the entry price — but you get 2-3x the heat rejection and a lifetime warranty. For most customers, the comfort difference alone justifies it.' },
       { title: 'Signal Interference', body: 'None. All three of our film tiers — Premium Carbon, Nano Carbon, and Nano Ceramic — are 100% signal-safe. No interference with GPS, Bluetooth, cell service, toll transponders, or garage door openers. This is a common myth about ceramic tint that is not true for modern films.' },
       { title: 'Our Recommendation', body: 'If you drive daily and want the absolute best protection and comfort, go with Nano Ceramic KOOLMAX. If you\'re budget-conscious but still want quality, Nano Carbon PUREMAX is a fantastic middle ground with a lifetime warranty. Premium Carbon is perfect for daily drivers who want clean looks and UV protection at the best price.' },
     ].map((s, i) => (
@@ -2360,12 +2360,12 @@ function StarlightPage({ go }: { go: (p: string) => void }) {
     <div className="rv" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(240px,1fr))', gap: 14, marginBottom: 32 }}>
       <div style={{ padding: '24px 22px', borderRadius: 4, background: '#0a0a0f', border: '1px solid rgba(0,136,255,0.3)' }}>
         <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2.5px', textTransform: 'uppercase', color: '#60a5fa' }}>Starter</span>
-        <div style={{ marginTop: 10 }}><span style={{ fontFamily: 'Space Grotesk', fontSize: 32, fontWeight: 800 }}>$824</span></div>
+        <div style={{ marginTop: 10 }}><span style={{ fontFamily: 'Space Grotesk', fontSize: 32, fontWeight: 800 }}>$950</span></div>
         <p style={{ color: '#8e8ea0', fontSize: 13, marginTop: 10, lineHeight: 1.6 }}>550 stars — clean, even galaxy effect. Great entry-level install.</p>
       </div>
       <div style={{ padding: '24px 22px', borderRadius: 4, background: '#0a0a0f', border: '1px solid rgba(255,255,255,0.04)' }}>
         <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '2.5px', textTransform: 'uppercase', color: '#4a4a5a' }}>Add Density</span>
-        <div style={{ marginTop: 10 }}><span style={{ fontFamily: 'Space Grotesk', fontSize: 32, fontWeight: 800 }}>+$100–150</span></div>
+        <div style={{ marginTop: 10 }}><span style={{ fontFamily: 'Space Grotesk', fontSize: 32, fontWeight: 800 }}>+$115–175</span></div>
         <p style={{ color: '#8e8ea0', fontSize: 13, marginTop: 10, lineHeight: 1.6 }}>Per additional 100 stars. Build a denser, more dramatic night sky.</p>
       </div>
     </div>
@@ -2397,8 +2397,8 @@ function StarlightPage({ go }: { go: (p: string) => void }) {
 /* ═══ STARLIGHT SALE PAGE ═══ */
 function StarlightSalePage({ go }: { go: (p: string) => void }) {
   useReveal();
-  const orig = [800, 100, 145];
-  const disc = [697, 85, 127];
+  const orig = [920, 115, 165];
+  const disc = [800, 100, 145];
   return (
     <div style={{ paddingTop: 130 }}>
       <section style={{ padding: '0 28px 120px', maxWidth: 900, margin: '0 auto' }}>
@@ -2493,9 +2493,9 @@ function StarlightSalePage({ go }: { go: (p: string) => void }) {
    DETAILING PAGE — DATA
    ═══════════════════════════════════════════════════ */
 const DETAIL_PRICES: Record<string, Record<string, number>> = {
-  sedan:     { essential: 120, signature: 220, elite: 400 },
-  'suv-small': { essential: 140, signature: 260, elite: 480 },
-  'suv-large': { essential: 160, signature: 300, elite: 560 },
+  sedan:     { essential: 140, signature: 255, elite: 460 },
+  'suv-small': { essential: 160, signature: 300, elite: 550 },
+  'suv-large': { essential: 185, signature: 345, elite: 645 },
 };
 
 const TIERS = [
@@ -2532,11 +2532,11 @@ const TIERS = [
 ];
 
 const ADDONS = [
-  { name: 'Ceramic Coating', price: '$600 – $1,200+', sub: '1–3 year premium protection. Requires paint correction prep.' },
-  { name: 'Multi-Stage Paint Correction', price: '$350 – $700+', sub: 'For significant swirl marks, oxidation, and scratches.' },
-  { name: 'Odor Removal / Ozone Treatment', price: '$75 – $150', sub: 'Eliminates stubborn odors, smoke, and bacteria permanently.' },
-  { name: 'Pet Hair Removal', price: '$50 – $100', sub: 'Deep extraction of embedded pet hair from carpets and seats.' },
-  { name: 'Fabric / Carpet Extraction', price: '$100 – $200', sub: 'Hot water extraction to lift deep-set stains and grime.' },
+  { name: 'Ceramic Coating', price: '$690 – $1,380+', sub: '1–3 year premium protection. Requires paint correction prep.' },
+  { name: 'Multi-Stage Paint Correction', price: '$405 – $805+', sub: 'For significant swirl marks, oxidation, and scratches.' },
+  { name: 'Odor Removal / Ozone Treatment', price: '$85 – $175', sub: 'Eliminates stubborn odors, smoke, and bacteria permanently.' },
+  { name: 'Pet Hair Removal', price: '$60 – $115', sub: 'Deep extraction of embedded pet hair from carpets and seats.' },
+  { name: 'Fabric / Carpet Extraction', price: '$115 – $230', sub: 'Hot water extraction to lift deep-set stains and grime.' },
 ];
 
 /* ── DETAILING HERO ── */
@@ -2654,7 +2654,7 @@ function PricingMatrix() {
           })}
         </div>
         <p className="rv" style={{ textAlign: 'center', color: '#4a4a5a', fontSize: 13, marginTop: 24, lineHeight: 1.7 }}>
-          All prices are starting rates. Heavily soiled or neglected vehicles may be quoted separately.<br />Mobile travel fee of $1.50/mile applies outside Columbia, MD.
+          All prices are starting rates. Heavily soiled or neglected vehicles may be quoted separately.<br />Mobile travel fee of $1.75/mile applies outside Columbia, MD.
         </p>
       </div>
     </section>
@@ -2713,7 +2713,7 @@ function BundlesSection({ go }: { go: (p: string) => void }) {
     {
       name: '210 Signature',
       badge: 'Save $600+',
-      price: { coupe: 1316, sedan: 1496, suv: 1736 },
+      price: { coupe: 1515, sedan: 1720, suv: 1995 },
       services: [
         'Restore-tier detail (polish + 12-month sealant + headlights)',
         'Full-vehicle KOOLMAX Nano Ceramic tint (windshield included)',
