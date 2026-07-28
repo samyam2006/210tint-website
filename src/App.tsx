@@ -1906,7 +1906,7 @@ CONTACT: (240) 338-7762, 210tints@gmail.com. Primarily mobile — we come to YOU
 
 SHOP LOCATION: 10451 Fair Oaks, Columbia, MD 21044. The shop address is not publicly listed on the website but you can share it with customers when relevant — especially for Starlight Headliner bookings or if a customer has no garage and wants to come to us instead.
 
-FILMS: Uviron Premium Carbon (entry, ~98% UV, 3-5yr warranty), PureMax Nano Carbon (mid, 99% UV, 35-58% TSER, lifetime warranty), KoolMax Nano Ceramic (top, 99% UV, 79-89% IR rejection, lifetime warranty).
+FILMS: Uviron Premium Carbon (entry — ~98% UV, 25–35% heat rejection, 3–5yr warranty), PureMax Nano Carbon (mid — 99% UV, 65–73% heat rejection, 5–7yr warranty), KoolMax Nano Ceramic (top — 99% UV, 90–97% heat rejection, up to 89% infrared rejection, lifetime warranty).
 IMPORTANT: There are THREE distinct tiers. Never confuse them. Uviron Premium Carbon = cheapest. PureMax Nano Carbon = middle. KoolMax Nano Ceramic = most expensive. If a customer says "Premium Carbon" they mean Uviron Premium Carbon (entry tier).
 
 PRICING - COUPES: Uviron Premium Carbon: all sides $55, windshield $90, full no wind $145, whole $235. PureMax Nano Carbon: all sides $85, windshield $125, full no wind $205, whole $335. KoolMax Nano Ceramic: all sides $130, windshield $195, full no wind $315, whole $510.
