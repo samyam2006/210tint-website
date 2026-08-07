@@ -930,6 +930,7 @@ const NAV = [
   { id: 'home', label: 'Home' }, { id: 'portfolio', label: 'Portfolio' },
   { id: 'pricing', label: 'Pricing' }, { id: 'detailing', label: 'Detailing' },
   { id: 'compare', label: 'Compare Films' },
+  { id: 'bmw-giveaway', label: '🏆 M8 Giveaway' },
   { id: 'contact', label: 'Contact' },
 ];
 
@@ -1069,7 +1070,7 @@ function Footer({ go }: { go: (p: string) => void }) {
         </div>
         <div>
           <h4 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 12, letterSpacing: '3px', color: '#4a4a5a', marginBottom: 20, textTransform: 'uppercase' }}>Resources</h4>
-          {[{label:'Tint Simulator',id:'tint-simulator'},{label:'Starlight Headliner',id:'starlight'},{label:'✦ Starlight Sale — 15% Off',id:'starlight-sale'},{label:'Warranty',id:'warranty'},{label:'MD Tint Laws',id:'tint-laws'},{label:'Ceramic vs Carbon',id:'ceramic-vs-carbon'},{label:'Best Tint for Summer',id:'md-summer-tint'}].map(l => <button key={l.id} onClick={() => go(l.id)} style={{ display: 'block', background: 'none', border: 'none', cursor: 'pointer', color: l.id==='starlight-sale'?'#7dd3ff':'#8e8ea0', fontSize: 16, padding: '5px 0', fontWeight: l.id==='starlight-sale'?600:400 }}>{l.label}</button>)}
+          {[{label:'🏆 Win a BMW M8',id:'bmw-giveaway'},{label:'Tint Simulator',id:'tint-simulator'},{label:'Starlight Headliner',id:'starlight'},{label:'✦ Starlight Sale — 15% Off',id:'starlight-sale'},{label:'Warranty',id:'warranty'},{label:'MD Tint Laws',id:'tint-laws'},{label:'Ceramic vs Carbon',id:'ceramic-vs-carbon'},{label:'Best Tint for Summer',id:'md-summer-tint'}].map(l => { const hot = l.id==='starlight-sale'||l.id==='bmw-giveaway'; return <button key={l.id} onClick={() => go(l.id)} style={{ display: 'block', background: 'none', border: 'none', cursor: 'pointer', color: hot?'#7dd3ff':'#8e8ea0', fontSize: 16, padding: '5px 0', fontWeight: hot?600:400 }}>{l.label}</button>; })}
         </div>
         <div>
           <h4 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 12, letterSpacing: '3px', color: '#4a4a5a', marginBottom: 20, textTransform: 'uppercase' }}>Contact</h4>
@@ -1218,6 +1219,40 @@ function HomePage({ go }: { go: (p: string) => void }) {
           </div>
         </section>
       </ScrollRevealSection>
+
+      {/* ═══ BMW M8 GIVEAWAY TEASER ═══ */}
+      <section style={{ padding: '48px 28px 0', maxWidth: 1320, margin: '0 auto' }}>
+        <div className="rv" onClick={() => go('bmw-giveaway')} style={{
+          cursor: 'pointer', borderRadius: 8, overflow: 'hidden', position: 'relative',
+          background: 'linear-gradient(120deg,#0a1018 0%,#0a1828 45%,#0a1018 100%)',
+          border: '1px solid rgba(0,136,255,0.4)', boxShadow: '0 0 60px rgba(0,136,255,0.12)',
+          padding: 'clamp(28px,4vw,44px) clamp(24px,4vw,52px)', display: 'flex',
+          alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 24,
+        }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = '0 0 80px rgba(0,136,255,0.22)'; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = '0 0 60px rgba(0,136,255,0.12)'; }}
+        >
+          <div style={{ position: 'absolute', width: 300, height: 300, borderRadius: '50%', background: 'radial-gradient(circle, rgba(0,136,255,0.18) 0%, transparent 70%)', top: -100, left: -60, pointerEvents: 'none' }} />
+          <div style={{ position: 'relative', zIndex: 1 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+              <span style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.35)', color: '#f87171', borderRadius: 3, padding: '3px 12px', fontSize: 11, fontWeight: 800, letterSpacing: '2px', textTransform: 'uppercase' }}>Giveaway</span>
+              <span style={{ fontSize: 20 }}>🏆</span>
+            </div>
+            <h2 style={{ fontFamily: 'Space Grotesk', fontWeight: 800, fontSize: 'clamp(26px,4vw,46px)', lineHeight: 1.1, marginBottom: 10 }}>
+              Book a Service.<br /><span className="grad-text">Win a BMW M8.</span>
+            </h2>
+            <p style={{ color: '#8e8ea0', fontSize: 16, maxWidth: 460 }}>
+              Every dollar you spend earns entries. No purchase necessary to enter — free entries available.
+            </p>
+          </div>
+          <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12, flexShrink: 0 }}>
+            <div style={{ fontSize: 'clamp(48px,8vw,80px)', lineHeight: 1 }}>🏎️</div>
+            <div style={{ background: '#0088ff', color: '#fff', padding: '13px 32px', borderRadius: 3, fontWeight: 700, fontSize: 15, boxShadow: '0 4px 30px rgba(0,136,255,0.4)', whiteSpace: 'nowrap' }}>
+              See How to Win →
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* ═══ GOOGLE REVIEWS SLIDER ═══ */}
       <section style={{ padding: '120px 0', background: '#0a0a0f', position: 'relative', overflow: 'hidden' }}>
@@ -2958,6 +2993,242 @@ function LeadCapturePopup() {
   );
 }
 
+/* ═══ COUNTDOWN TIMER — ticks every second to a target date ═══ */
+function CountdownTimer({ target }: { target: Date }) {
+  const calc = () => Math.max(0, target.getTime() - Date.now());
+  const [ms, setMs] = useState(calc());
+  useEffect(() => {
+    const t = setInterval(() => setMs(calc()), 1000);
+    return () => clearInterval(t);
+  }, []);
+  const s = Math.floor(ms / 1000);
+  const units = [
+    { v: Math.floor(s / 86400), label: 'Days' },
+    { v: Math.floor((s % 86400) / 3600), label: 'Hours' },
+    { v: Math.floor((s % 3600) / 60), label: 'Minutes' },
+    { v: s % 60, label: 'Seconds' },
+  ];
+  if (ms <= 0) {
+    return (
+      <div style={{ display: 'inline-block', background: 'rgba(239,68,68,0.12)', border: '1px solid rgba(239,68,68,0.4)', borderRadius: 8, padding: '14px 28px', color: '#f87171', fontWeight: 800, fontSize: 16, letterSpacing: '1px', textTransform: 'uppercase' }}>
+        🏁 Giveaway Closed — Winner Being Drawn
+      </div>
+    );
+  }
+  return (
+    <div style={{ display: 'flex', gap: 'clamp(8px,2vw,18px)', justifyContent: 'center', flexWrap: 'wrap' }}>
+      {units.map(u => (
+        <div key={u.label} style={{ minWidth: 74, padding: '16px 10px', borderRadius: 10, background: 'linear-gradient(135deg,rgba(0,136,255,0.1),rgba(0,136,255,0.02))', border: '1px solid rgba(0,136,255,0.3)', boxShadow: '0 0 30px rgba(0,136,255,0.08)' }}>
+          <div style={{ fontFamily: 'Space Grotesk', fontSize: 'clamp(30px,5vw,46px)', fontWeight: 800, color: '#7dd3ff', lineHeight: 1, textShadow: '0 0 20px rgba(0,136,255,0.5)' }}>
+            {String(u.v).padStart(2, '0')}
+          </div>
+          <div style={{ fontSize: 11, letterSpacing: '2px', textTransform: 'uppercase', color: '#8e8ea0', marginTop: 8, fontWeight: 600 }}>{u.label}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ═══ BMW M8 GIVEAWAY PAGE ═══ */
+function GiveawayPage({ go }: { go: (p: string) => void }) {
+  useReveal();
+  // ── CONFIG (owner: adjust these) ──
+  const DRAW = new Date('2026-09-07T20:00:00-04:00'); // exact draw date/time — CONFIRM
+  const ENDPOINT = 'https://script.google.com/macros/s/AKfycbwq3_ioG3zC_Ff-KmDZFMzXDM1hBVNZqF8e1djMBLAhjAHTajpZ93YlNvtOslBD4OjF/exec';
+  const PER_DOLLAR = 100, BONUS = 50000, BONUS_AT = 500, FREE_ENTRIES = 1000;
+  const drawLabel = DRAW.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+  const validEmail = (e: string) => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e);
+  const validPhone = (p: string) => p.replace(/[^0-9]/g, '').length >= 10;
+
+  // ── Check-my-entries lookup (JSONP — Apps Script sends no CORS headers) ──
+  const [lookup, setLookup] = useState('');
+  const [checking, setChecking] = useState(false);
+  const [result, setResult] = useState<{ found: boolean; name?: string; entries?: number } | null>(null);
+  const [lookupErr, setLookupErr] = useState('');
+  const checkEntries = (e: React.FormEvent) => {
+    e.preventDefault();
+    setLookupErr(''); setResult(null);
+    const val = lookup.trim();
+    if (!validEmail(val) && !validPhone(val)) { setLookupErr('Enter the email or phone you booked with.'); return; }
+    setChecking(true);
+    const cbName = 'gw_cb_' + Math.floor(Date.now());
+    const script = document.createElement('script');
+    let done = false;
+    const cleanup = () => { done = true; try { delete (window as any)[cbName]; } catch { (window as any)[cbName] = undefined; } if (script.parentNode) script.parentNode.removeChild(script); };
+    (window as any)[cbName] = (data: any) => { setChecking(false); setResult(data && typeof data.entries === 'number' ? data : { found: false }); cleanup(); };
+    const key = validEmail(val) ? 'email' : 'phone';
+    script.src = `${ENDPOINT}?${key}=${encodeURIComponent(val)}&callback=${cbName}`;
+    script.onerror = () => { if (!done) { setChecking(false); setLookupErr('Lookup isn’t available yet — try again soon or text us.'); cleanup(); } };
+    document.body.appendChild(script);
+    setTimeout(() => { if (!done) { setChecking(false); setLookupErr('Lookup timed out — the entry checker may not be live yet.'); cleanup(); } }, 9000);
+  };
+
+  // ── Free entry (No Purchase Necessary / AMOE) ──
+  const [fName, setFName] = useState(''); const [fEmail, setFEmail] = useState(''); const [fPhone, setFPhone] = useState('');
+  const [fErr, setFErr] = useState(''); const [fSent, setFSent] = useState(false); const [fSending, setFSending] = useState(false);
+  const submitFree = async (e: React.FormEvent) => {
+    e.preventDefault(); setFErr('');
+    if (!fName.trim()) { setFErr('Please enter your name.'); return; }
+    if (!validEmail(fEmail)) { setFErr('Please enter a valid email.'); return; }
+    if (!validPhone(fPhone)) { setFErr('Please enter a valid phone number.'); return; }
+    setFSending(true);
+    const entry = { type: 'giveaway-free', name: fName.trim(), email: fEmail.trim(), phone: fPhone.trim(), source: 'BMW M8 giveaway — free entry', ts: new Date().toISOString() };
+    try { const prev = JSON.parse(localStorage.getItem('210-giveaway-free') || '[]'); prev.push(entry); localStorage.setItem('210-giveaway-free', JSON.stringify(prev)); } catch { /* ignore */ }
+    try { await fetch(ENDPOINT, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(entry) }); } catch { /* opaque */ }
+    setFSending(false); setFSent(true);
+  };
+
+  const [rulesOpen, setRulesOpen] = useState(false);
+  const inputStyle: React.CSSProperties = { width: '100%', padding: '14px 16px', borderRadius: 8, fontSize: 15, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', outline: 'none', fontFamily: 'Inter', boxSizing: 'border-box' };
+  const card: React.CSSProperties = { padding: '30px 26px', borderRadius: 12, border: '1px solid rgba(0,136,255,0.28)', background: 'linear-gradient(135deg,rgba(0,136,255,0.08),rgba(0,136,255,0.02))', boxShadow: '0 0 40px rgba(0,136,255,0.06)', textAlign: 'center' };
+
+  return (
+    <div style={{ paddingTop: 130 }}>
+      <section style={{ padding: '0 28px 100px', maxWidth: 980, margin: '0 auto' }}>
+        {/* HERO */}
+        <div className="rv" style={{ textAlign: 'center', marginBottom: 48 }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(0,136,255,0.12)', border: '1px solid rgba(0,136,255,0.3)', borderRadius: 24, padding: '6px 18px', marginBottom: 22 }}>
+            <span style={{ fontSize: 18 }}>🏆</span>
+            <span style={{ color: '#7dd3ff', fontSize: 13, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase' }}>Grand Prize Giveaway</span>
+          </div>
+          <h1 style={{ fontFamily: 'Space Grotesk', fontSize: 'clamp(38px,7vw,72px)', fontWeight: 800, lineHeight: 1.05, letterSpacing: '-2px', marginBottom: 18 }}>
+            Win a <span className="grad-text">BMW M8</span>
+          </h1>
+          {/* Prize showcase (swap for a real M8 photo when provided) */}
+          <div style={{ position: 'relative', borderRadius: 16, overflow: 'hidden', margin: '0 auto 30px', maxWidth: 640, aspectRatio: '16/9', background: 'radial-gradient(ellipse at 50% 30%, rgba(0,136,255,0.22), transparent 60%), linear-gradient(160deg,#0a1828,#050507)', border: '1px solid rgba(0,136,255,0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: 'clamp(60px,12vw,110px)', lineHeight: 1 }}>🏎️</div>
+              <div style={{ fontFamily: 'Space Grotesk', fontWeight: 800, fontSize: 'clamp(20px,3vw,30px)', color: '#fff', marginTop: 8, letterSpacing: '1px' }}>BMW M8 COMPETITION</div>
+              <div style={{ color: '#7dd3ff', fontSize: 13, fontWeight: 600, letterSpacing: '2px', textTransform: 'uppercase', marginTop: 4 }}>617 HP · Twin-Turbo V8</div>
+            </div>
+          </div>
+          <p style={{ color: '#8e8ea0', fontSize: 'clamp(15px,1.6vw,18px)', lineHeight: 1.7, maxWidth: 620, margin: '0 auto 28px' }}>
+            Every service you book with 210 Tint earns you entries to win a BMW M8. The more you do, the more chances you get. Winner drawn <span style={{ color: '#fff', fontWeight: 600 }}>{drawLabel}</span>.
+          </p>
+          {/* Countdown */}
+          <div className="rv d1" style={{ marginBottom: 34 }}>
+            <div style={{ fontSize: 11, letterSpacing: '3px', textTransform: 'uppercase', color: '#0088ff', fontWeight: 700, marginBottom: 16 }}>Entries Close In</div>
+            <CountdownTimer target={DRAW} />
+          </div>
+          <div className="rv d2" style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap' }}>
+            <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" className="magnetic-btn" style={{ padding: '16px 40px', background: '#0088ff', color: '#fff', borderRadius: 4, fontWeight: 700, fontSize: 16, textDecoration: 'none', boxShadow: '0 4px 40px rgba(0,136,255,0.45)' }}>Book &amp; Earn Entries</a>
+            <a href="#free-entry" style={{ padding: '16px 36px', background: 'transparent', color: '#fff', border: '1px solid rgba(255,255,255,0.14)', borderRadius: 4, fontWeight: 600, fontSize: 16, textDecoration: 'none' }}>Enter Free →</a>
+          </div>
+        </div>
+
+        {/* HOW ENTRIES WORK */}
+        <div style={{ marginTop: 80 }}>
+          <SH tag="How It Works" title="Every Dollar Earns Entries" sub="Book any tint, detail, starlight, or bundle — your entries stack automatically." />
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(240px,1fr))', gap: 16 }}>
+            <div className="rv d1" style={card}>
+              <div style={{ fontFamily: 'Space Grotesk', fontSize: 40, fontWeight: 800, color: '#7dd3ff', textShadow: '0 0 16px rgba(0,136,255,0.5)' }}>{PER_DOLLAR}</div>
+              <div style={{ fontWeight: 700, fontSize: 16, marginTop: 4 }}>entries per $1</div>
+              <p style={{ color: '#8e8ea0', fontSize: 13.5, lineHeight: 1.6, marginTop: 10 }}>Spend $1, get {PER_DOLLAR} entries. Every dollar counts from the very first one.</p>
+            </div>
+            <div className="rv d2" style={{ ...card, border: '1px solid rgba(0,136,255,0.5)', boxShadow: '0 0 50px rgba(0,136,255,0.14)' }}>
+              <div style={{ fontFamily: 'Space Grotesk', fontSize: 40, fontWeight: 800, color: '#7dd3ff', textShadow: '0 0 16px rgba(0,136,255,0.5)' }}>+{BONUS.toLocaleString()}</div>
+              <div style={{ fontWeight: 700, fontSize: 16, marginTop: 4 }}>bonus at ${BONUS_AT}</div>
+              <p style={{ color: '#8e8ea0', fontSize: 13.5, lineHeight: 1.6, marginTop: 10 }}>Hit ${BONUS_AT} in total spend and unlock a {BONUS.toLocaleString()}-entry bonus on top.</p>
+            </div>
+            <div className="rv d3" style={card}>
+              <div style={{ fontFamily: 'Space Grotesk', fontSize: 40, fontWeight: 800, color: '#7dd3ff', textShadow: '0 0 16px rgba(0,136,255,0.5)' }}>FREE</div>
+              <div style={{ fontWeight: 700, fontSize: 16, marginTop: 4 }}>no purchase needed</div>
+              <p style={{ color: '#8e8ea0', fontSize: 13.5, lineHeight: 1.6, marginTop: 10 }}>No purchase necessary — grab {FREE_ENTRIES.toLocaleString()} free entries below. Everyone can play.</p>
+            </div>
+          </div>
+          {/* Worked example */}
+          <div className="rv" style={{ marginTop: 20, padding: '22px 26px', borderRadius: 10, background: 'rgba(0,136,255,0.04)', border: '1px solid rgba(0,136,255,0.15)', textAlign: 'center' }}>
+            <span style={{ color: '#8e8ea0', fontSize: 15 }}>Example: a </span>
+            <span style={{ color: '#fff', fontWeight: 600 }}>$575 whole-car ceramic tint</span>
+            <span style={{ color: '#8e8ea0', fontSize: 15 }}> = </span>
+            <span style={{ fontFamily: 'Space Grotesk', fontWeight: 800, color: '#7dd3ff', fontSize: 20 }}>
+              <Counter end={575 * PER_DOLLAR + BONUS} suffix=" entries" />
+            </span>
+          </div>
+        </div>
+
+        {/* CHECK MY ENTRIES */}
+        <div style={{ marginTop: 80 }}>
+          <SH tag="Track Your Odds" title="Check My Entries" sub="Enter the email or phone you booked with to see your current entry count." />
+          <form onSubmit={checkEntries} className="rv d1" style={{ maxWidth: 460, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <input style={inputStyle} type="text" placeholder="Email or phone number" value={lookup} onChange={(e) => setLookup(e.target.value)} />
+            {lookupErr && <p style={{ color: '#f87171', fontSize: 13, margin: 0 }}>{lookupErr}</p>}
+            <button type="submit" disabled={checking} style={{ padding: '14px', borderRadius: 8, border: 'none', cursor: checking ? 'default' : 'pointer', background: 'linear-gradient(90deg,#0088ff,#3aa6ff)', color: '#fff', fontWeight: 700, fontSize: 16, opacity: checking ? 0.7 : 1 }}>{checking ? 'Checking…' : 'Check My Entries'}</button>
+          </form>
+          {result && (
+            <div className="rv" style={{ maxWidth: 460, margin: '18px auto 0', textAlign: 'center', padding: '24px', borderRadius: 12, ...(result.found ? { background: 'linear-gradient(135deg,rgba(0,136,255,0.12),rgba(0,136,255,0.03))', border: '1px solid rgba(0,136,255,0.4)' } : { background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }) }}>
+              {result.found ? (
+                <>
+                  {result.name && <div style={{ color: '#8e8ea0', fontSize: 14, marginBottom: 6 }}>Hey {result.name} 👋</div>}
+                  <div style={{ fontFamily: 'Space Grotesk', fontSize: 44, fontWeight: 800, color: '#7dd3ff', textShadow: '0 0 20px rgba(0,136,255,0.5)', lineHeight: 1 }}>{(result.entries || 0).toLocaleString()}</div>
+                  <div style={{ color: '#8e8ea0', fontSize: 14, marginTop: 8 }}>entries in the BMW M8 giveaway</div>
+                </>
+              ) : (
+                <p style={{ color: '#8e8ea0', fontSize: 14, margin: 0, lineHeight: 1.6 }}>No entries found for that yet. Book a service to earn entries, or grab your free entries below.</p>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* FREE ENTRY (AMOE) */}
+        <div id="free-entry" style={{ marginTop: 80, scrollMarginTop: 120 }}>
+          <SH tag="No Purchase Necessary" title="Enter for Free" sub="No purchase is necessary to enter or win. Claim your free entries below." />
+          {!fSent ? (
+            <form onSubmit={submitFree} className="rv d1" style={{ maxWidth: 460, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 12 }}>
+              <input style={inputStyle} type="text" placeholder="Full name" value={fName} onChange={(e) => setFName(e.target.value)} />
+              <input style={inputStyle} type="email" placeholder="Email address" value={fEmail} onChange={(e) => setFEmail(e.target.value)} />
+              <input style={inputStyle} type="tel" placeholder="Phone number" value={fPhone} onChange={(e) => setFPhone(e.target.value)} />
+              {fErr && <p style={{ color: '#f87171', fontSize: 13, margin: 0 }}>{fErr}</p>}
+              <button type="submit" disabled={fSending} style={{ padding: '15px', borderRadius: 8, border: 'none', cursor: fSending ? 'default' : 'pointer', background: 'linear-gradient(90deg,#0088ff,#3aa6ff)', color: '#fff', fontWeight: 700, fontSize: 16, opacity: fSending ? 0.7 : 1 }}>{fSending ? 'Submitting…' : `Claim ${FREE_ENTRIES.toLocaleString()} Free Entries`}</button>
+              <p style={{ color: '#4a4a5a', fontSize: 11.5, textAlign: 'center', margin: '2px 0 0', lineHeight: 1.5 }}>One free entry per person. See Official Rules below.</p>
+            </form>
+          ) : (
+            <div className="rv" style={{ maxWidth: 460, margin: '0 auto', textAlign: 'center', padding: '30px 24px', borderRadius: 12, background: 'linear-gradient(135deg,rgba(0,136,255,0.12),rgba(0,136,255,0.03))', border: '1px solid rgba(0,136,255,0.4)' }}>
+              <div style={{ fontSize: 40, marginBottom: 8 }}>🎉</div>
+              <h3 style={{ fontFamily: 'Space Grotesk', fontWeight: 800, fontSize: 22, marginBottom: 8 }}>You’re entered!</h3>
+              <p style={{ color: '#8e8ea0', fontSize: 14, lineHeight: 1.6, margin: 0 }}>Your {FREE_ENTRIES.toLocaleString()} free entries are locked in. Book a service anytime to stack up more.</p>
+            </div>
+          )}
+        </div>
+
+        {/* OFFICIAL RULES */}
+        <div style={{ marginTop: 72 }}>
+          <div className="rv" style={{ maxWidth: 760, margin: '0 auto', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 10, background: '#0a0a0f', overflow: 'hidden' }}>
+            <button onClick={() => setRulesOpen(o => !o)} style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px 24px', background: 'none', border: 'none', cursor: 'pointer', color: '#fff', fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 16 }}>
+              <span>Official Rules &amp; Eligibility</span>
+              <span style={{ color: '#0088ff', fontSize: 20, transform: rulesOpen ? 'rotate(45deg)' : 'none', transition: 'transform 0.3s' }}>+</span>
+            </button>
+            {rulesOpen && (
+              <div style={{ padding: '0 24px 24px', color: '#8e8ea0', fontSize: 13.5, lineHeight: 1.8 }}>
+                <p style={{ color: '#f0a020', fontSize: 12.5, marginBottom: 14 }}>⚠️ TEMPLATE — replace with your finalized, professionally reviewed rules before launch.</p>
+                <p><strong style={{ color: '#e5e5e5' }}>No purchase necessary</strong> to enter or win. A purchase will not increase your chances of winning.</p>
+                <p><strong style={{ color: '#e5e5e5' }}>Sponsor:</strong> 210 Tint, Columbia, MD.</p>
+                <p><strong style={{ color: '#e5e5e5' }}>Eligibility:</strong> Open to legal U.S. residents [state] 18+ (or age of majority). Void where prohibited.</p>
+                <p><strong style={{ color: '#e5e5e5' }}>Entry period:</strong> [start date] – {drawLabel}. Winner drawn on or about {drawLabel}.</p>
+                <p><strong style={{ color: '#e5e5e5' }}>How to enter:</strong> (1) Purchase entry — every $1 spent on 210 Tint services during the entry period earns {PER_DOLLAR} entries, plus a {BONUS.toLocaleString()}-entry bonus at ${BONUS_AT} total spend. (2) Free entry — submit the free-entry form above (or mail-in per full rules) for {FREE_ENTRIES.toLocaleString()} entries, no purchase required.</p>
+                <p><strong style={{ color: '#e5e5e5' }}>Prize:</strong> One (1) BMW M8 [year/trim], approximate retail value $[ARV]. Winner is responsible for all applicable taxes (an IRS Form 1099 will be issued for the prize value), registration, insurance, and any costs beyond the prize itself.</p>
+                <p><strong style={{ color: '#e5e5e5' }}>Winner selection:</strong> Random drawing from all eligible entries. Winner notified by phone/email and must respond within [X] days. Odds depend on total entries received.</p>
+                <p><strong style={{ color: '#e5e5e5' }}>Publicity:</strong> By entering, the winner consents to use of their name/likeness for promotional purposes where permitted.</p>
+                <p style={{ marginTop: 10, color: '#4a4a5a' }}>Full official rules available on request. This promotion is not sponsored or endorsed by BMW.</p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* CTA */}
+        <div className="rv" style={{ textAlign: 'center', marginTop: 64 }}>
+          <p style={{ color: '#8e8ea0', fontSize: 15, marginBottom: 18 }}>Ready to stack up entries?</p>
+          <div style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap' }}>
+            <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" className="magnetic-btn" style={{ padding: '16px 44px', background: '#0088ff', color: '#fff', borderRadius: 4, fontWeight: 700, fontSize: 16, textDecoration: 'none', boxShadow: '0 4px 40px rgba(0,136,255,0.45)' }}>Book a Service</a>
+            <a href="tel:2403387762" style={{ padding: '16px 40px', background: 'transparent', color: '#fff', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 4, fontWeight: 600, fontSize: 16, textDecoration: 'none' }}>(240) 338-7762</a>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
 export default function App() {
   const [page, setPage] = useState('home');
   const [transitioning, setTransitioning] = useState(false);
@@ -3012,6 +3283,7 @@ export default function App() {
         {page==='starlight'&&<StarlightPage go={go}/>}
         {page==='starlight-sale'&&<StarlightSalePage go={go}/>}
         {page==='detailing'&&<DetailingPage go={go}/>}
+        {page==='bmw-giveaway'&&<GiveawayPage go={go}/>}
         {page==='contact'&&<ContactPage/>}
       </main>
       <Footer go={go} />
