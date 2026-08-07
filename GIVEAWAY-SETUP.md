@@ -34,9 +34,13 @@ these headers in row 1:
 |---|---|---|---|---|---|
 | Timestamp | Name | Email | Phone | AmountSpent | EntryType |
 
-**Your only ongoing job:** after each completed job, add a row — Name, Email, Phone, the
-dollar **AmountSpent**, and put `purchase` in EntryType. Free entries from the website land
-here automatically with EntryType `free`.
+**Your ongoing job:**
+- After each completed job, add a row — Name, Email, Phone, the dollar **AmountSpent**, and
+  put `purchase` in EntryType.
+- **Free entries are mail-in** (No Purchase Necessary). When a valid mail-in card arrives, add
+  a row with the person's Name/Email/Phone, leave AmountSpent blank, and put `free` in
+  EntryType. (The website no longer submits free entries — this keeps the promo a compliant
+  sweepstakes without an on-site free form.)
 
 *(Optional) add an `Entries` formula in column G to eyeball each row:*
 ```
@@ -143,6 +147,11 @@ immediately.
 - ⚠️ **Legal:** the Official Rules on the page are a **template** — get them (and the
   free-vs-paid entry ratio) reviewed by a professional. A purchase-based car giveaway must be
   run as a sweepstakes with a genuine free-entry path to stay legal.
+- **Mailing address + deadline (required):** the free entry is now **mail-in**. Replace the
+  `[Mailing address]` and `[deadline]` placeholders — they appear twice in `src/App.tsx`
+  (the "Free Entry by Mail" section and the Official Rules). Use a real address you can
+  receive mail at (a PO box is fine). Just tell me the address and deadline and I'll fill
+  them in.
 - **Draw date:** the countdown uses `2026-09-07 8PM ET` — change `DRAW` in the `GiveawayPage`
   function in `src/App.tsx` to your real date.
 - **Prize photo:** the hero uses a styled placeholder. Send a real BMW M8 photo and I'll drop

@@ -3065,20 +3065,8 @@ function GiveawayPage({ go }: { go: (p: string) => void }) {
     setTimeout(() => { if (!done) { setChecking(false); setLookupErr('Lookup timed out — the entry checker may not be live yet.'); cleanup(); } }, 9000);
   };
 
-  // ── Free entry (No Purchase Necessary / AMOE) ──
-  const [fName, setFName] = useState(''); const [fEmail, setFEmail] = useState(''); const [fPhone, setFPhone] = useState('');
-  const [fErr, setFErr] = useState(''); const [fSent, setFSent] = useState(false); const [fSending, setFSending] = useState(false);
-  const submitFree = async (e: React.FormEvent) => {
-    e.preventDefault(); setFErr('');
-    if (!fName.trim()) { setFErr('Please enter your name.'); return; }
-    if (!validEmail(fEmail)) { setFErr('Please enter a valid email.'); return; }
-    if (!validPhone(fPhone)) { setFErr('Please enter a valid phone number.'); return; }
-    setFSending(true);
-    const entry = { type: 'giveaway-free', name: fName.trim(), email: fEmail.trim(), phone: fPhone.trim(), source: 'BMW M8 giveaway — free entry', ts: new Date().toISOString() };
-    try { const prev = JSON.parse(localStorage.getItem('210-giveaway-free') || '[]'); prev.push(entry); localStorage.setItem('210-giveaway-free', JSON.stringify(prev)); } catch { /* ignore */ }
-    try { await fetch(ENDPOINT, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(entry) }); } catch { /* opaque */ }
-    setFSending(false); setFSent(true);
-  };
+  // Free entry is by mail-in (No Purchase Necessary / AMOE) — see the mail-in section below.
+  // The owner logs received mail-in cards into the Giveaway sheet manually (EntryType "free").
 
   const [rulesOpen, setRulesOpen] = useState(false);
   const [heroImgOk, setHeroImgOk] = useState(true);
@@ -3197,25 +3185,30 @@ function GiveawayPage({ go }: { go: (p: string) => void }) {
           )}
         </div>
 
-        {/* FREE ENTRY (AMOE) */}
+        {/* FREE ENTRY (AMOE) — mail-in */}
         <div id="free-entry" style={{ marginTop: 110, scrollMarginTop: 120 }}>
-          <PremHead label="No Purchase Necessary" title="Enter for Free" sub="No purchase is necessary to enter or win. Submit the form below to claim your free entries." />
-          {!fSent ? (
-            <form onSubmit={submitFree} className="rv d1" style={{ maxWidth: 440, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 12 }}>
-              <input style={inputStyle} type="text" placeholder="Full name" value={fName} onChange={(e) => setFName(e.target.value)} />
-              <input style={inputStyle} type="email" placeholder="Email address" value={fEmail} onChange={(e) => setFEmail(e.target.value)} />
-              <input style={inputStyle} type="tel" placeholder="Phone number" value={fPhone} onChange={(e) => setFPhone(e.target.value)} />
-              {fErr && <p style={{ color: '#f87171', fontSize: 13, margin: 0 }}>{fErr}</p>}
-              <button type="submit" disabled={fSending} style={{ padding: '15px', borderRadius: 4, border: 'none', cursor: fSending ? 'default' : 'pointer', background: '#0088ff', color: '#fff', fontWeight: 600, fontSize: 15, letterSpacing: '0.3px', opacity: fSending ? 0.7 : 1 }}>{fSending ? 'Submitting…' : `Claim ${FREE_ENTRIES.toLocaleString()} Free Entries`}</button>
-              <p style={{ color: '#5a5a66', fontSize: 11.5, textAlign: 'center', margin: '2px 0 0', lineHeight: 1.5 }}>One free entry per person. See Official Rules below.</p>
-            </form>
-          ) : (
-            <div className="rv" style={{ maxWidth: 440, margin: '0 auto', textAlign: 'center', padding: '40px 24px', borderRadius: 6, background: '#0a0a0d', border: '1px solid rgba(255,255,255,0.1)' }}>
-              <svg width="46" height="46" viewBox="0 0 46 46" fill="none" style={{ marginBottom: 16 }}><circle cx="23" cy="23" r="22" stroke="#7dd3ff" strokeWidth="1.5" /><path d="M14 23.5l6 6L32 17" stroke="#7dd3ff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
-              <h3 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 22, marginBottom: 10, letterSpacing: '-0.5px' }}>You're entered</h3>
-              <p style={{ color: '#8e8ea0', fontSize: 14, lineHeight: 1.7, margin: 0 }}>Your {FREE_ENTRIES.toLocaleString()} free entries are locked in. Book a service anytime to earn more.</p>
+          <PremHead label="No Purchase Necessary" title="Free Entry by Mail" sub="No purchase is necessary to enter or win. Enter for free by mailing in a request as described below." />
+          <div className="rv d1" style={{ maxWidth: 560, margin: '0 auto', padding: 'clamp(28px,4vw,40px)', borderRadius: 6, background: '#0a0a0d', border: '1px solid rgba(255,255,255,0.1)' }}>
+            <p style={{ color: '#c8c8d0', fontSize: 15, lineHeight: 1.85, margin: 0 }}>
+              To receive <span style={{ color: '#fff', fontWeight: 600 }}>{FREE_ENTRIES.toLocaleString()} free entries</span> without making a purchase, hand-print the following on a 3&quot;&nbsp;×&nbsp;5&quot; card and mail it to us:
+            </p>
+            <ul style={{ color: '#8e8ea0', fontSize: 14.5, lineHeight: 1.9, margin: '16px 0 0', paddingLeft: 20 }}>
+              <li>Your full name</li>
+              <li>Mailing address</li>
+              <li>Email address and phone number</li>
+              <li>The words &ldquo;210 Tint BMW M8 Giveaway&rdquo;</li>
+            </ul>
+            <div style={{ margin: '24px 0', padding: '20px 22px', borderRadius: 4, background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.08)' }}>
+              <div style={{ fontSize: 10, letterSpacing: '2.5px', textTransform: 'uppercase', color: '#6a6a76', marginBottom: 10, fontWeight: 600 }}>Mail To</div>
+              <div style={{ fontFamily: 'Space Grotesk', fontSize: 16, fontWeight: 600, color: '#fff', lineHeight: 1.6 }}>
+                210 Tint — BMW M8 Giveaway<br />
+                [Mailing address], Columbia, MD 21044
+              </div>
             </div>
-          )}
+            <p style={{ color: '#7a7a86', fontSize: 12.5, lineHeight: 1.7, margin: 0 }}>
+              Limit one free entry per person per outer envelope, hand-addressed. Mail-in entries must be postmarked by [deadline] and received by {drawLabel}. Each valid request earns {FREE_ENTRIES.toLocaleString()} entries — the same as any other single entry. See Official Rules below for full details.
+            </p>
+          </div>
         </div>
 
         {/* OFFICIAL RULES */}
@@ -3232,7 +3225,7 @@ function GiveawayPage({ go }: { go: (p: string) => void }) {
                 <p><strong style={{ color: '#e5e5e5' }}>Sponsor:</strong> 210 Tint, Columbia, MD.</p>
                 <p><strong style={{ color: '#e5e5e5' }}>Eligibility:</strong> Open to legal U.S. residents [state] 18+ (or age of majority). Void where prohibited.</p>
                 <p><strong style={{ color: '#e5e5e5' }}>Entry period:</strong> [start date] – {drawLabel}. Winner drawn on or about {drawLabel}.</p>
-                <p><strong style={{ color: '#e5e5e5' }}>How to enter:</strong> (1) Purchase entry — every $1 spent on 210 Tint services during the entry period earns {PER_DOLLAR} entries, plus a {BONUS.toLocaleString()}-entry bonus at ${BONUS_AT} total spend. (2) Free entry — submit the free-entry form above (or mail-in per full rules) for {FREE_ENTRIES.toLocaleString()} entries, no purchase required.</p>
+                <p><strong style={{ color: '#e5e5e5' }}>How to enter:</strong> (1) Purchase entry — every $1 spent on 210 Tint services during the entry period earns {PER_DOLLAR} entries, plus a {BONUS.toLocaleString()}-entry bonus at ${BONUS_AT} total spend. (2) Free entry (no purchase necessary) — hand-print your full name, mailing address, email, phone, and &ldquo;210 Tint BMW M8 Giveaway&rdquo; on a 3×5 card and mail it to 210 Tint, [mailing address], Columbia, MD 21044. Each valid mail-in earns {FREE_ENTRIES.toLocaleString()} entries. Limit one per person per envelope; must be postmarked by [deadline].</p>
                 <p><strong style={{ color: '#e5e5e5' }}>Prize:</strong> One (1) BMW M8 [year/trim], approximate retail value $[ARV]. Winner is responsible for all applicable taxes (an IRS Form 1099 will be issued for the prize value), registration, insurance, and any costs beyond the prize itself.</p>
                 <p><strong style={{ color: '#e5e5e5' }}>Winner selection:</strong> Random drawing from all eligible entries. Winner notified by phone/email and must respond within [X] days. Odds depend on total entries received.</p>
                 <p><strong style={{ color: '#e5e5e5' }}>Publicity:</strong> By entering, the winner consents to use of their name/likeness for promotional purposes where permitted.</p>
