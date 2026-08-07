@@ -1105,7 +1105,7 @@ function HomePage({ go }: { go: (p: string) => void }) {
 
   const whyUs = [
     { title: 'We Come to You', desc: 'We bring everything to your home or office — or drop your car at our Columbia shop. Your call.' },
-    { title: '5-Star Google Rating', desc: '60+ five-star reviews. Professional service on every single job.' },
+    { title: '5-Star Google Rating', desc: '80+ five-star reviews. Professional service on every single job.' },
     { title: '100% Satisfaction Guarantee', desc: 'Every installation backed by our guarantee. If anything is off, we fix it at no charge — no questions asked.' },
     { title: 'UVIRON Performance Films', desc: 'KOOLMAX nano-ceramic blocks up to 89% infrared heat and 99% UV radiation.' },
     { title: 'Transparent Pricing', desc: 'No hidden fees. Flat rates for every vehicle type published on our site.' },
@@ -1268,7 +1268,7 @@ function HomePage({ go }: { go: (p: string) => void }) {
                   <div style={{ display: 'flex', gap: 3 }}>
                     {[1,2,3,4,5].map(s => <span key={s} style={{ color: '#FFD700', fontSize: 18 }}>&#9733;</span>)}
                   </div>
-                  <span style={{ fontSize: 12, color: '#8e8ea0', marginTop: 2 }}><strong style={{ color: '#fff', fontFamily: 'Space Grotesk' }}>5.0</strong> out of 5 · 60+ reviews on Google</span>
+                  <span style={{ fontSize: 12, color: '#8e8ea0', marginTop: 2 }}><strong style={{ color: '#fff', fontFamily: 'Space Grotesk' }}>5.0</strong> out of 5 · 80+ reviews on Google</span>
                 </div>
               </div>
             </ScrollRevealSection>
@@ -2278,7 +2278,7 @@ function BackToTop() {
 function TrustBadges() {
   const badges = [
     { icon: '🛡️', label: 'UVIRON Certified', desc: 'Official performance film partner' },
-    { icon: '⭐', label: '5-Star Google Rating', desc: '60+ five-star reviews' },
+    { icon: '⭐', label: '5-Star Google Rating', desc: '80+ five-star reviews' },
     { icon: '🔧', label: '1000+ Vehicles', desc: 'Professionally tinted' },
     { icon: '🏠', label: 'Mobile or Shop', desc: 'We come to you, or visit our Columbia shop' },
     { icon: '✅', label: 'Lifetime Warranty', desc: 'On Nano Ceramic KOOLMAX' },
