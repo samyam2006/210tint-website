@@ -930,7 +930,7 @@ const NAV = [
   { id: 'home', label: 'Home' }, { id: 'portfolio', label: 'Portfolio' },
   { id: 'pricing', label: 'Pricing' }, { id: 'detailing', label: 'Detailing' },
   { id: 'compare', label: 'Compare Films' },
-  { id: 'bmw-giveaway', label: '🏆 M8 Giveaway' },
+  { id: 'bmw-giveaway', label: 'M8 Giveaway' },
   { id: 'contact', label: 'Contact' },
 ];
 
@@ -1070,7 +1070,7 @@ function Footer({ go }: { go: (p: string) => void }) {
         </div>
         <div>
           <h4 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 12, letterSpacing: '3px', color: '#4a4a5a', marginBottom: 20, textTransform: 'uppercase' }}>Resources</h4>
-          {[{label:'🏆 Win a BMW M8',id:'bmw-giveaway'},{label:'Tint Simulator',id:'tint-simulator'},{label:'Starlight Headliner',id:'starlight'},{label:'✦ Starlight Sale — 15% Off',id:'starlight-sale'},{label:'Warranty',id:'warranty'},{label:'MD Tint Laws',id:'tint-laws'},{label:'Ceramic vs Carbon',id:'ceramic-vs-carbon'},{label:'Best Tint for Summer',id:'md-summer-tint'}].map(l => { const hot = l.id==='starlight-sale'||l.id==='bmw-giveaway'; return <button key={l.id} onClick={() => go(l.id)} style={{ display: 'block', background: 'none', border: 'none', cursor: 'pointer', color: hot?'#7dd3ff':'#8e8ea0', fontSize: 16, padding: '5px 0', fontWeight: hot?600:400 }}>{l.label}</button>; })}
+          {[{label:'Win a BMW M8',id:'bmw-giveaway'},{label:'Tint Simulator',id:'tint-simulator'},{label:'Starlight Headliner',id:'starlight'},{label:'✦ Starlight Sale — 15% Off',id:'starlight-sale'},{label:'Warranty',id:'warranty'},{label:'MD Tint Laws',id:'tint-laws'},{label:'Ceramic vs Carbon',id:'ceramic-vs-carbon'},{label:'Best Tint for Summer',id:'md-summer-tint'}].map(l => { const hot = l.id==='starlight-sale'||l.id==='bmw-giveaway'; return <button key={l.id} onClick={() => go(l.id)} style={{ display: 'block', background: 'none', border: 'none', cursor: 'pointer', color: hot?'#7dd3ff':'#8e8ea0', fontSize: 16, padding: '5px 0', fontWeight: hot?600:400 }}>{l.label}</button>; })}
         </div>
         <div>
           <h4 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 12, letterSpacing: '3px', color: '#4a4a5a', marginBottom: 20, textTransform: 'uppercase' }}>Contact</h4>
@@ -1221,34 +1221,32 @@ function HomePage({ go }: { go: (p: string) => void }) {
       </ScrollRevealSection>
 
       {/* ═══ BMW M8 GIVEAWAY TEASER ═══ */}
-      <section style={{ padding: '48px 28px 0', maxWidth: 1320, margin: '0 auto' }}>
+      <section style={{ padding: '56px 28px 0', maxWidth: 1320, margin: '0 auto' }}>
         <div className="rv" onClick={() => go('bmw-giveaway')} style={{
           cursor: 'pointer', borderRadius: 8, overflow: 'hidden', position: 'relative',
-          background: 'linear-gradient(120deg,#0a1018 0%,#0a1828 45%,#0a1018 100%)',
-          border: '1px solid rgba(0,136,255,0.4)', boxShadow: '0 0 60px rgba(0,136,255,0.12)',
-          padding: 'clamp(28px,4vw,44px) clamp(24px,4vw,52px)', display: 'flex',
-          alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 24,
+          background: 'linear-gradient(120deg,#0a0a12,#0c1420,#0a0a12)',
+          border: '1px solid rgba(255,255,255,0.09)',
+          padding: 'clamp(32px,4vw,52px) clamp(28px,4vw,56px)', display: 'flex',
+          alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 28,
+          transition: 'border-color 0.4s, box-shadow 0.4s',
         }}
-          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = '0 0 80px rgba(0,136,255,0.22)'; }}
-          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = '0 0 60px rgba(0,136,255,0.12)'; }}
+          onMouseEnter={(e) => { const t = e.currentTarget as HTMLElement; t.style.borderColor = 'rgba(0,136,255,0.4)'; t.style.boxShadow = '0 0 50px rgba(0,136,255,0.1)'; }}
+          onMouseLeave={(e) => { const t = e.currentTarget as HTMLElement; t.style.borderColor = 'rgba(255,255,255,0.09)'; t.style.boxShadow = 'none'; }}
         >
-          <div style={{ position: 'absolute', width: 300, height: 300, borderRadius: '50%', background: 'radial-gradient(circle, rgba(0,136,255,0.18) 0%, transparent 70%)', top: -100, left: -60, pointerEvents: 'none' }} />
+          {/* Faint M8 watermark */}
+          <div style={{ position: 'absolute', right: 'clamp(20px,4vw,60px)', top: '50%', transform: 'translateY(-50%)', fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 'clamp(80px,14vw,180px)', color: 'rgba(255,255,255,0.035)', letterSpacing: '-4px', lineHeight: 1, pointerEvents: 'none', userSelect: 'none' }}>M8</div>
           <div style={{ position: 'relative', zIndex: 1 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
-              <span style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.35)', color: '#f87171', borderRadius: 3, padding: '3px 12px', fontSize: 11, fontWeight: 800, letterSpacing: '2px', textTransform: 'uppercase' }}>Giveaway</span>
-              <span style={{ fontSize: 20 }}>🏆</span>
-            </div>
-            <h2 style={{ fontFamily: 'Space Grotesk', fontWeight: 800, fontSize: 'clamp(26px,4vw,46px)', lineHeight: 1.1, marginBottom: 10 }}>
-              Book a Service.<br /><span className="grad-text">Win a BMW M8.</span>
+            <div style={{ fontSize: 11, letterSpacing: '4px', textTransform: 'uppercase', color: '#7dd3ff', fontWeight: 600, marginBottom: 16 }}>Grand Prize Giveaway</div>
+            <h2 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 'clamp(26px,4vw,44px)', lineHeight: 1.1, letterSpacing: '-1.5px', marginBottom: 12 }}>
+              Book a service.<br />Win a <span className="grad-text">BMW&nbsp;M8</span>.
             </h2>
-            <p style={{ color: '#8e8ea0', fontSize: 16, maxWidth: 460 }}>
-              Every dollar you spend earns entries. No purchase necessary to enter — free entries available.
+            <p style={{ color: '#8e8ea0', fontSize: 15.5, maxWidth: 440, lineHeight: 1.7 }}>
+              Every dollar you spend earns entries. No purchase necessary — free entries available.
             </p>
           </div>
-          <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12, flexShrink: 0 }}>
-            <div style={{ fontSize: 'clamp(48px,8vw,80px)', lineHeight: 1 }}>🏎️</div>
-            <div style={{ background: '#0088ff', color: '#fff', padding: '13px 32px', borderRadius: 3, fontWeight: 700, fontSize: 15, boxShadow: '0 4px 30px rgba(0,136,255,0.4)', whiteSpace: 'nowrap' }}>
-              See How to Win →
+          <div style={{ position: 'relative', zIndex: 1, flexShrink: 0 }}>
+            <div style={{ background: '#0088ff', color: '#fff', padding: '14px 34px', borderRadius: 4, fontWeight: 600, fontSize: 15, letterSpacing: '0.3px', whiteSpace: 'nowrap', boxShadow: '0 6px 26px rgba(0,136,255,0.25)' }}>
+              See How to Win
             </div>
           </div>
         </div>
@@ -3010,19 +3008,22 @@ function CountdownTimer({ target }: { target: Date }) {
   ];
   if (ms <= 0) {
     return (
-      <div style={{ display: 'inline-block', background: 'rgba(239,68,68,0.12)', border: '1px solid rgba(239,68,68,0.4)', borderRadius: 8, padding: '14px 28px', color: '#f87171', fontWeight: 800, fontSize: 16, letterSpacing: '1px', textTransform: 'uppercase' }}>
-        🏁 Giveaway Closed — Winner Being Drawn
+      <div style={{ display: 'inline-block', padding: '14px 30px', color: '#c8c8d0', fontWeight: 500, fontSize: 14, letterSpacing: '3px', textTransform: 'uppercase', borderTop: '1px solid rgba(255,255,255,0.12)', borderBottom: '1px solid rgba(255,255,255,0.12)' }}>
+        Entries Closed — Winner Being Drawn
       </div>
     );
   }
   return (
-    <div style={{ display: 'flex', gap: 'clamp(8px,2vw,18px)', justifyContent: 'center', flexWrap: 'wrap' }}>
-      {units.map(u => (
-        <div key={u.label} style={{ minWidth: 74, padding: '16px 10px', borderRadius: 10, background: 'linear-gradient(135deg,rgba(0,136,255,0.1),rgba(0,136,255,0.02))', border: '1px solid rgba(0,136,255,0.3)', boxShadow: '0 0 30px rgba(0,136,255,0.08)' }}>
-          <div style={{ fontFamily: 'Space Grotesk', fontSize: 'clamp(30px,5vw,46px)', fontWeight: 800, color: '#7dd3ff', lineHeight: 1, textShadow: '0 0 20px rgba(0,136,255,0.5)' }}>
+    <div style={{ display: 'inline-flex', alignItems: 'flex-start', gap: 'clamp(14px,4vw,40px)', justifyContent: 'center' }}>
+      {units.map((u, i) => (
+        <div key={u.label} style={{ position: 'relative', textAlign: 'center', minWidth: 56 }}>
+          <div style={{ fontFamily: 'Space Grotesk', fontSize: 'clamp(34px,6vw,58px)', fontWeight: 600, color: '#fff', lineHeight: 1, letterSpacing: '-1px', fontVariantNumeric: 'tabular-nums' }}>
             {String(u.v).padStart(2, '0')}
           </div>
-          <div style={{ fontSize: 11, letterSpacing: '2px', textTransform: 'uppercase', color: '#8e8ea0', marginTop: 8, fontWeight: 600 }}>{u.label}</div>
+          <div style={{ fontSize: 10, letterSpacing: '3px', textTransform: 'uppercase', color: '#6a6a76', marginTop: 12, fontWeight: 500 }}>{u.label}</div>
+          {i < units.length - 1 && (
+            <span style={{ position: 'absolute', top: 'clamp(2px,1vw,8px)', right: 'clamp(-9px,-2vw,-22px)', fontFamily: 'Space Grotesk', fontSize: 'clamp(28px,5vw,48px)', fontWeight: 300, color: 'rgba(255,255,255,0.18)', lineHeight: 1 }}>:</span>
+          )}
         </div>
       ))}
     </div>
@@ -3081,126 +3082,138 @@ function GiveawayPage({ go }: { go: (p: string) => void }) {
 
   const [rulesOpen, setRulesOpen] = useState(false);
   const [heroImgOk, setHeroImgOk] = useState(true);
-  const inputStyle: React.CSSProperties = { width: '100%', padding: '14px 16px', borderRadius: 8, fontSize: 15, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', outline: 'none', fontFamily: 'Inter', boxSizing: 'border-box' };
-  const card: React.CSSProperties = { padding: '30px 26px', borderRadius: 12, border: '1px solid rgba(0,136,255,0.28)', background: 'linear-gradient(135deg,rgba(0,136,255,0.08),rgba(0,136,255,0.02))', boxShadow: '0 0 40px rgba(0,136,255,0.06)', textAlign: 'center' };
+  const inputStyle: React.CSSProperties = { width: '100%', padding: '15px 16px', borderRadius: 4, fontSize: 15, background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.12)', color: '#fff', outline: 'none', fontFamily: 'Inter', boxSizing: 'border-box' };
+  // Premium section header (distinct from the site's default SH — quieter, more editorial)
+  const PremHead = ({ label, title, sub }: { label: string; title: string; sub?: string }) => (
+    <div className="rv" style={{ textAlign: 'center', marginBottom: 46 }}>
+      <div style={{ width: 34, height: 1, background: 'rgba(255,255,255,0.2)', margin: '0 auto 18px' }} />
+      <div style={{ fontSize: 11, letterSpacing: '4px', textTransform: 'uppercase', color: '#7dd3ff', fontWeight: 600, marginBottom: 16 }}>{label}</div>
+      <h2 style={{ fontFamily: 'Space Grotesk', fontSize: 'clamp(26px,3.6vw,42px)', fontWeight: 700, letterSpacing: '-1px', lineHeight: 1.12, color: '#fff' }}>{title}</h2>
+      {sub && <p style={{ color: '#8e8ea0', fontSize: 15.5, maxWidth: 540, margin: '16px auto 0', lineHeight: 1.75 }}>{sub}</p>}
+    </div>
+  );
 
   return (
     <div style={{ paddingTop: 130 }}>
       <section style={{ padding: '0 28px 100px', maxWidth: 980, margin: '0 auto' }}>
         {/* HERO */}
-        <div className="rv" style={{ textAlign: 'center', marginBottom: 48 }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(0,136,255,0.12)', border: '1px solid rgba(0,136,255,0.3)', borderRadius: 24, padding: '6px 18px', marginBottom: 22 }}>
-            <span style={{ fontSize: 18 }}>🏆</span>
-            <span style={{ color: '#7dd3ff', fontSize: 13, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase' }}>Grand Prize Giveaway</span>
-          </div>
-          <h1 style={{ fontFamily: 'Space Grotesk', fontSize: 'clamp(38px,7vw,72px)', fontWeight: 800, lineHeight: 1.05, letterSpacing: '-2px', marginBottom: 18 }}>
-            Win a <span className="grad-text">BMW M8</span>
+        <div className="rv" style={{ textAlign: 'center', marginBottom: 40 }}>
+          <div style={{ fontSize: 11, letterSpacing: '5px', textTransform: 'uppercase', color: '#7dd3ff', fontWeight: 600, marginBottom: 24 }}>210 Tint · Grand Prize Giveaway</div>
+          <h1 style={{ fontFamily: 'Space Grotesk', fontSize: 'clamp(42px,7.5vw,84px)', fontWeight: 700, lineHeight: 1.02, letterSpacing: '-2.5px', marginBottom: 22 }}>
+            Win a <span className="grad-text">BMW&nbsp;M8</span>
           </h1>
-          {/* Prize showcase — real M8 photo (/bmwm8.png) with graceful placeholder fallback */}
-          <div style={{ position: 'relative', borderRadius: 16, overflow: 'hidden', margin: '0 auto 30px', maxWidth: 640, aspectRatio: '16/9', background: 'radial-gradient(ellipse at 50% 30%, rgba(0,136,255,0.22), transparent 60%), linear-gradient(160deg,#0a1828,#050507)', border: '1px solid rgba(0,136,255,0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            {heroImgOk ? (
-              <>
-                <img src="/bmwm8.png" alt="BMW M8 — grand prize" onError={() => setHeroImgOk(false)}
-                  style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
-                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(5,5,7,0.85) 0%, transparent 45%)', pointerEvents: 'none' }} />
-                <div style={{ position: 'absolute', left: 0, right: 0, bottom: 16, textAlign: 'center', zIndex: 1 }}>
-                  <div style={{ fontFamily: 'Space Grotesk', fontWeight: 800, fontSize: 'clamp(18px,3vw,26px)', color: '#fff', letterSpacing: '1px', textShadow: '0 2px 12px rgba(0,0,0,0.6)' }}>BMW M8 COMPETITION</div>
-                  <div style={{ color: '#7dd3ff', fontSize: 12, fontWeight: 600, letterSpacing: '2px', textTransform: 'uppercase', marginTop: 3 }}>617 HP · Twin-Turbo V8</div>
-                </div>
-              </>
-            ) : (
-              <div style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: 'clamp(60px,12vw,110px)', lineHeight: 1 }}>🏎️</div>
-                <div style={{ fontFamily: 'Space Grotesk', fontWeight: 800, fontSize: 'clamp(20px,3vw,30px)', color: '#fff', marginTop: 8, letterSpacing: '1px' }}>BMW M8 COMPETITION</div>
-                <div style={{ color: '#7dd3ff', fontSize: 13, fontWeight: 600, letterSpacing: '2px', textTransform: 'uppercase', marginTop: 4 }}>617 HP · Twin-Turbo V8</div>
-              </div>
-            )}
-          </div>
-          <p style={{ color: '#8e8ea0', fontSize: 'clamp(15px,1.6vw,18px)', lineHeight: 1.7, maxWidth: 620, margin: '0 auto 28px' }}>
-            Every service you book with 210 Tint earns you entries to win a BMW M8. The more you do, the more chances you get. Winner drawn <span style={{ color: '#fff', fontWeight: 600 }}>{drawLabel}</span>.
+          <p style={{ color: '#9a9aa5', fontSize: 'clamp(15px,1.6vw,18px)', lineHeight: 1.75, maxWidth: 560, margin: '0 auto 44px', fontWeight: 400 }}>
+            Every service you book with 210 Tint earns entries toward a twin-turbo BMW M8 Competition. The more you invest in your vehicle, the greater your chances.
           </p>
-          {/* Countdown */}
-          <div className="rv d1" style={{ marginBottom: 34 }}>
-            <div style={{ fontSize: 11, letterSpacing: '3px', textTransform: 'uppercase', color: '#0088ff', fontWeight: 700, marginBottom: 16 }}>Entries Close In</div>
-            <CountdownTimer target={DRAW} />
-          </div>
-          <div className="rv d2" style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" className="magnetic-btn" style={{ padding: '16px 40px', background: '#0088ff', color: '#fff', borderRadius: 4, fontWeight: 700, fontSize: 16, textDecoration: 'none', boxShadow: '0 4px 40px rgba(0,136,255,0.45)' }}>Book &amp; Earn Entries</a>
-            <a href="#free-entry" style={{ padding: '16px 36px', background: 'transparent', color: '#fff', border: '1px solid rgba(255,255,255,0.14)', borderRadius: 4, fontWeight: 600, fontSize: 16, textDecoration: 'none' }}>Enter Free →</a>
-          </div>
+        </div>
+
+        {/* Prize showcase — real M8 photo (/bmwm8.png) with graceful placeholder fallback */}
+        <div className="rv" style={{ position: 'relative', borderRadius: 8, overflow: 'hidden', margin: '0 auto', maxWidth: 900, aspectRatio: '16/9', background: 'linear-gradient(160deg,#12121a,#050507)', border: '1px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          {heroImgOk ? (
+            <>
+              <img src="/bmwm8.png" alt="BMW M8 Competition — grand prize" onError={() => setHeroImgOk(false)}
+                style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(5,5,7,0.5) 0%, transparent 40%)', pointerEvents: 'none' }} />
+            </>
+          ) : (
+            <div style={{ textAlign: 'center', padding: 20 }}>
+              <div style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 'clamp(38px,7vw,68px)', color: '#fff', letterSpacing: '2px', lineHeight: 1 }}>BMW M8</div>
+              <div style={{ color: '#7a7a86', fontSize: 'clamp(11px,1.5vw,14px)', fontWeight: 500, letterSpacing: '4px', textTransform: 'uppercase', marginTop: 10 }}>Competition</div>
+            </div>
+          )}
+        </div>
+
+        {/* Spec / meta row */}
+        <div className="rv d1" style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', margin: '26px 0 0' }}>
+          {[['The Prize', 'BMW M8 Competition'], ['Output', '617 HP · Twin-Turbo V8'], ['Winner Drawn', drawLabel]].map((m, i) => (
+            <div key={m[0]} style={{ textAlign: 'center', borderLeft: i > 0 ? '1px solid rgba(255,255,255,0.1)' : 'none', paddingLeft: i > 0 ? 'clamp(18px,4vw,40px)' : 0, paddingRight: 'clamp(18px,4vw,40px)', paddingTop: 4, paddingBottom: 4 }}>
+              <div style={{ fontSize: 10, letterSpacing: '2.5px', textTransform: 'uppercase', color: '#6a6a76', marginBottom: 8, fontWeight: 500 }}>{m[0]}</div>
+              <div style={{ fontFamily: 'Space Grotesk', fontSize: 'clamp(13px,1.6vw,16px)', fontWeight: 600, color: '#eaeaf0' }}>{m[1]}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Countdown */}
+        <div className="rv d2" style={{ textAlign: 'center', margin: '56px 0 44px' }}>
+          <div style={{ fontSize: 10, letterSpacing: '4px', textTransform: 'uppercase', color: '#6a6a76', fontWeight: 500, marginBottom: 24 }}>Entries Close In</div>
+          <CountdownTimer target={DRAW} />
+        </div>
+
+        {/* Hero CTAs */}
+        <div className="rv d3" style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 4 }}>
+          <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" style={{ padding: '15px 40px', background: '#0088ff', color: '#fff', borderRadius: 4, fontWeight: 600, fontSize: 15, letterSpacing: '0.3px', textDecoration: 'none', boxShadow: '0 6px 26px rgba(0,136,255,0.25)' }}>Book &amp; Earn Entries</a>
+          <a href="#free-entry" style={{ padding: '15px 36px', background: 'transparent', color: '#fff', border: '1px solid rgba(255,255,255,0.16)', borderRadius: 4, fontWeight: 500, fontSize: 15, textDecoration: 'none' }}>Enter for Free</a>
         </div>
 
         {/* HOW ENTRIES WORK */}
-        <div style={{ marginTop: 80 }}>
-          <SH tag="How It Works" title="Every Dollar Earns Entries" sub="Book any tint, detail, starlight, or bundle — your entries stack automatically." />
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(240px,1fr))', gap: 16 }}>
-            <div className="rv d1" style={card}>
-              <div style={{ fontFamily: 'Space Grotesk', fontSize: 40, fontWeight: 800, color: '#7dd3ff', textShadow: '0 0 16px rgba(0,136,255,0.5)' }}>{PER_DOLLAR}</div>
-              <div style={{ fontWeight: 700, fontSize: 16, marginTop: 4 }}>entries per $1</div>
-              <p style={{ color: '#8e8ea0', fontSize: 13.5, lineHeight: 1.6, marginTop: 10 }}>Spend $1, get {PER_DOLLAR} entries. Every dollar counts from the very first one.</p>
-            </div>
-            <div className="rv d2" style={{ ...card, border: '1px solid rgba(0,136,255,0.5)', boxShadow: '0 0 50px rgba(0,136,255,0.14)' }}>
-              <div style={{ fontFamily: 'Space Grotesk', fontSize: 40, fontWeight: 800, color: '#7dd3ff', textShadow: '0 0 16px rgba(0,136,255,0.5)' }}>+{BONUS.toLocaleString()}</div>
-              <div style={{ fontWeight: 700, fontSize: 16, marginTop: 4 }}>bonus at ${BONUS_AT}</div>
-              <p style={{ color: '#8e8ea0', fontSize: 13.5, lineHeight: 1.6, marginTop: 10 }}>Hit ${BONUS_AT} in total spend and unlock a {BONUS.toLocaleString()}-entry bonus on top.</p>
-            </div>
-            <div className="rv d3" style={card}>
-              <div style={{ fontFamily: 'Space Grotesk', fontSize: 40, fontWeight: 800, color: '#7dd3ff', textShadow: '0 0 16px rgba(0,136,255,0.5)' }}>FREE</div>
-              <div style={{ fontWeight: 700, fontSize: 16, marginTop: 4 }}>no purchase needed</div>
-              <p style={{ color: '#8e8ea0', fontSize: 13.5, lineHeight: 1.6, marginTop: 10 }}>No purchase necessary — grab {FREE_ENTRIES.toLocaleString()} free entries below. Everyone can play.</p>
-            </div>
+        <div style={{ marginTop: 110 }}>
+          <PremHead label="How It Works" title="Every Dollar Earns Entries" sub="Book any tint, detail, starlight, or bundle — your entries accumulate automatically." />
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(240px,1fr))', gap: 1, background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 6, overflow: 'hidden' }}>
+            {[
+              { n: PER_DOLLAR.toLocaleString(), l: 'Entries per $1', d: 'Every dollar you spend counts — from the very first one.' },
+              { n: '+' + BONUS.toLocaleString(), l: `Bonus at $${BONUS_AT}`, d: `Reach $${BONUS_AT} in total spend and unlock a ${BONUS.toLocaleString()}-entry bonus.`, feat: true },
+              { n: FREE_ENTRIES.toLocaleString(), l: 'Free Entries', d: 'No purchase necessary — claim your free entries below.' },
+            ].map((c, i) => (
+              <div key={c.l} className={`rv d${i + 1}`} style={{ position: 'relative', padding: '44px 30px 38px', background: c.feat ? '#0d0d13' : '#0a0a0d', textAlign: 'center' }}>
+                {c.feat && <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'linear-gradient(90deg,transparent,#0088ff,transparent)' }} />}
+                <div style={{ fontFamily: 'Space Grotesk', fontSize: 'clamp(34px,4vw,46px)', fontWeight: 600, color: c.feat ? '#7dd3ff' : '#fff', lineHeight: 1, letterSpacing: '-1px' }}>{c.n}</div>
+                <div style={{ fontSize: 11, letterSpacing: '2.5px', textTransform: 'uppercase', color: '#8e8ea0', marginTop: 16, fontWeight: 600 }}>{c.l}</div>
+                <p style={{ color: '#7a7a86', fontSize: 13.5, lineHeight: 1.65, marginTop: 14, maxWidth: 230, marginLeft: 'auto', marginRight: 'auto' }}>{c.d}</p>
+              </div>
+            ))}
           </div>
           {/* Worked example */}
-          <div className="rv" style={{ marginTop: 20, padding: '22px 26px', borderRadius: 10, background: 'rgba(0,136,255,0.04)', border: '1px solid rgba(0,136,255,0.15)', textAlign: 'center' }}>
-            <span style={{ color: '#8e8ea0', fontSize: 15 }}>Example: a </span>
-            <span style={{ color: '#fff', fontWeight: 600 }}>$575 whole-car ceramic tint</span>
-            <span style={{ color: '#8e8ea0', fontSize: 15 }}> = </span>
-            <span style={{ fontFamily: 'Space Grotesk', fontWeight: 800, color: '#7dd3ff', fontSize: 20 }}>
-              <Counter end={575 * PER_DOLLAR + BONUS} suffix=" entries" />
-            </span>
+          <div className="rv" style={{ marginTop: 32, padding: '26px 24px', borderTop: '1px solid rgba(255,255,255,0.08)', borderBottom: '1px solid rgba(255,255,255,0.08)', textAlign: 'center' }}>
+            <span style={{ color: '#7a7a86', fontSize: 13, letterSpacing: '2px', textTransform: 'uppercase' }}>For example</span>
+            <div style={{ marginTop: 12 }}>
+              <span style={{ color: '#c8c8d0', fontSize: 16 }}>A $575 whole-car ceramic tint&nbsp;&nbsp;=&nbsp;&nbsp;</span>
+              <span style={{ fontFamily: 'Space Grotesk', fontWeight: 700, color: '#7dd3ff', fontSize: 22, letterSpacing: '-0.5px' }}>
+                <Counter end={575 * PER_DOLLAR + BONUS} suffix=" entries" />
+              </span>
+            </div>
           </div>
         </div>
 
         {/* CHECK MY ENTRIES */}
-        <div style={{ marginTop: 80 }}>
-          <SH tag="Track Your Odds" title="Check My Entries" sub="Enter the email or phone you booked with to see your current entry count." />
-          <form onSubmit={checkEntries} className="rv d1" style={{ maxWidth: 460, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <div style={{ marginTop: 110 }}>
+          <PremHead label="Track Your Odds" title="Check Your Entries" sub="Enter the email or phone you booked with to see your current entry total." />
+          <form onSubmit={checkEntries} className="rv d1" style={{ maxWidth: 440, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 12 }}>
             <input style={inputStyle} type="text" placeholder="Email or phone number" value={lookup} onChange={(e) => setLookup(e.target.value)} />
             {lookupErr && <p style={{ color: '#f87171', fontSize: 13, margin: 0 }}>{lookupErr}</p>}
-            <button type="submit" disabled={checking} style={{ padding: '14px', borderRadius: 8, border: 'none', cursor: checking ? 'default' : 'pointer', background: 'linear-gradient(90deg,#0088ff,#3aa6ff)', color: '#fff', fontWeight: 700, fontSize: 16, opacity: checking ? 0.7 : 1 }}>{checking ? 'Checking…' : 'Check My Entries'}</button>
+            <button type="submit" disabled={checking} style={{ padding: '15px', borderRadius: 4, border: 'none', cursor: checking ? 'default' : 'pointer', background: '#0088ff', color: '#fff', fontWeight: 600, fontSize: 15, letterSpacing: '0.3px', opacity: checking ? 0.7 : 1 }}>{checking ? 'Checking…' : 'Check Entries'}</button>
           </form>
           {result && (
-            <div className="rv" style={{ maxWidth: 460, margin: '18px auto 0', textAlign: 'center', padding: '24px', borderRadius: 12, ...(result.found ? { background: 'linear-gradient(135deg,rgba(0,136,255,0.12),rgba(0,136,255,0.03))', border: '1px solid rgba(0,136,255,0.4)' } : { background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }) }}>
+            <div className="rv" style={{ maxWidth: 440, margin: '16px auto 0', textAlign: 'center', padding: '32px 24px', borderRadius: 6, border: '1px solid rgba(255,255,255,0.1)', background: '#0a0a0d' }}>
               {result.found ? (
                 <>
-                  {result.name && <div style={{ color: '#8e8ea0', fontSize: 14, marginBottom: 6 }}>Hey {result.name} 👋</div>}
-                  <div style={{ fontFamily: 'Space Grotesk', fontSize: 44, fontWeight: 800, color: '#7dd3ff', textShadow: '0 0 20px rgba(0,136,255,0.5)', lineHeight: 1 }}>{(result.entries || 0).toLocaleString()}</div>
-                  <div style={{ color: '#8e8ea0', fontSize: 14, marginTop: 8 }}>entries in the BMW M8 giveaway</div>
+                  {result.name && <div style={{ color: '#8e8ea0', fontSize: 13, letterSpacing: '1px', marginBottom: 12 }}>{result.name}</div>}
+                  <div style={{ fontFamily: 'Space Grotesk', fontSize: 'clamp(40px,7vw,52px)', fontWeight: 700, color: '#fff', lineHeight: 1, letterSpacing: '-1px' }}>{(result.entries || 0).toLocaleString()}</div>
+                  <div style={{ color: '#7dd3ff', fontSize: 11, letterSpacing: '3px', textTransform: 'uppercase', marginTop: 14, fontWeight: 600 }}>Entries</div>
                 </>
               ) : (
-                <p style={{ color: '#8e8ea0', fontSize: 14, margin: 0, lineHeight: 1.6 }}>No entries found for that yet. Book a service to earn entries, or grab your free entries below.</p>
+                <p style={{ color: '#8e8ea0', fontSize: 14, margin: 0, lineHeight: 1.7 }}>No entries found yet. Book a service to start earning, or claim your free entries below.</p>
               )}
             </div>
           )}
         </div>
 
         {/* FREE ENTRY (AMOE) */}
-        <div id="free-entry" style={{ marginTop: 80, scrollMarginTop: 120 }}>
-          <SH tag="No Purchase Necessary" title="Enter for Free" sub="No purchase is necessary to enter or win. Claim your free entries below." />
+        <div id="free-entry" style={{ marginTop: 110, scrollMarginTop: 120 }}>
+          <PremHead label="No Purchase Necessary" title="Enter for Free" sub="No purchase is necessary to enter or win. Submit the form below to claim your free entries." />
           {!fSent ? (
-            <form onSubmit={submitFree} className="rv d1" style={{ maxWidth: 460, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <form onSubmit={submitFree} className="rv d1" style={{ maxWidth: 440, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 12 }}>
               <input style={inputStyle} type="text" placeholder="Full name" value={fName} onChange={(e) => setFName(e.target.value)} />
               <input style={inputStyle} type="email" placeholder="Email address" value={fEmail} onChange={(e) => setFEmail(e.target.value)} />
               <input style={inputStyle} type="tel" placeholder="Phone number" value={fPhone} onChange={(e) => setFPhone(e.target.value)} />
               {fErr && <p style={{ color: '#f87171', fontSize: 13, margin: 0 }}>{fErr}</p>}
-              <button type="submit" disabled={fSending} style={{ padding: '15px', borderRadius: 8, border: 'none', cursor: fSending ? 'default' : 'pointer', background: 'linear-gradient(90deg,#0088ff,#3aa6ff)', color: '#fff', fontWeight: 700, fontSize: 16, opacity: fSending ? 0.7 : 1 }}>{fSending ? 'Submitting…' : `Claim ${FREE_ENTRIES.toLocaleString()} Free Entries`}</button>
-              <p style={{ color: '#4a4a5a', fontSize: 11.5, textAlign: 'center', margin: '2px 0 0', lineHeight: 1.5 }}>One free entry per person. See Official Rules below.</p>
+              <button type="submit" disabled={fSending} style={{ padding: '15px', borderRadius: 4, border: 'none', cursor: fSending ? 'default' : 'pointer', background: '#0088ff', color: '#fff', fontWeight: 600, fontSize: 15, letterSpacing: '0.3px', opacity: fSending ? 0.7 : 1 }}>{fSending ? 'Submitting…' : `Claim ${FREE_ENTRIES.toLocaleString()} Free Entries`}</button>
+              <p style={{ color: '#5a5a66', fontSize: 11.5, textAlign: 'center', margin: '2px 0 0', lineHeight: 1.5 }}>One free entry per person. See Official Rules below.</p>
             </form>
           ) : (
-            <div className="rv" style={{ maxWidth: 460, margin: '0 auto', textAlign: 'center', padding: '30px 24px', borderRadius: 12, background: 'linear-gradient(135deg,rgba(0,136,255,0.12),rgba(0,136,255,0.03))', border: '1px solid rgba(0,136,255,0.4)' }}>
-              <div style={{ fontSize: 40, marginBottom: 8 }}>🎉</div>
-              <h3 style={{ fontFamily: 'Space Grotesk', fontWeight: 800, fontSize: 22, marginBottom: 8 }}>You’re entered!</h3>
-              <p style={{ color: '#8e8ea0', fontSize: 14, lineHeight: 1.6, margin: 0 }}>Your {FREE_ENTRIES.toLocaleString()} free entries are locked in. Book a service anytime to stack up more.</p>
+            <div className="rv" style={{ maxWidth: 440, margin: '0 auto', textAlign: 'center', padding: '40px 24px', borderRadius: 6, background: '#0a0a0d', border: '1px solid rgba(255,255,255,0.1)' }}>
+              <svg width="46" height="46" viewBox="0 0 46 46" fill="none" style={{ marginBottom: 16 }}><circle cx="23" cy="23" r="22" stroke="#7dd3ff" strokeWidth="1.5" /><path d="M14 23.5l6 6L32 17" stroke="#7dd3ff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+              <h3 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 22, marginBottom: 10, letterSpacing: '-0.5px' }}>You're entered</h3>
+              <p style={{ color: '#8e8ea0', fontSize: 14, lineHeight: 1.7, margin: 0 }}>Your {FREE_ENTRIES.toLocaleString()} free entries are locked in. Book a service anytime to earn more.</p>
             </div>
           )}
         </div>
@@ -3214,7 +3227,7 @@ function GiveawayPage({ go }: { go: (p: string) => void }) {
             </button>
             {rulesOpen && (
               <div style={{ padding: '0 24px 24px', color: '#8e8ea0', fontSize: 13.5, lineHeight: 1.8 }}>
-                <p style={{ color: '#f0a020', fontSize: 12.5, marginBottom: 14 }}>⚠️ TEMPLATE — replace with your finalized, professionally reviewed rules before launch.</p>
+                <p style={{ color: '#c99a3a', fontSize: 12.5, marginBottom: 14, letterSpacing: '0.5px' }}>NOTE — Template copy. Replace with your finalized, professionally reviewed rules before launch.</p>
                 <p><strong style={{ color: '#e5e5e5' }}>No purchase necessary</strong> to enter or win. A purchase will not increase your chances of winning.</p>
                 <p><strong style={{ color: '#e5e5e5' }}>Sponsor:</strong> 210 Tint, Columbia, MD.</p>
                 <p><strong style={{ color: '#e5e5e5' }}>Eligibility:</strong> Open to legal U.S. residents [state] 18+ (or age of majority). Void where prohibited.</p>
@@ -3230,11 +3243,12 @@ function GiveawayPage({ go }: { go: (p: string) => void }) {
         </div>
 
         {/* CTA */}
-        <div className="rv" style={{ textAlign: 'center', marginTop: 64 }}>
-          <p style={{ color: '#8e8ea0', fontSize: 15, marginBottom: 18 }}>Ready to stack up entries?</p>
+        <div className="rv" style={{ textAlign: 'center', marginTop: 100, paddingTop: 60, borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+          <h3 style={{ fontFamily: 'Space Grotesk', fontSize: 'clamp(24px,3vw,34px)', fontWeight: 700, letterSpacing: '-1px', marginBottom: 10 }}>Start Earning Entries</h3>
+          <p style={{ color: '#8e8ea0', fontSize: 15, marginBottom: 28, maxWidth: 420, margin: '0 auto 28px', lineHeight: 1.7 }}>Book any service with 210 Tint and your entries begin stacking automatically.</p>
           <div style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" className="magnetic-btn" style={{ padding: '16px 44px', background: '#0088ff', color: '#fff', borderRadius: 4, fontWeight: 700, fontSize: 16, textDecoration: 'none', boxShadow: '0 4px 40px rgba(0,136,255,0.45)' }}>Book a Service</a>
-            <a href="tel:2403387762" style={{ padding: '16px 40px', background: 'transparent', color: '#fff', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 4, fontWeight: 600, fontSize: 16, textDecoration: 'none' }}>(240) 338-7762</a>
+            <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" style={{ padding: '15px 44px', background: '#0088ff', color: '#fff', borderRadius: 4, fontWeight: 600, fontSize: 15, letterSpacing: '0.3px', textDecoration: 'none', boxShadow: '0 6px 26px rgba(0,136,255,0.25)' }}>Book a Service</a>
+            <a href="tel:2403387762" style={{ padding: '15px 40px', background: 'transparent', color: '#fff', border: '1px solid rgba(255,255,255,0.16)', borderRadius: 4, fontWeight: 500, fontSize: 15, textDecoration: 'none' }}>(240) 338-7762</a>
           </div>
         </div>
       </section>
