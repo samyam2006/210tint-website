@@ -3080,6 +3080,7 @@ function GiveawayPage({ go }: { go: (p: string) => void }) {
   };
 
   const [rulesOpen, setRulesOpen] = useState(false);
+  const [heroImgOk, setHeroImgOk] = useState(true);
   const inputStyle: React.CSSProperties = { width: '100%', padding: '14px 16px', borderRadius: 8, fontSize: 15, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', outline: 'none', fontFamily: 'Inter', boxSizing: 'border-box' };
   const card: React.CSSProperties = { padding: '30px 26px', borderRadius: 12, border: '1px solid rgba(0,136,255,0.28)', background: 'linear-gradient(135deg,rgba(0,136,255,0.08),rgba(0,136,255,0.02))', boxShadow: '0 0 40px rgba(0,136,255,0.06)', textAlign: 'center' };
 
@@ -3095,13 +3096,25 @@ function GiveawayPage({ go }: { go: (p: string) => void }) {
           <h1 style={{ fontFamily: 'Space Grotesk', fontSize: 'clamp(38px,7vw,72px)', fontWeight: 800, lineHeight: 1.05, letterSpacing: '-2px', marginBottom: 18 }}>
             Win a <span className="grad-text">BMW M8</span>
           </h1>
-          {/* Prize showcase (swap for a real M8 photo when provided) */}
+          {/* Prize showcase — real M8 photo (/bmwm8.png) with graceful placeholder fallback */}
           <div style={{ position: 'relative', borderRadius: 16, overflow: 'hidden', margin: '0 auto 30px', maxWidth: 640, aspectRatio: '16/9', background: 'radial-gradient(ellipse at 50% 30%, rgba(0,136,255,0.22), transparent 60%), linear-gradient(160deg,#0a1828,#050507)', border: '1px solid rgba(0,136,255,0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <div style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: 'clamp(60px,12vw,110px)', lineHeight: 1 }}>🏎️</div>
-              <div style={{ fontFamily: 'Space Grotesk', fontWeight: 800, fontSize: 'clamp(20px,3vw,30px)', color: '#fff', marginTop: 8, letterSpacing: '1px' }}>BMW M8 COMPETITION</div>
-              <div style={{ color: '#7dd3ff', fontSize: 13, fontWeight: 600, letterSpacing: '2px', textTransform: 'uppercase', marginTop: 4 }}>617 HP · Twin-Turbo V8</div>
-            </div>
+            {heroImgOk ? (
+              <>
+                <img src="/bmwm8.png" alt="BMW M8 — grand prize" onError={() => setHeroImgOk(false)}
+                  style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(5,5,7,0.85) 0%, transparent 45%)', pointerEvents: 'none' }} />
+                <div style={{ position: 'absolute', left: 0, right: 0, bottom: 16, textAlign: 'center', zIndex: 1 }}>
+                  <div style={{ fontFamily: 'Space Grotesk', fontWeight: 800, fontSize: 'clamp(18px,3vw,26px)', color: '#fff', letterSpacing: '1px', textShadow: '0 2px 12px rgba(0,0,0,0.6)' }}>BMW M8 COMPETITION</div>
+                  <div style={{ color: '#7dd3ff', fontSize: 12, fontWeight: 600, letterSpacing: '2px', textTransform: 'uppercase', marginTop: 3 }}>617 HP · Twin-Turbo V8</div>
+                </div>
+              </>
+            ) : (
+              <div style={{ textAlign: 'center' }}>
+                <div style={{ fontSize: 'clamp(60px,12vw,110px)', lineHeight: 1 }}>🏎️</div>
+                <div style={{ fontFamily: 'Space Grotesk', fontWeight: 800, fontSize: 'clamp(20px,3vw,30px)', color: '#fff', marginTop: 8, letterSpacing: '1px' }}>BMW M8 COMPETITION</div>
+                <div style={{ color: '#7dd3ff', fontSize: 13, fontWeight: 600, letterSpacing: '2px', textTransform: 'uppercase', marginTop: 4 }}>617 HP · Twin-Turbo V8</div>
+              </div>
+            )}
           </div>
           <p style={{ color: '#8e8ea0', fontSize: 'clamp(15px,1.6vw,18px)', lineHeight: 1.7, maxWidth: 620, margin: '0 auto 28px' }}>
             Every service you book with 210 Tint earns you entries to win a BMW M8. The more you do, the more chances you get. Winner drawn <span style={{ color: '#fff', fontWeight: 600 }}>{drawLabel}</span>.
