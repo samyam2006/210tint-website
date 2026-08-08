@@ -925,12 +925,15 @@ function PriceCalculator() {
   );
 }
 
+/* BMW M8 giveaway visibility — flip to true to relaunch (page/logic all stay built) */
+const GIVEAWAY_LIVE = false;
+
 /* ── NAV ── */
 const NAV = [
   { id: 'home', label: 'Home' }, { id: 'portfolio', label: 'Portfolio' },
   { id: 'pricing', label: 'Pricing' }, { id: 'detailing', label: 'Detailing' },
   { id: 'compare', label: 'Compare Films' },
-  { id: 'bmw-giveaway', label: 'M8 Giveaway' },
+  ...(GIVEAWAY_LIVE ? [{ id: 'bmw-giveaway', label: 'M8 Giveaway' }] : []),
   { id: 'contact', label: 'Contact' },
 ];
 
@@ -1070,7 +1073,7 @@ function Footer({ go }: { go: (p: string) => void }) {
         </div>
         <div>
           <h4 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 12, letterSpacing: '3px', color: '#4a4a5a', marginBottom: 20, textTransform: 'uppercase' }}>Resources</h4>
-          {[{label:'Win a BMW M8',id:'bmw-giveaway'},{label:'Tint Simulator',id:'tint-simulator'},{label:'Starlight Headliner',id:'starlight'},{label:'✦ Starlight Sale — 15% Off',id:'starlight-sale'},{label:'Warranty',id:'warranty'},{label:'MD Tint Laws',id:'tint-laws'},{label:'Ceramic vs Carbon',id:'ceramic-vs-carbon'},{label:'Best Tint for Summer',id:'md-summer-tint'}].map(l => { const hot = l.id==='starlight-sale'||l.id==='bmw-giveaway'; return <button key={l.id} onClick={() => go(l.id)} style={{ display: 'block', background: 'none', border: 'none', cursor: 'pointer', color: hot?'#7dd3ff':'#8e8ea0', fontSize: 16, padding: '5px 0', fontWeight: hot?600:400 }}>{l.label}</button>; })}
+          {[...(GIVEAWAY_LIVE ? [{label:'Win a BMW M8',id:'bmw-giveaway'}] : []),{label:'Tint Simulator',id:'tint-simulator'},{label:'Starlight Headliner',id:'starlight'},{label:'✦ Starlight Sale — 15% Off',id:'starlight-sale'},{label:'Warranty',id:'warranty'},{label:'MD Tint Laws',id:'tint-laws'},{label:'Ceramic vs Carbon',id:'ceramic-vs-carbon'},{label:'Best Tint for Summer',id:'md-summer-tint'}].map(l => { const hot = l.id==='starlight-sale'||l.id==='bmw-giveaway'; return <button key={l.id} onClick={() => go(l.id)} style={{ display: 'block', background: 'none', border: 'none', cursor: 'pointer', color: hot?'#7dd3ff':'#8e8ea0', fontSize: 16, padding: '5px 0', fontWeight: hot?600:400 }}>{l.label}</button>; })}
         </div>
         <div>
           <h4 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 12, letterSpacing: '3px', color: '#4a4a5a', marginBottom: 20, textTransform: 'uppercase' }}>Contact</h4>
@@ -1221,6 +1224,7 @@ function HomePage({ go }: { go: (p: string) => void }) {
       </ScrollRevealSection>
 
       {/* ═══ BMW M8 GIVEAWAY TEASER ═══ */}
+      {GIVEAWAY_LIVE && (
       <section style={{ padding: '56px 28px 0', maxWidth: 1320, margin: '0 auto' }}>
         <div className="rv" onClick={() => go('bmw-giveaway')} style={{
           cursor: 'pointer', borderRadius: 8, overflow: 'hidden', position: 'relative',
@@ -1251,6 +1255,7 @@ function HomePage({ go }: { go: (p: string) => void }) {
           </div>
         </div>
       </section>
+      )}
 
       {/* ═══ GOOGLE REVIEWS SLIDER ═══ */}
       <section style={{ padding: '120px 0', background: '#0a0a0f', position: 'relative', overflow: 'hidden' }}>
@@ -3303,7 +3308,7 @@ export default function App() {
         {page==='starlight'&&<StarlightPage go={go}/>}
         {page==='starlight-sale'&&<StarlightSalePage go={go}/>}
         {page==='detailing'&&<DetailingPage go={go}/>}
-        {page==='bmw-giveaway'&&<GiveawayPage go={go}/>}
+        {GIVEAWAY_LIVE&&page==='bmw-giveaway'&&<GiveawayPage go={go}/>}
         {page==='contact'&&<ContactPage/>}
       </main>
       <Footer go={go} />
