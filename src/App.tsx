@@ -927,6 +927,9 @@ function PriceCalculator() {
 
 /* BMW M8 giveaway visibility — flip to true to relaunch (page/logic all stay built) */
 const GIVEAWAY_LIVE = false;
+/* Public "coming soon" hype teaser — shows a teaser banner + waitlist page while the full
+   mechanics/rules stay hidden behind GIVEAWAY_LIVE until the attorney + administrator sign off */
+const GIVEAWAY_TEASER = true;
 
 /* ── NAV ── */
 const NAV = [
@@ -1073,7 +1076,7 @@ function Footer({ go }: { go: (p: string) => void }) {
         </div>
         <div>
           <h4 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 12, letterSpacing: '3px', color: '#4a4a5a', marginBottom: 20, textTransform: 'uppercase' }}>Resources</h4>
-          {[...(GIVEAWAY_LIVE ? [{label:'Win a BMW M8',id:'bmw-giveaway'}] : []),{label:'Tint Simulator',id:'tint-simulator'},{label:'Starlight Headliner',id:'starlight'},{label:'✦ Starlight Sale — 15% Off',id:'starlight-sale'},{label:'Warranty',id:'warranty'},{label:'MD Tint Laws',id:'tint-laws'},{label:'Ceramic vs Carbon',id:'ceramic-vs-carbon'},{label:'Best Tint for Summer',id:'md-summer-tint'}].map(l => { const hot = l.id==='starlight-sale'||l.id==='bmw-giveaway'; return <button key={l.id} onClick={() => go(l.id)} style={{ display: 'block', background: 'none', border: 'none', cursor: 'pointer', color: hot?'#7dd3ff':'#8e8ea0', fontSize: 16, padding: '5px 0', fontWeight: hot?600:400 }}>{l.label}</button>; })}
+          {[...(GIVEAWAY_LIVE ? [{label:'Win a BMW M8',id:'bmw-giveaway'}] : []),{label:'Tint Simulator',id:'tint-simulator'},{label:'Starlight Headliner',id:'starlight'},{label:'✦ Starlight Sale — 15% Off',id:'starlight-sale'},{label:'Warranty',id:'warranty'},{label:'MD Tint Laws',id:'tint-laws'},{label:'Ceramic vs Carbon',id:'ceramic-vs-carbon'},{label:'Best Tint for Summer',id:'md-summer-tint'},...(GIVEAWAY_LIVE ? [{label:'Official Rules',id:'official-rules'},{label:'Privacy Policy',id:'privacy'}] : [])].map(l => { const hot = l.id==='starlight-sale'||l.id==='bmw-giveaway'; return <button key={l.id} onClick={() => go(l.id)} style={{ display: 'block', background: 'none', border: 'none', cursor: 'pointer', color: hot?'#7dd3ff':'#8e8ea0', fontSize: 16, padding: '5px 0', fontWeight: hot?600:400 }}>{l.label}</button>; })}
         </div>
         <div>
           <h4 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 12, letterSpacing: '3px', color: '#4a4a5a', marginBottom: 20, textTransform: 'uppercase' }}>Contact</h4>
@@ -1108,7 +1111,7 @@ function HomePage({ go }: { go: (p: string) => void }) {
 
   const whyUs = [
     { title: 'We Come to You', desc: 'We bring everything to your home or office — or drop your car at our Columbia shop. Your call.' },
-    { title: '5-Star Google Rating', desc: '80+ five-star reviews. Professional service on every single job.' },
+    { title: '5-Star Google Rating', desc: '100+ five-star reviews. Professional service on every single job.' },
     { title: '100% Satisfaction Guarantee', desc: 'Every installation backed by our guarantee. If anything is off, we fix it at no charge — no questions asked.' },
     { title: 'UVIRON Performance Films', desc: 'KOOLMAX nano-ceramic blocks up to 89% infrared heat and 99% UV radiation.' },
     { title: 'Transparent Pricing', desc: 'No hidden fees. Flat rates for every vehicle type published on our site.' },
@@ -1224,7 +1227,7 @@ function HomePage({ go }: { go: (p: string) => void }) {
       </ScrollRevealSection>
 
       {/* ═══ BMW M8 GIVEAWAY TEASER ═══ */}
-      {GIVEAWAY_LIVE && (
+      {(GIVEAWAY_LIVE || GIVEAWAY_TEASER) && (
       <section style={{ padding: '56px 28px 0', maxWidth: 1320, margin: '0 auto' }}>
         <div className="rv" onClick={() => go('bmw-giveaway')} style={{
           cursor: 'pointer', borderRadius: 8, overflow: 'hidden', position: 'relative',
@@ -1240,17 +1243,17 @@ function HomePage({ go }: { go: (p: string) => void }) {
           {/* Faint M8 watermark */}
           <div style={{ position: 'absolute', right: 'clamp(20px,4vw,60px)', top: '50%', transform: 'translateY(-50%)', fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 'clamp(80px,14vw,180px)', color: 'rgba(255,255,255,0.035)', letterSpacing: '-4px', lineHeight: 1, pointerEvents: 'none', userSelect: 'none' }}>M8</div>
           <div style={{ position: 'relative', zIndex: 1 }}>
-            <div style={{ fontSize: 11, letterSpacing: '4px', textTransform: 'uppercase', color: '#7dd3ff', fontWeight: 600, marginBottom: 16 }}>Grand Prize Giveaway</div>
+            <div style={{ fontSize: 11, letterSpacing: '4px', textTransform: 'uppercase', color: '#7dd3ff', fontWeight: 600, marginBottom: 16 }}>{GIVEAWAY_LIVE ? 'Grand Prize Giveaway' : 'Coming Soon'}</div>
             <h2 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 'clamp(26px,4vw,44px)', lineHeight: 1.1, letterSpacing: '-1.5px', marginBottom: 12 }}>
-              Book a service.<br />Win a <span className="grad-text">BMW&nbsp;M8</span>.
+              {GIVEAWAY_LIVE ? <>Book a service.<br />Win a <span className="grad-text">BMW&nbsp;M8</span>.</> : <>Win a <span className="grad-text">BMW&nbsp;M8</span>.<br />Coming soon.</>}
             </h2>
             <p style={{ color: '#8e8ea0', fontSize: 15.5, maxWidth: 440, lineHeight: 1.7 }}>
-              Every dollar you spend earns entries. No purchase necessary — free entries available.
+              {GIVEAWAY_LIVE ? 'Every dollar you spend earns entries. No purchase necessary — free entries available.' : 'Our biggest giveaway yet is dropping soon. Get on the list to be the first to know when it goes live.'}
             </p>
           </div>
           <div style={{ position: 'relative', zIndex: 1, flexShrink: 0 }}>
             <div style={{ background: '#0088ff', color: '#fff', padding: '14px 34px', borderRadius: 4, fontWeight: 600, fontSize: 15, letterSpacing: '0.3px', whiteSpace: 'nowrap', boxShadow: '0 6px 26px rgba(0,136,255,0.25)' }}>
-              See How to Win
+              {GIVEAWAY_LIVE ? 'See How to Win' : 'Get Notified'}
             </div>
           </div>
         </div>
@@ -1271,7 +1274,7 @@ function HomePage({ go }: { go: (p: string) => void }) {
                   <div style={{ display: 'flex', gap: 3 }}>
                     {[1,2,3,4,5].map(s => <span key={s} style={{ color: '#FFD700', fontSize: 18 }}>&#9733;</span>)}
                   </div>
-                  <span style={{ fontSize: 12, color: '#8e8ea0', marginTop: 2 }}><strong style={{ color: '#fff', fontFamily: 'Space Grotesk' }}>5.0</strong> out of 5 · 80+ reviews on Google</span>
+                  <span style={{ fontSize: 12, color: '#8e8ea0', marginTop: 2 }}><strong style={{ color: '#fff', fontFamily: 'Space Grotesk' }}>5.0</strong> out of 5 · 100+ reviews on Google</span>
                 </div>
               </div>
             </ScrollRevealSection>
@@ -2281,7 +2284,7 @@ function BackToTop() {
 function TrustBadges() {
   const badges = [
     { icon: '🛡️', label: 'UVIRON Certified', desc: 'Official performance film partner' },
-    { icon: '⭐', label: '5-Star Google Rating', desc: '80+ five-star reviews' },
+    { icon: '⭐', label: '5-Star Google Rating', desc: '100+ five-star reviews' },
     { icon: '🔧', label: '1000+ Vehicles', desc: 'Professionally tinted' },
     { icon: '🏠', label: 'Mobile or Shop', desc: 'We come to you, or visit our Columbia shop' },
     { icon: '✅', label: 'Lifetime Warranty', desc: 'On Nano Ceramic KOOLMAX' },
@@ -3038,44 +3041,17 @@ function CountdownTimer({ target }: { target: Date }) {
 /* ═══ BMW M8 GIVEAWAY PAGE ═══ */
 function GiveawayPage({ go }: { go: (p: string) => void }) {
   useReveal();
-  // ── CONFIG (owner: adjust these) ──
+  // ── CONFIG (owner / attorney — placeholders pending final rules & administrator) ──
   const DRAW = new Date('2026-09-07T20:00:00-04:00'); // exact draw date/time — CONFIRM
-  const ENDPOINT = 'https://script.google.com/macros/s/AKfycbwq3_ioG3zC_Ff-KmDZFMzXDM1hBVNZqF8e1djMBLAhjAHTajpZ93YlNvtOslBD4OjF/exec';
-  const PER_DOLLAR = 100, BONUS = 50000, BONUS_AT = 500, FREE_ENTRIES = 1000;
+  const PER_DOLLAR = 100, BONUS = 50000, BONUS_AT = 500, FREE_ENTRIES = 1000; // placeholder tiers — attorney/administrator set final numbers
+  const SPONSOR = 'Two Ten Ten LLC';
+  const ADMINISTRATOR = '[Sweepstakes Administrator]';
   const drawLabel = DRAW.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 
-  const validEmail = (e: string) => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e);
-  const validPhone = (p: string) => p.replace(/[^0-9]/g, '').length >= 10;
-
-  // ── Check-my-entries lookup (JSONP — Apps Script sends no CORS headers) ──
-  const [lookup, setLookup] = useState('');
-  const [checking, setChecking] = useState(false);
-  const [result, setResult] = useState<{ found: boolean; name?: string; entries?: number } | null>(null);
-  const [lookupErr, setLookupErr] = useState('');
-  const checkEntries = (e: React.FormEvent) => {
-    e.preventDefault();
-    setLookupErr(''); setResult(null);
-    const val = lookup.trim();
-    if (!validEmail(val) && !validPhone(val)) { setLookupErr('Enter the email or phone you booked with.'); return; }
-    setChecking(true);
-    const cbName = 'gw_cb_' + Math.floor(Date.now());
-    const script = document.createElement('script');
-    let done = false;
-    const cleanup = () => { done = true; try { delete (window as any)[cbName]; } catch { (window as any)[cbName] = undefined; } if (script.parentNode) script.parentNode.removeChild(script); };
-    (window as any)[cbName] = (data: any) => { setChecking(false); setResult(data && typeof data.entries === 'number' ? data : { found: false }); cleanup(); };
-    const key = validEmail(val) ? 'email' : 'phone';
-    script.src = `${ENDPOINT}?${key}=${encodeURIComponent(val)}&callback=${cbName}`;
-    script.onerror = () => { if (!done) { setChecking(false); setLookupErr('Lookup isn’t available yet — try again soon or text us.'); cleanup(); } };
-    document.body.appendChild(script);
-    setTimeout(() => { if (!done) { setChecking(false); setLookupErr('Lookup timed out — the entry checker may not be live yet.'); cleanup(); } }, 9000);
-  };
-
+  // Entries are tracked by the third-party sweepstakes administrator (not on-site).
   // Free entry is by mail-in (No Purchase Necessary / AMOE) — see the mail-in section below.
-  // The owner logs received mail-in cards into the Giveaway sheet manually (EntryType "free").
 
-  const [rulesOpen, setRulesOpen] = useState(false);
   const [heroImgOk, setHeroImgOk] = useState(true);
-  const inputStyle: React.CSSProperties = { width: '100%', padding: '15px 16px', borderRadius: 4, fontSize: 15, background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.12)', color: '#fff', outline: 'none', fontFamily: 'Inter', boxSizing: 'border-box' };
   // Premium section header (distinct from the site's default SH — quieter, more editorial)
   const PremHead = ({ label, title, sub }: { label: string; title: string; sub?: string }) => (
     <div className="rv" style={{ textAlign: 'center', marginBottom: 46 }}>
@@ -3167,27 +3143,12 @@ function GiveawayPage({ go }: { go: (p: string) => void }) {
           </div>
         </div>
 
-        {/* CHECK MY ENTRIES */}
+        {/* ENTRIES / ADMINISTRATOR */}
         <div style={{ marginTop: 110 }}>
-          <PremHead label="Track Your Odds" title="Check Your Entries" sub="Enter the email or phone you booked with to see your current entry total." />
-          <form onSubmit={checkEntries} className="rv d1" style={{ maxWidth: 440, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <input style={inputStyle} type="text" placeholder="Email or phone number" value={lookup} onChange={(e) => setLookup(e.target.value)} />
-            {lookupErr && <p style={{ color: '#f87171', fontSize: 13, margin: 0 }}>{lookupErr}</p>}
-            <button type="submit" disabled={checking} style={{ padding: '15px', borderRadius: 4, border: 'none', cursor: checking ? 'default' : 'pointer', background: '#0088ff', color: '#fff', fontWeight: 600, fontSize: 15, letterSpacing: '0.3px', opacity: checking ? 0.7 : 1 }}>{checking ? 'Checking…' : 'Check Entries'}</button>
-          </form>
-          {result && (
-            <div className="rv" style={{ maxWidth: 440, margin: '16px auto 0', textAlign: 'center', padding: '32px 24px', borderRadius: 6, border: '1px solid rgba(255,255,255,0.1)', background: '#0a0a0d' }}>
-              {result.found ? (
-                <>
-                  {result.name && <div style={{ color: '#8e8ea0', fontSize: 13, letterSpacing: '1px', marginBottom: 12 }}>{result.name}</div>}
-                  <div style={{ fontFamily: 'Space Grotesk', fontSize: 'clamp(40px,7vw,52px)', fontWeight: 700, color: '#fff', lineHeight: 1, letterSpacing: '-1px' }}>{(result.entries || 0).toLocaleString()}</div>
-                  <div style={{ color: '#7dd3ff', fontSize: 11, letterSpacing: '3px', textTransform: 'uppercase', marginTop: 14, fontWeight: 600 }}>Entries</div>
-                </>
-              ) : (
-                <p style={{ color: '#8e8ea0', fontSize: 14, margin: 0, lineHeight: 1.7 }}>No entries found yet. Book a service to start earning, or claim your free entries below.</p>
-              )}
-            </div>
-          )}
+          <PremHead label="Verified & Fair" title="How Entries Are Tracked" sub={`Entries are tallied and the winner is drawn by ${ADMINISTRATOR}, an independent third-party sweepstakes administrator — so the draw is transparent and out of our hands.`} />
+          <p className="rv d1" style={{ maxWidth: 540, margin: '0 auto', textAlign: 'center', color: '#8e8ea0', fontSize: 14.5, lineHeight: 1.8 }}>
+            Your entries are confirmed to the email on your order. Full details — including the winner-verification and independent-polygraph requirement — are in the <button onClick={() => go('official-rules')} style={{ background: 'none', border: 'none', color: '#7dd3ff', cursor: 'pointer', fontSize: 14.5, padding: 0, textDecoration: 'underline', textUnderlineOffset: 3, fontFamily: 'Inter' }}>Official Rules</button>.
+          </p>
         </div>
 
         {/* FREE ENTRY (AMOE) — mail-in */}
@@ -3216,27 +3177,17 @@ function GiveawayPage({ go }: { go: (p: string) => void }) {
           </div>
         </div>
 
-        {/* OFFICIAL RULES */}
+        {/* ELIGIBILITY + RULES LINK */}
         <div style={{ marginTop: 72 }}>
-          <div className="rv" style={{ maxWidth: 760, margin: '0 auto', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 10, background: '#0a0a0f', overflow: 'hidden' }}>
-            <button onClick={() => setRulesOpen(o => !o)} style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px 24px', background: 'none', border: 'none', cursor: 'pointer', color: '#fff', fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 16 }}>
-              <span>Official Rules &amp; Eligibility</span>
-              <span style={{ color: '#0088ff', fontSize: 20, transform: rulesOpen ? 'rotate(45deg)' : 'none', transition: 'transform 0.3s' }}>+</span>
-            </button>
-            {rulesOpen && (
-              <div style={{ padding: '0 24px 24px', color: '#8e8ea0', fontSize: 13.5, lineHeight: 1.8 }}>
-                <p style={{ color: '#c99a3a', fontSize: 12.5, marginBottom: 14, letterSpacing: '0.5px' }}>NOTE — Template copy. Replace with your finalized, professionally reviewed rules before launch.</p>
-                <p><strong style={{ color: '#e5e5e5' }}>No purchase necessary</strong> to enter or win. A purchase will not increase your chances of winning.</p>
-                <p><strong style={{ color: '#e5e5e5' }}>Sponsor:</strong> 210 Tint, Columbia, MD.</p>
-                <p><strong style={{ color: '#e5e5e5' }}>Eligibility:</strong> Open to legal U.S. residents [state] 18+ (or age of majority). Void where prohibited.</p>
-                <p><strong style={{ color: '#e5e5e5' }}>Entry period:</strong> [start date] – {drawLabel}. Winner drawn on or about {drawLabel}.</p>
-                <p><strong style={{ color: '#e5e5e5' }}>How to enter:</strong> (1) Purchase entry — every $1 spent on 210 Tint services during the entry period earns {PER_DOLLAR} entries, plus a {BONUS.toLocaleString()}-entry bonus at ${BONUS_AT} total spend. (2) Free entry (no purchase necessary) — hand-print your full name, mailing address, email, phone, and &ldquo;210 Tint BMW M8 Giveaway&rdquo; on a 3×5 card and mail it to 210 Tint, [mailing address], Columbia, MD 21044. Each valid mail-in earns {FREE_ENTRIES.toLocaleString()} entries. Limit one per person per envelope; must be postmarked by [deadline].</p>
-                <p><strong style={{ color: '#e5e5e5' }}>Prize:</strong> One (1) BMW M8 [year/trim], approximate retail value $[ARV]. Winner is responsible for all applicable taxes (an IRS Form 1099 will be issued for the prize value), registration, insurance, and any costs beyond the prize itself.</p>
-                <p><strong style={{ color: '#e5e5e5' }}>Winner selection:</strong> Random drawing from all eligible entries. Winner notified by phone/email and must respond within [X] days. Odds depend on total entries received.</p>
-                <p><strong style={{ color: '#e5e5e5' }}>Publicity:</strong> By entering, the winner consents to use of their name/likeness for promotional purposes where permitted.</p>
-                <p style={{ marginTop: 10, color: '#4a4a5a' }}>Full official rules available on request. This promotion is not sponsored or endorsed by BMW.</p>
-              </div>
-            )}
+          <div className="rv" style={{ maxWidth: 760, margin: '0 auto', padding: 'clamp(24px,4vw,34px)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 8, background: '#0a0a0d' }}>
+            <div style={{ fontSize: 10, letterSpacing: '3px', textTransform: 'uppercase', color: '#6a6a76', fontWeight: 600, marginBottom: 14 }}>Eligibility</div>
+            <p style={{ color: '#c8c8d0', fontSize: 14.5, lineHeight: 1.8, margin: 0 }}>
+              Open to legal residents of the 50 United States (and Canada where permitted), 18 or older. The confirmed winner must hold a valid driver's license and complete winner verification — including an independent polygraph examination — as described in the Official Rules.
+            </p>
+            <div style={{ display: 'flex', gap: 18, flexWrap: 'wrap', alignItems: 'center', marginTop: 24, paddingTop: 22, borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+              <button onClick={() => go('official-rules')} style={{ padding: '12px 26px', background: 'transparent', color: '#fff', border: '1px solid rgba(255,255,255,0.16)', borderRadius: 4, fontWeight: 600, fontSize: 14, cursor: 'pointer', fontFamily: 'Inter', whiteSpace: 'nowrap' }}>Read the Official Rules</button>
+              <span style={{ color: '#6a6a76', fontSize: 12, lineHeight: 1.7, flex: 1, minWidth: 240 }}>No purchase necessary. A purchase will not increase your chances of winning. Sponsor: {SPONSOR}. Administered by {ADMINISTRATOR}. This promotion is not sponsored or endorsed by BMW.</span>
+            </div>
           </div>
         </div>
 
@@ -3249,6 +3200,140 @@ function GiveawayPage({ go }: { go: (p: string) => void }) {
             <a href="tel:2403387762" style={{ padding: '15px 40px', background: 'transparent', color: '#fff', border: '1px solid rgba(255,255,255,0.16)', borderRadius: 4, fontWeight: 500, fontSize: 15, textDecoration: 'none' }}>(240) 338-7762</a>
           </div>
         </div>
+      </section>
+    </div>
+  );
+}
+
+/* ═══ GIVEAWAY — COMING SOON (soft-launch waitlist) ═══ */
+function GiveawayComingSoon() {
+  useReveal();
+  const ENDPOINT = 'https://script.google.com/macros/s/AKfycbwq3_ioG3zC_Ff-KmDZFMzXDM1hBVNZqF8e1djMBLAhjAHTajpZ93YlNvtOslBD4OjF/exec';
+  const validEmail = (e: string) => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e);
+  const validPhone = (p: string) => p.replace(/[^0-9]/g, '').length >= 10;
+  const [heroImgOk, setHeroImgOk] = useState(true);
+  const [name, setName] = useState(''); const [email, setEmail] = useState(''); const [phone, setPhone] = useState('');
+  const [err, setErr] = useState(''); const [sent, setSent] = useState(false); const [sending, setSending] = useState(false);
+  const inputStyle: React.CSSProperties = { width: '100%', padding: '15px 16px', borderRadius: 4, fontSize: 15, background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.12)', color: '#fff', outline: 'none', fontFamily: 'Inter', boxSizing: 'border-box' };
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault(); setErr('');
+    if (!validEmail(email)) { setErr('Please enter a valid email.'); return; }
+    if (phone && !validPhone(phone)) { setErr('Please enter a valid phone number.'); return; }
+    setSending(true);
+    const lead = { name: name.trim(), email: email.trim(), phone: phone.trim(), source: 'BMW M8 giveaway waitlist', ts: new Date().toISOString() };
+    try { const prev = JSON.parse(localStorage.getItem('210-giveaway-waitlist') || '[]'); prev.push(lead); localStorage.setItem('210-giveaway-waitlist', JSON.stringify(prev)); } catch { /* ignore */ }
+    try { await fetch(ENDPOINT, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(lead) }); } catch { /* opaque */ }
+    setSending(false); setSent(true);
+  };
+  return (
+    <div style={{ paddingTop: 130 }}>
+      <section style={{ padding: '0 28px 120px', maxWidth: 820, margin: '0 auto', textAlign: 'center' }}>
+        <div className="rv" style={{ fontSize: 11, letterSpacing: '5px', textTransform: 'uppercase', color: '#7dd3ff', fontWeight: 600, marginBottom: 24 }}>Coming Soon</div>
+        <h1 className="rv d1" style={{ fontFamily: 'Space Grotesk', fontSize: 'clamp(40px,7.5vw,80px)', fontWeight: 700, lineHeight: 1.02, letterSpacing: '-2.5px', marginBottom: 22 }}>
+          Win a <span className="grad-text">BMW&nbsp;M8</span>
+        </h1>
+        <p className="rv d1" style={{ color: '#9a9aa5', fontSize: 'clamp(15px,1.6vw,18px)', lineHeight: 1.75, maxWidth: 520, margin: '0 auto 40px' }}>
+          Our biggest giveaway yet is dropping soon. Join the list to be the first to know the moment it goes live.
+        </p>
+        <div className="rv d2" style={{ position: 'relative', borderRadius: 8, overflow: 'hidden', margin: '0 auto 44px', maxWidth: 760, aspectRatio: '16/9', background: 'linear-gradient(160deg,#12121a,#050507)', border: '1px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          {heroImgOk ? (
+            <>
+              <img src="/bmwm8.png" alt="BMW M8 Competition — grand prize" onError={() => setHeroImgOk(false)} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(5,5,7,0.5) 0%, transparent 40%)', pointerEvents: 'none' }} />
+            </>
+          ) : (
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 'clamp(38px,7vw,68px)', color: '#fff', letterSpacing: '2px', lineHeight: 1 }}>BMW M8</div>
+              <div style={{ color: '#7a7a86', fontSize: 'clamp(11px,1.5vw,14px)', fontWeight: 500, letterSpacing: '4px', textTransform: 'uppercase', marginTop: 10 }}>Competition</div>
+            </div>
+          )}
+        </div>
+        {!sent ? (
+          <form onSubmit={submit} className="rv d3" style={{ maxWidth: 420, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <input style={inputStyle} type="text" placeholder="Name (optional)" value={name} onChange={(e) => setName(e.target.value)} />
+            <input style={inputStyle} type="email" placeholder="Email address" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <input style={inputStyle} type="tel" placeholder="Phone (optional)" value={phone} onChange={(e) => setPhone(e.target.value)} />
+            {err && <p style={{ color: '#f87171', fontSize: 13, margin: 0 }}>{err}</p>}
+            <button type="submit" disabled={sending} style={{ padding: '15px', borderRadius: 4, border: 'none', cursor: sending ? 'default' : 'pointer', background: '#0088ff', color: '#fff', fontWeight: 600, fontSize: 15, letterSpacing: '0.3px', opacity: sending ? 0.7 : 1 }}>{sending ? 'Joining…' : 'Notify Me at Launch'}</button>
+            <p style={{ color: '#5a5a66', fontSize: 11.5, margin: '2px 0 0', lineHeight: 1.6 }}>No purchase necessary to enter or win once the giveaway launches. Full Official Rules will be posted at launch.</p>
+          </form>
+        ) : (
+          <div className="rv" style={{ maxWidth: 420, margin: '0 auto', padding: '36px 24px', borderRadius: 6, background: '#0a0a0d', border: '1px solid rgba(255,255,255,0.1)' }}>
+            <svg width="46" height="46" viewBox="0 0 46 46" fill="none" style={{ marginBottom: 16 }}><circle cx="23" cy="23" r="22" stroke="#7dd3ff" strokeWidth="1.5" /><path d="M14 23.5l6 6L32 17" stroke="#7dd3ff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            <h3 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 22, marginBottom: 10, letterSpacing: '-0.5px' }}>You're on the list</h3>
+            <p style={{ color: '#8e8ea0', fontSize: 14, lineHeight: 1.7, margin: 0 }}>We'll email you the moment the BMW M8 giveaway goes live.</p>
+          </div>
+        )}
+      </section>
+    </div>
+  );
+}
+
+/* ═══ OFFICIAL RULES PAGE (standalone — placeholders for attorney/administrator) ═══ */
+function OfficialRulesPage() {
+  useReveal();
+  const rules: { h: string; b: React.ReactNode }[] = [
+    { h: 'Sponsor', b: <>Two Ten Ten LLC, [sponsor mailing address], Columbia, MD 21044 (&ldquo;Sponsor&rdquo;).</> },
+    { h: 'Administrator', b: <>The Sweepstakes is administered by [Sweepstakes Administrator] (&ldquo;Administrator&rdquo;), an independent third party responsible for entry tallying and the winner drawing.</> },
+    { h: 'Eligibility', b: <>Open to legal residents of the fifty (50) United States and the District of Columbia, and Canada where permitted (excluding Quebec unless otherwise stated), who are 18 years of age or older (or the age of majority in their jurisdiction) at time of entry. Employees of Sponsor and Administrator and their immediate families/households are not eligible. Void where prohibited or restricted by law. Canadian entrants must correctly answer a skill-testing question to claim a prize.</> },
+    { h: 'Entry Period', b: <>The Sweepstakes begins [start date/time] and ends [end date/time] (the &ldquo;Entry Period&rdquo;). The random drawing will occur on or about [draw date]. Sponsor&rsquo;s clock is the official timekeeper.</> },
+    { h: 'How to Enter', b: <>No purchase or payment of any kind is necessary to enter or win, and a purchase or payment will not improve an entrant&rsquo;s chances of winning. There are two ways to receive entries: <strong style={{ color: '#e5e5e5' }}>(a) Purchase method</strong> — receive entries for qualifying purchases of 210 Tint / Sponsor products and services during the Entry Period at the rate stated in the entry-tier schedule below. <strong style={{ color: '#e5e5e5' }}>(b) Free (mail-in) method</strong> — hand-print your full name, mailing address, email, phone number, date of birth, and the words &ldquo;BMW M8 Giveaway&rdquo; on a 3&quot;×5&quot; card and mail it in a hand-addressed envelope to [PO box / mailing address]. Each valid mail-in request receives the same number of entries as the equivalent single purchase entry. Entries must be entirely handwritten; mechanically reproduced, photocopied, or printed entries are void. Limit one (1) free entry per outer envelope; each envelope must be mailed separately. Mail-in entries must be postmarked by [deadline] and received by [received-by date].</> },
+    { h: 'Entries, Tiers & Odds', b: <>Entry values per the schedule set by Sponsor and Administrator [entry-tier table — placeholder pending final rules]. The free mail-in method carries entry value equal to the corresponding purchase tier. Odds of winning depend on the total number of eligible entries received.</> },
+    { h: 'Winner Selection & Notification', b: <>The potential winner will be selected in a random drawing from all eligible entries, conducted by the Administrator. The potential winner will be notified by phone and/or email and must respond and complete all requirements within [X] business days, or the prize may be forfeited and an alternate winner selected.</> },
+    { h: 'Winner Verification & Polygraph', b: <>As a condition of receiving the prize, the potential winner must complete winner verification, which includes signing an affidavit of eligibility, a liability/publicity release, providing a valid government-issued driver&rsquo;s license, and <strong style={{ color: '#e5e5e5' }}>submitting to an independent polygraph (lie-detector) examination</strong> to confirm the entry was made in accordance with these Official Rules. A potential winner who declines the polygraph, fails verification, or is found to have violated these Rules will forfeit the prize, and an alternate winner will be selected.</> },
+    { h: 'Prize & Taxes', b: <>One (1) grand prize: a BMW M8 [year/trim], approximate retail value (ARV) $[ARV]. No cash equivalent or substitution except at Sponsor&rsquo;s discretion. The winner is solely responsible for all federal, state, and local taxes; an IRS Form 1099 will be issued for the prize&rsquo;s value; and for title, registration, insurance, and all other costs. Odds and ARV may affect the tax owed.</> },
+    { h: 'Fraud & Disqualification', b: <>Sponsor and Administrator reserve the right to disqualify any entrant and void any entries that appear templated, duplicated, machine-generated, coordinated, or otherwise fraudulent, or that tamper with the entry process. Any indication of copying, replication, or coordinated entry across multiple submissions may result in disqualification of all associated entries. The Administrator&rsquo;s fraud review and eligibility determinations are final and binding.</> },
+    { h: 'Publicity', b: <>Except where prohibited, acceptance of the prize constitutes consent to use the winner&rsquo;s name, likeness, city/state, and statements for advertising and promotional purposes without further compensation.</> },
+    { h: 'Privacy', b: <>Information collected from entrants (including date of birth for age verification) is handled in accordance with Sponsor&rsquo;s Privacy Policy and may be shared with the Administrator for the purpose of operating the Sweepstakes.</> },
+    { h: 'Limitation of Liability & Disputes', b: <>By entering, entrants agree to release Sponsor, Administrator, and their affiliates from any liability arising from participation or prize acceptance, and agree that disputes will be governed by the laws of the State of Maryland, without regard to conflict-of-laws principles.</> },
+    { h: 'General', b: <>This promotion is in no way sponsored, endorsed, administered by, or associated with BMW of North America, LLC or Bayerische Motoren Werke AG. &ldquo;BMW&rdquo; and &ldquo;M8&rdquo; are trademarks of their respective owners.</> },
+  ];
+  return (
+    <div style={{ paddingTop: 130 }}>
+      <section style={{ padding: '0 28px 120px', maxWidth: 820, margin: '0 auto' }}>
+        <SH tag="BMW M8 Giveaway" title="Official Rules" sub="Please read these Official Rules in full. Placeholders in brackets are finalized before the promotion opens." />
+        <p className="rv" style={{ color: '#c99a3a', fontSize: 12.5, lineHeight: 1.7, marginBottom: 26, padding: '12px 16px', border: '1px solid rgba(201,154,58,0.25)', borderRadius: 4, background: 'rgba(201,154,58,0.05)' }}>
+          NOTE — Draft framework for attorney and administrator review. Not final and not legal advice. The entry-tier weighting, prize value, dates, and addresses must be finalized and reviewed before this promotion is offered.
+        </p>
+        <ol style={{ listStyle: 'none', counterReset: 'r', padding: 0, margin: 0 }}>
+          {rules.map((r, i) => (
+            <li key={r.h} className={`rv d${(i % 3) + 1}`} style={{ display: 'flex', gap: 18, padding: '22px 0', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+              <span style={{ fontFamily: 'Space Grotesk', fontSize: 15, fontWeight: 700, color: '#0088ff', opacity: 0.5, minWidth: 30 }}>{String(i + 1).padStart(2, '0')}</span>
+              <div>
+                <h3 style={{ fontFamily: 'Space Grotesk', fontSize: 16, fontWeight: 700, marginBottom: 8, color: '#fff' }}>{r.h}</h3>
+                <p style={{ color: '#8e8ea0', fontSize: 14, lineHeight: 1.85, margin: 0 }}>{r.b}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
+    </div>
+  );
+}
+
+/* ═══ PRIVACY POLICY PAGE ═══ */
+function PrivacyPolicyPage() {
+  useReveal();
+  const secs: { h: string; b: string }[] = [
+    { h: 'Overview', b: 'This Privacy Policy explains how Two Ten Ten LLC and 210 Tint ("we", "us") collect, use, and share information when you use 210tint.com, book a service, or enter our promotions. Placeholders in brackets are finalized before launch.' },
+    { h: 'Information We Collect', b: 'Contact details you provide (name, email, phone), vehicle/service details, booking information, and — for sweepstakes entrants — your date of birth for age verification. We do not collect a driver’s license from general entrants; a valid license is requested only from the confirmed prize winner during verification.' },
+    { h: 'How We Use It', b: 'To provide and schedule services, respond to inquiries, operate and administer promotions (including verifying eligibility and contacting winners), send updates you opt into, and improve our business. We do not sell your personal information.' },
+    { h: 'Sharing', b: 'We share sweepstakes entry information with our independent sweepstakes administrator solely to tally entries, run the drawing, and verify the winner. We may share information with service providers (e.g., scheduling, email) and where required by law.' },
+    { h: 'Data Retention & Security', b: 'We keep information only as long as needed for the purposes above and take reasonable measures to protect it. No method of transmission or storage is 100% secure.' },
+    { h: 'Your Choices', b: 'You may request access to, correction of, or deletion of your information, and may opt out of marketing messages at any time, by contacting us using the details below.' },
+    { h: 'Children', b: 'Our services and promotions are not directed to individuals under 18, and we do not knowingly collect information from them.' },
+    { h: 'Contact', b: 'Questions about this policy: 210tints@gmail.com · (240) 338-7762 · [mailing address], Columbia, MD 21044.' },
+  ];
+  return (
+    <div style={{ paddingTop: 130 }}>
+      <section style={{ padding: '0 28px 120px', maxWidth: 820, margin: '0 auto' }}>
+        <SH tag="Legal" title="Privacy Policy" sub="How we handle the information you share with 210 Tint." />
+        {secs.map((s, i) => (
+          <div key={s.h} className={`rv d${(i % 3) + 1}`} style={{ padding: '22px 0', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+            <h3 style={{ fontFamily: 'Space Grotesk', fontSize: 17, fontWeight: 700, marginBottom: 10, color: '#fff' }}>{s.h}</h3>
+            <p style={{ color: '#8e8ea0', fontSize: 14.5, lineHeight: 1.85, margin: 0 }}>{s.b}</p>
+          </div>
+        ))}
       </section>
     </div>
   );
@@ -3309,6 +3394,9 @@ export default function App() {
         {page==='starlight-sale'&&<StarlightSalePage go={go}/>}
         {page==='detailing'&&<DetailingPage go={go}/>}
         {GIVEAWAY_LIVE&&page==='bmw-giveaway'&&<GiveawayPage go={go}/>}
+        {!GIVEAWAY_LIVE&&GIVEAWAY_TEASER&&page==='bmw-giveaway'&&<GiveawayComingSoon/>}
+        {GIVEAWAY_LIVE&&page==='official-rules'&&<OfficialRulesPage/>}
+        {GIVEAWAY_LIVE&&page==='privacy'&&<PrivacyPolicyPage/>}
         {page==='contact'&&<ContactPage/>}
       </main>
       <Footer go={go} />
