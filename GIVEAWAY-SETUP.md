@@ -1,13 +1,19 @@
 # BMW M8 Giveaway — Setup
 
-The website now has a **/🏆 M8 Giveaway** page (in the nav + footer + a homepage banner).
-It shows the prize, a live countdown, how entries work, a **free-entry form**, and a
-**"Check My Entries"** lookup. This doc sets up the backend so the lookup works and free
-entries are recorded.
+> **⚠️ MODEL CHANGED (current plan).** Entries are now tracked by a **third-party sweepstakes
+> administrator** (e.g. American Sweepstakes), **not** by this website or the Google Sheet.
+> The on-site "Check My Entries" lookup and the on-site free-entry form have been **removed**;
+> free entry is **mail-in** (No Purchase Necessary), and the administrator processes it. The
+> giveaway is currently in **soft-launch**: a public "Coming Soon" waitlist is live, while the
+> full mechanics/rules stay hidden behind the `GIVEAWAY_LIVE` flag until the attorney +
+> administrator sign off.
+>
+> **What the website still writes to your Google Sheet:** only lead/waitlist rows from the
+> popup and the "Notify Me at Launch" coming-soon form (identified by their `source` value,
+> e.g. `BMW M8 giveaway waitlist`). The `doGet`/JSONP entry-lookup and the "Giveaway" entry
+> ledger below are **deprecated** — keep them only if you later choose to self-administer.
 
-Everything reuses the **same Google Sheet + Apps Script** you already deployed for the
-email popup — you're just adding a tab and upgrading the script. Same web-app URL, so
-nothing on the website needs to change.
+The sections below are retained for reference only (self-administration path).
 
 ---
 
