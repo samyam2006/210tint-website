@@ -3,8 +3,9 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
 
-// Flip this to `true` and redeploy to pause the site (renders a blank page).
-const SITE_PAUSED = false
+// Flip this to `false` and redeploy to bring the full site back online.
+// While `true`, the site renders nothing — a blank page with no content.
+const SITE_PAUSED = true
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
