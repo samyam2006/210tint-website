@@ -159,7 +159,9 @@
     }
     </script>
   </head>
-  <body>
+  <body style="margin:0;background:#000;">
+    <!-- Site paused: force a black screen immediately, before any JS loads. -->
+    <style>html,body,#root{min-height:100vh;margin:0;background:#000;}</style>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
