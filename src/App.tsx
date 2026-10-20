@@ -1076,7 +1076,7 @@ function Footer({ go }: { go: (p: string) => void }) {
         </div>
         <div>
           <h4 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 12, letterSpacing: '3px', color: '#4a4a5a', marginBottom: 20, textTransform: 'uppercase' }}>Resources</h4>
-          {[...(GIVEAWAY_LIVE ? [{label:'Win a BMW M8',id:'bmw-giveaway'}] : []),{label:'Tint Simulator',id:'tint-simulator'},{label:'Starlight Headliner',id:'starlight'},{label:'✦ Starlight Sale — 15% Off',id:'starlight-sale'},{label:'Warranty',id:'warranty'},{label:'MD Tint Laws',id:'tint-laws'},{label:'Ceramic vs Carbon',id:'ceramic-vs-carbon'},{label:'Best Tint for Summer',id:'md-summer-tint'},...(GIVEAWAY_LIVE ? [{label:'Official Rules',id:'official-rules'},{label:'Privacy Policy',id:'privacy'}] : [])].map(l => { const hot = l.id==='starlight-sale'||l.id==='bmw-giveaway'; return <button key={l.id} onClick={() => go(l.id)} style={{ display: 'block', background: 'none', border: 'none', cursor: 'pointer', color: hot?'#7dd3ff':'#8e8ea0', fontSize: 16, padding: '5px 0', fontWeight: hot?600:400 }}>{l.label}</button>; })}
+          {[...(GIVEAWAY_LIVE ? [{label:'Win a BMW M8',id:'bmw-giveaway'}] : []),{label:'Tint Simulator',id:'tint-simulator'},{label:'Starlight Headliner',id:'starlight'},{label:'✦ Starlight Sale — 15% Off',id:'starlight-sale'},{label:'Warranty',id:'warranty'},{label:'MD Tint Laws',id:'tint-laws'},{label:'Ceramic vs Carbon',id:'ceramic-vs-carbon'},{label:'Best Tint for Summer',id:'md-summer-tint'},...(GIVEAWAY_LIVE ? [{label:'Official Rules',id:'official-rules'}] : [])].map(l => { const hot = l.id==='starlight-sale'||l.id==='bmw-giveaway'; return <button key={l.id} onClick={() => go(l.id)} style={{ display: 'block', background: 'none', border: 'none', cursor: 'pointer', color: hot?'#7dd3ff':'#8e8ea0', fontSize: 16, padding: '5px 0', fontWeight: hot?600:400 }}>{l.label}</button>; })}
         </div>
         <div>
           <h4 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 12, letterSpacing: '3px', color: '#4a4a5a', marginBottom: 20, textTransform: 'uppercase' }}>Contact</h4>
@@ -1087,9 +1087,13 @@ function Footer({ go }: { go: (p: string) => void }) {
           <p style={{ color: '#8e8ea0', fontSize: 16, lineHeight: 2.2 }}>Mon — Sat: 6AM — 11PM<br/>Sun: By Appointment</p>
         </div>
       </div>
-      <div style={{ maxWidth: 1320, margin: '56px auto 0', paddingTop: 24, borderTop: '1px solid rgba(255,255,255,0.04)', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
+      <div style={{ maxWidth: 1320, margin: '56px auto 0', paddingTop: 24, borderTop: '1px solid rgba(255,255,255,0.04)', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, alignItems: 'center' }}>
         <p style={{ color: '#4a4a5a', fontSize: 12 }}>© 2026 210 Tint. All rights reserved.</p>
-        <p style={{ color: '#4a4a5a', fontSize: 12 }}>Columbia, MD — Serving the DMV</p>
+        <div style={{ display: 'flex', gap: 18, flexWrap: 'wrap' }}>
+          {[{ label: 'Privacy Policy', id: 'privacy' }, { label: 'Terms of Service', id: 'terms' }].map(l => (
+            <button key={l.id} onClick={() => go(l.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#4a4a5a', fontSize: 12, padding: 0 }}>{l.label}</button>
+          ))}
+        </div>
         <p style={{ color: '#4a4a5a', fontSize: 12 }}>Powered By <a href="https://peakdigi.net" target="_blank" rel="noreferrer" style={{ color: '#4a4a5a', textDecoration: 'none', borderBottom: '1px solid rgba(74,74,90,0.4)' }}>Peak Digital</a></p>
       </div>
     </footer>
@@ -3315,19 +3319,55 @@ function OfficialRulesPage() {
 function PrivacyPolicyPage() {
   useReveal();
   const secs: { h: string; b: string }[] = [
-    { h: 'Overview', b: 'This Privacy Policy explains how Two Ten Ten LLC and 210 Tint ("we", "us") collect, use, and share information when you use 210tint.com, book a service, or enter our promotions. Placeholders in brackets are finalized before launch.' },
+    { h: 'Overview', b: 'This Privacy Policy explains how Two Ten Ten LLC and 210 Tint ("we", "us") collect, use, and share information when you use 210tint.com, book a service, or enter our promotions.' },
     { h: 'Information We Collect', b: 'Contact details you provide (name, email, phone), vehicle/service details, booking information, and — for sweepstakes entrants — your date of birth for age verification. We do not collect a driver’s license from general entrants; a valid license is requested only from the confirmed prize winner during verification.' },
     { h: 'How We Use It', b: 'To provide and schedule services, respond to inquiries, operate and administer promotions (including verifying eligibility and contacting winners), send updates you opt into, and improve our business. We do not sell your personal information.' },
     { h: 'Sharing', b: 'We share sweepstakes entry information with our independent sweepstakes administrator solely to tally entries, run the drawing, and verify the winner. We may share information with service providers (e.g., scheduling, email) and where required by law.' },
     { h: 'Data Retention & Security', b: 'We keep information only as long as needed for the purposes above and take reasonable measures to protect it. No method of transmission or storage is 100% secure.' },
     { h: 'Your Choices', b: 'You may request access to, correction of, or deletion of your information, and may opt out of marketing messages at any time, by contacting us using the details below.' },
     { h: 'Children', b: 'Our services and promotions are not directed to individuals under 18, and we do not knowingly collect information from them.' },
-    { h: 'Contact', b: 'Questions about this policy: 210tints@gmail.com · (240) 338-7762 · [mailing address], Columbia, MD 21044.' },
+    { h: 'Contact', b: 'Questions about this policy: 210tints@gmail.com · (240) 338-7762 · Columbia, MD 21044.' },
   ];
   return (
     <div style={{ paddingTop: 130 }}>
       <section style={{ padding: '0 28px 120px', maxWidth: 820, margin: '0 auto' }}>
         <SH tag="Legal" title="Privacy Policy" sub="How we handle the information you share with 210 Tint." />
+        {secs.map((s, i) => (
+          <div key={s.h} className={`rv d${(i % 3) + 1}`} style={{ padding: '22px 0', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+            <h3 style={{ fontFamily: 'Space Grotesk', fontSize: 17, fontWeight: 700, marginBottom: 10, color: '#fff' }}>{s.h}</h3>
+            <p style={{ color: '#8e8ea0', fontSize: 14.5, lineHeight: 1.85, margin: 0 }}>{s.b}</p>
+          </div>
+        ))}
+      </section>
+    </div>
+  );
+}
+
+/* ═══ TERMS OF SERVICE PAGE ═══ */
+function TermsOfServicePage() {
+  useReveal();
+  const secs: { h: string; b: string }[] = [
+    { h: 'Acceptance of These Terms', b: 'These Terms of Service ("Terms") govern your use of 210tint.com and the window tinting, detailing, and related services provided by Two Ten Ten LLC d/b/a 210 Tint ("210 Tint", "we", "us"). By using this website, requesting a quote, or booking a service, you agree to these Terms.' },
+    { h: 'Services & Bookings', b: 'We provide automotive window tinting, detailing, and related services, offered at our shop and as a mobile service within our service area. A booking request is not confirmed until we acknowledge it. We may decline or reschedule a booking — for example, due to weather, vehicle condition, or scheduling conflicts — and will make reasonable efforts to notify you.' },
+    { h: 'Quotes & Pricing', b: 'Prices shown online are estimates based on typical vehicles and may change after we inspect your vehicle or you add options. The price quoted and confirmed at the time of service applies. All prices are in U.S. dollars and exclude applicable taxes unless stated otherwise.' },
+    { h: 'Payment', b: 'Payment is due at the time of service unless we agree otherwise in writing. Deposits, where required to hold an appointment, will be disclosed before you book.' },
+    { h: 'Cancellations & Rescheduling', b: 'Please give us as much notice as possible to cancel or reschedule. We may require a minimum notice period and may charge a cancellation or no-show fee, which we will disclose when you book. Any required deposit may be non-refundable as disclosed at the time of booking.' },
+    { h: 'Mobile Service', b: 'For mobile appointments, you are responsible for providing a safe, legal, and accessible location with adequate space and, where needed, access to power. If we cannot safely perform the work at the location provided, we may reschedule or relocate the appointment.' },
+    { h: 'Your Responsibilities', b: 'You confirm you are the owner of the vehicle or are authorized to request service on it. Please remove valuables and personal items before your appointment. You are responsible for disclosing pre-existing damage, aftermarket glass, or prior film; we are not responsible for conditions we did not cause.' },
+    { h: 'Warranty', b: 'Covered installations carry the warranty described on our Warranty page. The warranty is subject to the terms, exclusions, and care requirements stated there and does not cover damage from misuse, accidents, improper cleaning, or third-party alterations.' },
+    { h: 'Promotions', b: 'Discounts, sales, giveaways, and other promotions are subject to their own rules and may be changed or ended at any time. Where a promotion has separate official rules (such as a sweepstakes), those rules control for that promotion.' },
+    { h: 'Intellectual Property', b: 'The content on this website — including text, images, logos, and designs — is owned by 210 Tint or its licensors and may not be copied or reused without permission.' },
+    { h: 'Third-Party Links & Services', b: 'Our site may link to or rely on third-party services (for example, scheduling or messaging tools). We are not responsible for the content or practices of third parties, which are governed by their own terms.' },
+    { h: 'Disclaimers', b: 'The website and services are provided "as is" to the fullest extent permitted by law. We do not guarantee that the website will be error-free or uninterrupted. Nothing in these Terms excludes any rights you have that cannot be waived under applicable law.' },
+    { h: 'Limitation of Liability', b: 'To the fullest extent permitted by law, 210 Tint is not liable for indirect, incidental, or consequential damages, and our total liability for any claim relating to a service is limited to the amount you paid for that service. Some jurisdictions do not allow certain limitations, so parts of this section may not apply to you.' },
+    { h: 'Governing Law', b: 'These Terms are governed by the laws of the State of Maryland, without regard to its conflict-of-laws principles, and any disputes will be handled in the state or federal courts located in Maryland.' },
+    { h: 'Changes to These Terms', b: 'We may update these Terms from time to time. Changes take effect when posted on this page. Your continued use of the website or our services after a change means you accept the updated Terms.' },
+    { h: 'Contact', b: 'Questions about these Terms: 210tints@gmail.com · (240) 338-7762 · Columbia, MD 21044.' },
+  ];
+  return (
+    <div style={{ paddingTop: 130 }}>
+      <section style={{ padding: '0 28px 120px', maxWidth: 820, margin: '0 auto' }}>
+        <SH tag="Legal" title="Terms of Service" sub="The terms that apply when you use our website and services." />
         {secs.map((s, i) => (
           <div key={s.h} className={`rv d${(i % 3) + 1}`} style={{ padding: '22px 0', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
             <h3 style={{ fontFamily: 'Space Grotesk', fontSize: 17, fontWeight: 700, marginBottom: 10, color: '#fff' }}>{s.h}</h3>
@@ -3396,7 +3436,8 @@ export default function App() {
         {GIVEAWAY_LIVE&&page==='bmw-giveaway'&&<GiveawayPage go={go}/>}
         {!GIVEAWAY_LIVE&&GIVEAWAY_TEASER&&page==='bmw-giveaway'&&<GiveawayComingSoon/>}
         {GIVEAWAY_LIVE&&page==='official-rules'&&<OfficialRulesPage/>}
-        {GIVEAWAY_LIVE&&page==='privacy'&&<PrivacyPolicyPage/>}
+        {page==='privacy'&&<PrivacyPolicyPage/>}
+        {page==='terms'&&<TermsOfServicePage/>}
         {page==='contact'&&<ContactPage/>}
       </main>
       <Footer go={go} />
