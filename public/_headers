@@ -6,8 +6,11 @@
 /cars/*
   Cache-Control: public, max-age=31536000, immutable
 
-# Cache videos for 1 week (large files, may need updates)
-/hero*.mp4
+# Cache the homepage hero video + poster for 1 week (may be swapped)
+/bmwm8-hero.mp4
+  Cache-Control: public, max-age=604800
+
+/bmwm8-hero-poster.webp
   Cache-Control: public, max-age=604800
 
 # Cache logo/favicon for 1 year

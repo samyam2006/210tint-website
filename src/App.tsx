@@ -127,233 +127,6 @@ function Counter({ end, suffix = '', decimals = 0 }: { end: number; suffix?: str
 }
 
 /* ═══════════════════════════════════════════════════
-   THREE.JS HERO — GLASS TINT PANELS + PARTICLES
-   Rotating translucent panels with glow particles
-   ═══════════════════════════════════════════════════ */
-function GlassScene() {
-  const ref = useRef<HTMLCanvasElement>(null);
-  useEffect(() => {
-    const c = ref.current;
-    if (!c) return;
-    const ctx = c.getContext('2d');
-    if (!ctx) return;
-    let raf: number;
-    let w = (c.width = c.offsetWidth * (window.devicePixelRatio > 1 ? 2 : 1));
-    let h = (c.height = c.offsetHeight * (window.devicePixelRatio > 1 ? 2 : 1));
-    let mouse = { x: w / 2, y: h / 2 };
-    let time = 0;
-
-    // Glass panels
-    interface Panel { x: number; y: number; w: number; h: number; angle: number; speed: number; opacity: number; drift: number }
-    const panels: Panel[] = [];
-    for (let i = 0; i < 8; i++) {
-      panels.push({
-        x: Math.random() * w, y: Math.random() * h,
-        w: 60 + Math.random() * 200, h: 80 + Math.random() * 300,
-        angle: Math.random() * Math.PI * 0.3 - 0.15,
-        speed: 0.001 + Math.random() * 0.003,
-        opacity: 0.02 + Math.random() * 0.04,
-        drift: Math.random() * 0.15,
-      });
-    }
-
-    // Particles
-    interface Dot { x: number; y: number; vx: number; vy: number; r: number; o: number; pulse: number }
-    const dots: Dot[] = [];
-    const dotCount = Math.min(Math.floor((w * h) / 15000), 90);
-    for (let i = 0; i < dotCount; i++) {
-      dots.push({
-        x: Math.random() * w, y: Math.random() * h,
-        vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3,
-        r: Math.random() * 2.5 + 0.5, o: Math.random() * 0.6 + 0.1,
-        pulse: Math.random() * Math.PI * 2,
-      });
-    }
-
-    const draw = () => {
-      time += 0.008;
-      ctx.clearRect(0, 0, w, h);
-
-      // Glass panels
-      panels.forEach((p) => {
-        ctx.save();
-        ctx.translate(p.x + Math.sin(time * 0.5 + p.drift * 10) * 30, p.y + Math.cos(time * 0.3 + p.drift * 5) * 20);
-        ctx.rotate(p.angle + Math.sin(time * p.speed * 50) * 0.05);
-
-        // Panel body
-        const grad = ctx.createLinearGradient(-p.w / 2, -p.h / 2, p.w / 2, p.h / 2);
-        grad.addColorStop(0, `rgba(0,136,255,${p.opacity})`);
-        grad.addColorStop(0.5, `rgba(96,165,250,${p.opacity * 1.5})`);
-        grad.addColorStop(1, `rgba(0,136,255,${p.opacity * 0.5})`);
-        ctx.fillStyle = grad;
-        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
-
-        // Panel edge glow
-        ctx.strokeStyle = `rgba(0,136,255,${p.opacity * 2})`;
-        ctx.lineWidth = 0.5;
-        ctx.strokeRect(-p.w / 2, -p.h / 2, p.w, p.h);
-        ctx.restore();
-      });
-
-      // Connections between nearby dots
-      for (let i = 0; i < dots.length; i++) {
-        for (let j = i + 1; j < dots.length; j++) {
-          const dx = dots[i].x - dots[j].x;
-          const dy = dots[i].y - dots[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 180) {
-            ctx.beginPath();
-            ctx.moveTo(dots[i].x, dots[i].y);
-            ctx.lineTo(dots[j].x, dots[j].y);
-            ctx.strokeStyle = `rgba(0,136,255,${0.08 * (1 - dist / 180)})`;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
-          }
-        }
-      }
-
-      // Dots
-      dots.forEach((d) => {
-        // Mouse interaction
-        const mdx = d.x - mouse.x;
-        const mdy = d.y - mouse.y;
-        const md = Math.sqrt(mdx * mdx + mdy * mdy);
-        if (md < 250 && md > 0) {
-          const force = (250 - md) / 250 * 0.4;
-          d.vx += (mdx / md) * force;
-          d.vy += (mdy / md) * force;
-        }
-        d.vx *= 0.97; d.vy *= 0.97;
-        d.x += d.vx; d.y += d.vy;
-        d.pulse += 0.02;
-        if (d.x < 0) d.x = w; if (d.x > w) d.x = 0;
-        if (d.y < 0) d.y = h; if (d.y > h) d.y = 0;
-
-        const pulsedO = d.o * (0.6 + 0.4 * Math.sin(d.pulse));
-        // Glow
-        const grd = ctx.createRadialGradient(d.x, d.y, 0, d.x, d.y, d.r * 4);
-        grd.addColorStop(0, `rgba(0,136,255,${pulsedO * 0.6})`);
-        grd.addColorStop(1, 'rgba(0,136,255,0)');
-        ctx.fillStyle = grd;
-        ctx.fillRect(d.x - d.r * 4, d.y - d.r * 4, d.r * 8, d.r * 8);
-        // Core
-        ctx.beginPath();
-        ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(96,165,250,${pulsedO})`;
-        ctx.fill();
-      });
-
-      // Large ambient glow that follows mouse
-      const mgrd = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 350);
-      mgrd.addColorStop(0, 'rgba(0,136,255,0.04)');
-      mgrd.addColorStop(1, 'rgba(0,136,255,0)');
-      ctx.fillStyle = mgrd;
-      ctx.fillRect(mouse.x - 350, mouse.y - 350, 700, 700);
-
-      raf = requestAnimationFrame(draw);
-    };
-    draw();
-
-    const onR = () => {
-      w = c.width = c.offsetWidth * (window.devicePixelRatio > 1 ? 2 : 1);
-      h = c.height = c.offsetHeight * (window.devicePixelRatio > 1 ? 2 : 1);
-    };
-    const onM = (e: MouseEvent) => {
-      const rect = c.getBoundingClientRect();
-      const scaleX = w / rect.width;
-      const scaleY = h / rect.height;
-      mouse.x = (e.clientX - rect.left) * scaleX;
-      mouse.y = (e.clientY - rect.top) * scaleY;
-    };
-    window.addEventListener('resize', onR);
-    window.addEventListener('mousemove', onM);
-    return () => { cancelAnimationFrame(raf); window.removeEventListener('resize', onR); window.removeEventListener('mousemove', onM); };
-  }, []);
-
-  return <canvas ref={ref} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: 2 }} />;
-}
-
-/* ── HERO VIDEO BACKGROUND (dual video crossfade with image fallback) ── */
-function HeroBackground() {
-  const videos = ['/hero2.mp4', '/hero.mp4'];
-  const [videoLoaded, setVideoLoaded] = useState(false);
-  const [activeVideo, setActiveVideo] = useState(0);
-  const imgs = [
-    '/cars/lambo-urus.webp',
-    '/cars/snowy-c63.webp',
-    '/cars/mercedes-cla.webp',
-    '/cars/snowy-m8.webp',
-  ];
-  const [imgIdx, setImgIdx] = useState(0);
-  // Image fallback cycling
-  useEffect(() => {
-    if (videoLoaded) return;
-    const t = setInterval(() => setImgIdx((i) => (i + 1) % imgs.length), 5000);
-    return () => clearInterval(t);
-  }, [videoLoaded]);
-  // Video crossfade cycling (every 10s)
-  useEffect(() => {
-    if (!videoLoaded) return;
-    const t = setInterval(() => setActiveVideo((v) => (v + 1) % videos.length), 10000);
-    return () => clearInterval(t);
-  }, [videoLoaded]);
-  const videoStyle = (active: boolean): React.CSSProperties => ({
-    position: 'absolute', top: '50%', left: '50%',
-    transform: 'translate(-50%,-50%)',
-    minWidth: '100%', minHeight: '100%',
-    width: 'auto', height: 'auto',
-    objectFit: 'cover',
-    filter: 'saturate(0.6) brightness(0.5)',
-    opacity: active && videoLoaded ? 1 : 0,
-    transition: 'opacity 1.5s ease-in-out',
-  });
-  return (
-    <div style={{ position: 'absolute', inset: 0, zIndex: 0, overflow: 'hidden' }}>
-      {/* Image fallback */}
-      {!videoLoaded && imgs.map((src, i) => (
-        <div key={i} style={{
-          position: 'absolute', inset: 0,
-          backgroundImage: `url(${src})`, backgroundSize: 'cover', backgroundPosition: 'center',
-          opacity: i === imgIdx ? 0.35 : 0,
-          transition: 'opacity 1.5s ease-in-out',
-          animation: i === imgIdx ? 'panZoom 8s ease-in-out forwards' : 'none',
-          filter: 'saturate(0.5) brightness(0.7)',
-        }} />
-      ))}
-      {/* Video 1 */}
-      <video autoPlay muted loop playsInline preload="metadata" poster="/cars/lambo-urus.webp" onCanPlay={() => setVideoLoaded(true)} style={videoStyle(activeVideo === 0)}>
-        <source src={videos[0]} type="video/mp4" />
-      </video>
-      {/* Video 2 — deferred until needed */}
-      <video autoPlay muted loop playsInline preload="none" style={videoStyle(activeVideo === 1)}>
-        <source src={videos[1]} type="video/mp4" />
-      </video>
-      {/* Overlays */}
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(5,5,7,0.82) 0%, rgba(5,5,7,0.4) 50%, rgba(5,5,7,0.7) 100%)', zIndex: 1 }} />
-      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '30%', background: 'linear-gradient(to top, var(--bg), transparent)', zIndex: 1 }} />
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '20%', background: 'linear-gradient(to bottom, rgba(5,5,7,0.5), transparent)', zIndex: 1 }} />
-    </div>
-  );
-}
-
-/* ── PARALLAX SECTION WRAPPER ── */
-function ParallaxBg({ children, offset = 0.3 }: { children: React.ReactNode; offset?: number }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [y, setY] = useState(0);
-  useEffect(() => {
-    const fn = () => {
-      if (!ref.current) return;
-      const rect = ref.current.getBoundingClientRect();
-      const center = rect.top + rect.height / 2 - window.innerHeight / 2;
-      setY(center * offset);
-    };
-    window.addEventListener('scroll', fn, { passive: true });
-    return () => window.removeEventListener('scroll', fn);
-  }, [offset]);
-  return <div ref={ref} style={{ transform: `translateY(${y}px)`, transition: 'transform 0.1s linear' }}>{children}</div>;
-}
-
-/* ═══════════════════════════════════════════════════
    LOADING SCREEN
    ═══════════════════════════════════════════════════ */
 /* ═══ LOADING SCREEN (CSS-driven, no stuck states) ═══ */
@@ -1128,6 +901,8 @@ function GiveawayHome({ go }: { go: (p: string) => void }) {
   const LIVE = GIVEAWAY_LIVE;
   const draw = GIVEAWAY_DRAW_ISO ? new Date(GIVEAWAY_DRAW_ISO) : null;
   const showClock = LIVE && !!draw && draw.getTime() > Date.now();
+  // Visitors who ask for reduced motion get the still poster instead of the looping video.
+  const reduceMotion = typeof window !== 'undefined' && !!window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const CAL = 'https://calendly.com/210tints';
   const primaryCta = LIVE ? 'Enter Now' : 'Get Notified';
   const btnPrimary: React.CSSProperties = { display: 'inline-flex', alignItems: 'center', gap: 10, padding: '15px 28px', background: GH_BLUE, color: '#fff', border: 'none', borderRadius: 3, cursor: 'pointer', textDecoration: 'none', ...ghDisplay, fontWeight: 800, fontSize: 13.5, letterSpacing: '1.5px', boxShadow: '0 8px 34px rgba(30,144,255,0.45)' };
@@ -1178,7 +953,9 @@ function GiveawayHome({ go }: { go: (p: string) => void }) {
 
       {/* ── HERO ── */}
       <section className="gh-hero">
-        <img className="gh-hero-img" src="/bmwm8-2-hero.webp" alt="Black BMW on a rooftop at sunset — 210 Tint car giveaway" fetchPriority="high" onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/bmwm8%282%29.png'; }} />
+        {reduceMotion
+          ? <img className="gh-hero-img" src="/bmwm8-hero-poster.webp" alt="Black BMW M8 Competition coupe — the 210 Tint giveaway car" fetchPriority="high" />
+          : <video className="gh-hero-img" src="/bmwm8-hero.mp4" poster="/bmwm8-hero-poster.webp" autoPlay muted loop playsInline preload="auto" aria-label="Black BMW M8 Competition coupe driving — the 210 Tint giveaway car" />}
         <div className="gh-hero-tint" />
         <div style={{ position: 'relative', zIndex: 2, width: '100%', maxWidth: 1320, margin: '0 auto', padding: 'clamp(150px,18vh,190px) 28px 64px', order: 1 }}>
           <div style={{ maxWidth: 780 }}>
@@ -1543,7 +1320,7 @@ function HomePage({ go }: { go: (p: string) => void }) {
           ))}
           <div style={{ position: 'relative', zIndex: 1 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
-              <span style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.35)', color: '#f87171', borderRadius: 3, padding: '3px 12px', fontSize: 11, fontWeight: 800, letterSpacing: '2px', textTransform: 'uppercase' }}>Limited Time</span>
+              <span style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.35)', color: '#f87171', borderRadius: 3, padding: '3px 12px', fontSize: 11, fontWeight: 800, letterSpacing: '2px', textTransform: 'uppercase' }}>Save 15%</span>
               <span style={{ color: '#0088ff', fontSize: 20 }}>✦</span>
               <span style={{ color: '#7dd3ff', fontSize: 13, fontWeight: 600, letterSpacing: '1px' }}>Starlight Headliner Sale</span>
             </div>
@@ -1551,7 +1328,7 @@ function HomePage({ go }: { go: (p: string) => void }) {
               Turn Your Ceiling Into a<br /><span className="grad-text">Night Sky — 15% Off</span>
             </h2>
             <p style={{ color: '#8e8ea0', fontSize: 16, maxWidth: 480 }}>
-              Fiber optic starlight install starting at <span style={{ color: '#fff', fontWeight: 600 }}>$800</span> (was $950). Book this week to lock in the sale price.
+              Fiber optic starlight install starting at <span style={{ color: '#fff', fontWeight: 600 }}>$800</span> (was $950). Every package, every car.
             </p>
           </div>
           <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14, flexShrink: 0 }}>
@@ -2061,7 +1838,7 @@ ADD-ON: Computer Cut Film +$60.
 TRAVEL FEE: Mobile jobs charge $1.75 per mile (one way) from Columbia, MD 21044. Always ask the customer's general location when discussing a mobile booking. Estimate the distance, calculate the fee (miles × $1.75, rounded to nearest dollar), and add it to the quoted total. Example: 20 miles away = $35 travel fee added on top. Be proactive — mention the travel fee before the customer asks.
 
 STARLIGHT HEADLINER SERVICE: We install fiber optic star ceilings inside vehicles. The install replaces the headliner with hundreds of tiny LED fiber optic lights to create a custom night sky effect.
-STARLIGHT SALE PRICING (LIMITED TIME): Starter package (550 stars) normally $950, on sale $800 (save $150). Add-on 100 extra stars standard normally $115, on sale $100. Add-on 100 extra stars premium normally $175, on sale $145.
+STARLIGHT SPECIAL PRICING (15% off; do not claim it is ending soon or invent a deadline): Starter package (550 stars) normally $950, on sale $800 (save $150). Add-on 100 extra stars standard normally $115, on sale $100. Add-on 100 extra stars premium normally $175, on sale $145.
 STARLIGHT REQUIREMENTS: A garage or fully covered space is REQUIRED for starlight installs — not just recommended. The headliner must be removed and reinstalled, which cannot be done outdoors. If the customer has no garage, offer them the option to bring their vehicle to our shop at 10451 Fair Oaks, Columbia, MD 21044 instead.
 STARLIGHT BOOKING FLOW: Collect: name, email, phone, vehicle year/make/model, package choice (Starter 550 stars / Starter + 100 standard / Starter + 100 premium / custom), headliner color (black/gray/tan), garage confirmed (yes/no), any layout requests (shooting stars, constellations, denser near sunroof), preferred date. Event key: starlight. In tint_type field put the package name e.g. "Starlight Starter 550 Stars".
 
@@ -2551,18 +2328,18 @@ function StarlightSalePage({ go }: { go: (p: string) => void }) {
         <div className="rv" style={{ textAlign: 'center', marginBottom: 56 }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(0,136,255,0.12)', border: '1px solid rgba(0,136,255,0.3)', borderRadius: 24, padding: '6px 18px', marginBottom: 20 }}>
             <span style={{ fontSize: 18 }}>✦</span>
-            <span style={{ color: '#7dd3ff', fontSize: 13, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase' }}>Limited Time Offer</span>
+            <span style={{ color: '#7dd3ff', fontSize: 13, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase' }}>Starlight Special</span>
           </div>
           <h1 style={{ fontFamily: 'Space Grotesk', fontSize: 'clamp(36px,6vw,64px)', fontWeight: 800, lineHeight: 1.1, marginBottom: 16 }}>
             Starlight Headliner<br />
             <span className="grad-text">15% Off — Right Now</span>
           </h1>
           <p style={{ color: '#8e8ea0', fontSize: 18, maxWidth: 560, margin: '0 auto 32px' }}>
-            Transform your ceiling into a custom night sky. Book this week and save on every package.
+            Transform your ceiling into a custom night sky. Save 15% on every package.
           </p>
-          {/* Countdown-feel urgency badge */}
+          {/* Offer badge */}
           <div style={{ display: 'inline-block', background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 4, padding: '8px 20px', color: '#f87171', fontWeight: 700, fontSize: 14, letterSpacing: '1px' }}>
-            SALE ENDS SOON — BOOK TO LOCK IN YOUR PRICE
+            15% OFF EVERY STARLIGHT PACKAGE
           </div>
         </div>
 
@@ -2938,7 +2715,6 @@ function BundlesSection({ go }: { go: (p: string) => void }) {
 /* ── DETAILING PAGE ── */
 function DetailingPage({ go }: { go: (p: string) => void }) {
   useReveal();
-  useEffect(() => { document.title = 'Premium Mobile Auto Detailing & Ceramic Coating | 210 Tint'; }, []);
   return (
     <div>
       <DetailingHero />
@@ -3510,9 +3286,32 @@ const pageFromPath = (path: string): string => {
   if (hit === 'bmw-giveaway' && !GIVEAWAY_LIVE && !GIVEAWAY_TEASER) return 'home';
   return hit;
 };
-const syncCanonical = (p: string) => {
+/* Per-page Google title + description (Google renders JS, so each path gets its own listing). */
+const PAGE_META: Record<string, [string, string]> = {
+  home: ['210 Tint — Window Tinting & Detailing | Columbia, MD | Nano-Ceramic Film', '210 Tint — professional window tinting & detailing in Columbia, MD. UVIRON-certified nano-ceramic film, computer-cut precision, lifetime warranty. We come to you or visit our shop — book online today.'],
+  portfolio: ['Window Tint Portfolio — Recent Installs | 210 Tint, Columbia MD', 'See recent window tint, ceramic tint and detailing work from 210 Tint — Lamborghini, BMW, Mercedes, Dodge and more across Columbia, MD and the DMV.'],
+  pricing: ['Window Tint Prices | Columbia, MD | 210 Tint', 'Transparent window tint pricing for coupes, sedans, trucks and SUVs — carbon, nano carbon and nano-ceramic film. Mobile service across the DMV. Get an instant quote.'],
+  compare: ['Carbon vs Nano Ceramic Window Tint — Compare Films | 210 Tint', 'Compare UVIRON Premium Carbon, Nano Carbon PUREMAX and Nano Ceramic KOOLMAX window tint: heat rejection, UV protection, clarity and warranty.'],
+  warranty: ['Window Tint Warranty & Satisfaction Guarantee | 210 Tint', 'Lifetime warranty on nano-ceramic tint plus a 100% satisfaction guarantee. See what 210 Tint covers on every installation.'],
+  'tint-laws': ['Maryland Window Tint Laws (Legal Tint Limits) | 210 Tint', 'Maryland window tint law explained: 35% front side limit, rear windows, windshield AS-1 line, medical exemptions and fines. Stay legal with 210 Tint.'],
+  'ceramic-vs-carbon': ['Ceramic vs Carbon Window Tint — Which Is Better? | 210 Tint', 'Ceramic vs carbon window tint: heat rejection, clarity, signal interference, price and warranty compared by Columbia, MD tint specialists.'],
+  'md-summer-tint': ['Best Window Tint for Maryland Summers | 210 Tint', 'Beat Maryland summer heat: the best window tint films for heat rejection, UV protection and a cooler cabin, from 210 Tint in Columbia, MD.'],
+  'tint-simulator': ['Window Tint Simulator — Preview Tint Darkness | 210 Tint', 'Preview window tint darkness from 5% to 70% VLT and check Maryland legality before you book with 210 Tint.'],
+  starlight: ['Starlight Headliner Install | Fiber-Optic Star Ceiling | 210 Tint', 'Custom fiber-optic starlight headliner installs in Columbia, MD — Rolls-Royce-style star ceilings for any car. Dimmable, shop-installed by 210 Tint.'],
+  'starlight-sale': ['Starlight Headliner — Save 15% | 210 Tint', 'Save 15% on a fiber-optic starlight headliner install from 210 Tint in Columbia, MD. Starter packages, density add-ons and custom layouts.'],
+  detailing: ['Premium Mobile Auto Detailing & Ceramic Coating | 210 Tint', 'Mobile auto detailing in Columbia, MD and the DMV — Maintenance, Protect and Restore packages, paint correction and ceramic coating. We come to you.'],
+  'bmw-giveaway': ['210 Tint Car Giveaway — Win a BMW M8 | Coming Soon', 'The 210 Tint BMW M8 Competition giveaway is coming soon. Join the list to be first to know when it goes live.'],
+  'official-rules': ['Official Rules — 210 Tint BMW M8 Giveaway', 'Official rules for the 210 Tint BMW M8 Competition sweepstakes, sponsored by 210TINT LLC. No purchase necessary.'],
+  privacy: ['Privacy Policy | 210 Tint', 'How 210TINT LLC d/b/a 210 Tint collects, uses, shares and protects your information.'],
+  terms: ['Terms of Service | 210 Tint', 'The terms that apply when you use 210tint.com and book window tinting, detailing or related services with 210TINT LLC d/b/a 210 Tint.'],
+  contact: ['Contact 210 Tint — Book Window Tinting | Columbia, MD', 'Contact 210 Tint for window tinting, detailing or starlight headliners in Columbia, MD. Call (240) 338-7762 or send a message — we come to you.'],
+};
+const syncMeta = (p: string) => {
   const link = document.querySelector('link[rel="canonical"]');
   if (link) link.setAttribute('href', 'https://210tint.com' + (PATHS[p] || '/'));
+  const [title, desc] = PAGE_META[p] || PAGE_META.home;
+  document.title = title;
+  document.querySelector('meta[name="description"]')?.setAttribute('content', desc);
 };
 
 export default function App() {
@@ -3522,8 +3321,8 @@ export default function App() {
   useEffect(() => {
     const want = PATHS[page] || '/';
     if (window.location.pathname !== want) window.history.replaceState(null, '', want + window.location.search);
-    syncCanonical(page);
-    const onPop = () => { const p = pageFromPath(window.location.pathname); setPage(p); syncCanonical(p); window.scrollTo(0, 0); };
+    syncMeta(page);
+    const onPop = () => { const p = pageFromPath(window.location.pathname); setPage(p); syncMeta(p); window.scrollTo(0, 0); };
     window.addEventListener('popstate', onPop);
     return () => window.removeEventListener('popstate', onPop);
   }, []);
@@ -3534,7 +3333,7 @@ export default function App() {
       setPage(p);
       const path = PATHS[p] || '/';
       if (window.location.pathname !== path) window.history.pushState(null, '', path);
-      syncCanonical(p);
+      syncMeta(p);
       window.scrollTo(0, 0);
       document.documentElement.scrollTop = 0;
       document.body.scrollTop = 0;
