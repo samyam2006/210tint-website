@@ -1133,7 +1133,7 @@ function GiveawayHome({ go }: { go: (p: string) => void }) {
   const btnPrimary: React.CSSProperties = { display: 'inline-flex', alignItems: 'center', gap: 10, padding: '15px 28px', background: GH_BLUE, color: '#fff', border: 'none', borderRadius: 3, cursor: 'pointer', textDecoration: 'none', ...ghDisplay, fontWeight: 800, fontSize: 13.5, letterSpacing: '1.5px', boxShadow: '0 8px 34px rgba(30,144,255,0.45)' };
   const btnGhost: React.CSSProperties = { ...btnPrimary, background: 'transparent', border: '1.5px solid rgba(255,255,255,0.85)', boxShadow: 'none' };
   const products = [
-    { name: 'Ceramic Tint Package', desc: 'Maximum heat rejection. Premium performance.', price: 'From $315', img: '/cars/snowy-m8.webp', mult: '10X', cta: 'Book Now', href: CAL },
+    { name: 'Ceramic Tint Package', desc: 'Maximum heat rejection. Premium performance.', price: 'From $315', img: '/dodgecharger.webp', mult: '10X', cta: 'Book Now', href: CAL },
     { name: 'Carbon Tint Package', desc: 'Great performance. Clean, classic look.', price: 'From $145', img: '/cars/dark-snowy-durango.webp', mult: '5X', cta: 'Book Now', href: CAL },
     { name: '210 Tint Tee', desc: 'Premium cotton. Everyday fit. Rep the brand.', price: '$32', merch: 'TEE', mult: '3X', cta: 'Dropping Soon' },
     { name: '210 Tint Hoodie', desc: 'Heavyweight. Premium quality. Built for the culture.', price: '$68', merch: 'HOODIE', mult: '5X', cta: 'Dropping Soon' },
