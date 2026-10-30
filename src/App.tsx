@@ -1154,9 +1154,9 @@ function GiveawayHome({ go }: { go: (p: string) => void }) {
     <div className="gh">
       <style>{`
         .gh-hero{position:relative;min-height:min(100vh,920px);display:flex;align-items:center;overflow:hidden;background:radial-gradient(ellipse 70% 60% at 75% 55%,rgba(30,144,255,0.22),transparent 70%),#050507}
-        .gh-hero-img{position:absolute;top:0;right:0;bottom:0;width:66%;height:100%;object-fit:cover;object-position:60% center;-webkit-mask-image:linear-gradient(to right,transparent 0%,#000 32%);mask-image:linear-gradient(to right,transparent 0%,#000 32%);filter:saturate(1.25) contrast(1.08) brightness(0.92)}
-        .gh-hero-tint{position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,5,7,0.82) 0%,rgba(5,5,7,0.35) 26%,transparent 50%,transparent 74%,#050507 100%),linear-gradient(90deg,transparent 35%,rgba(16,86,200,0.26) 100%);pointer-events:none}
-        .gh-clock{position:absolute;right:clamp(16px,4vw,56px);bottom:clamp(104px,13vh,130px);z-index:3}
+        .gh-hero-img{position:absolute;right:0;bottom:0;width:78%;height:auto;max-height:100%;aspect-ratio:1672/941;object-fit:cover;object-position:center bottom;-webkit-mask-image:linear-gradient(to right,transparent 0%,#000 24%),linear-gradient(to bottom,transparent 0%,#000 22%);-webkit-mask-composite:source-in;mask-image:linear-gradient(to right,transparent 0%,#000 24%),linear-gradient(to bottom,transparent 0%,#000 22%);mask-composite:intersect}
+        .gh-hero-tint{position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,5,7,0.7) 0%,rgba(5,5,7,0.2) 22%,transparent 40%,transparent 78%,#050507 100%),linear-gradient(90deg,rgba(5,5,7,0.7) 0%,rgba(5,5,7,0.35) 38%,transparent 58%);pointer-events:none}
+        .gh-clock{position:absolute;right:clamp(16px,7.5vw,108px);bottom:clamp(24px,3.5vh,36px);z-index:3}
         .gh-steps{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:20px;align-items:center}
         .gh-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
         .gh-feats{display:grid;grid-template-columns:repeat(5,1fr)}
@@ -1167,9 +1167,9 @@ function GiveawayHome({ go }: { go: (p: string) => void }) {
         @media(max-width:1000px){.gh-cards{grid-template-columns:repeat(2,1fr)}.gh-feats{grid-template-columns:repeat(3,1fr);row-gap:22px}.gh-feat:nth-child(4){border-left:none}}
         @media(max-width:860px){
           .gh-hero{flex-direction:column;align-items:stretch;min-height:0}
-          .gh-hero-img{position:relative;width:100%;height:auto;aspect-ratio:19/10;object-position:58% 82%;order:2;-webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 22%);mask-image:linear-gradient(to bottom,transparent 0%,#000 22%)}
+          .gh-hero-img{position:relative;width:100%;height:auto;aspect-ratio:16/10;object-position:50% 62%;order:2;-webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 22%);mask-image:linear-gradient(to bottom,transparent 0%,#000 22%)}
           .gh-hero-tint{display:none}
-          .gh-clock{position:relative;right:auto;bottom:auto;order:3;margin:-30px 16px 28px;align-self:center}
+          .gh-clock{position:relative;right:auto;bottom:auto;order:3;margin:-18px 16px 28px;align-self:center}
           .gh-steps{grid-template-columns:1fr;gap:22px}.gh-step-arrow{display:none}
           .gh-culture{grid-template-columns:1fr}.gh-culture-img{min-height:260px}
         }
@@ -1178,7 +1178,7 @@ function GiveawayHome({ go }: { go: (p: string) => void }) {
 
       {/* ── HERO ── */}
       <section className="gh-hero">
-        <img className="gh-hero-img" src="/bmwm8-hero.webp" alt="Black BMW M8 Competition — the 210 Tint giveaway car" fetchPriority="high" onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/bmwm8.png'; }} />
+        <img className="gh-hero-img" src="/bmwm8-2-hero.webp" alt="Black BMW on a rooftop at sunset — 210 Tint car giveaway" fetchPriority="high" onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/bmwm8%282%29.png'; }} />
         <div className="gh-hero-tint" />
         <div style={{ position: 'relative', zIndex: 2, width: '100%', maxWidth: 1320, margin: '0 auto', padding: 'clamp(150px,18vh,190px) 28px 64px', order: 1 }}>
           <div style={{ maxWidth: 780 }}>
