@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, Fragment } from 'react';
 
 /* ── SCROLL REVEAL ── */
 function useReveal() {
@@ -930,13 +930,16 @@ const GIVEAWAY_LIVE = false;
 /* Public "coming soon" hype teaser — shows a teaser banner + waitlist page while the full
    mechanics/rules stay hidden behind GIVEAWAY_LIVE until the attorney + administrator sign off */
 const GIVEAWAY_TEASER = true;
+/* Giveaway draw date (ISO, e.g. '2026-12-31T20:00:00-05:00'). Leave '' until announced — the
+   homepage shows "Draw date announced soon" instead of a countdown. */
+const GIVEAWAY_DRAW_ISO = '';
 
 /* ── NAV ── */
 const NAV = [
   { id: 'home', label: 'Home' }, { id: 'portfolio', label: 'Portfolio' },
   { id: 'pricing', label: 'Pricing' }, { id: 'detailing', label: 'Detailing' },
   { id: 'compare', label: 'Compare Films' },
-  ...(GIVEAWAY_LIVE ? [{ id: 'bmw-giveaway', label: 'M8 Giveaway' }] : []),
+  ...(GIVEAWAY_LIVE || GIVEAWAY_TEASER ? [{ id: 'bmw-giveaway', label: 'Giveaway' }] : []),
   { id: 'contact', label: 'Contact' },
 ];
 
@@ -1103,6 +1106,231 @@ function Footer({ go }: { go: (p: string) => void }) {
 /* ═══════════════════════════════════════════════════
    HOME PAGE
    ═══════════════════════════════════════════════════ */
+/* ═══ GIVEAWAY-FIRST HOMEPAGE TOP (hero → how to enter → shop → features → culture) ═══
+   Teaser mode (GIVEAWAY_LIVE=false): CTAs go to the waitlist, no countdown, no entry claims. */
+const GH_BLUE = '#1e90ff', GH_BLUE2 = '#4cc3ff';
+const ghDisplay: React.CSSProperties = { fontFamily: "'Archivo', 'Space Grotesk', sans-serif", fontStretch: '125%', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '-0.5px' };
+const ghScript: React.CSSProperties = { fontFamily: "'Kaushan Script', cursive", color: GH_BLUE, textTransform: 'none', textShadow: '0 0 28px rgba(30,144,255,0.55)' };
+const Arrow = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>;
+const Ico = ({ d, size = 34 }: { d: string; size?: number }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={d} /></svg>;
+const ICONS = {
+  calendar: 'M7 3v3M17 3v3M4 9h16M5 6h14a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Z',
+  ticket: 'M4 8a2 2 0 0 0 2-2h12a2 2 0 0 0 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 0-2 2H6a2 2 0 0 0-2-2v-2a2 2 0 0 0 0-4V8ZM10 7v10',
+  trophy: 'M8 4h8v5a4 4 0 0 1-8 0V4ZM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8 20h8M10 17h4',
+  van: 'M3 7h11v9H3zM14 10h4l3 3v3h-7M7 19a2 2 0 1 0 0-.01M17 19a2 2 0 1 0 0-.01',
+  diamond: 'M6 4h12l3 5-9 11L3 9l3-5ZM3 9h18M9 4l3 16M15 4l-3 16',
+  thermo: 'M12 3a2 2 0 0 0-2 2v9.5a4 4 0 1 0 4 0V5a2 2 0 0 0-2-2ZM12 17v-6',
+  sun: 'M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8ZM12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4',
+  shield: 'M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6l8-3ZM8.5 12l2.5 2.5 4.5-5',
+};
+
+function GiveawayHome({ go }: { go: (p: string) => void }) {
+  const LIVE = GIVEAWAY_LIVE;
+  const draw = GIVEAWAY_DRAW_ISO ? new Date(GIVEAWAY_DRAW_ISO) : null;
+  const showClock = LIVE && !!draw && draw.getTime() > Date.now();
+  const CAL = 'https://calendly.com/210tints';
+  const primaryCta = LIVE ? 'Enter Now' : 'Get Notified';
+  const btnPrimary: React.CSSProperties = { display: 'inline-flex', alignItems: 'center', gap: 10, padding: '15px 28px', background: GH_BLUE, color: '#fff', border: 'none', borderRadius: 3, cursor: 'pointer', textDecoration: 'none', ...ghDisplay, fontWeight: 800, fontSize: 13.5, letterSpacing: '1.5px', boxShadow: '0 8px 34px rgba(30,144,255,0.45)' };
+  const btnGhost: React.CSSProperties = { ...btnPrimary, background: 'transparent', border: '1.5px solid rgba(255,255,255,0.85)', boxShadow: 'none' };
+  const products = [
+    { name: 'Ceramic Tint Package', desc: 'Maximum heat rejection. Premium performance.', price: 'From $315', img: '/cars/snowy-m8.webp', mult: '10X', cta: 'Book Now', href: CAL },
+    { name: 'Carbon Tint Package', desc: 'Great performance. Clean, classic look.', price: 'From $145', img: '/cars/dark-snowy-durango.webp', mult: '5X', cta: 'Book Now', href: CAL },
+    { name: '210 Tint Tee', desc: 'Premium cotton. Everyday fit. Rep the brand.', price: '$32', merch: 'TEE', mult: '3X', cta: 'Dropping Soon' },
+    { name: '210 Tint Hoodie', desc: 'Heavyweight. Premium quality. Built for the culture.', price: '$68', merch: 'HOODIE', mult: '5X', cta: 'Dropping Soon' },
+  ];
+  const features = [
+    { i: ICONS.van, t: 'Mobile Service', s: 'We come to you' },
+    { i: ICONS.diamond, t: 'Premium Films', s: 'UVIRON performance film' },
+    { i: ICONS.thermo, t: 'Heat Rejection', s: 'Keep it cooler' },
+    { i: ICONS.sun, t: 'UV Protection', s: 'Protects you & your interior' },
+    { i: ICONS.shield, t: 'Lifetime Warranty', s: 'Peace of mind' },
+  ];
+  const steps = [
+    { n: '01', i: ICONS.calendar, t: 'Book or Shop', d: 'Book a tint service or shop official 210 Tint merch.' },
+    { n: '02', i: ICONS.ticket, t: 'Earn Entries', d: LIVE ? 'Every qualifying purchase earns you giveaway entries.' : 'Entries open at launch — get on the list so you know first.' },
+    { n: '03', i: ICONS.trophy, t: 'Win the Car', d: 'One lucky winner takes home the BMW M8. Good luck!' },
+  ];
+  return (
+    <div className="gh">
+      <style>{`
+        .gh-hero{position:relative;min-height:min(100vh,920px);display:flex;align-items:center;overflow:hidden;background:radial-gradient(ellipse 70% 60% at 75% 55%,rgba(30,144,255,0.22),transparent 70%),#050507}
+        .gh-hero-img{position:absolute;top:0;right:0;bottom:0;width:66%;height:100%;object-fit:cover;object-position:60% center;-webkit-mask-image:linear-gradient(to right,transparent 0%,#000 32%);mask-image:linear-gradient(to right,transparent 0%,#000 32%);filter:saturate(1.25) contrast(1.08) brightness(0.92)}
+        .gh-hero-tint{position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,5,7,0.82) 0%,rgba(5,5,7,0.35) 26%,transparent 50%,transparent 74%,#050507 100%),linear-gradient(90deg,transparent 35%,rgba(16,86,200,0.26) 100%);pointer-events:none}
+        .gh-clock{position:absolute;right:clamp(16px,4vw,56px);bottom:clamp(104px,13vh,130px);z-index:3}
+        .gh-steps{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:20px;align-items:center}
+        .gh-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+        .gh-feats{display:grid;grid-template-columns:repeat(5,1fr)}
+        .gh-feat+.gh-feat{border-left:1px solid rgba(255,255,255,0.08)}
+        .gh-culture{display:grid;grid-template-columns:1.1fr 1fr;min-height:440px}
+        .gh-card:hover{border-color:rgba(30,144,255,0.55)!important;transform:translateY(-4px)}
+        .gh-card:hover img{transform:scale(1.05)}
+        @media(max-width:1000px){.gh-cards{grid-template-columns:repeat(2,1fr)}.gh-feats{grid-template-columns:repeat(3,1fr);row-gap:22px}.gh-feat:nth-child(4){border-left:none}}
+        @media(max-width:860px){
+          .gh-hero{flex-direction:column;align-items:stretch;min-height:0}
+          .gh-hero-img{position:relative;width:100%;height:auto;aspect-ratio:19/10;object-position:58% 82%;order:2;-webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 22%);mask-image:linear-gradient(to bottom,transparent 0%,#000 22%)}
+          .gh-hero-tint{display:none}
+          .gh-clock{position:relative;right:auto;bottom:auto;order:3;margin:-30px 16px 28px;align-self:center}
+          .gh-steps{grid-template-columns:1fr;gap:22px}.gh-step-arrow{display:none}
+          .gh-culture{grid-template-columns:1fr}.gh-culture-img{min-height:260px}
+        }
+        @media(max-width:560px){.gh-cards{grid-template-columns:1fr}.gh-feats{grid-template-columns:repeat(2,1fr)}.gh-feat{border-left:none!important}}
+      `}</style>
+
+      {/* ── HERO ── */}
+      <section className="gh-hero">
+        <img className="gh-hero-img" src="/bmwm8-hero.webp" alt="Black BMW M8 Competition — the 210 Tint giveaway car" fetchPriority="high" onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/bmwm8.png'; }} />
+        <div className="gh-hero-tint" />
+        <div style={{ position: 'relative', zIndex: 2, width: '100%', maxWidth: 1320, margin: '0 auto', padding: 'clamp(150px,18vh,190px) 28px 64px', order: 1 }}>
+          <div style={{ maxWidth: 780 }}>
+            <div style={{ fontSize: 11.5, letterSpacing: '3.5px', color: '#c8c8d0', fontWeight: 700, marginBottom: 18, display: 'flex', flexWrap: 'wrap', alignItems: 'center', columnGap: 14, rowGap: 10, animation: 'fadeUp .9s ease .2s both' }}>
+              <span style={{ whiteSpace: 'nowrap' }}>CARS <span style={{ color: GH_BLUE }}>×</span> TINT <span style={{ color: GH_BLUE }}>×</span> CULTURE <span style={{ color: GH_BLUE }}>×</span> 210 TINT</span>
+              {!LIVE && <span style={{ whiteSpace: 'nowrap', padding: '3px 10px', borderRadius: 2, background: 'rgba(30,144,255,0.16)', border: '1px solid rgba(30,144,255,0.5)', color: GH_BLUE2, letterSpacing: '2px' }}>COMING SOON</span>}
+            </div>
+            <h1 style={{ margin: 0, animation: 'fadeUp .9s ease .35s both' }}>
+              <span style={{ ...ghDisplay, display: 'block', whiteSpace: 'nowrap', fontSize: 'clamp(42px,7.4vw,112px)', lineHeight: 0.92, color: '#fff', textShadow: '0 4px 30px rgba(0,0,0,0.5)' }}>210 Tint</span>
+              <span style={{ ...ghScript, display: 'block', fontSize: 'clamp(46px,7.4vw,106px)', lineHeight: 1, marginTop: '-0.04em', whiteSpace: 'nowrap', transform: 'rotate(-3deg)', transformOrigin: 'left center' }}>Car Giveaway</span>
+            </h1>
+            <p style={{ ...ghDisplay, fontWeight: 800, fontSize: 'clamp(15px,1.7vw,21px)', letterSpacing: '0.5px', color: '#fff', margin: '22px 0 14px', animation: 'fadeUp .9s ease .5s both' }}>Book tint. Shop the drop. Enter to win.</p>
+            <p style={{ color: '#b9b9c4', fontSize: 'clamp(14.5px,1.3vw,16.5px)', lineHeight: 1.7, maxWidth: 470, margin: '0 0 30px', animation: 'fadeUp .9s ease .6s both' }}>
+              {LIVE ? 'Every qualifying purchase earns entries. Get premium tint, exclusive merch, and a chance to win a BMW M8 Competition.' : 'Our biggest giveaway ever is almost here: premium tint, exclusive merch, and a chance at a BMW M8 Competition. Get on the list to hear first.'}
+            </p>
+            <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', animation: 'fadeUp .9s ease .7s both' }}>
+              <button onClick={() => go('bmw-giveaway')} style={btnPrimary}>{primaryCta} <Arrow /></button>
+              <a href={CAL} target="_blank" rel="noreferrer" style={btnGhost}>Book a Tint</a>
+            </div>
+            <p style={{ color: '#7a7a86', fontSize: 12, marginTop: 18 }}>
+              {LIVE ? <>No purchase necessary. <button onClick={() => go('official-rules')} style={{ background: 'none', border: 'none', padding: 0, color: '#9a9aa5', textDecoration: 'underline', cursor: 'pointer', fontSize: 12 }}>See official rules.</button></> : 'Giveaway launching soon. Official rules posted at launch.'}
+            </p>
+          </div>
+        </div>
+        <div className="gh-clock" style={{ padding: '16px 22px', background: 'rgba(5,5,7,0.78)', backdropFilter: 'blur(10px)', border: '1px solid rgba(30,144,255,0.4)', borderRadius: 6, boxShadow: '0 0 40px rgba(30,144,255,0.2)', textAlign: 'center' }}>
+          {showClock && draw ? (
+            <><div style={{ fontSize: 10.5, letterSpacing: '3px', color: '#c8c8d0', fontWeight: 700, marginBottom: 12 }}>GIVEAWAY ENDS IN</div><CountdownTimer target={draw} /></>
+          ) : (
+            <><div style={{ fontSize: 10.5, letterSpacing: '3px', color: '#c8c8d0', fontWeight: 700, marginBottom: 6 }}>DRAW DATE</div>
+              <div style={{ ...ghDisplay, fontSize: 'clamp(17px,1.8vw,22px)', color: '#fff', letterSpacing: '0.5px' }}>Announced <span style={{ color: GH_BLUE2 }}>Soon</span></div></>
+          )}
+        </div>
+      </section>
+
+      {/* ── HOW TO ENTER ── */}
+      <section style={{ padding: '72px 28px', borderTop: '1px solid rgba(255,255,255,0.06)', borderBottom: '1px solid rgba(255,255,255,0.06)', background: '#08080c' }}>
+        <div style={{ maxWidth: 1320, margin: '0 auto' }}>
+          <div className="rv" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: 18, marginBottom: 42 }}>
+            <div>
+              <h2 style={{ ...ghDisplay, fontSize: 'clamp(30px,4.2vw,50px)', lineHeight: 1, margin: 0 }}>How to Enter</h2>
+              <div style={{ fontSize: 12.5, letterSpacing: '3px', color: '#9a9aa5', fontWeight: 600, marginTop: 10 }}>IT'S SIMPLE. MORE WAYS TO ENTER.</div>
+            </div>
+            <div style={{ fontSize: 11.5, letterSpacing: '2px', fontWeight: 700, color: GH_BLUE2, borderLeft: `2px solid ${GH_BLUE}`, paddingLeft: 14 }}>
+              {LIVE ? 'EVERY QUALIFYING PURCHASE = ENTRIES' : 'LAUNCHING SOON · JOIN THE LIST'}
+            </div>
+          </div>
+          <div className="gh-steps">
+            {steps.map((s, i) => (
+              <Fragment key={s.n}>
+                <div className={`rv d${i + 1}`} style={{ display: 'flex', alignItems: 'center', gap: 18 }}>
+                  <span style={{ ...ghDisplay, fontStyle: 'italic', fontSize: 'clamp(48px,5vw,68px)', lineHeight: 1, color: 'transparent', WebkitTextStroke: '1.5px rgba(255,255,255,0.28)' }}>{s.n}</span>
+                  <span style={{ color: '#fff', flexShrink: 0 }}><Ico d={s.i} size={42} /></span>
+                  <div>
+                    <div style={{ ...ghDisplay, fontWeight: 800, fontSize: 16.5, color: '#fff', marginBottom: 6 }}>{s.t}</div>
+                    <div style={{ color: '#9a9aa5', fontSize: 13.5, lineHeight: 1.55, maxWidth: 230 }}>{s.d}</div>
+                  </div>
+                </div>
+                {i < steps.length - 1 && <span className="gh-step-arrow" style={{ color: '#5a5a66' }}><Arrow /></span>}
+              </Fragment>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── BOOK TINT. SHOP THE DROP. ── */}
+      <section style={{ padding: '76px 28px 64px' }}>
+        <div style={{ maxWidth: 1320, margin: '0 auto' }}>
+          <div className="rv" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: 16, marginBottom: 30 }}>
+            <div>
+              <h2 style={{ ...ghDisplay, fontSize: 'clamp(28px,3.8vw,46px)', lineHeight: 1, margin: 0 }}>{LIVE ? 'Featured Ways to Enter' : <>Book Tint. <span style={{ color: GH_BLUE }}>Shop the Drop.</span></>}</h2>
+              <div style={{ fontSize: 12.5, letterSpacing: '2.5px', color: '#9a9aa5', fontWeight: 600, marginTop: 10 }}>{LIVE ? 'BOOK A SERVICE OR SHOP MERCH. EVERY QUALIFYING PURCHASE EARNS ENTRIES.' : 'PREMIUM TINT NOW. OFFICIAL 210 TINT MERCH DROPPING SOON.'}</div>
+            </div>
+            <button onClick={() => go('pricing')} style={{ background: 'none', border: 'none', cursor: 'pointer', color: GH_BLUE2, fontSize: 12.5, fontWeight: 700, letterSpacing: '2px', display: 'inline-flex', alignItems: 'center', gap: 8 }}>VIEW ALL PRICING <Arrow /></button>
+          </div>
+          <div className="gh-cards">
+            {products.map((p, i) => (
+              <div key={p.name} className={`gh-card rv d${i + 1}`} style={{ background: '#0c0c12', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 6, overflow: 'hidden', display: 'flex', flexDirection: 'column', transition: 'border-color .3s, transform .3s' }}>
+                <div style={{ position: 'relative', aspectRatio: '4/3', overflow: 'hidden', background: 'radial-gradient(ellipse at 50% 40%,#1b1b24,#07070a 75%)' }}>
+                  {p.img ? (
+                    <img src={p.img} alt={p.name} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', transition: 'transform .6s ease' }} />
+                  ) : (
+                    <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
+                      <img src="/210tintlogo.webp" alt="" style={{ width: '58%', maxWidth: 190, opacity: 0.95, transition: 'transform .6s ease' }} />
+                      <span style={{ fontSize: 10.5, letterSpacing: '4px', color: '#6a6a76', fontWeight: 700 }}>OFFICIAL {p.merch}</span>
+                    </div>
+                  )}
+                  {LIVE && (
+                    <div style={{ position: 'absolute', top: 12, right: 12, textAlign: 'center', padding: '6px 9px', background: 'rgba(5,5,7,0.82)', border: `1.5px solid ${GH_BLUE}`, borderRadius: 4, boxShadow: '0 0 18px rgba(30,144,255,0.45)' }}>
+                      <div style={{ ...ghDisplay, fontSize: 20, lineHeight: 1, color: GH_BLUE2 }}>{p.mult}</div>
+                      <div style={{ fontSize: 8.5, letterSpacing: '1.5px', fontWeight: 800, color: '#fff', marginTop: 2 }}>ENTRIES</div>
+                    </div>
+                  )}
+                  {!LIVE && p.merch && (
+                    <div style={{ position: 'absolute', top: 12, left: 12, padding: '4px 10px', background: GH_BLUE, borderRadius: 2, fontSize: 10, fontWeight: 800, letterSpacing: '1.5px', color: '#fff' }}>DROPPING SOON</div>
+                  )}
+                </div>
+                <div style={{ padding: '18px 18px 20px', display: 'flex', flexDirection: 'column', flex: 1 }}>
+                  <div style={{ ...ghDisplay, fontWeight: 800, fontSize: 15.5, color: '#fff', marginBottom: 6 }}>{p.name}</div>
+                  <div style={{ color: '#8e8ea0', fontSize: 13.5, lineHeight: 1.55, marginBottom: 18, flex: 1 }}>{p.desc}</div>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
+                    <span style={{ ...ghDisplay, fontWeight: 800, fontSize: 16, color: '#fff', letterSpacing: 0 }}>{p.price}</span>
+                    {p.href ? (
+                      <a href={p.href} target="_blank" rel="noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '9px 14px', border: '1px solid rgba(255,255,255,0.3)', borderRadius: 3, color: '#fff', textDecoration: 'none', fontSize: 11.5, fontWeight: 800, letterSpacing: '1.5px', textTransform: 'uppercase' }}>{p.cta} <Arrow /></a>
+                    ) : (
+                      <button onClick={() => go('bmw-giveaway')} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '9px 14px', background: 'rgba(30,144,255,0.14)', border: `1px solid ${GH_BLUE}`, borderRadius: 3, color: GH_BLUE2, cursor: 'pointer', fontSize: 11.5, fontWeight: 800, letterSpacing: '1.5px', textTransform: 'uppercase' }}>{p.cta}</button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── FEATURE STRIP ── */}
+      <section style={{ padding: '30px 28px', background: '#0a0a10', borderTop: '1px solid rgba(255,255,255,0.06)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+        <div className="gh-feats" style={{ maxWidth: 1320, margin: '0 auto' }}>
+          {features.map(f => (
+            <div key={f.t} className="gh-feat" style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '6px clamp(12px,2vw,26px)' }}>
+              <span style={{ color: '#fff', flexShrink: 0 }}><Ico d={f.i} size={30} /></span>
+              <div>
+                <div style={{ ...ghDisplay, fontWeight: 800, fontSize: 12.5, color: '#fff', letterSpacing: '0.5px' }}>{f.t}</div>
+                <div style={{ fontSize: 11, letterSpacing: '1px', color: '#7a7a86', marginTop: 3, textTransform: 'uppercase' }}>{f.s}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── CAR CULTURE ── */}
+      <section className="gh-culture" style={{ background: '#050507' }}>
+        <div className="gh-culture-img" style={{ position: 'relative', overflow: 'hidden' }}>
+          <img src="/cars/snowy-c63.webp" alt="Tinted Mercedes C63 with glowing red taillight" loading="lazy" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: '88% 82%', filter: 'brightness(0.5) contrast(1.2) saturate(1.15)' }} />
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(90deg,transparent 45%,#050507 100%), radial-gradient(ellipse at 62% 55%,rgba(255,40,40,0.18),transparent 55%)' }} />
+        </div>
+        <div className="rv" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: 'clamp(40px,6vw,80px) clamp(28px,5vw,72px)' }}>
+          <div style={{ fontSize: 11.5, letterSpacing: '4px', color: GH_BLUE2, fontWeight: 700, marginBottom: 14 }}>MORE THAN TINT</div>
+          <h2 style={{ margin: 0, lineHeight: 0.98 }}>
+            <span style={{ ...ghDisplay, display: 'block', fontSize: 'clamp(30px,4vw,50px)' }}>A Stronger</span>
+            <span style={{ ...ghDisplay, display: 'block', fontSize: 'clamp(30px,4vw,50px)' }}>Car Culture</span>
+            <span style={{ ...ghScript, display: 'block', fontSize: 'clamp(40px,5.4vw,68px)', transform: 'rotate(-3deg)', transformOrigin: 'left center', marginTop: 2 }}>Together</span>
+          </h2>
+          <p style={{ color: '#a5a5b0', fontSize: 15.5, lineHeight: 1.75, maxWidth: 460, margin: '22px 0 28px' }}>
+            210 Tint is built on a passion for clean builds, quality tint, and a thriving car community across the DMV. This giveaway is our way of giving back. Thank you for being part of the 210 Tint family.
+          </p>
+          <div><button onClick={() => go('bmw-giveaway')} style={btnPrimary}>{primaryCta} <Arrow /></button></div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
 function HomePage({ go }: { go: (p: string) => void }) {
   useReveal();
 
@@ -1133,136 +1361,8 @@ function HomePage({ go }: { go: (p: string) => void }) {
 
   return (
     <div>
-      {/* ═══ HERO ═══ */}
-      <section style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
-        <HeroBackground />
-        <GlassScene />
-
-        <div style={{ position: 'relative', zIndex: 10, maxWidth: 1320, margin: '0 auto', padding: '180px 28px 100px', width: '100%', textAlign: 'center' }}>
-          <div style={{ maxWidth: 760, margin: '0 auto' }}>
-            <div style={{ animation: 'fadeUp 1s ease forwards', animationDelay: '0.3s', opacity: 0 }}>
-              <span style={{
-                display: 'inline-block', padding: '8px 20px', borderRadius: 2, fontSize: 12, fontWeight: 700,
-                letterSpacing: '3px', textTransform: 'uppercase', color: '#0088ff',
-                border: '1px solid rgba(0,136,255,0.3)', background: 'rgba(0,136,255,0.08)',
-              }}>Columbia, MD — Tint & Detail Specialists</span>
-            </div>
-
-            <h1 style={{
-              fontFamily: 'Space Grotesk', fontSize: 'clamp(38px,7vw,84px)', fontWeight: 800,
-              lineHeight: 1.0, letterSpacing: '-3px', marginTop: 32,
-              animation: 'fadeUp 1s ease forwards', animationDelay: '0.5s', opacity: 0,
-            }}>
-              Window Tinting,<br /><span className="grad-text">Elevated.</span>
-            </h1>
-
-            <p style={{
-              color: '#8e8ea0', fontSize: 'clamp(14px,1.5vw,19px)', lineHeight: 1.8,
-              marginTop: 28, maxWidth: 480, margin: '28px auto 0',
-              animation: 'fadeUp 1s ease forwards', animationDelay: '0.7s', opacity: 0,
-            }}>
-              UVIRON-certified nano-ceramic film. Lifetime warranty. Precision computer-cut installation delivered to your driveway.
-            </p>
-
-            <div style={{ display: 'flex', gap: 14, marginTop: 44, flexWrap: 'wrap', justifyContent: 'center', animation: 'fadeUp 1s ease forwards', animationDelay: '0.9s', opacity: 0 }}>
-              <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" className="magnetic-btn" style={{
-                background: '#0088ff', color: '#fff', padding: '16px 40px', borderRadius: 3,
-                fontSize: 16, fontWeight: 700, textDecoration: 'none',
-                boxShadow: '0 4px 40px rgba(0,136,255,0.35)', letterSpacing: '0.3px',
-                position: 'relative', overflow: 'hidden',
-              }}>
-                <span style={{ position: 'relative', zIndex: 1 }}>Book Your Appointment</span>
-              </a>
-              <button onClick={() => go('portfolio')} style={{
-                background: 'transparent', color: '#fff', padding: '16px 40px', borderRadius: 3,
-                border: '1px solid rgba(255,255,255,0.12)', fontSize: 16, fontWeight: 500, cursor: 'pointer',
-                transition: 'all 0.4s cubic-bezier(.16,1,.3,1)',
-              }}
-                onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(0,136,255,0.5)'; e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,136,255,0.15)'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)'; e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
-              >View Our Work</button>
-            </div>
-            <p style={{ fontSize: 13, color: '#4a4a5a', marginTop: 20 }}>
-              We come to you — or visit our shop at <span style={{ color: '#8e8ea0' }}>10451 Fair Oaks, Columbia MD</span>
-            </p>
-          </div>
-
-          {/* Stats */}
-          <div className="hero-stats" style={{
-            display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 32, marginTop: 80,
-            paddingTop: 40, borderTop: '1px solid rgba(255,255,255,0.06)',
-            animation: 'fadeUp 1s ease forwards', animationDelay: '1.1s', opacity: 0,
-            maxWidth: 700, margin: '80px auto 0',
-          }}>
-            {[
-              { end: 5, suffix: '', label: 'Google Rating', dec: 1 },
-              { end: 1000, suffix: '+', label: 'Vehicles Tinted', dec: 0 },
-              { end: 99, suffix: '%', label: 'UV Rejection', dec: 0 },
-              { end: 100, suffix: '%', label: 'Satisfaction', dec: 0 },
-            ].map((s, i) => (
-              <div key={i}>
-                <span style={{ fontFamily: 'Space Grotesk', fontSize: 'clamp(28px,3vw,38px)', fontWeight: 800 }}>
-                  <Counter end={s.end} suffix={s.suffix} decimals={s.dec} />
-                </span>
-                <span style={{ display: 'block', fontSize: 12, color: '#4a4a5a', letterSpacing: '2px', textTransform: 'uppercase', marginTop: 6 }}>{s.label}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ═══ MARQUEE ═══ */}
-      <ScrollRevealSection direction="scale">
-        <section style={{ borderTop: '1px solid rgba(255,255,255,0.04)', borderBottom: '1px solid rgba(255,255,255,0.04)', padding: '16px 0', overflow: 'hidden', background: '#0a0a0f' }}>
-          <div className="marquee-track">
-            {[...Array(2)].map((_, i) => (
-              <div key={i} style={{ display: 'flex', gap: 64, paddingRight: 64 }}>
-                {['Mobile Window Tinting', 'We Come To You', 'Columbia, Maryland', 'UVIRON Certified',
-                  'Standard / Premium / Ceramic', '5-Star Rated on Google', 'Serving the DMV',
-                  'Lifetime Warranty', 'Nano-Ceramic Film', 'Computer-Cut Precision'].map((t, j) => (
-                  <span key={j} style={{ whiteSpace: 'nowrap', fontSize: 12, fontWeight: 600, color: '#4a4a5a', letterSpacing: '2px', textTransform: 'uppercase' }}>
-                    {t} <span style={{ color: '#0088ff', margin: '0 16px', opacity: 0.4 }}>&#9670;</span>
-                  </span>
-                ))}
-              </div>
-            ))}
-          </div>
-        </section>
-      </ScrollRevealSection>
-
-      {/* ═══ BMW M8 GIVEAWAY TEASER ═══ */}
-      {(GIVEAWAY_LIVE || GIVEAWAY_TEASER) && (
-      <section style={{ padding: '56px 28px 0', maxWidth: 1320, margin: '0 auto' }}>
-        <div className="rv" onClick={() => go('bmw-giveaway')} style={{
-          cursor: 'pointer', borderRadius: 8, overflow: 'hidden', position: 'relative',
-          background: 'linear-gradient(120deg,#0a0a12,#0c1420,#0a0a12)',
-          border: '1px solid rgba(255,255,255,0.09)',
-          padding: 'clamp(32px,4vw,52px) clamp(28px,4vw,56px)', display: 'flex',
-          alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 28,
-          transition: 'border-color 0.4s, box-shadow 0.4s',
-        }}
-          onMouseEnter={(e) => { const t = e.currentTarget as HTMLElement; t.style.borderColor = 'rgba(0,136,255,0.4)'; t.style.boxShadow = '0 0 50px rgba(0,136,255,0.1)'; }}
-          onMouseLeave={(e) => { const t = e.currentTarget as HTMLElement; t.style.borderColor = 'rgba(255,255,255,0.09)'; t.style.boxShadow = 'none'; }}
-        >
-          {/* Faint M8 watermark */}
-          <div style={{ position: 'absolute', right: 'clamp(20px,4vw,60px)', top: '50%', transform: 'translateY(-50%)', fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 'clamp(80px,14vw,180px)', color: 'rgba(255,255,255,0.035)', letterSpacing: '-4px', lineHeight: 1, pointerEvents: 'none', userSelect: 'none' }}>M8</div>
-          <div style={{ position: 'relative', zIndex: 1 }}>
-            <div style={{ fontSize: 11, letterSpacing: '4px', textTransform: 'uppercase', color: '#7dd3ff', fontWeight: 600, marginBottom: 16 }}>{GIVEAWAY_LIVE ? 'Grand Prize Giveaway' : 'Coming Soon'}</div>
-            <h2 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 'clamp(26px,4vw,44px)', lineHeight: 1.1, letterSpacing: '-1.5px', marginBottom: 12 }}>
-              {GIVEAWAY_LIVE ? <>Book a service.<br />Win a <span className="grad-text">BMW&nbsp;M8</span>.</> : <>Win a <span className="grad-text">BMW&nbsp;M8</span>.<br />Coming soon.</>}
-            </h2>
-            <p style={{ color: '#8e8ea0', fontSize: 15.5, maxWidth: 440, lineHeight: 1.7 }}>
-              {GIVEAWAY_LIVE ? 'Every dollar you spend earns entries. No purchase necessary — free entries available.' : 'Our biggest giveaway yet is dropping soon. Get on the list to be the first to know when it goes live.'}
-            </p>
-          </div>
-          <div style={{ position: 'relative', zIndex: 1, flexShrink: 0 }}>
-            <div style={{ background: '#0088ff', color: '#fff', padding: '14px 34px', borderRadius: 4, fontWeight: 600, fontSize: 15, letterSpacing: '0.3px', whiteSpace: 'nowrap', boxShadow: '0 6px 26px rgba(0,136,255,0.25)' }}>
-              {GIVEAWAY_LIVE ? 'See How to Win' : 'Get Notified'}
-            </div>
-          </div>
-        </div>
-      </section>
-      )}
+      {/* ═══ GIVEAWAY-FIRST TOP (Omar mockup) ═══ */}
+      <GiveawayHome go={go} />
 
       {/* ═══ GOOGLE REVIEWS SLIDER ═══ */}
       <section style={{ padding: '120px 0', background: '#0a0a0f', position: 'relative', overflow: 'hidden' }}>
@@ -3046,9 +3146,9 @@ function CountdownTimer({ target }: { target: Date }) {
 function GiveawayPage({ go }: { go: (p: string) => void }) {
   useReveal();
   // ── CONFIG (owner / attorney — placeholders pending final rules & administrator) ──
-  const DRAW = new Date('2026-09-07T20:00:00-04:00'); // exact draw date/time — CONFIRM
+  const DRAW = new Date(GIVEAWAY_DRAW_ISO || '2026-12-31T20:00:00-05:00'); // set GIVEAWAY_DRAW_ISO (top of file) before launch
   const PER_DOLLAR = 100, BONUS = 50000, BONUS_AT = 500, FREE_ENTRIES = 1000; // placeholder tiers — attorney/administrator set final numbers
-  const SPONSOR = 'Two Ten Ten LLC';
+  const SPONSOR = '210TINT LLC';
   const ADMINISTRATOR = '[Sweepstakes Administrator]';
   const drawLabel = DRAW.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 
@@ -3277,7 +3377,7 @@ function GiveawayComingSoon() {
 function OfficialRulesPage() {
   useReveal();
   const rules: { h: string; b: React.ReactNode }[] = [
-    { h: 'Sponsor', b: <>Two Ten Ten LLC, [sponsor mailing address], Columbia, MD 21044 (&ldquo;Sponsor&rdquo;).</> },
+    { h: 'Sponsor', b: <>210TINT LLC, [sponsor mailing address], Columbia, MD 21044 (&ldquo;Sponsor&rdquo;).</> },
     { h: 'Administrator', b: <>The Sweepstakes is administered by [Sweepstakes Administrator] (&ldquo;Administrator&rdquo;), an independent third party responsible for entry tallying and the winner drawing.</> },
     { h: 'Eligibility', b: <>Open to legal residents of the fifty (50) United States and the District of Columbia, and Canada where permitted (excluding Quebec unless otherwise stated), who are 18 years of age or older (or the age of majority in their jurisdiction) at time of entry. Employees of Sponsor and Administrator and their immediate families/households are not eligible. Void where prohibited or restricted by law. Canadian entrants must correctly answer a skill-testing question to claim a prize.</> },
     { h: 'Entry Period', b: <>The Sweepstakes begins [start date/time] and ends [end date/time] (the &ldquo;Entry Period&rdquo;). The random drawing will occur on or about [draw date]. Sponsor&rsquo;s clock is the official timekeeper.</> },
@@ -3288,7 +3388,7 @@ function OfficialRulesPage() {
     { h: 'Prize & Taxes', b: <>One (1) grand prize: a BMW M8 [year/trim], approximate retail value (ARV) $[ARV]. No cash equivalent or substitution except at Sponsor&rsquo;s discretion. The winner is solely responsible for all federal, state, and local taxes; an IRS Form 1099 will be issued for the prize&rsquo;s value; and for title, registration, insurance, and all other costs. Odds and ARV may affect the tax owed.</> },
     { h: 'Fraud & Disqualification', b: <>Sponsor and Administrator reserve the right to disqualify any entrant and void any entries that appear templated, duplicated, machine-generated, coordinated, or otherwise fraudulent, or that tamper with the entry process. Any indication of copying, replication, or coordinated entry across multiple submissions may result in disqualification of all associated entries. The Administrator&rsquo;s fraud review and eligibility determinations are final and binding.</> },
     { h: 'Publicity', b: <>Except where prohibited, acceptance of the prize constitutes consent to use the winner&rsquo;s name, likeness, city/state, and statements for advertising and promotional purposes without further compensation.</> },
-    { h: 'Privacy', b: <>Information collected from entrants (including date of birth for age verification) is handled in accordance with Sponsor&rsquo;s Privacy Policy and may be shared with the Administrator for the purpose of operating the Sweepstakes.</> },
+    { h: 'Privacy', b: <>Information collected from entrants (including date of birth for age verification) is handled in accordance with Sponsor&rsquo;s Privacy Policy, available at 210tint.com/privacy, and may be shared with the Administrator for the purpose of operating the Sweepstakes.</> },
     { h: 'Limitation of Liability & Disputes', b: <>By entering, entrants agree to release Sponsor, Administrator, and their affiliates from any liability arising from participation or prize acceptance, and agree that disputes will be governed by the laws of the State of Maryland, without regard to conflict-of-laws principles.</> },
     { h: 'General', b: <>This promotion is in no way sponsored, endorsed, administered by, or associated with BMW of North America, LLC or Bayerische Motoren Werke AG. &ldquo;BMW&rdquo; and &ldquo;M8&rdquo; are trademarks of their respective owners.</> },
   ];
@@ -3319,7 +3419,7 @@ function OfficialRulesPage() {
 function PrivacyPolicyPage() {
   useReveal();
   const secs: { h: string; b: string }[] = [
-    { h: 'Overview', b: 'This Privacy Policy explains how Two Ten Ten LLC and 210 Tint ("we", "us", "our") collect, use, share, and protect information when you visit 210tint.com, contact us, request a quote, book a service, or enter one of our promotions. It applies to our website and to the services we provide at our shop and through our mobile service. By using our website or services, you agree to the practices described here. If you do not agree, please do not use the website or submit information to us.' },
+    { h: 'Overview', b: 'This Privacy Policy explains how 210TINT LLC d/b/a 210 Tint ("210 Tint", "we", "us", "our") collect, use, share, and protect information when you visit 210tint.com, contact us, request a quote, book a service, or enter one of our promotions. It applies to our website and to the services we provide at our shop and through our mobile service. By using our website or services, you agree to the practices described here. If you do not agree, please do not use the website or submit information to us.' },
     { h: 'Information You Provide to Us', b: 'We collect the information you give us directly. This includes your name, email address, and phone number; your vehicle details (make, model, year, and glass or film specifications); the service you are interested in and your preferred date, time, and location; messages you send us through forms, chat, email, or text; and, for sweepstakes entrants, your date of birth so we can verify that you meet the minimum age requirement. We do not request a driver’s license from general entrants — a valid license is requested only from a confirmed prize winner during winner verification.' },
     { h: 'Information Collected Automatically', b: 'When you visit our website, certain information may be collected automatically through cookies and similar technologies, such as your device type, browser, approximate location derived from your IP address, the pages you view, and how you arrived at our site. This information helps us keep the site working, understand how it is used, and improve it. You can usually control cookies through your browser settings, though disabling them may affect how parts of the site function.' },
     { h: 'How We Use Your Information', b: 'We use your information to respond to inquiries and provide quotes; to schedule, perform, and follow up on services; to process payments and deposits; to operate and administer promotions, including verifying eligibility and contacting winners; to send appointment reminders and service-related messages; to send marketing or promotional messages when you have opted in; to maintain records and improve our business; and to comply with legal obligations and enforce our agreements.' },
@@ -3354,7 +3454,7 @@ function PrivacyPolicyPage() {
 function TermsOfServicePage() {
   useReveal();
   const secs: { h: string; b: string }[] = [
-    { h: 'Acceptance of These Terms', b: 'These Terms of Service ("Terms") form a binding agreement between you and Two Ten Ten LLC d/b/a 210 Tint ("210 Tint", "we", "us", "our") and govern your use of 210tint.com and the window tinting, detailing, and related services we provide. By using this website, requesting a quote, booking an appointment, or receiving services from us, you confirm that you have read, understood, and agree to these Terms and to our Privacy Policy. If you do not agree, please do not use the website or our services.' },
+    { h: 'Acceptance of These Terms', b: 'These Terms of Service ("Terms") form a binding agreement between you and 210TINT LLC d/b/a 210 Tint ("210 Tint", "we", "us", "our") and govern your use of 210tint.com and the window tinting, detailing, and related services we provide. By using this website, requesting a quote, booking an appointment, or receiving services from us, you confirm that you have read, understood, and agree to these Terms and to our Privacy Policy (available at 210tint.com/privacy). If you do not agree, please do not use the website or our services.' },
     { h: 'Eligibility', b: 'You must be at least 18 years old and able to enter into a binding contract to request services or make a booking. By using our services, you represent that you meet these requirements and that all information you provide is accurate and complete.' },
     { h: 'Services & Bookings', b: 'We provide automotive window tinting, detailing, and related services at our shop and as a mobile service within our service area. Online booking requests and quotes are offers to do business and are not confirmed until we acknowledge and schedule them. We reserve the right to decline, limit, reschedule, or cancel a booking — for example, due to weather, vehicle condition, location access, parts or film availability, or scheduling conflicts — and will make reasonable efforts to notify you in advance.' },
     { h: 'Quotes & Pricing', b: 'Prices shown on our website are estimates based on typical vehicles and standard conditions and may change after we inspect your vehicle, confirm its specifications, or you add options or services. The price we quote and confirm at the time of service is the price that applies. All prices are in U.S. dollars and, unless clearly stated otherwise, do not include applicable taxes or fees. Promotional pricing applies only while the promotion is active and subject to its conditions.' },
@@ -3394,14 +3494,47 @@ function TermsOfServicePage() {
   );
 }
 
+/* ═══ URL ROUTING — every page gets a real path (Cloudflare serves index.html for all paths) ═══ */
+const PATHS: Record<string, string> = {
+  home: '/', portfolio: '/portfolio', pricing: '/pricing', compare: '/compare', warranty: '/warranty',
+  'tint-laws': '/tint-laws', 'ceramic-vs-carbon': '/ceramic-vs-carbon', 'md-summer-tint': '/md-summer-tint',
+  'tint-simulator': '/tint-simulator', starlight: '/starlight', 'starlight-sale': '/starlight-sale',
+  detailing: '/detailing', 'bmw-giveaway': '/giveaway', 'official-rules': '/rules',
+  privacy: '/privacy', terms: '/terms', contact: '/contact',
+};
+const PATH_ALIASES: Record<string, string> = { '/official-rules': 'official-rules', '/privacy-policy': 'privacy', '/bmw-giveaway': 'bmw-giveaway', '/terms-of-service': 'terms' };
+const pageFromPath = (path: string): string => {
+  const clean = (path.replace(/\/+$/, '') || '/').toLowerCase();
+  const hit = Object.keys(PATHS).find(k => PATHS[k] === clean) || PATH_ALIASES[clean] || 'home';
+  if (hit === 'official-rules' && !GIVEAWAY_LIVE) return 'home';           // rules stay hidden until launch
+  if (hit === 'bmw-giveaway' && !GIVEAWAY_LIVE && !GIVEAWAY_TEASER) return 'home';
+  return hit;
+};
+const syncCanonical = (p: string) => {
+  const link = document.querySelector('link[rel="canonical"]');
+  if (link) link.setAttribute('href', 'https://210tint.com' + (PATHS[p] || '/'));
+};
+
 export default function App() {
-  const [page, setPage] = useState('home');
+  const [page, setPage] = useState(() => pageFromPath(window.location.pathname));
   const [transitioning, setTransitioning] = useState(false);
+  // Keep the address bar honest: normalize the initial URL, and follow back/forward.
+  useEffect(() => {
+    const want = PATHS[page] || '/';
+    if (window.location.pathname !== want) window.history.replaceState(null, '', want + window.location.search);
+    syncCanonical(page);
+    const onPop = () => { const p = pageFromPath(window.location.pathname); setPage(p); syncCanonical(p); window.scrollTo(0, 0); };
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, []);
   const go = (p: string) => {
     if (p === page) return;
     setTransitioning(true);
     setTimeout(() => {
       setPage(p);
+      const path = PATHS[p] || '/';
+      if (window.location.pathname !== path) window.history.pushState(null, '', path);
+      syncCanonical(p);
       window.scrollTo(0, 0);
       document.documentElement.scrollTop = 0;
       document.body.scrollTop = 0;
