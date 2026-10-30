@@ -127,44 +127,6 @@ function Counter({ end, suffix = '', decimals = 0 }: { end: number; suffix?: str
 }
 
 /* ═══════════════════════════════════════════════════
-   LOADING SCREEN
-   ═══════════════════════════════════════════════════ */
-/* ═══ LOADING SCREEN (CSS-driven, no stuck states) ═══ */
-function LoadingScreen() {
-  const [visible, setVisible] = useState(true);
-  useEffect(() => {
-    const t = setTimeout(() => setVisible(false), 2800);
-    return () => clearTimeout(t);
-  }, []);
-  if (!visible) return null;
-  return (
-    <div className="loader-screen" style={{
-      position: 'fixed', inset: 0, zIndex: 99999, background: '#050507',
-      display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-      animation: 'loaderFadeOut 0.6s ease 2.2s forwards',
-    }}>
-      {/* Ambient glow */}
-      <div style={{ position: 'absolute', width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle, rgba(0,136,255,0.1) 0%, transparent 70%)', pointerEvents: 'none', animation: 'loaderGlow 2s ease infinite' }} />
-      {/* Logo */}
-      <div style={{ animation: 'loaderLogoIn 0.8s cubic-bezier(.16,1,.3,1) 0.2s both' }}>
-        <img src="/210tintlogo.webp" alt="210 Tint" width={320} height={320} style={{ height: 160, width: 'auto', objectFit: 'contain' }} />
-      </div>
-      {/* Loading bar */}
-      <div style={{ width: 140, height: 2, background: 'rgba(255,255,255,0.06)', borderRadius: 1, marginTop: 32, overflow: 'hidden' }}>
-        <div style={{ height: '100%', background: 'linear-gradient(90deg, #0088ff, #7dd3ff, #0088ff)', backgroundSize: '200% auto', animation: 'loaderBar 1.4s cubic-bezier(.16,1,.3,1) 0.4s both, shimmer 2s linear infinite' }} />
-      </div>
-      {/* Tagline */}
-      <p style={{ fontFamily: 'Inter', fontSize: 12, letterSpacing: '4px', textTransform: 'uppercase', color: '#4a4a5a', marginTop: 20, animation: 'loaderLogoIn 0.6s ease 0.8s both' }}>
-        Nano-Ceramic Specialists · Columbia, MD
-      </p>
-      {/* Decorative line accents */}
-      <div style={{ position: 'absolute', top: '50%', left: '10%', width: 60, height: 1, background: 'linear-gradient(90deg, transparent, rgba(0,136,255,0.15))', animation: 'loaderLogoIn 1s ease 0.6s both' }} />
-      <div style={{ position: 'absolute', top: '50%', right: '10%', width: 60, height: 1, background: 'linear-gradient(270deg, transparent, rgba(0,136,255,0.15))', animation: 'loaderLogoIn 1s ease 0.6s both' }} />
-    </div>
-  );
-}
-
-/* ═══════════════════════════════════════════════════
    SERVICE AREA MAP — SVG DMV region
    ═══════════════════════════════════════════════════ */
 function ServiceAreaMap() {
@@ -189,7 +151,7 @@ function ServiceAreaMap() {
     { id: 'stmarys', name: "St. Mary's", x: 445, y: 465, lp: 'b' },
     // South-Southwest (DC + close NoVA)
     { id: 'dc', name: 'Washington, DC', x: 330, y: 345, lp: 'l' },
-    { id: 'arlington', name: 'Arlington', x: 290, y: 365, lp: 'l' },
+    { id: 'arlington', name: 'Arlington', x: 290, y: 365, lp: 'b' },
     { id: 'alexandria', name: 'Alexandria', x: 320, y: 395, lp: 'r' },
     // Southwest (NoVA outer)
     { id: 'fairfax', name: 'Fairfax', x: 250, y: 360, lp: 'l' },
@@ -755,7 +717,7 @@ function Nav({ page, go }: { page: string; go: (p: string) => void }) {
             display: 'flex', alignItems: 'center', gap: 6, color: '#7dd3ff', fontSize: 15,
             fontWeight: 600, textDecoration: 'none', transition: 'color 0.3s', fontFamily: 'Inter',
           }}>
-            <span style={{ fontSize: 14 }}>📞</span>(240) 338-7762
+            <Ico d={ICONS.phone} size={15} />(240) 338-7762
           </a>
           <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" style={{
             background: '#0088ff', color: '#fff', padding: '10px 26px', borderRadius: 3,
@@ -773,7 +735,7 @@ function Nav({ page, go }: { page: string; go: (p: string) => void }) {
       {mob && (
         <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, background: 'rgba(5,5,7,0.97)', backdropFilter: 'blur(30px)', borderBottom: '1px solid rgba(255,255,255,0.04)', padding: '16px 28px 24px' }}>
           {NAV.map((n) => <button key={n.id} onClick={() => nav(n.id)} style={{ display: 'block', width: '100%', textAlign: 'left', padding: '14px 0', background: 'none', border: 'none', cursor: 'pointer', color: page === n.id ? '#0088ff' : '#eee', fontSize: 16, fontWeight: 500, borderBottom: '1px solid rgba(255,255,255,0.03)' }}>{n.label}</button>)}
-          <a href="tel:2403387762" style={{ display: 'block', marginTop: 16, background: 'rgba(0,136,255,0.1)', color: '#7dd3ff', padding: '14px', borderRadius: 3, textAlign: 'center', fontSize: 16, fontWeight: 700, textDecoration: 'none', border: '1px solid rgba(0,136,255,0.3)' }}>📞 (240) 338-7762</a>
+          <a href="tel:2403387762" style={{ display: 'block', marginTop: 16, background: 'rgba(0,136,255,0.1)', color: '#7dd3ff', padding: '14px', borderRadius: 3, textAlign: 'center', fontSize: 16, fontWeight: 700, textDecoration: 'none', border: '1px solid rgba(0,136,255,0.3)' }}><span style={{ display: 'inline-flex', alignItems: 'center', gap: 8, verticalAlign: 'middle' }}><Ico d={ICONS.phone} size={16} />(240) 338-7762</span></a>
           <a href="https://calendly.com/210tints" target="_blank" rel="noreferrer" style={{ display: 'block', marginTop: 10, background: '#0088ff', color: '#fff', padding: '14px', borderRadius: 3, textAlign: 'center', fontSize: 16, fontWeight: 600, textDecoration: 'none' }}>Book Appointment</a>
         </div>
       )}
@@ -895,6 +857,14 @@ const ICONS = {
   thermo: 'M12 3a2 2 0 0 0-2 2v9.5a4 4 0 1 0 4 0V5a2 2 0 0 0-2-2ZM12 17v-6',
   sun: 'M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8ZM12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4',
   shield: 'M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6l8-3ZM8.5 12l2.5 2.5 4.5-5',
+  phone: 'M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z',
+  warn: 'M12 3 2 20h20L12 3ZM12 10v4M12 17h.01',
+  checkCircle: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18ZM8 12.5l2.5 2.5L16 9.5',
+  xCircle: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18ZM9 9l6 6M15 9l-6 6',
+  star: 'M12 3l2.8 5.7 6.2.9-4.5 4.4 1 6.2L12 17.3 6.5 20.2l1-6.2L3 9.6l6.2-.9L12 3Z',
+  wrench: 'M14.7 6.3a4 4 0 0 0-5.4 5.2L4 16.8V20h3.2l5.3-5.3a4 4 0 0 0 5.2-5.4l-2.5 2.5-2.3-.7-.7-2.3 2.5-2.5Z',
+  home: 'M3 11l9-7 9 7M5 10v10h5v-6h4v6h5V10',
+  scissors: 'M6 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM8.1 7.9 20 18M8.1 16.1 20 6',
 };
 
 function GiveawayHome({ go }: { go: (p: string) => void }) {
@@ -1207,7 +1177,7 @@ function HomePage({ go }: { go: (p: string) => void }) {
               boxShadow: '0 0 30px rgba(0,136,255,0.35), inset 0 0 20px rgba(0,136,255,0.08)',
               animation: 'guaranteeGlow 2.6s ease-in-out infinite',
             }}>
-              <span style={{ fontSize: 20 }}>🛡️</span>
+              <span style={{ color: '#7dd3ff', display: 'flex' }}><Ico d={ICONS.shield} size={24} /></span>
               <span style={{ fontFamily: 'Space Grotesk', fontWeight: 800, fontSize: 'clamp(15px,2.2vw,19px)', color: '#fff', letterSpacing: '0.3px' }}>
                 100% <span style={{ color: '#7dd3ff', textShadow: '0 0 16px rgba(0,136,255,0.7)' }}>Satisfaction Guarantee</span>
               </span>
@@ -1276,7 +1246,7 @@ function HomePage({ go }: { go: (p: string) => void }) {
           background: 'rgba(251,191,36,0.04)',
           display: 'flex', gap: 20, alignItems: 'flex-start',
         }}>
-          <span style={{ fontSize: 28, lineHeight: 1, flexShrink: 0, marginTop: 2 }}>⚠️</span>
+          <span style={{ color: '#fbbf24', flexShrink: 0, marginTop: 2, display: 'flex' }}><Ico d={ICONS.warn} size={28} /></span>
           <div>
             <h3 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 17, marginBottom: 8, color: '#fbbf24' }}>
               Mobile Jobs — Garage or Covered Space Strongly Recommended
@@ -1334,7 +1304,7 @@ function HomePage({ go }: { go: (p: string) => void }) {
           <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14, flexShrink: 0 }}>
             <div style={{ textAlign: 'center' }}>
               <div style={{ fontFamily: 'Space Grotesk', fontWeight: 800, fontSize: 56, lineHeight: 1, color: '#fff' }}>15%</div>
-              <div style={{ color: '#7dd3ff', fontWeight: 700, fontSize: 14, letterSpacing: '2px', textTransform: 'uppercase' }}>Off Everything</div>
+              <div style={{ color: '#7dd3ff', fontWeight: 700, fontSize: 14, letterSpacing: '2px', textTransform: 'uppercase' }}>Off Starlight</div>
             </div>
             <div style={{ background: '#0088ff', color: '#fff', padding: '13px 32px', borderRadius: 3, fontWeight: 700, fontSize: 15, boxShadow: '0 4px 30px rgba(0,136,255,0.4)', whiteSpace: 'nowrap' }}>
               See Sale Prices →
@@ -1425,12 +1395,12 @@ function PortfolioPage() {
   useReveal();
   const [lightbox, setLightbox] = useState<number | null>(null);
   const items = [
-    { name: 'Lamborghini Urus', film: 'Premium Nano Ceramic', img: '/cars/lambo-urus.webp' },
+    { name: 'Lamborghini Urus', film: 'KoolMax Nano Ceramic', img: '/cars/lambo-urus.webp' },
     { name: 'Mercedes C63', film: 'Uviron Premium Carbon', img: '/cars/snowy-c63.webp' },
-    { name: 'Mercedes CLA', film: 'Premium Nano Ceramic', img: '/cars/mercedes-cla.webp' },
-    { name: 'BMW M8', film: 'Standard Carbon', img: '/cars/snowy-m8.webp' },
-    { name: 'Dodge Durango', film: 'Premium Nano Carbon', img: '/cars/snowy-durango.webp' },
-    { name: 'Dodge Durango', film: 'Premium Nano Carbon', img: '/cars/dark-snowy-durango.webp' },
+    { name: 'Mercedes CLA', film: 'KoolMax Nano Ceramic', img: '/cars/mercedes-cla.webp' },
+    { name: 'BMW M8', film: 'Uviron Premium Carbon', img: '/cars/snowy-m8.webp' },
+    { name: 'Dodge Durango', film: 'PureMax Nano Carbon', img: '/cars/snowy-durango.webp' },
+    { name: 'Dodge Durango', film: 'PureMax Nano Carbon', img: '/cars/dark-snowy-durango.webp' },
   ];
   return (<div style={{ paddingTop: 130 }}><section style={{ padding: '0 28px 120px', maxWidth: 1320, margin: '0 auto' }}>
     <SH tag="Our Work" title="Vehicle Tinting Portfolio" sub="Professional-grade installations on luxury, performance, and everyday vehicles." />
@@ -1732,7 +1702,7 @@ function TintLawsPage({ go }: { go: (p: string) => void }) {
       {laws.map((l, i) => (
         <div key={i} className={`rv d${(i % 3) + 1}`} style={{ padding: '28px 32px', borderRadius: 4, border: '1px solid rgba(255,255,255,0.04)', background: '#0a0a0f' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
-            <span style={{ fontSize: 18 }}>{l.legal ? '✅' : '🚫'}</span>
+            <span style={{ display: 'flex', color: l.legal ? '#4ade80' : '#f87171' }}><Ico d={l.legal ? ICONS.checkCircle : ICONS.xCircle} size={22} /></span>
             <h3 style={{ fontFamily: 'Space Grotesk', fontSize: 18, fontWeight: 700 }}>{l.part}</h3>
           </div>
           <p style={{ color: '#8e8ea0', fontSize: 16, lineHeight: 1.8 }}>{l.rule}</p>
@@ -1802,15 +1772,21 @@ function ChatWidget() {
   const historyRef = useRef<{ role: string; content: string }[]>([]);
   const eventCacheRef = useRef<any[] | null>(null);
 
-  // Intro pop-up — appears 4s after page load if user hasn't dismissed it before
+  // Chat intro bubble — 20s in, at most once every 14 days, and never on top of the email popup.
   useEffect(() => {
-    if (sessionStorage.getItem('210-intro-dismissed') === '1') return;
-    const t = setTimeout(() => setShowIntro(true), 4000);
+    try {
+      const seenAt = Number(localStorage.getItem('210-intro-seen-at') || 0);
+      if (seenAt && Date.now() - seenAt < LEAD_SNOOZE_MS) return;
+    } catch { /* ignore */ }
+    const t = setTimeout(() => {
+      if (document.querySelector('[data-lead-popup]')) return;
+      setShowIntro(true);
+      try { localStorage.setItem('210-intro-seen-at', String(Date.now())); } catch { /* ignore */ }
+    }, 20000);
     return () => clearTimeout(t);
   }, []);
   const dismissIntro = () => {
     setShowIntro(false);
-    sessionStorage.setItem('210-intro-dismissed', '1');
   };
 
   const todayStr = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -1911,7 +1887,7 @@ Today: ${todayStr}. Use current year or later for dates. Be friendly, conversati
         const cleanPhone = phone.startsWith('+1') ? phone : '+1' + phone.replace(/\D/g, '');
         url += `?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&first_name=${encodeURIComponent(parts[0] || '')}&last_name=${encodeURIComponent(parts.slice(1).join(' ') || '')}&a1=${encodeURIComponent(cleanPhone)}&a2=${encodeURIComponent(vehicle)}&a3=${encodeURIComponent(tintType)}&a4=${encodeURIComponent(prevTinted)}&a5=${encodeURIComponent(waitOrLeave)}&a6=${encodeURIComponent(extraNotes)}`;
         const t = new Date(startTime).toLocaleString([], { weekday: 'long', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-        addMsg('assistant', '', `<div style="padding:10px 14px;border-radius:16px;border-bottom-left-radius:4px;background:#0f0f0f;border:1px solid #222;font-size:13.5px;line-height:1.6">🎉 <strong>Almost done, ${parts[0]}!</strong><br><br>Your slot for <strong>${t}</strong> is being held.<br><br><a href="${url}" target="_blank" rel="noreferrer" style="display:inline-block;background:#0088ff;color:#fff;padding:10px 20px;border-radius:8px;text-decoration:none;font-weight:700;font-size:13px;margin:4px 0">✅ Confirm My Appointment</a><br><br><span style="font-size:11px;color:#6b7280">You'll get a confirmation email once booked.</span></div>`);
+        addMsg('assistant', '', `<div style="padding:10px 14px;border-radius:16px;border-bottom-left-radius:4px;background:#0f0f0f;border:1px solid #222;font-size:13.5px;line-height:1.6"><strong>Almost done, ${parts[0]}!</strong><br><br>Your slot for <strong>${t}</strong> is being held.<br><br><a href="${url}" target="_blank" rel="noreferrer" style="display:inline-block;background:#0088ff;color:#fff;padding:10px 20px;border-radius:8px;text-decoration:none;font-weight:700;font-size:13px;margin:4px 0">Confirm My Appointment</a><br><br><span style="font-size:11px;color:#6b7280">You'll get a confirmation email once booked.</span></div>`);
         return true;
       }
       return false;
@@ -1930,7 +1906,7 @@ Today: ${todayStr}. Use current year or later for dates. Be friendly, conversati
     const eventType = eventTypes.find((e: any) => e.slug === slug || e.name.toLowerCase().includes(slug.replace(/-/g, ' ')));
 
     if (!eventType) {
-      addMsg('assistant', '', `<div style="padding:10px 14px;border-radius:16px;border-bottom-left-radius:4px;background:#0f0f0f;border:1px solid #222;font-size:13.5px;line-height:1.6">Couldn't find that service type. Book directly here:<br><br><div style="border-radius:12px;overflow:hidden;border:1px solid #222;margin-top:8px"><iframe src="https://calendly.com/210tints?embed_type=Inline&hide_gdpr_banner=1" style="width:100%;height:280px;border:none" title="Book"></iframe><div style="font-size:11px;color:#6b7280;padding:8px 12px;border-top:1px solid #1a1a1a">📅 Pick your date & time above</div></div></div>`);
+      addMsg('assistant', '', `<div style="padding:10px 14px;border-radius:16px;border-bottom-left-radius:4px;background:#0f0f0f;border:1px solid #222;font-size:13.5px;line-height:1.6">Couldn't find that service type. Book directly here:<br><br><div style="border-radius:12px;overflow:hidden;border:1px solid #222;margin-top:8px"><iframe src="https://calendly.com/210tints?embed_type=Inline&hide_gdpr_banner=1" style="width:100%;height:280px;border:none" title="Book"></iframe><div style="font-size:11px;color:#6b7280;padding:8px 12px;border-top:1px solid #1a1a1a">Pick your date & time above</div></div></div>`);
       return;
     }
 
@@ -1949,7 +1925,7 @@ Today: ${todayStr}. Use current year or later for dates. Be friendly, conversati
       return `<button data-slot="${s.start_time}" data-uri="${eventType.uri}" data-name="${encodeURIComponent(name)}" data-email="${encodeURIComponent(email)}" data-phone="${encodeURIComponent(phone)}" data-vehicle="${encodeURIComponent(vehicle)}" data-tint="${encodeURIComponent(tintType)}" data-prev="${encodeURIComponent(prevTinted)}" data-wait="${encodeURIComponent(waitOrLeave)}" data-notes="${encodeURIComponent(extraNotes)}" style="background:#1a1a2e;border:1px solid #0088ff;color:#fff;padding:8px 14px;border-radius:8px;cursor:pointer;font-size:13px;font-family:inherit">${label}</button>`;
     }).join('');
 
-    addMsg('assistant', '', `<div style="padding:10px 14px;border-radius:16px;border-bottom-left-radius:4px;background:#0f0f0f;border:1px solid #222;font-size:13.5px;line-height:1.6"><strong>✅ Available times on ${d}:</strong><br><br><div class="slot-picker" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px">${slotButtons}</div></div>`);
+    addMsg('assistant', '', `<div style="padding:10px 14px;border-radius:16px;border-bottom-left-radius:4px;background:#0f0f0f;border:1px solid #222;font-size:13.5px;line-height:1.6"><strong>Available times on ${d}:</strong><br><br><div class="slot-picker" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px">${slotButtons}</div></div>`);
     historyRef.current.push({ role: 'assistant', content: `Showing available slots for ${d}.` });
   };
 
@@ -1977,7 +1953,7 @@ Today: ${todayStr}. Use current year or later for dates. Be friendly, conversati
     if (next) dismissIntro();
     if (next && !hasOpened) {
       setHasOpened(true);
-      const greet = { role: 'assistant', content: "Hey! 👋 Welcome to **210 Tints** — Columbia's tinting & detailing specialists using **UVIRON** performance films.\n\nWe come to you anywhere in the DMV, or you can drop off at our Columbia shop. I can help with pricing, film info, or book you in. What can I help with?" };
+      const greet = { role: 'assistant', content: "Hey! Welcome to **210 Tint** — Columbia's tinting & detailing specialists using **UVIRON** performance films.\n\nWe come to you anywhere in the DMV, or you can drop off at our Columbia shop. I can help with pricing, film info, or book you in. What can I help with?" };
       setMessages([greet]);
       historyRef.current = [greet];
       getEventTypes(); // pre-fetch
@@ -2037,7 +2013,7 @@ Today: ${todayStr}. Use current year or later for dates. Be friendly, conversati
         transition: 'opacity 0.4s ease, transform 0.4s cubic-bezier(0.34,1.56,0.64,1)',
         cursor: 'pointer',
       }} onClick={() => { dismissIntro(); toggle(); }}>
-        <div style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 14, marginBottom: 2 }}>Hi! I'm the 210 assistant 👋</div>
+        <div style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 14, marginBottom: 2 }}>Hi, I'm the 210 Tint assistant</div>
         <div style={{ fontSize: 13, color: '#4a4a5a', lineHeight: 1.45 }}>Ask me anything — pricing, films, or book in seconds.</div>
         <button onClick={(e) => { e.stopPropagation(); dismissIntro(); }} style={{
           position: 'absolute', top: 6, right: 6, width: 24, height: 24, borderRadius: '50%',
@@ -2062,7 +2038,7 @@ Today: ${todayStr}. Use current year or later for dates. Be friendly, conversati
             AI<span style={{ position: 'absolute', bottom: 1, right: 1, width: 10, height: 10, background: '#4ade80', borderRadius: '50%', border: '2px solid #111' }} />
           </div>
           <div>
-            <strong style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 16, display: 'block', color: '#fff' }}>210 Tints Assistant</strong>
+            <strong style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 16, display: 'block', color: '#fff' }}>210 Tint Assistant</strong>
             <span style={{ fontSize: 12, color: '#6b7280' }}>UVIRON Certified · Columbia, MD</span>
           </div>
           <div style={{ marginLeft: 'auto', display: 'flex', gap: 6 }}>
@@ -2164,12 +2140,12 @@ function BackToTop() {
 /* ═══ TRUST BADGES ═══ */
 function TrustBadges() {
   const badges = [
-    { icon: '🛡️', label: 'UVIRON Certified', desc: 'Official performance film partner' },
-    { icon: '⭐', label: '5-Star Google Rating', desc: '100+ five-star reviews' },
-    { icon: '🔧', label: '1000+ Vehicles', desc: 'Professionally tinted' },
-    { icon: '🏠', label: 'Mobile or Shop', desc: 'We come to you, or visit our Columbia shop' },
-    { icon: '✅', label: 'Lifetime Warranty', desc: 'On Nano Ceramic KOOLMAX' },
-    { icon: '✂️', label: 'Computer-Cut', desc: 'No blade touches your car' },
+    { icon: ICONS.shield, label: 'UVIRON Certified', desc: 'Official performance film partner' },
+    { icon: ICONS.star, label: '5-Star Google Rating', desc: '100+ five-star reviews' },
+    { icon: ICONS.wrench, label: '1000+ Vehicles', desc: 'Professionally tinted' },
+    { icon: ICONS.home, label: 'Mobile or Shop', desc: 'We come to you, or visit our Columbia shop' },
+    { icon: ICONS.checkCircle, label: 'Lifetime Warranty', desc: 'On Nano Ceramic KOOLMAX' },
+    { icon: ICONS.scissors, label: 'Computer-Cut', desc: 'No blade touches your car' },
   ];
   return (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 12 }}>
@@ -2181,7 +2157,7 @@ function TrustBadges() {
         }}
           onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(0,136,255,0.2)'; e.currentTarget.style.transform = 'translateY(-4px)'; }}
           onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.04)'; e.currentTarget.style.transform = 'translateY(0)'; }}>
-          <span style={{ fontSize: 28, display: 'block', marginBottom: 12 }}>{b.icon}</span>
+          <span style={{ color: '#7dd3ff', display: 'flex', justifyContent: 'center', marginBottom: 12 }}><Ico d={b.icon} size={30} /></span>
           <span style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 14, display: 'block', marginBottom: 4 }}>{b.label}</span>
           <span style={{ fontSize: 12, color: '#8e8ea0' }}>{b.desc}</span>
         </div>
@@ -2747,6 +2723,9 @@ function DetailingPage({ go }: { go: (p: string) => void }) {
   );
 }
 
+/* How long the email popup / chat bubble stay away after being seen or closed */
+const LEAD_SNOOZE_MS = 14 * 24 * 60 * 60 * 1000;
+
 /* ═══ LEAD CAPTURE POPUP — collects email + phone on first visit, posts to Google Sheet ═══ */
 function LeadCapturePopup() {
   // Paste the Web App URL of your deployed Google Apps Script here (see DEPLOY note below).
@@ -2760,17 +2739,21 @@ function LeadCapturePopup() {
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
-  // Show ~4s after load (after the loading screen fades) on EVERY visit —
-  // only stops appearing once the visitor actually submits their info.
+  // Show once, 8s into a visit. After a signup it never returns; after closing it
+  // stays away for 14 days.
   useEffect(() => {
-    if (localStorage.getItem('210-lead-submitted-v2') === '1') return;
-    const t = setTimeout(() => setShow(true), 4000);
+    try {
+      if (localStorage.getItem('210-lead-submitted-v2') === '1') return;
+      const dismissedAt = Number(localStorage.getItem('210-lead-dismissed-at') || 0);
+      if (dismissedAt && Date.now() - dismissedAt < LEAD_SNOOZE_MS) return;
+    } catch { /* storage blocked — fall through and show once */ }
+    const t = setTimeout(() => setShow(true), 8000);
     return () => clearTimeout(t);
   }, []);
 
-  // Dismissing does NOT permanently suppress the popup — it returns next visit.
   const close = () => {
     setShow(false);
+    try { localStorage.setItem('210-lead-dismissed-at', String(Date.now())); } catch { /* ignore */ }
   };
 
   const validPhone = (p: string) => p.replace(/[^0-9]/g, '').length >= 10;
@@ -2815,7 +2798,7 @@ function LeadCapturePopup() {
   };
 
   return (
-    <div onClick={close} style={{
+    <div data-lead-popup role="dialog" aria-modal="true" aria-label="Get 15% off" onClick={close} style={{
       position: 'fixed', inset: 0, zIndex: 99998, background: 'rgba(0,0,0,0.78)',
       backdropFilter: 'blur(8px)', display: 'flex', alignItems: 'center', justifyContent: 'center',
       padding: 20, animation: 'fadeIn 0.4s ease',
@@ -2837,7 +2820,7 @@ function LeadCapturePopup() {
         {!done ? (
           <>
             <div style={{ display: 'inline-block', background: 'rgba(0,136,255,0.12)', border: '1px solid rgba(0,136,255,0.3)', borderRadius: 100, padding: '5px 14px', fontSize: 11, fontWeight: 700, letterSpacing: '1.5px', color: '#7dd3ff', textTransform: 'uppercase', marginBottom: 16 }}>
-              🔥 Limited-Time Offer
+              Exclusive Offer
             </div>
             <h2 style={{ fontFamily: 'Space Grotesk', fontSize: 26, fontWeight: 800, color: '#fff', lineHeight: 1.15, margin: '0 0 10px' }}>
               Claim <span style={{ color: '#7dd3ff', textShadow: '0 0 20px rgba(0,136,255,0.5)' }}>15% off</span>
@@ -2857,12 +2840,12 @@ function LeadCapturePopup() {
               }}>{submitting ? 'Sending…' : 'Claim My 15% Off →'}</button>
             </form>
             <button onClick={close} style={{ display: 'block', margin: '14px auto 0', background: 'none', border: 'none', color: '#5a5a66', fontSize: 12, cursor: 'pointer', fontFamily: 'Inter' }}>
-              No thanks, I'll pay full price
+              No thanks
             </button>
           </>
         ) : (
           <div style={{ textAlign: 'center', padding: '10px 0' }}>
-            <div style={{ fontSize: 48, marginBottom: 12 }}>🎉</div>
+            <div style={{ color: '#7dd3ff', display: 'flex', justifyContent: 'center', marginBottom: 14 }}><Ico d={ICONS.checkCircle} size={50} /></div>
             <h2 style={{ fontFamily: 'Space Grotesk', fontSize: 24, fontWeight: 800, color: '#fff', margin: '0 0 10px' }}>Your 15% off is locked in!</h2>
             <p style={{ fontFamily: 'Inter', fontSize: 14, color: '#9a9aa5', lineHeight: 1.5, margin: '0 0 24px' }}>
               We'll be in touch with your <span style={{ color: '#7dd3ff', fontWeight: 700 }}>15% off</span> code and future deals from 210 Tint.
@@ -3345,7 +3328,6 @@ export default function App() {
   };
   return (
     <div style={{ minHeight: '100vh' }}>
-      <LoadingScreen />
       <LeadCapturePopup />
       <ChatWidget />
       <style>{`
