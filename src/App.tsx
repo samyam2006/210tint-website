@@ -880,8 +880,9 @@ function GiveawayHome({ go }: { go: (p: string) => void }) {
   const products = [
     { name: 'Ceramic Tint Package', desc: 'Maximum heat rejection. Premium performance.', price: 'From $315', img: '/dodgecharger.webp', mult: '10X', cta: 'Book Now', href: CAL },
     { name: 'Carbon Tint Package', desc: 'Great performance. Clean, classic look.', price: 'From $145', img: '/cars/dark-snowy-durango.webp', mult: '5X', cta: 'Book Now', href: CAL },
-    { name: '210 Tint Tee', desc: 'Premium cotton. Everyday fit. Rep the brand.', price: '$32', merch: 'TEE', mult: '3X', cta: 'Dropping Soon' },
-    { name: '210 Tint Hoodie', desc: 'Heavyweight. Premium quality. Built for the culture.', price: '$68', merch: 'HOODIE', mult: '5X', cta: 'Dropping Soon' },
+    // Merch prices are blank until they're set; the card hides the price when it's empty.
+    { name: '210 Tint Tee', desc: 'Premium cotton. Everyday fit. Rep the brand.', price: '', merch: 'TEE', mult: '3X', cta: 'Dropping Soon' },
+    { name: '210 Tint Hoodie', desc: 'Heavyweight. Premium quality. Built for the culture.', price: '', merch: 'HOODIE', mult: '5X', cta: 'Dropping Soon' },
   ];
   const features = [
     { i: ICONS.van, t: 'Mobile Service', s: 'We come to you' },
@@ -1026,11 +1027,11 @@ function GiveawayHome({ go }: { go: (p: string) => void }) {
                   <div style={{ ...ghDisplay, fontWeight: 800, fontSize: 15.5, color: '#fff', marginBottom: 6 }}>{p.name}</div>
                   <div style={{ color: '#8e8ea0', fontSize: 13.5, lineHeight: 1.55, marginBottom: 18, flex: 1 }}>{p.desc}</div>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
-                    <span style={{ ...ghDisplay, fontWeight: 800, fontSize: 16, color: '#fff', letterSpacing: 0 }}>{p.price}</span>
+                    {p.price && <span style={{ ...ghDisplay, fontWeight: 800, fontSize: 16, color: '#fff', letterSpacing: 0 }}>{p.price}</span>}
                     {p.href ? (
                       <a href={p.href} target="_blank" rel="noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '9px 14px', border: '1px solid rgba(255,255,255,0.3)', borderRadius: 3, color: '#fff', textDecoration: 'none', fontSize: 11.5, fontWeight: 800, letterSpacing: '1.5px', textTransform: 'uppercase' }}>{p.cta} <Arrow /></a>
                     ) : (
-                      <button onClick={() => go('bmw-giveaway')} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '9px 14px', background: 'rgba(30,144,255,0.14)', border: `1px solid ${GH_BLUE}`, borderRadius: 3, color: GH_BLUE2, cursor: 'pointer', fontSize: 11.5, fontWeight: 800, letterSpacing: '1.5px', textTransform: 'uppercase' }}>{p.cta}</button>
+                      <button onClick={() => go('bmw-giveaway')} style={{ marginLeft: 'auto', display: 'inline-flex', alignItems: 'center', gap: 6, padding: '9px 14px', background: 'rgba(30,144,255,0.14)', border: `1px solid ${GH_BLUE}`, borderRadius: 3, color: GH_BLUE2, cursor: 'pointer', fontSize: 11.5, fontWeight: 800, letterSpacing: '1.5px', textTransform: 'uppercase' }}>{p.cta}</button>
                     )}
                   </div>
                 </div>
