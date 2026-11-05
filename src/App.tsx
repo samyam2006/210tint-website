@@ -764,7 +764,7 @@ function FAQ() {
   const faqs = [
     { q: 'What types of tint film do you offer?', a: 'We offer three tiers of UVIRON performance films: Premium Carbon for budget-friendly protection with a clean matte finish, Nano Carbon PUREMAX for enhanced heat rejection and durability, and Nano Ceramic KOOLMAX — our top tier — with maximum infrared heat rejection, crystal-clear clarity, and a lifetime warranty.' },
     { q: 'How long does window tinting take?', a: 'Most installations are completed in 1.5 to 3 hours depending on the vehicle type and number of windows. Full-vehicle tinting with windshield typically takes around 2.5 to 3 hours. We handle everything on-site at your location.' },
-    { q: 'Do you really come to my location?', a: 'Yes — we come to your home, office, or anywhere convenient across the DMV. We also have our shop at 10451 Fair Oaks, Columbia MD 21044 if you\'d rather drop your car off. Either way works.' },
+    { q: 'Do you really come to my location?', a: 'Yes — we come to your home, office, or anywhere convenient across the DMV. We also have a shop in Columbia, MD if you\'d rather drop your car off — we\'ll send the exact location when your appointment is confirmed. Either way works.' },
     { q: 'What is your warranty policy?', a: 'Our Nano Ceramic KOOLMAX film comes with a lifetime warranty covering bubbling, peeling, lifting, cracking, delamination, color fading, adhesive failure, and manufacturer defects with full labor included. Nano Carbon carries a 5–7 year warranty, and Premium Carbon carries a 3–5 year warranty.' },
     { q: 'Will window tint interfere with my electronics?', a: 'Not at all. All of our UVIRON films — Premium Carbon, Nano Carbon, and Nano Ceramic — are 100% signal-friendly. They will not interfere with GPS, Bluetooth, cell signals, toll transponders, or any other vehicle electronics.' },
     { q: 'How should I care for my new tint?', a: 'Avoid rolling your windows down for 5–7 days after installation to allow the adhesive to fully cure. Clean with a soft microfiber cloth and ammonia-free cleaner. Avoid abrasive materials. Small water bubbles during the first few weeks are normal and will disappear as the film cures.' },
@@ -803,7 +803,7 @@ function Footer({ go }: { go: (p: string) => void }) {
           <div style={{ marginBottom: 20 }}>
             <img src="/210tintlogo.webp" alt="210 Tint" width={320} height={320} style={{ height: 80, width: 'auto', objectFit: 'contain' }} />
           </div>
-          <p style={{ color: '#8e8ea0', fontSize: 16, lineHeight: 1.8, maxWidth: 280 }}>Columbia's tinting & detailing specialists. We come to you — or visit our shop at 10451 Fair Oaks.</p>
+          <p style={{ color: '#8e8ea0', fontSize: 16, lineHeight: 1.8, maxWidth: 280 }}>Columbia's tinting & detailing specialists. We come to you — or drop off at our Columbia shop.</p>
         </div>
         <div>
           <h4 style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 12, letterSpacing: '3px', color: '#4a4a5a', marginBottom: 20, textTransform: 'uppercase' }}>Navigation</h4>
@@ -1801,9 +1801,9 @@ WHAT WE OFFER (all available on their own AND in money-saving bundles):
 4. Bundles that combine the above (see BUNDLES section)
 CRITICAL: We absolutely DO offer standalone auto detailing — never tell a customer detailing is only available as part of a package. Detailing is one of our core services (see DETAILING section for packages and prices).
 
-CONTACT: (240) 338-7762, 210tints@gmail.com. Primarily mobile — we come to YOU anywhere in the DMV. We also have a shop location at 10451 Fair Oaks, Columbia, MD 21044 for customers who prefer to come in or for jobs that require it (like Starlight Headliner installs).
+CONTACT: (240) 338-7762, 210tints@gmail.com. Primarily mobile — we come to YOU anywhere in the DMV. We also have a shop in Columbia, MD for customers who prefer to drop off or for jobs that require it (like Starlight Headliner installs).
 
-SHOP LOCATION: 10451 Fair Oaks, Columbia, MD 21044. The shop address is not publicly listed on the website but you can share it with customers when relevant — especially for Starlight Headliner bookings or if a customer has no garage and wants to come to us instead.
+SHOP LOCATION: Columbia, MD. NEVER give out a street address. The exact shop location is shared by our team once the customer's appointment is confirmed. If a customer asks where the shop is or wants to drop off (e.g. Starlight installs or no garage), say it's in Columbia, MD and that we'll send the exact location after they book, or they can call/text (240) 338-7762.
 
 FILMS: Uviron Premium Carbon (entry — ~98% UV, 25–35% heat rejection, 3–5yr warranty), PureMax Nano Carbon (mid — 99% UV, 65–73% heat rejection, 5–7yr warranty), KoolMax Nano Ceramic (top — 99% UV, 90–97% heat rejection, up to 89% infrared rejection, lifetime warranty).
 IMPORTANT: There are THREE distinct tiers. Never confuse them. Uviron Premium Carbon = cheapest. PureMax Nano Carbon = middle. KoolMax Nano Ceramic = most expensive. If a customer says "Premium Carbon" they mean Uviron Premium Carbon (entry tier).
@@ -1816,7 +1816,7 @@ TRAVEL FEE: Mobile jobs charge $1.75 per mile (one way) from Columbia, MD 21044.
 
 STARLIGHT HEADLINER SERVICE: We install fiber optic star ceilings inside vehicles. The install replaces the headliner with hundreds of tiny LED fiber optic lights to create a custom night sky effect.
 STARLIGHT SPECIAL PRICING (15% off; do not claim it is ending soon or invent a deadline): Starter package (550 stars) normally $950, on sale $800 (save $150). Add-on 100 extra stars standard normally $115, on sale $100. Add-on 100 extra stars premium normally $175, on sale $145.
-STARLIGHT REQUIREMENTS: A garage or fully covered space is REQUIRED for starlight installs — not just recommended. The headliner must be removed and reinstalled, which cannot be done outdoors. If the customer has no garage, offer them the option to bring their vehicle to our shop at 10451 Fair Oaks, Columbia, MD 21044 instead.
+STARLIGHT REQUIREMENTS: A garage or fully covered space is REQUIRED for starlight installs — not just recommended. The headliner must be removed and reinstalled, which cannot be done outdoors. If the customer has no garage, offer them the option to bring their vehicle to our Columbia, MD shop instead (exact location shared after booking).
 STARLIGHT BOOKING FLOW: Collect: name, email, phone, vehicle year/make/model, package choice (Starter 550 stars / Starter + 100 standard / Starter + 100 premium / custom), headliner color (black/gray/tan), garage confirmed (yes/no), any layout requests (shooting stars, constellations, denser near sunroof), preferred date. Event key: starlight. In tint_type field put the package name e.g. "Starlight Starter 550 Stars".
 
 MOBILE JOB NOTICE: If the customer is booking a mobile job, always ask if they have access to a garage or covered parking space at their location. Let them know that without a garage or covered area, there is a significantly higher chance of minor imperfections (dust, wind, debris) affecting the install quality. We will always do our best, but we cannot guarantee a flawless result on an open-air mobile job. Mention this early and clearly.
